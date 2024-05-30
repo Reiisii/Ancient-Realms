@@ -23,6 +23,17 @@ public class ButtonScript : MonoBehaviour
     [SerializeField] Image artifactsButtonImg;
     [SerializeField] Image eventsButtonImg;
 
+
+    [Header("Panel")]
+    [SerializeField] GameObject NFTPanel;
+    [SerializeField] GameObject CharacterPanel;
+    [SerializeField] GameObject triviaPanel;
+    [SerializeField] GameObject locationsPanel;
+    [SerializeField] GameObject equipmentsPanel;
+    [SerializeField] GameObject artifactsPanel;
+    [SerializeField] GameObject eventsPanel;
+
+
     public void CharacterButtonPressed()
     {
         // PRESSED ACTION
@@ -48,6 +59,8 @@ public class ButtonScript : MonoBehaviour
         
         eventsButton.anchoredPosition = new Vector2(-600, eventsButton.anchoredPosition.y);
         eventsButtonImg.color = new Color(.50f, .50f, .50f);
+
+        handlePanel("character");
     }
 
         public void nftButtonPressed()
@@ -75,6 +88,8 @@ public class ButtonScript : MonoBehaviour
         
         eventsButton.anchoredPosition = new Vector2(-600, eventsButton.anchoredPosition.y);
         eventsButtonImg.color = new Color(.50f, .50f, .50f);
+
+        handlePanel("nft");
     }
 
         public void triviaButtonPressed()
@@ -102,6 +117,8 @@ public class ButtonScript : MonoBehaviour
         
         eventsButton.anchoredPosition = new Vector2(-600, eventsButton.anchoredPosition.y);
         eventsButtonImg.color = new Color(.50f, .50f, .50f);
+
+        handlePanel("trivia");
     }
         public void locationsButtonPressed()
     {
@@ -128,6 +145,8 @@ public class ButtonScript : MonoBehaviour
         
         eventsButton.anchoredPosition = new Vector2(-600, eventsButton.anchoredPosition.y);
         eventsButtonImg.color = new Color(.50f, .50f, .50f);
+
+        handlePanel("locations");
     }
         public void equipmentsButtonPressed()
     {
@@ -154,6 +173,8 @@ public class ButtonScript : MonoBehaviour
         
         eventsButton.anchoredPosition = new Vector2(-600, eventsButton.anchoredPosition.y);
         eventsButtonImg.color = new Color(.50f, .50f, .50f);
+
+        handlePanel("equipments");
     }
 
         public void artifactsButtonPressed()
@@ -181,6 +202,8 @@ public class ButtonScript : MonoBehaviour
         
         eventsButton.anchoredPosition = new Vector2(-600, eventsButton.anchoredPosition.y);
         eventsButtonImg.color = new Color(.50f, .50f, .50f);
+
+        handlePanel("artifacts");
     }
 
         public void eventsButtonPressed()
@@ -208,5 +231,82 @@ public class ButtonScript : MonoBehaviour
         
         characterButton.anchoredPosition = new Vector2(-600, characterButton.anchoredPosition.y);
         characterButtonImg.color = new Color(.50f, .50f, .50f);
+
+        handlePanel("events");
+    }
+
+    public void handlePanel(string panelName)
+    {
+        switch(panelName) {
+            case "character": 
+                CharacterPanel.SetActive(true);
+                NFTPanel.SetActive(false);
+                triviaPanel.SetActive(false);
+                locationsPanel.SetActive(false);
+                equipmentsPanel.SetActive(false);
+                artifactsPanel.SetActive(false);
+                eventsPanel.SetActive(false);
+            break; 
+
+            case "nft": 
+                CharacterPanel.SetActive(false);
+                NFTPanel.SetActive(true);
+                triviaPanel.SetActive(false);
+                locationsPanel.SetActive(false);
+                equipmentsPanel.SetActive(false);
+                artifactsPanel.SetActive(false);
+                eventsPanel.SetActive(false);
+            break; 
+
+            case "trivia": 
+                CharacterPanel.SetActive(false);
+                NFTPanel.SetActive(false);
+                triviaPanel.SetActive(true);
+                locationsPanel.SetActive(false);
+                equipmentsPanel.SetActive(false);
+                artifactsPanel.SetActive(false);
+                eventsPanel.SetActive(false);
+            break;
+
+            case "locations": 
+                CharacterPanel.SetActive(false);
+                NFTPanel.SetActive(false);
+                triviaPanel.SetActive(false);
+                locationsPanel.SetActive(true);
+                equipmentsPanel.SetActive(false);
+                artifactsPanel.SetActive(false);
+                eventsPanel.SetActive(false);
+            break;
+
+            case "equipments": 
+                CharacterPanel.SetActive(false);
+                NFTPanel.SetActive(false);
+                triviaPanel.SetActive(false);
+                locationsPanel.SetActive(false);
+                equipmentsPanel.SetActive(true);
+                artifactsPanel.SetActive(false);
+                eventsPanel.SetActive(false);
+            break;
+
+            case "artifacts": 
+                CharacterPanel.SetActive(false);
+                NFTPanel.SetActive(false);
+                triviaPanel.SetActive(false);
+                locationsPanel.SetActive(false);
+                equipmentsPanel.SetActive(false);
+                artifactsPanel.SetActive(true);
+                eventsPanel.SetActive(false);
+            break;
+
+            case "events": 
+                CharacterPanel.SetActive(false);
+                NFTPanel.SetActive(false);
+                triviaPanel.SetActive(false);
+                locationsPanel.SetActive(false);
+                equipmentsPanel.SetActive(false);
+                artifactsPanel.SetActive(false);
+                eventsPanel.SetActive(true);
+            break;
+        }
     }
 }
