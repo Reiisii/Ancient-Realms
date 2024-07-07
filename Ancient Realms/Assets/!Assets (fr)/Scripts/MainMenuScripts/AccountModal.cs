@@ -18,26 +18,48 @@ public class AccountModal : MonoBehaviour
     double accountBalance;
     List<Nft> accountNft;
     int nftTotal;
-    private IEnumerator coroutine;
+    // private IEnumerator coroutine;
     void Start()
     {
-        StartCoroutine(UpdateAccount(0.5f)); 
-        StartCoroutine(InitializeNFT(1f)); 
-
-    }
-    void Update(){
-        StartCoroutine(UpdateAccount(0.5f)); 
-    }
-    private IEnumerator InitializeNFT(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        InitializeNFT();
-    }
-    private IEnumerator UpdateAccount(float delay)
-    {
-        yield return new WaitForSeconds(delay);
+ 
         InitializeAccount();
     }
+    private void OnEnable()
+    {
+        // Register event listeners
+        Web3.OnLogin += OnLogin;
+        Web3.OnBalanceChange += OnBalanceChange;
+        Web3.OnNFTsUpdate += OnNFTsUpdate;
+
+        // Initialize account data
+        InitializeAccount();
+        InitializeNFT();
+    }
+
+    private void OnDisable()
+    {
+        // Unregister event listeners
+        Web3.OnLogin -= OnLogin;
+        Web3.OnBalanceChange -= OnBalanceChange;
+        Web3.OnNFTsUpdate -= OnNFTsUpdate;
+        ClearContent();
+    }
+
+
+    // void Update(){
+    //     //StartCoroutine(UpdateAccount(0.5f));
+    //     //StartCoroutine(InitializeNFT(1f)); 
+    // }
+    // private IEnumerator InitializeNFT(float delay)
+    // {
+    //     yield return new WaitForSeconds(delay);
+    //     InitializeNFT();
+    // }
+    // private IEnumerator UpdateAccount(float delay)
+    // {
+    //     yield return new WaitForSeconds(delay);
+    //     InitializeAccount();
+    // }
     public void InitializeAccount(){
         account = Web3.Wallet.Account;
         accountBalance = AccountManager.Instance.Balance;
@@ -47,6 +69,8 @@ public class AccountModal : MonoBehaviour
         BalanceDisplay.SetText(accountBalance.ToString());
     }
     public void InitializeNFT(){
+        ClearContent(contentPanel);
+        if (accountNft == null) return;
         for(int i = 0; i < nftTotal; i++){
             NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
             nft.transform.SetParent(contentPanel);
@@ -55,6 +79,32 @@ public class AccountModal : MonoBehaviour
             nft.setName(accountNft[i].metaplexData.data.offchainData.name);
             nft.setImage(accountNft[i].metaplexData.nftImage.file);
             nft.setNFT(accountNft[i]);
+        }
+    }
+    private void OnLogin(Account account)
+    {
+        InitializeAccount();
+        InitializeNFT();
+    }
+    private void OnBalanceChange(double solBalance)
+    {
+        InitializeAccount();
+    }
+    private void OnNFTsUpdate(List<Nft> nfts, int total)
+    {
+        InitializeAccount();
+        InitializeNFT();
+    }
+    public void ClearContent(){
+        PubKeyDisplay.SetText("");
+        BalanceDisplay.SetText("0.00");
+        ClearContent(contentPanel);
+    }
+    public void ClearContent(RectTransform cPanel)
+    {
+        foreach (Transform child in cPanel)
+        {
+            Destroy(child.gameObject);
         }
     }
 }
