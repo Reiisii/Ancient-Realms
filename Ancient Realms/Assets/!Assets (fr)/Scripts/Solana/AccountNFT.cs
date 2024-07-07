@@ -12,7 +12,7 @@ public class AccountNFT : MonoBehaviour
     private void OnDisable(){
         Web3.OnNFTsUpdate -= OnNFTsUpdate;
     }
-    private void OnNFTsUpdate(List<Nft> nfts, int total)
+    public void OnNFTsUpdate(List<Nft> nfts, int total)
     {
         foreach (var nft in nfts)
         {
