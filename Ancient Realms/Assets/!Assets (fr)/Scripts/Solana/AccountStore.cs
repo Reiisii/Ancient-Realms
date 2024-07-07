@@ -15,32 +15,7 @@ public class AccountStore : MonoBehaviour
     [SerializeField]
     GameObject connectionMenu;
     void Start(){
-        InitializeWeb3();
-    }
-    private void InitializeWeb3()
-    {
-        if (Web3.Instance == null)
-        {
-            // Assuming Web3 is attached to a GameObject called "Solana"
-            GameObject solanaObject = GameObject.Find("Solana");
-            if (solanaObject != null)
-            {
-                Web3 web3Component = solanaObject.GetComponent<Web3>();
-                if (web3Component != null)
-                {
-                    Web3.Instance = web3Component;
-                    Debug.Log("Web3 instance re-initialized.");
-                }
-                else
-                {
-                    Debug.LogError("Web3 component not found on Solana GameObject.");
-                }
-            }
-            else
-            {
-                Debug.LogError("Solana GameObject not found.");
-            }
-        }
+        
     }
 
     private void OnEnable(){

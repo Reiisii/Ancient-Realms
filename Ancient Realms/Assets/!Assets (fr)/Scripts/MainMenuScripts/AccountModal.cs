@@ -62,7 +62,6 @@ public class AccountModal : MonoBehaviour
     // }
     public void InitializeAccount(){
         account = Web3.Wallet.Account;
-        accountBalance = AccountManager.Instance.Balance;
         PubKeyDisplay.SetText(account.PublicKey.ToString());
         BalanceDisplay.SetText(accountBalance.ToString());
     }
@@ -86,6 +85,7 @@ public class AccountModal : MonoBehaviour
     }
     private void OnBalanceChange(double solBalance)
     {
+        accountBalance = solBalance;
         InitializeAccount();
     }
     private void OnNFTsUpdate(List<Nft> nfts, int total)
