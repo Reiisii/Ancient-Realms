@@ -43,6 +43,10 @@ public static NFTPanel Instance;
     public void HideItemDetails()
     {
         itemDetailPanel.SetActive(false);
+        itemNameText.SetText("");
+        descriptionText.SetText("");
+        rarityText.SetText("");
+        acquiredDate.SetText("");
     }
     public void setImage(Texture2D nftImage){
         Sprite sprites = Sprite.Create(nftImage, new Rect(0, 0, nftImage.width, nftImage.height), Vector2.one * 0.5f);

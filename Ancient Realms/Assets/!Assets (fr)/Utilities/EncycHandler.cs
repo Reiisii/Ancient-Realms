@@ -99,6 +99,9 @@ public class EncycHandler : MonoBehaviour
     }
     public void HideItemDetails()
     {
+        Instance.dataNameText.SetText("");
+        Instance.descriptionText.SetText("");
+        Instance.dataImage.sprite = null;
         dataPanel.SetActive(false);
     }
     public void setImage(Texture2D img){
