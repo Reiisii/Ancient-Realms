@@ -60,7 +60,7 @@ public class EncycHandler : MonoBehaviour
         EncycPanel.SetActive(false);
         locationPanel.SetActive(true);
         locationNameText.SetText(locations.name);
-        locationTitle.SetText("Locations");
+        locationTitle.SetText("Location");
         locationDescription.SetText(locations.description);
         yield return StartCoroutine(LoadImageLocation(locations.imagePath));
     }
@@ -70,7 +70,7 @@ public class EncycHandler : MonoBehaviour
         EncycPanel.SetActive(false);
         dataPanel.SetActive(true);
         dataNameText.SetText(equipments.name);
-        panelName.SetText("Equipments");
+        panelName.SetText("Equipment");
         descriptionText.SetText(equipments.description);
         yield return StartCoroutine(LoadImage(equipments.imagePath));
     }
@@ -80,7 +80,7 @@ public class EncycHandler : MonoBehaviour
         EncycPanel.SetActive(false);
         dataPanel.SetActive(true);
         dataNameText.SetText(artifacts.name);
-        panelName.SetText("Artifacts");
+        panelName.SetText("Artifact");
         descriptionText.SetText(artifacts.description);
         yield return StartCoroutine(LoadImage(artifacts.imagePath));
     }
