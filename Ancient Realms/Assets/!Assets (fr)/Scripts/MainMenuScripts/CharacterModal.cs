@@ -296,7 +296,7 @@ public class CharacterModal : MonoBehaviour
                     imagePath = Path.Combine(Application.streamingAssetsPath, character.imagePath)
                 };
                 locationsPrefab.setData(charData);
-                // yield return StartCoroutine(LoadImage(charData.imagePath, locationsPrefab));
+                yield return StartCoroutine(LoadImage(charData.imagePath, locationsPrefab));
             }
             yield return null;
         }
