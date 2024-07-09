@@ -48,17 +48,16 @@ public class EncycHandler : MonoBehaviour
     public IEnumerator ShowItemDetails(characterData character)
     {
         EncycPanel.SetActive(false);
-        dataPanel.SetActive(true);
         dataNameText.SetText(character.firstName + " " + character.lastName);
         panelName.SetText("Character");
         descriptionText.SetText(character.description);
         yield return StartCoroutine(LoadImage(character.imagePath));
+        
     }
 
     public IEnumerator ShowItemDetails(locationData locations) 
     {
         EncycPanel.SetActive(false);
-        locationPanel.SetActive(true);
         locationNameText.SetText(locations.name);
         locationTitle.SetText("Location");
         locationDescription.SetText(locations.description);
@@ -68,7 +67,6 @@ public class EncycHandler : MonoBehaviour
     public IEnumerator ShowItemDetails(equipmentData equipments)
     {
         EncycPanel.SetActive(false);
-        dataPanel.SetActive(true);
         dataNameText.SetText(equipments.name);
         panelName.SetText("Equipment");
         descriptionText.SetText(equipments.description);
@@ -78,7 +76,6 @@ public class EncycHandler : MonoBehaviour
     public IEnumerator ShowItemDetails(artifactsData artifacts)
     {
         EncycPanel.SetActive(false);
-        dataPanel.SetActive(true);
         dataNameText.SetText(artifacts.name);
         panelName.SetText("Artifact");
         descriptionText.SetText(artifacts.description);
@@ -87,15 +84,10 @@ public class EncycHandler : MonoBehaviour
     public IEnumerator ShowItemDetails(nftData nft)
     {
         EncycPanel.SetActive(false);
-        nftPanel.SetActive(true);
         nftText.SetText(nft.name);
         nftDescription.SetText(nft.description);
         nftRarity.SetText(nft.rarity);
         yield return StartCoroutine(LoadImageNFT(nft.imagePath));
-    }
-    public void ClosePanel()
-    {
-        Instance.HideItemDetails();
     }
     public void HideItemDetails()
     {
@@ -132,6 +124,7 @@ public class EncycHandler : MonoBehaviour
             {
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
                 setImage(texture);
+                dataPanel.SetActive(true);
             }
             else
             {
@@ -149,6 +142,7 @@ public class EncycHandler : MonoBehaviour
             {
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
                 setImageLocation(texture);
+                locationPanel.SetActive(true);
             }
             else
             {
