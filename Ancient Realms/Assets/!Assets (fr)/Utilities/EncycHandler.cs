@@ -160,6 +160,7 @@ public class EncycHandler : MonoBehaviour
             {
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
                 setImageNFT(texture);
+                nftPanel.SetActive(true);
             }
             else
             {
