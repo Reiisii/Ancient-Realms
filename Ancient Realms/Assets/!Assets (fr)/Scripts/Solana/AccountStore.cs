@@ -28,7 +28,7 @@ public class AccountStore : MonoBehaviour
     }
     private void OnLogin(Account account){
         AccountManager.CreateAccount(account.PublicKey.ToString());
-        mainMenu.SetActive(true);
+        MainMenuAnimation.Enable();
         connectionMenu.SetActive(false);
     }
     private void OnLogout(){
