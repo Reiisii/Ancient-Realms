@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class SettingsAnimation : MonoBehaviour
+public class CharactersPanelAnimation : MonoBehaviour
 {
     [Header("Animation")]
     [SerializeField] GameObject PanelGO;

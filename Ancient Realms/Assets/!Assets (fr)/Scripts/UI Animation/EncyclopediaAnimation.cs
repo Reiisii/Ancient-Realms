@@ -15,7 +15,10 @@ public class EncyclopediaAnimation : MonoBehaviour
     private void OnEnable(){
         EncycPanel.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(EncycPanelGO));
     }
-    private void OnDisable(){
-        EncycPanel.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.DisableAllButtons(EncycPanelGO));
+    public void Close(){
+        UIManager.DisableAllButtons(EncycPanelGO);
+        EncycPanel.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() =>{ 
+            EncycPanelGO.SetActive(false);
+        });
     }
 }

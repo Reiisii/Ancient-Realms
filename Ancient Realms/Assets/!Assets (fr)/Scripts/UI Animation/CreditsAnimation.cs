@@ -18,4 +18,11 @@ public class CreditsAnimation : MonoBehaviour
     private void OnDisable(){
         Credits.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.DisableAllButtons(CreditsGO));
     }
+    public void Close(){
+        UIManager.DisableAllButtons(CreditsGO);
+        Credits.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => {
+           CreditsGO.SetActive(false);
+        });
+        // Panel.DOAnchorPosX(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
+    }
 }

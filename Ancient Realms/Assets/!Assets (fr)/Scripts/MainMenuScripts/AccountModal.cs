@@ -14,12 +14,7 @@ public class AccountModal : MonoBehaviour
     [SerializeField] TextMeshProUGUI BalanceDisplay;
     [SerializeField] RectTransform contentPanel;
     [SerializeField] NftItems prefab;
-    [SerializeField] GameObject AccountPanelGO;
-    [SerializeField] RectTransform AccountPanel;
-    [SerializeField] float panelDuration; 
-    [SerializeField] float defaultPanelPosY; 
-    [SerializeField] float newPanelPosY;
-    [SerializeField] EaseTypes panelEaseType;
+    [SerializeField] GameObject accountPanel;
     Account account;
     double accountBalance;
     List<Nft> accountNft;
@@ -39,7 +34,6 @@ public class AccountModal : MonoBehaviour
         // Initialize account data
         InitializeAccount();
         InitializeNFT();
-        AccountPanel.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(AccountPanelGO));
     }
 
     private void OnDisable()
@@ -63,7 +57,7 @@ public class AccountModal : MonoBehaviour
             NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
             nft.transform.SetParent(contentPanel);
             nft.transform.localScale = new Vector3(1, 1, 1);
-
+            nft.setGameObject(accountPanel);
             nft.setName(accountNft[i].metaplexData.data.offchainData.name);
             nft.setImage(accountNft[i].metaplexData.nftImage.file);
             nft.setNFT(accountNft[i]);
@@ -91,7 +85,6 @@ public class AccountModal : MonoBehaviour
         PubKeyDisplay.SetText("");
         BalanceDisplay.SetText("0.00");
         ClearContent(contentPanel);
-        AccountPanel.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.DisableAllButtons(AccountPanelGO));
     }
     public void ClearContent(RectTransform cPanel)
     {
