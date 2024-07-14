@@ -4,18 +4,19 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.Networking;
+using DG.Tweening;
 
 public class EncycHandler : MonoBehaviour
 {
     public static EncycHandler Instance;
     [Header("Character | Equipment | Artifacts")]
-    [SerializeField] GameObject EncycPanel;
+    [SerializeField] GameObject EncycPanelGO;
     [SerializeField] GameObject dataPanel;
     [SerializeField] TextMeshProUGUI panelName;
     [SerializeField] Image dataImage;
     [SerializeField] TextMeshProUGUI dataNameText;
     [SerializeField] TextMeshProUGUI descriptionText;
-    [Header("Location Panel.")]
+    [Header("Location Panel")]
     [SerializeField] GameObject locationPanel;
     [SerializeField] TextMeshProUGUI locationTitle;
     [SerializeField] Image locationImage;
@@ -23,14 +24,12 @@ public class EncycHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI locationDescription;
 
     
-    [Header("NFT Panel.")]
+    [Header("NFT Panel")]
     [SerializeField] GameObject nftPanel;
     [SerializeField] Image nftImage;
     [SerializeField] TextMeshProUGUI nftText;
     [SerializeField] TextMeshProUGUI nftDescription;
     [SerializeField] TextMeshProUGUI nftRarity;
-
-    
 
 
     private void Awake()
@@ -44,10 +43,9 @@ public class EncycHandler : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
     public IEnumerator ShowItemDetails(characterData character)
     {
-        EncycPanel.SetActive(false);
+        EncycPanelGO.SetActive(false);
         dataNameText.SetText(character.firstName + " " + character.lastName);
         panelName.SetText("Character");
         descriptionText.SetText(character.description);
@@ -57,7 +55,7 @@ public class EncycHandler : MonoBehaviour
 
     public IEnumerator ShowItemDetails(locationData locations) 
     {
-        EncycPanel.SetActive(false);
+        EncycPanelGO.SetActive(false);
         locationNameText.SetText(locations.name);
         locationTitle.SetText("Location");
         locationDescription.SetText(locations.description);
@@ -66,7 +64,7 @@ public class EncycHandler : MonoBehaviour
 
     public IEnumerator ShowItemDetails(equipmentData equipments)
     {
-        EncycPanel.SetActive(false);
+        EncycPanelGO.SetActive(false);
         dataNameText.SetText(equipments.name);
         panelName.SetText("Equipment");
         descriptionText.SetText(equipments.description);
@@ -75,7 +73,7 @@ public class EncycHandler : MonoBehaviour
 
     public IEnumerator ShowItemDetails(artifactsData artifacts)
     {
-        EncycPanel.SetActive(false);
+        EncycPanelGO.SetActive(false);
         dataNameText.SetText(artifacts.name);
         panelName.SetText("Artifact");
         descriptionText.SetText(artifacts.description);
@@ -83,7 +81,7 @@ public class EncycHandler : MonoBehaviour
     }
     public IEnumerator ShowItemDetails(nftData nft)
     {
-        EncycPanel.SetActive(false);
+        EncycPanelGO.SetActive(false);
         nftText.SetText(nft.name);
         nftDescription.SetText(nft.description);
         nftRarity.SetText(nft.rarity);

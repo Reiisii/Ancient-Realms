@@ -4,9 +4,9 @@ using UnityEngine;
 using Solana.Unity.SDK.Nft;
 using Solana.Unity.Wallet;
 using TMPro;
-using Org.BouncyCastle.Asn1.Crmf;
-using System.Linq;
+using DG.Tweening;
 using Solana.Unity.SDK;
+using Unity.VisualScripting;
 public class AccountModal : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -14,6 +14,12 @@ public class AccountModal : MonoBehaviour
     [SerializeField] TextMeshProUGUI BalanceDisplay;
     [SerializeField] RectTransform contentPanel;
     [SerializeField] NftItems prefab;
+    [SerializeField] GameObject AccountPanelGO;
+    [SerializeField] RectTransform AccountPanel;
+    [SerializeField] float panelDuration; 
+    [SerializeField] float defaultPanelPosY; 
+    [SerializeField] float newPanelPosY;
+    [SerializeField] EaseTypes panelEaseType;
     Account account;
     double accountBalance;
     List<Nft> accountNft;
@@ -21,7 +27,6 @@ public class AccountModal : MonoBehaviour
     // private IEnumerator coroutine;
     void Start()
     {
- 
         InitializeAccount();
     }
     private void OnEnable()
@@ -34,6 +39,7 @@ public class AccountModal : MonoBehaviour
         // Initialize account data
         InitializeAccount();
         InitializeNFT();
+        AccountPanel.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(AccountPanelGO));
     }
 
     private void OnDisable()
@@ -45,21 +51,6 @@ public class AccountModal : MonoBehaviour
         ClearContent();
     }
 
-
-    // void Update(){
-    //     //StartCoroutine(UpdateAccount(0.5f));
-    //     //StartCoroutine(InitializeNFT(1f)); 
-    // }
-    // private IEnumerator InitializeNFT(float delay)
-    // {
-    //     yield return new WaitForSeconds(delay);
-    //     InitializeNFT();
-    // }
-    // private IEnumerator UpdateAccount(float delay)
-    // {
-    //     yield return new WaitForSeconds(delay);
-    //     InitializeAccount();
-    // }
     public void InitializeAccount(){
         account = Web3.Wallet.Account;
         PubKeyDisplay.SetText(account.PublicKey.ToString());
@@ -78,6 +69,7 @@ public class AccountModal : MonoBehaviour
             nft.setNFT(accountNft[i]);
         }
     }
+
     private void OnLogin(Account account)
     {
         InitializeAccount();
@@ -99,6 +91,7 @@ public class AccountModal : MonoBehaviour
         PubKeyDisplay.SetText("");
         BalanceDisplay.SetText("0.00");
         ClearContent(contentPanel);
+        AccountPanel.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.DisableAllButtons(AccountPanelGO));
     }
     public void ClearContent(RectTransform cPanel)
     {
