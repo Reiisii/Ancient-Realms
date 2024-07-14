@@ -45,7 +45,6 @@ public class EncycHandler : MonoBehaviour
     }
     public IEnumerator ShowItemDetails(characterData character)
     {
-        EncycPanelGO.SetActive(false);
         dataNameText.SetText(character.firstName + " " + character.lastName);
         panelName.SetText("Character");
         descriptionText.SetText(character.description);
@@ -55,7 +54,6 @@ public class EncycHandler : MonoBehaviour
 
     public IEnumerator ShowItemDetails(locationData locations) 
     {
-        EncycPanelGO.SetActive(false);
         locationNameText.SetText(locations.name);
         locationTitle.SetText("Location");
         locationDescription.SetText(locations.description);
@@ -64,7 +62,6 @@ public class EncycHandler : MonoBehaviour
 
     public IEnumerator ShowItemDetails(equipmentData equipments)
     {
-        EncycPanelGO.SetActive(false);
         dataNameText.SetText(equipments.name);
         panelName.SetText("Equipment");
         descriptionText.SetText(equipments.description);
@@ -73,7 +70,6 @@ public class EncycHandler : MonoBehaviour
 
     public IEnumerator ShowItemDetails(artifactsData artifacts)
     {
-        EncycPanelGO.SetActive(false);
         dataNameText.SetText(artifacts.name);
         panelName.SetText("Artifact");
         descriptionText.SetText(artifacts.description);
@@ -81,7 +77,6 @@ public class EncycHandler : MonoBehaviour
     }
     public IEnumerator ShowItemDetails(nftData nft)
     {
-        EncycPanelGO.SetActive(false);
         nftText.SetText(nft.name);
         nftDescription.SetText(nft.description);
         nftRarity.SetText(nft.rarity);

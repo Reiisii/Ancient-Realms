@@ -15,7 +15,7 @@ public class UpdatePanelAnimation : MonoBehaviour
     private void OnEnable(){
         UpdatePanel.DOAnchorPosX(newPanelPosX, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(UpdatePanelGO));
     }
-    private void OnDisable(){
-        UpdatePanel.DOAnchorPosX(defaultPanelPosX, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.DisableAllButtons(UpdatePanelGO));
+    public void Close(){
+        UpdatePanel.DOAnchorPosX(defaultPanelPosX, panelDuration).SetEase((Ease)panelEaseType);
     }
 }

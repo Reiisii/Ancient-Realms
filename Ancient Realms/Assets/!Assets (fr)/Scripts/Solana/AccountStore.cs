@@ -14,6 +14,7 @@ public class AccountStore : MonoBehaviour
 
     [SerializeField]
     GameObject connectionMenu;
+    
     private void OnEnable(){
         Web3.OnLogin += OnLogin;
         Web3.OnLogout += OnLogout;

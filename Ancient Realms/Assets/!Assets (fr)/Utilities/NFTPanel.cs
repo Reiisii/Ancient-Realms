@@ -13,7 +13,7 @@ public static NFTPanel Instance;
     public TextMeshProUGUI rarityText;
     public TextMeshProUGUI acquiredDate;
     public Image itemImage;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -28,7 +28,6 @@ public static NFTPanel Instance;
 
     public void ShowItemDetails(Nft nft)
     {
-        AccountPanel.SetActive(false);
         itemDetailPanel.SetActive(true);
         itemNameText.SetText(nft.metaplexData.data.offchainData.name);
         descriptionText.SetText(nft.metaplexData.data.offchainData.description);

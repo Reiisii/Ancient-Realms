@@ -15,7 +15,10 @@ public class ChapterSelectAnimation : MonoBehaviour
     private void OnEnable(){
         ChapterSelect.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(ChapterSelectGO));
     }
-    private void OnDisable(){
-        ChapterSelect.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.DisableAllButtons(ChapterSelectGO));
+    public void Close(){
+        UIManager.DisableAllButtons(ChapterSelectGO);
+        ChapterSelect.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => {
+            ChapterSelectGO.SetActive(false);
+        });
     }
 }

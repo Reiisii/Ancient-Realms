@@ -21,7 +21,7 @@ public class CharacterModal : MonoBehaviour
     [SerializeField] RectTransform locationsPanel;
     [SerializeField] NFTPortrait nfPrefab;
     [SerializeField] RectTransform nftPanel;
-
+    [SerializeField] GameObject EncycPanel;
     
     IEnumerator Start()
     {
@@ -235,6 +235,7 @@ public class CharacterModal : MonoBehaviour
                 characterPrefab.transform.SetParent(characterPanel);
                 characterPrefab.transform.localScale = Vector3.one;
                 characterPrefab.setName(character.lastName.Equals("") ? character.firstName : character.firstName + " " + character.lastName);
+                characterPrefab.setGameObject(EncycPanel);
                 characterData charData = new characterData
                 {
                     firstName = character.firstName,
@@ -262,6 +263,7 @@ public class CharacterModal : MonoBehaviour
                 nftPrefab.transform.SetParent(nftPanel);
                 nftPrefab.transform.localScale = Vector3.one;
                 nftPrefab.setName(character.name);
+                nftPrefab.setGameObject(EncycPanel);
                 nftData charData = new nftData
                 {
                     name = character.name,
@@ -289,6 +291,7 @@ public class CharacterModal : MonoBehaviour
                 locationsPrefab.transform.SetParent(locationsPanel);
                 locationsPrefab.transform.localScale = Vector3.one;
                 locationsPrefab.setName(character.name);
+                locationsPrefab.setGameObject(EncycPanel);
                 locationData charData = new locationData
                 {
                     name = character.name,
@@ -360,6 +363,7 @@ public class CharacterModal : MonoBehaviour
                 equipmentPrefab.transform.SetParent(equipmentPanel);
                 equipmentPrefab.transform.localScale = Vector3.one;
                 equipmentPrefab.setName(equipmentType.name);
+                equipmentPrefab.setGameObject(EncycPanel);
                 equipmentData charData = new equipmentData
                 {
                     name = equipmentType.name,
@@ -386,6 +390,7 @@ public class CharacterModal : MonoBehaviour
                 artifactPrefab.transform.SetParent(artifactsPanel);
                 artifactPrefab.transform.localScale = Vector3.one;
                 artifactPrefab.setName(character.name);
+                artifactPrefab.setGameObject(EncycPanel);
                 artifactsData charData = new artifactsData
                 {
                     name = character.name,
