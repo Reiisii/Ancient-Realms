@@ -5197,6 +5197,7 @@ GameObject:
   - component: {fileID: 331166363}
   - component: {fileID: 331166365}
   - component: {fileID: 331166364}
+  - component: {fileID: 331166366}
   m_Layer: 5
   m_Name: Connect Wallet
   m_TagString: Untagged
@@ -5225,7 +5226,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -940}
   m_SizeDelta: {x: 701.7657, y: 768.6035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &331166364
@@ -5266,6 +5267,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331166362}
   m_CullTransparentMesh: 1
+--- !u!114 &331166366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331166362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda3fd8ed44de644792f8d8171d58352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LogoGO: {fileID: 331166362}
+  Logo: {fileID: 331166363}
+  panelDuration: 0.8
+  defaultPanelPosY: -940
+  newPanelPosY: 0
+  panelEaseType: 4
 --- !u!1 &333097347
 GameObject:
   m_ObjectHideFlags: 0
@@ -15897,18 +15916,6 @@ MonoBehaviour:
       - m_Target: {fileID: 833314159}
         m_TargetAssemblyTypeName: AccountAnimation, Assembly-CSharp
         m_MethodName: Close
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 833314158}
-        m_TargetAssemblyTypeName: AccountModal, Assembly-CSharp
-        m_MethodName: ClearContent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26762,7 +26769,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6e65cb82422baea4a816b2cafb0a7a80, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 41f0559ddb1866641935fb0b212c57ce, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

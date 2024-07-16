@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Solana.Unity.SDK;
 using Solana.Unity.SDK.Nft;
 using Solana.Unity.Wallet;
@@ -26,7 +27,11 @@ public class AccountStore : MonoBehaviour
     private void OnLogin(Account account){
         AccountManager.CreateAccount(account.PublicKey.ToString());
         mainMenu.SetActive(true);
-        connectionMenu.SetActive(false);
+        UIManager.DisableAllButtons(connectionMenu);
+        connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
+            connectionMenu.SetActive(false);
+        });
+        
     }
     private void OnLogout(){
         Debug.Log("Logout");
