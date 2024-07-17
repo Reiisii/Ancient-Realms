@@ -29460,10 +29460,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2034276336}
+        m_TargetAssemblyTypeName: Play, Assembly-CSharp
+        m_MethodName: PlayGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -32824,6 +32824,7 @@ GameObject:
   - component: {fileID: 2034276330}
   - component: {fileID: 2034276333}
   - component: {fileID: 2034276335}
+  - component: {fileID: 2034276336}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -32966,6 +32967,19 @@ MonoBehaviour:
   minCamSize: 100
   maxCamSize: 539
   mapRenderer: {fileID: 0}
+  scrollThreshold: 0.01
+--- !u!114 &2034276336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034276329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71fbfe129629d3a449435a90c3cb01ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2034286375
 GameObject:
   m_ObjectHideFlags: 0

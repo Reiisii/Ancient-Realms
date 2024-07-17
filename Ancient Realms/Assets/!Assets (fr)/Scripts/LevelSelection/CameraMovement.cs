@@ -17,7 +17,7 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 dragOrigin;
 
-
+    public float scrollThreshold = 0.01f;
     private void Awake()
     {
         mapMinX = mapRenderer.transform.position.x - mapRenderer.bounds.size.x / 2f;
@@ -37,6 +37,14 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        float scroll = Input.mouseScrollDelta.y;
+        if (Mathf.Abs(scroll) > scrollThreshold)
+        {
+            OnScroll(scroll);
+            Debug.Log("Work " + scroll);
+        }
+
         PanCamera();
     }
 
@@ -54,9 +62,8 @@ public class CameraMovement : MonoBehaviour
             //cam.transform.position += difference; //bez ograniczenia obszaru
 
             cam.transform.position = ClampCamera(cam.transform.position + difference);   //ograniczenie obszaru
-
         }
-        
+
         /*
         if (Input.GetMouseButtonDown(0)) dragOrigin = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1));
         if (Input.GetMouseButton(0))
@@ -75,7 +82,29 @@ public class CameraMovement : MonoBehaviour
 
         cam.transform.position = ClampCamera(cam.transform.position);   //ograniczenie obszaru
     }
-
+    private void OnScroll(float scrollAmount)
+    {
+        
+        if (scrollAmount > 0)
+        {
+            // Call your method for scrolling up (Zoom In)
+            ZoomIn();
+        }
+        else
+        {
+            // Call your method for scrolling down (Zoom Out)
+            ZoomOut();
+        }
+        /*
+        if (Input.GetMouseButtonDown(0)) dragOrigin = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1));
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 difference = dragOrigin - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1));
+            Debug.Log("origin " + dragOrigin + " newPosition " + cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1)) + " =difference " + difference);
+            cam.transform.position += new Vector3(difference.x, difference.y, 0f);
+        }
+        */
+    }
     public void ZoomOut()
     {
         float newSize = cam.orthographicSize + zoomStep;
