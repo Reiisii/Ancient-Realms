@@ -14,10 +14,6 @@ public class AccountNFT : MonoBehaviour
     }
     public void OnNFTsUpdate(List<Nft> nfts, int total)
     {
-        foreach (var nft in nfts)
-        {
-            Debug.Log("NFT: " + nft.metaplexData.nftImage.name);
-        }
-        AccountManager.Instance.SetNFTs(nfts, total);
+        // DO SOMETHING
     }
 }

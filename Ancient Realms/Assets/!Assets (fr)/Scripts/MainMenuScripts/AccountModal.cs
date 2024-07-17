@@ -4,9 +4,9 @@ using UnityEngine;
 using Solana.Unity.SDK.Nft;
 using Solana.Unity.Wallet;
 using TMPro;
-using Org.BouncyCastle.Asn1.Crmf;
-using System.Linq;
+using DG.Tweening;
 using Solana.Unity.SDK;
+using Unity.VisualScripting;
 public class AccountModal : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -14,6 +14,7 @@ public class AccountModal : MonoBehaviour
     [SerializeField] TextMeshProUGUI BalanceDisplay;
     [SerializeField] RectTransform contentPanel;
     [SerializeField] NftItems prefab;
+    [SerializeField] GameObject accountPanel;
     Account account;
     double accountBalance;
     List<Nft> accountNft;
@@ -21,7 +22,6 @@ public class AccountModal : MonoBehaviour
     // private IEnumerator coroutine;
     void Start()
     {
- 
         InitializeAccount();
     }
     private void OnEnable()
@@ -45,26 +45,8 @@ public class AccountModal : MonoBehaviour
         ClearContent();
     }
 
-
-    // void Update(){
-    //     //StartCoroutine(UpdateAccount(0.5f));
-    //     //StartCoroutine(InitializeNFT(1f)); 
-    // }
-    // private IEnumerator InitializeNFT(float delay)
-    // {
-    //     yield return new WaitForSeconds(delay);
-    //     InitializeNFT();
-    // }
-    // private IEnumerator UpdateAccount(float delay)
-    // {
-    //     yield return new WaitForSeconds(delay);
-    //     InitializeAccount();
-    // }
     public void InitializeAccount(){
         account = Web3.Wallet.Account;
-        accountBalance = AccountManager.Instance.Balance;
-        accountNft = AccountManager.Instance.nftList;
-        nftTotal = AccountManager.Instance.totalNFT;
         PubKeyDisplay.SetText(account.PublicKey.ToString());
         BalanceDisplay.SetText(accountBalance.ToString());
     }
@@ -75,12 +57,13 @@ public class AccountModal : MonoBehaviour
             NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
             nft.transform.SetParent(contentPanel);
             nft.transform.localScale = new Vector3(1, 1, 1);
-
+            nft.setGameObject(accountPanel);
             nft.setName(accountNft[i].metaplexData.data.offchainData.name);
             nft.setImage(accountNft[i].metaplexData.nftImage.file);
             nft.setNFT(accountNft[i]);
         }
     }
+
     private void OnLogin(Account account)
     {
         InitializeAccount();
@@ -88,10 +71,13 @@ public class AccountModal : MonoBehaviour
     }
     private void OnBalanceChange(double solBalance)
     {
+        accountBalance = solBalance;
         InitializeAccount();
     }
     private void OnNFTsUpdate(List<Nft> nfts, int total)
     {
+        accountNft = nfts;
+        nftTotal = total;
         InitializeAccount();
         InitializeNFT();
     }

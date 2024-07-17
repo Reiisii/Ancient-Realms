@@ -17,9 +17,6 @@ public class AccountManager : MonoBehaviour
     public static AccountManager Instance { get; private set;}
 
     // Currently logged-in account
-    public double Balance { get; private set;}
-    public List<Nft> nftList {get; private set;}
-    public int totalNFT {get; private set;}
     private void Awake()
     {
         // Ensure only one instance of AccountManager exists
@@ -32,14 +29,6 @@ public class AccountManager : MonoBehaviour
         {
             Destroy(gameObject); // Destroy duplicate instances
         }
-    }
-    public void SetSolBalance(double amount)
-    {
-        Balance = amount;
-    }
-    public void SetNFTs(List<Nft> nfts, int total){
-        nftList = nfts;
-        totalNFT = total;
     }
     public void Logout()
     {

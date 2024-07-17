@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Solana.Unity.SDK.Nft;
 using TMPro;
 using UnityEngine;
@@ -13,9 +14,13 @@ public class CharacterPortrait : MonoBehaviour
     
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI charName;
-    
+    [SerializeField] GameObject panel;
     public void OnItemClick()
     {
+        UIManager.DisableAllButtons(panel);
+        panel.GetComponent<RectTransform>().DOAnchorPosY(-1050, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => {
+           panel.SetActive(false);
+        });
         StartCoroutine(EncycHandler.Instance.ShowItemDetails(character));
     }
     public void setImage(Texture2D nftImage){
@@ -23,6 +28,9 @@ public class CharacterPortrait : MonoBehaviour
 
         // Set the sprite to the Image component
         image.sprite = sprites;
+    }
+    public void setGameObject(GameObject pnl){
+        panel = pnl;
     }
     public void setName(string name){
         charName.SetText(name);

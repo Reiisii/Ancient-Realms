@@ -13,7 +13,6 @@ public class AccountBalance : MonoBehaviour
     }
     private void OnBalanceChange(double solBalance)
     {
-        Debug.Log(solBalance);
-        AccountManager.Instance.SetSolBalance(solBalance);
+       // DO SOMETHING
     }
 }

@@ -13,7 +13,7 @@ public static NFTPanel Instance;
     public TextMeshProUGUI rarityText;
     public TextMeshProUGUI acquiredDate;
     public Image itemImage;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -28,7 +28,6 @@ public static NFTPanel Instance;
 
     public void ShowItemDetails(Nft nft)
     {
-        AccountPanel.SetActive(false);
         itemDetailPanel.SetActive(true);
         itemNameText.SetText(nft.metaplexData.data.offchainData.name);
         descriptionText.SetText(nft.metaplexData.data.offchainData.description);
@@ -43,6 +42,10 @@ public static NFTPanel Instance;
     public void HideItemDetails()
     {
         itemDetailPanel.SetActive(false);
+        itemNameText.SetText("");
+        descriptionText.SetText("");
+        rarityText.SetText("");
+        acquiredDate.SetText("");
     }
     public void setImage(Texture2D nftImage){
         Sprite sprites = Sprite.Create(nftImage, new Rect(0, 0, nftImage.width, nftImage.height), Vector2.one * 0.5f);
