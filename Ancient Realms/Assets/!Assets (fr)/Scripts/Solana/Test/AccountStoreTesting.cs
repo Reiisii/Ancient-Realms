@@ -7,6 +7,7 @@ using UnityEngine;
 public class AccountStoreTesting : MonoBehaviour
 {
     [SerializeField] GameObject btnTransact;
+    [SerializeField] GameObject mintTransact;
     private void OnEnable(){
         Web3.OnLogin += OnLogin;
     }
@@ -17,5 +18,6 @@ public class AccountStoreTesting : MonoBehaviour
 
         Debug.Log(account.PublicKey.ToString());
         btnTransact.SetActive(true);
+        mintTransact.SetActive(true);
     }
 }
