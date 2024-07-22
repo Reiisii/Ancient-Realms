@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-
     [SerializeField]
     private Camera cam; 
 
@@ -16,6 +15,7 @@ public class CameraMovement : MonoBehaviour
     private float mapMinX, mapMaxX, mapMinY, mapMaxY;
 
     private Vector3 dragOrigin;
+    public float scrollThreshold = 0.01f;
 
 
     private void Awake()
@@ -37,6 +37,14 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        Debug.Log("Scroll value: " + scroll); // Log scroll value
+
+        if (Mathf.Abs(scroll) > scrollThreshold)
+        {
+            OnScroll(scroll);
+            Debug.Log("Scroll detected");
+        }
         PanCamera();
     }
 
@@ -61,9 +69,10 @@ public class CameraMovement : MonoBehaviour
     {
         float newSize = cam.orthographicSize - zoomStep;
         cam.orthographicSize = Mathf.Clamp(newSize, minCamSize, maxCamSize);
-
-        cam.transform.position = ClampCamera(cam.transform.position);   //ograniczenie obszaru
+        cam.transform.position = ClampCamera(cam.transform.position);  
     }
+
+
     private void OnScroll(float scrollAmount)
     {
         
@@ -82,7 +91,6 @@ public class CameraMovement : MonoBehaviour
     {
         float newSize = cam.orthographicSize + zoomStep;
         cam.orthographicSize = Mathf.Clamp(newSize, minCamSize, maxCamSize);
-
         cam.transform.position = ClampCamera(cam.transform.position); 
     }
 
