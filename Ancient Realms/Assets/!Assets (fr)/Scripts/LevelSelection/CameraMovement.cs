@@ -6,10 +6,10 @@ public class CameraMovement : MonoBehaviour
 {
 
     [SerializeField]
-    private Camera cam; //obiekt kamery
+    private Camera cam; 
 
     [SerializeField]
-    private float zoomStep, minCamSize, maxCamSize; //zakres powiększenia
+    private float zoomStep, minCamSize, maxCamSize; 
 
     [SerializeField]
     private SpriteRenderer mapRenderer;
@@ -40,7 +40,7 @@ public class CameraMovement : MonoBehaviour
         PanCamera();
     }
 
-    //przesuwanie pozycji kamery (lewo, prawo, góra, dół)
+
     private void PanCamera()
     {
         
@@ -51,8 +51,8 @@ public class CameraMovement : MonoBehaviour
         {
             Vector3 difference = dragOrigin - cam.ScreenToWorldPoint(Input.mousePosition);
             print("origin " + dragOrigin + " newPosition " + cam.ScreenToWorldPoint(Input.mousePosition) + " =difference" + difference);
-            //cam.transform.position += difference; //bez ograniczenia obszaru
 
+<<<<<<< Updated upstream
             cam.transform.position = ClampCamera(cam.transform.position + difference);   //ograniczenie obszaru
 
         }
@@ -64,8 +64,11 @@ public class CameraMovement : MonoBehaviour
             Vector3 difference = dragOrigin - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1));
             Debug.Log("origin " + dragOrigin + " newPosition " + cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1)) + " =difference " + difference);
             cam.transform.position += new Vector3(difference.x, difference.y, 0f);
+=======
+
+            cam.transform.position = ClampCamera(cam.transform.position + difference);  
+>>>>>>> Stashed changes
         }
-        */
     }
 
     public void ZoomIn()
@@ -75,13 +78,31 @@ public class CameraMovement : MonoBehaviour
 
         cam.transform.position = ClampCamera(cam.transform.position);   //ograniczenie obszaru
     }
+<<<<<<< Updated upstream
 
+=======
+    private void OnScroll(float scrollAmount)
+    {
+        
+        if (scrollAmount > 0)
+        {
+            // Call your method for scrolling up (Zoom In)
+            ZoomIn();
+        }
+        else
+        {
+            // Call your method for scrolling down (Zoom Out)
+            ZoomOut();
+        }
+    }
+    
+>>>>>>> Stashed changes
     public void ZoomOut()
     {
         float newSize = cam.orthographicSize + zoomStep;
         cam.orthographicSize = Mathf.Clamp(newSize, minCamSize, maxCamSize);
 
-        cam.transform.position = ClampCamera(cam.transform.position); //ograniczenie obszaru
+        cam.transform.position = ClampCamera(cam.transform.position); 
     }
 
     private Vector3 ClampCamera(Vector3 targetPosition)
