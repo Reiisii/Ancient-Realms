@@ -52,22 +52,8 @@ public class CameraMovement : MonoBehaviour
             Vector3 difference = dragOrigin - cam.ScreenToWorldPoint(Input.mousePosition);
             print("origin " + dragOrigin + " newPosition " + cam.ScreenToWorldPoint(Input.mousePosition) + " =difference" + difference);
 
-<<<<<<< Updated upstream
-            cam.transform.position = ClampCamera(cam.transform.position + difference);   //ograniczenie obszaru
-
-        }
-        
-        /*
-        if (Input.GetMouseButtonDown(0)) dragOrigin = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1));
-        if (Input.GetMouseButton(0))
-        {
-            Vector3 difference = dragOrigin - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1));
-            Debug.Log("origin " + dragOrigin + " newPosition " + cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * -1)) + " =difference " + difference);
-            cam.transform.position += new Vector3(difference.x, difference.y, 0f);
-=======
 
             cam.transform.position = ClampCamera(cam.transform.position + difference);  
->>>>>>> Stashed changes
         }
     }
 
@@ -78,9 +64,6 @@ public class CameraMovement : MonoBehaviour
 
         cam.transform.position = ClampCamera(cam.transform.position);   //ograniczenie obszaru
     }
-<<<<<<< Updated upstream
-
-=======
     private void OnScroll(float scrollAmount)
     {
         
@@ -95,8 +78,6 @@ public class CameraMovement : MonoBehaviour
             ZoomOut();
         }
     }
-    
->>>>>>> Stashed changes
     public void ZoomOut()
     {
         float newSize = cam.orthographicSize + zoomStep;
