@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
     Vector2 moveInput;
-
+    public bool interactPressed = false;
     public float CurrentMoveSpeed 
     { get 
         {
@@ -80,16 +80,11 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public bool GetInteractPressed() 
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        bool result = interactPressed;
+        interactPressed = false;
+        return result;
     }
 
     public void FixedUpdate()
@@ -103,6 +98,17 @@ public class PlayerController : MonoBehaviour
         IsMoving = moveInput != Vector2.zero;
 
         SetFacingDirection(moveInput);
+    }
+    public void InteractButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            interactPressed = true;
+        }
+        else if (context.canceled)
+        {
+            interactPressed = false;
+        } 
     }
 
     private void SetFacingDirection(Vector2 moveInput)
