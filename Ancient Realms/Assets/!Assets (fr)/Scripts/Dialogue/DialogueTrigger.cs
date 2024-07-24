@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Ink.Parsed;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -12,16 +14,19 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private TextAsset inkJSON;
     [SerializeField] private PlayerController playerController;
     private bool playerInRange;
+    private Story currentStory;
+
+    private bool dialogueIsPlaying;
     private void Awake(){
         VisualCue.SetActive(false);
         playerInRange = false;
     }
     private void Update(){
-        if(playerInRange){
+        if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying){
             Debug.Log("Player in Range");
             VisualCue.SetActive(true);
             if(playerController.GetInteractPressed()){
-                Debug.Log(inkJSON.text);
+                DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
             }
         }else{
             VisualCue.SetActive(false);
