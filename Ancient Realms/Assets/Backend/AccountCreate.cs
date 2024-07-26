@@ -6,7 +6,8 @@ using Unisave.Facets;
 using Unisave.Facades;
 using Unisave.Authentication.Middleware;
 using System.Security.Cryptography.X509Certificates;
-
+using System.Diagnostics;
+using ESDatabase.Classes;
 public class AccountCreate : Facet
 {
     public string CreateAccount(string pubkey)
@@ -15,23 +16,25 @@ public class AccountCreate : Facet
         
         var existingPlayer = DB.Query(query).FirstAs<PlayerEntity>();
 
+        bool isExisting = CreateAccountAndUpdate(pubkey, existingPlayer);
 
+        return isExisting == true ? "Existing Account! updating login date" : "New Account! Created Account Data";
+    }
+    public static bool CreateAccountAndUpdate(string pubkey, PlayerEntity existingPlayer)
+    {
+        
         if (existingPlayer != null)
         {
             existingPlayer.lastLoginAt = DateTime.UtcNow;
             existingPlayer.Save();
-            return existingPlayer.EntityId;
+            return true;
         }
         else
         {
-            var player = new PlayerEntity
-            {
-                publicKey = pubkey,
-                lastLoginAt = DateTime.UtcNow
-            };
+            GameData data = new GameData();
+            var player = new PlayerEntity(pubkey, DateTime.UtcNow, data);
             player.Save();
-            return player.EntityId;
+            return false;
         }
     }
-
 }
