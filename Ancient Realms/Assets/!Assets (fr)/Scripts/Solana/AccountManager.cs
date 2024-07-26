@@ -50,7 +50,7 @@ public class AccountManager : MonoBehaviour
         FacetClient.CallFacet((AccountCreate facet) => facet.CreateAccount(pubkey))
         .Then(response => 
         {
-            Debug.Log("Account created or updated with EntityId: " + response);
+            Debug.Log("[Account Checker]: " + response);
         })
         .Catch(error => 
         {
