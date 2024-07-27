@@ -15,6 +15,7 @@ public class AccountModal : MonoBehaviour
     [SerializeField] RectTransform contentPanel;
     [SerializeField] NftItems prefab;
     [SerializeField] GameObject accountPanel;
+    [SerializeField] GameObject LoadingPanel;
     Account account;
     double accountBalance;
     List<Nft> accountNft;
@@ -49,6 +50,7 @@ public class AccountModal : MonoBehaviour
         account = Web3.Wallet.Account;
         PubKeyDisplay.SetText(account.PublicKey.ToString());
         BalanceDisplay.SetText(accountBalance.ToString());
+        AccountManager.GetPlayer(AccountManager.Instance.EntityId);
     }
     public void InitializeNFT(){
         ClearContent(contentPanel);
