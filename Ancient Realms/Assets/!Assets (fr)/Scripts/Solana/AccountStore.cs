@@ -25,13 +25,7 @@ public class AccountStore : MonoBehaviour
         Web3.OnLogout -= OnLogout;
     }
     private void OnLogin(Account account){
-        AccountManager.CreateAccount(account.PublicKey.ToString());
-        mainMenu.SetActive(true);
-        UIManager.DisableAllButtons(connectionMenu);
-        connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
-            connectionMenu.SetActive(false);
-        });
-        
+        AccountManager.InitializeLogin(account.PublicKey.ToString());
     }
     private void OnLogout(){
         Debug.Log("Logout");
