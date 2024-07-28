@@ -50,7 +50,6 @@ public class AccountModal : MonoBehaviour
         account = Web3.Wallet.Account;
         PubKeyDisplay.SetText(account.PublicKey.ToString());
         BalanceDisplay.SetText(accountBalance.ToString());
-        AccountManager.GetPlayer(AccountManager.Instance.EntityId);
     }
     public void InitializeNFT(){
         ClearContent(contentPanel);

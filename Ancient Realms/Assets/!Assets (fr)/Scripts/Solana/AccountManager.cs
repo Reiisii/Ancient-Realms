@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 using Unisave.Facades;
 using DG.Tweening;
 using ESDatabase.Entities;
+using System.Threading.Tasks;
+using System;
 
 public class AccountManager : MonoBehaviour
 {
@@ -64,24 +66,54 @@ public class AccountManager : MonoBehaviour
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
     }
-    public async static void GetPlayer(string id)
+    public async static Task<PlayerData> GetPlayer()
     {
         Instance.loadingPanel.SetActive(true);
-        await FacetClient.CallFacet((DatabaseService facet) => facet.GetPlayerById(id))
+        PlayerData player = null;
+        await FacetClient.CallFacet((DatabaseService facet) => facet.GetPlayerById(Instance.EntityId))
         .Then(response => 
         {
-            Debug.Log("[Public Key]: " + response.publicKey);
-            Debug.Log("[Player Name]: " + response.gameData.playerName);
-            Debug.Log("[Denarii]: " + response.gameData.denarii);
-            Debug.Log("[Level]: " + response.gameData.level);
-            Debug.Log("[Xp]: " + response.gameData.xp);
-            Debug.Log("[Inventory Slots]: " + response.gameData.inventory.slots);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            player = response;
         })
         .Catch(error => 
         {
             Debug.LogError("Failed to fetch player data: " + error);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
+        return player;
     }
+    public async static Task<PlayerData> GetPlayer(string id)
+    {
+        Instance.loadingPanel.SetActive(true);
+        PlayerData player = null;
+        await FacetClient.CallFacet((DatabaseService facet) => facet.GetPlayerById(id))
+        .Then(response => 
+        {
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            player = response;
+        })
+        .Catch(error => 
+        {
+            Debug.LogError("Failed to fetch player data: " + error);
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        });
+        return player;
+    }
+    public async static Task SaveData(PlayerData player)
+    {
+        Instance.loadingPanel.SetActive(true);
+        await FacetClient.CallFacet((DatabaseService facet) => facet.SaveData(player))
+        .Then(response =>
+        {
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            Debug.Log(response);
+        })
+        .Catch(error =>
+        {
+            Debug.LogError("Failed to save player data: " + error);
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        });
+    }
+
 }
