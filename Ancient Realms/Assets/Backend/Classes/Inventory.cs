@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using Unisave;
 namespace ESDatabase.Classes
 {
     [Serializable]
     public class Inventory
     {
-        public int slots {get;set;}
-        public List<ItemData> items {get; set;}
-
-        public Inventory(int slotCount, List<ItemData> items){
-            this.slots = slotCount;
-            this.items = items;
+        
+        [Fillable] public int slots {get;set;}
+        [Fillable] public List<ItemData> items {get; set;}
+        public Inventory(){
+            this.slots = 20;
+            items = new List<ItemData>();
         }
     }
 }

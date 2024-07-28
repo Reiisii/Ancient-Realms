@@ -10,21 +10,21 @@ namespace ESDatabase.Utilities
     [Serializable]
     public class DBHelper
     {
-        public static bool IsPlayerExisting(string pubkey, PlayerData existingPlayer)
+        public static string IsPlayerExisting(string pubkey, PlayerData existingPlayer)
         {
 
             if (existingPlayer != null)
             {
                 existingPlayer.lastLoginAt = DateTime.UtcNow;
                 existingPlayer.Save();
-                return false;
+                return existingPlayer.EntityId;
             }
             else
             {
                 GameData data = new GameData();
                 var player = new PlayerData(pubkey, DateTime.UtcNow, data);
                 player.Save();
-                return false;
+                return player.EntityId;
             }
         }
     }
