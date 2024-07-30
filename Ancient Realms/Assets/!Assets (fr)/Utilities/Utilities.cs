@@ -1,10 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Solana.Unity.SDK.Nft;
-using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
 public class characterData{
         public string firstName;
         public string lastName;

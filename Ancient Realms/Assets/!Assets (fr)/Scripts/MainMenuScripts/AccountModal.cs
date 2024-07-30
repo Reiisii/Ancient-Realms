@@ -15,6 +15,7 @@ public class AccountModal : MonoBehaviour
     [SerializeField] RectTransform contentPanel;
     [SerializeField] NftItems prefab;
     [SerializeField] GameObject accountPanel;
+    [SerializeField] GameObject LoadingPanel;
     Account account;
     double accountBalance;
     List<Nft> accountNft;

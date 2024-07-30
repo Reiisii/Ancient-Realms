@@ -1,4 +1,5 @@
 using System;
+using Unisave;
 
 
 namespace ESDatabase.Classes
@@ -6,8 +7,8 @@ namespace ESDatabase.Classes
     [Serializable]
     public class ItemType
     {
-        public int typeID {get;set;}
-        public string typeName {get;set;}
+        [Fillable] public int typeID {get;set;}
+        [Fillable] public string typeName {get;set;}
     }
 }
 
