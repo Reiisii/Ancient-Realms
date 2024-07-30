@@ -9,15 +9,21 @@ using UnityEngine.UI;
 
 
 public class Equipments : MonoBehaviour
-{
-    equipmentData equipment;
-    
+{    
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI eqName;
     [SerializeField] GameObject panel;
+    [SerializeField] Image bgImageColor;
+    public EquipmentSO equipment;
+    void Start(){
+        image.sprite = equipment.image;
+        eqName.SetText(equipment.itemName);
+        Color color = Utilities.GetColorForCulture(equipment.culture);
+        bgImageColor.color = color;
+    }
     public void OnItemClick()
     {
-        StartCoroutine(EncycHandler.Instance.ShowItemDetails(equipment));
+        EncycHandler.Instance.ShowItemDetails(equipment);
         UIManager.DisableAllButtons(panel);
         panel.GetComponent<RectTransform>().DOAnchorPosY(-1050, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => {
            panel.SetActive(false);
@@ -32,10 +38,7 @@ public class Equipments : MonoBehaviour
         // Set the sprite to the Image component
         image.sprite = sprites;
     }
-    public void setName(string name){
-        eqName.SetText(name);
-    }
-    public void setData(equipmentData eqData){
+    public void setData(EquipmentSO eqData){
         equipment = eqData;
     }
 }

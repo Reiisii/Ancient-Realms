@@ -16,6 +16,7 @@ public class EncycHandler : MonoBehaviour
     [SerializeField] Image dataImage;
     [SerializeField] TextMeshProUGUI dataNameText;
     [SerializeField] TextMeshProUGUI descriptionText;
+    [SerializeField] TextMeshProUGUI cultureText;
     [Header("Location Panel")]
     [SerializeField] GameObject locationPanel;
     [SerializeField] TextMeshProUGUI locationTitle;
@@ -43,13 +44,14 @@ public class EncycHandler : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public IEnumerator ShowItemDetails(characterData character)
+    public void ShowItemDetails(CharacterSO character)
     {
         dataNameText.SetText(character.firstName + " " + character.lastName);
         panelName.SetText("Character");
-        descriptionText.SetText(character.description);
-        yield return StartCoroutine(LoadImage(character.imagePath));
-        
+        cultureText.SetText(Utilities.FormatCultureName(character.culture));
+        descriptionText.SetText(character.biography);
+        dataImage.sprite = character.image;
+        dataPanel.SetActive(true);
     }
 
     public IEnumerator ShowItemDetails(locationData locations) 
@@ -60,20 +62,24 @@ public class EncycHandler : MonoBehaviour
         yield return StartCoroutine(LoadImageLocation(locations.imagePath));
     }
 
-    public IEnumerator ShowItemDetails(equipmentData equipments)
+    public void ShowItemDetails(EquipmentSO equipment)
     {
-        dataNameText.SetText(equipments.name);
+        dataNameText.SetText(equipment.itemName);
         panelName.SetText("Equipment");
-        descriptionText.SetText(equipments.description);
-        yield return StartCoroutine(LoadImage(equipments.imagePath));
+        descriptionText.SetText(equipment.description);
+        cultureText.SetText(Utilities.FormatCultureName(equipment.culture));
+        dataImage.sprite = equipment.image;
+        dataPanel.SetActive(true);
     }
 
-    public IEnumerator ShowItemDetails(artifactsData artifacts)
+    public void ShowItemDetails(ArtifactsSO artifact)
     {
-        dataNameText.SetText(artifacts.name);
-        panelName.SetText("Artifact");
-        descriptionText.SetText(artifacts.description);
-        yield return StartCoroutine(LoadImage(artifacts.imagePath));
+        dataNameText.SetText(artifact.artifactName);
+        panelName.SetText("Equipment");
+        descriptionText.SetText(artifact.description);
+        cultureText.SetText(Utilities.FormatCultureName(artifact.culture));
+        dataImage.sprite = artifact.image;
+        dataPanel.SetActive(true);
     }
     public IEnumerator ShowItemDetails(nftData nft)
     {

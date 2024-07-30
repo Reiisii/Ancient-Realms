@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -23,49 +24,33 @@ public class CharacterModal : MonoBehaviour
     [SerializeField] RectTransform nftPanel;
     [SerializeField] GameObject EncycPanel;
     
-    public CharacterSO[] charArray;
+    private CharacterSO[] characterArray;
+    private EquipmentSO[] equipmentArray;
+    private ArtifactsSO[] artifactArray;
     IEnumerator Start()
     {
-        yield return InitializeCharacters();
-        yield return InitializeEquipments();
-        yield return InitializeArtifacts();
+        InitializeCharacters();
+        InitializeEquipments();
+        InitializeArtifacts();
         yield return InitializeTrivia();
         yield return InitializeEvents();
         yield return InitializeLocations();
         yield return InitializeNFTs();
-        charArray = Resources.LoadAll<CharacterSO>("CharacterSO");
-        foreach (var charData in charArray)
-        {
-            Debug.Log("Loaded Quest: " + charData.name);
-        }
 
     }
     // Character Initialize
-    IEnumerator InitializeCharacters()
+    public void InitializeCharacters()
     {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Characters.json"); 
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        characterArray = Resources.LoadAll<CharacterSO>("CharacterSO").OrderBy(character => character.id).ToArray();
+        foreach (CharacterSO character in characterArray)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-            {
-                yield return www.SendWebRequest();
+                CharacterPortrait characterPrefab = Instantiate(chPrefab, Vector3.zero, Quaternion.identity);
+                characterPrefab.transform.SetParent(characterPanel);
+                characterPrefab.transform.localScale = Vector3.one;
+                characterPrefab.setGameObject(EncycPanel);
+                characterPrefab.character = character;
+        }
 
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string jsonString = www.downloadHandler.text;
-                    yield return StartCoroutine(ProcessJSONData(jsonString));
-                }
-                else
-                {
-                    Debug.LogError("Failed to load JSON file: " + www.error);
-                }
-            }
-        }
-        else
-        {
-            string jsonString = File.ReadAllText(jsonFilePath);
-            yield return StartCoroutine(ProcessJSONData(jsonString));
-        }
     }
     IEnumerator InitializeNFTs()
     {
@@ -120,57 +105,29 @@ public class CharacterModal : MonoBehaviour
         }
     }
     // Equipment Initialize
-    IEnumerator InitializeEquipments()
+    public void InitializeEquipments()
     {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Items.json"); 
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        equipmentArray = Resources.LoadAll<EquipmentSO>("EquipmentSO").OrderBy(equipment => equipment.equipmentType).ToArray();
+        foreach(EquipmentSO equipmentSO in equipmentArray)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string jsonString = www.downloadHandler.text;
-                    yield return StartCoroutine(ProcessJSONDataEquipments(jsonString));
-                }
-                else
-                {
-                    Debug.LogError("Failed to load JSON file: " + www.error);
-                }
-            }
-        }
-        else
-        {
-            string jsonString = File.ReadAllText(jsonFilePath);
-            yield return StartCoroutine(ProcessJSONDataEquipments(jsonString));
+                Equipments equipmentPrefab = Instantiate(eqPrefab, Vector3.zero, Quaternion.identity);
+                equipmentPrefab.transform.SetParent(equipmentPanel);
+                equipmentPrefab.transform.localScale = Vector3.one;
+                equipmentPrefab.setGameObject(EncycPanel);
+                equipmentPrefab.setData(equipmentSO);
         }
     }
     // Artifacts Initialize
-    IEnumerator InitializeArtifacts()
+    public void InitializeArtifacts()
     {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Artifacts.json"); 
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        artifactArray = Resources.LoadAll<ArtifactsSO>("ArtifactSO").OrderBy(artifact => artifact.culture).ToArray();
+        foreach(ArtifactsSO artifactSO in artifactArray)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string jsonString = www.downloadHandler.text;
-                    yield return StartCoroutine(ProcessJSONDataArtifacts(jsonString));
-                }
-                else
-                {
-                    Debug.LogError("Failed to load JSON file: " + www.error);
-                }
-            }
-        }
-        else
-        {
-            string jsonString = File.ReadAllText(jsonFilePath);
-            yield return StartCoroutine(ProcessJSONDataArtifacts(jsonString));
+                Artifacts artifactPrefab = Instantiate(artPrefab, Vector3.zero, Quaternion.identity);
+                artifactPrefab.transform.SetParent(artifactsPanel);
+                artifactPrefab.transform.localScale = Vector3.one;
+                artifactPrefab.setGameObject(EncycPanel);
+                artifactPrefab.setData(artifactSO);
         }
     }
     // Trivia Initialize
@@ -228,34 +185,6 @@ public class CharacterModal : MonoBehaviour
         }
     }
     
-    // CHARACTERS JSON
-    IEnumerator ProcessJSONData(string jsonString)
-    {
-        Dictionary<string, List<Character>> characterDict = JsonConvert.DeserializeObject<Dictionary<string, List<Character>>>(jsonString);
-
-        foreach (var category in characterDict)
-        {
-            foreach (var character in category.Value)
-            {
-                
-                CharacterPortrait characterPrefab = Instantiate(chPrefab, Vector3.zero, Quaternion.identity);
-                characterPrefab.transform.SetParent(characterPanel);
-                characterPrefab.transform.localScale = Vector3.one;
-                characterPrefab.setName(character.lastName.Equals("") ? character.firstName : character.firstName + " " + character.lastName);
-                characterPrefab.setGameObject(EncycPanel);
-                characterData charData = new characterData
-                {
-                    firstName = character.firstName,
-                    lastName = character.lastName,
-                    description = character.biography,
-                    imagePath = Path.Combine(Application.streamingAssetsPath, character.portraitPath)
-                };
-                characterPrefab.setData(charData);
-                yield return StartCoroutine(LoadImage(charData.imagePath, characterPrefab));
-            }
-
-        }
-    }
     // NFT JSON
     IEnumerator ProcessJSONDataNFT(string jsonString)
     {
@@ -357,94 +286,6 @@ public class CharacterModal : MonoBehaviour
             yield return null;
         }
     }
-    // EQUIPMENTS JSON
-    IEnumerator ProcessJSONDataEquipments(string jsonString)
-    {
-            var characterDict = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<EquipmentJson>>>>(jsonString);
-
-        foreach (var equipment in characterDict["Equipment"]) 
-        {
-            foreach (var equipmentType in equipment.Value)
-            {
-                Equipments equipmentPrefab = Instantiate(eqPrefab, Vector3.zero, Quaternion.identity);
-                equipmentPrefab.transform.SetParent(equipmentPanel);
-                equipmentPrefab.transform.localScale = Vector3.one;
-                equipmentPrefab.setName(equipmentType.name);
-                equipmentPrefab.setGameObject(EncycPanel);
-                equipmentData charData = new equipmentData
-                {
-                    name = equipmentType.name,
-                    description = equipmentType.description,
-                    imagePath = Path.Combine(Application.streamingAssetsPath, equipmentType.imagePath),
-                    culture = equipmentType.culture
-                };
-                equipmentPrefab.setData(charData);
-                yield return StartCoroutine(LoadImage(charData.imagePath, equipmentPrefab));
-            }
-        }
-    }
-    // ARTIFACTS JSON
-    IEnumerator ProcessJSONDataArtifacts(string jsonString)
-    {
-        Dictionary<string, List<ArtifactsJson>> characterDict = JsonConvert.DeserializeObject<Dictionary<string, List<ArtifactsJson>>>(jsonString);
-
-        foreach (var category in characterDict)
-        {
-            foreach (var character in category.Value)
-            {
-                
-                Artifacts artifactPrefab = Instantiate(artPrefab, Vector3.zero, Quaternion.identity);
-                artifactPrefab.transform.SetParent(artifactsPanel);
-                artifactPrefab.transform.localScale = Vector3.one;
-                artifactPrefab.setName(character.name);
-                artifactPrefab.setGameObject(EncycPanel);
-                artifactsData charData = new artifactsData
-                {
-                    name = character.name,
-                    description = character.description,
-                    imagePath = Path.Combine(Application.streamingAssetsPath, character.imagePath),
-                    culture = character.culture
-                };
-                artifactPrefab.setData(charData);
-                yield return StartCoroutine(LoadImage(charData.imagePath, artifactPrefab));
-            }
-
-        }
-    }
-    IEnumerator LoadImage(string imagePath, CharacterPortrait characterPrefab)
-    {
-        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Texture2D texture = DownloadHandlerTexture.GetContent(www);
-                characterPrefab.setImage(texture);
-            }
-            else
-            {
-                Debug.LogError("Failed to load image: " + www.error);
-            }
-        }
-    }
-    IEnumerator LoadImage(string imagePath, Equipments equipmentPrefab)
-    {
-        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Texture2D texture = DownloadHandlerTexture.GetContent(www);
-                equipmentPrefab.setImage(texture);
-            }
-            else
-            {
-                Debug.LogError("Failed to load image: " + www.error);
-            }
-        }
-    }
     IEnumerator LoadImage(string imagePath, Locations locationsPrefab)
     {
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
@@ -462,24 +303,6 @@ public class CharacterModal : MonoBehaviour
             }
         }
     }
-    IEnumerator LoadImage(string imagePath, Artifacts artifactsPrefab)
-    {
-        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Texture2D texture = DownloadHandlerTexture.GetContent(www);
-                artifactsPrefab.setImage(texture);
-            }
-            else
-            {
-                Debug.LogError("Failed to load image: " + www.error);
-            }
-        }
-    }
-    
     IEnumerator LoadImage(string imagePath, NFTPortrait nftPrefab)
     {
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
