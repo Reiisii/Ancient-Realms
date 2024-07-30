@@ -1,8 +1,41 @@
+using System;
 using System.Collections.Generic;
 using ESDatabase.Classes;
-public class Rewards{
-    public RewardsEnum rewardType;
-    public int amount;
+[Serializable]
+public class Quest
+{
+    public string questID;
+    public string questTitle;
+    public string questDescription;
+    public int chapter;
+    public bool isMain;
+    public bool isActive;
+    public bool completed;
+    public List<Goal> goals;
+    public List<Reward> rewards;
+}
+
+[Serializable]
+public class Goal
+{
+    public string goalID;
+    public string goalDescription;
+    public string goalType;
+    public int requiredAmount;
+    public int currentAmount;
+}
+
+[Serializable]
+public class Reward
+{
+    public string rewardType;
+    public int value;
+}
+
+[Serializable]
+public class QuestList
+{
+    public List<Quest> quests;
 }
 public class GoalListener{
     public GoalTypeEnum goalType;

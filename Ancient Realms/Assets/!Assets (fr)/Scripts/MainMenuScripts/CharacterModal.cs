@@ -23,6 +23,7 @@ public class CharacterModal : MonoBehaviour
     [SerializeField] RectTransform nftPanel;
     [SerializeField] GameObject EncycPanel;
     
+    public CharacterSO[] charArray;
     IEnumerator Start()
     {
         yield return InitializeCharacters();
@@ -32,6 +33,12 @@ public class CharacterModal : MonoBehaviour
         yield return InitializeEvents();
         yield return InitializeLocations();
         yield return InitializeNFTs();
+        charArray = Resources.LoadAll<CharacterSO>("CharacterSO");
+        foreach (var charData in charArray)
+        {
+            Debug.Log("Loaded Quest: " + charData.name);
+        }
+
     }
     // Character Initialize
     IEnumerator InitializeCharacters()
