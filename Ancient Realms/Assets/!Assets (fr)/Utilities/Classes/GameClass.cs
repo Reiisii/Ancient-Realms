@@ -31,6 +31,31 @@ public class Reward
     public string rewardType;
     public int value;
 }
+public enum CultureEnum {
+    Roman,
+    Gallic,
+    Egyptian,
+    Greek,
+    Germanic,
+    HellenisticEgyptian
+}
+public enum EquipmentEnum {
+    Helmet,
+    Chest,
+    Shield,
+    Weapon,
+    Foot,
+    Others
+}
+
+public enum WeaponType{
+    NotAWeapon,
+    Sword,
+    Spear,
+    Javelin,
+    SpearJavelin,
+    Dagger
+}
 
 [Serializable]
 public class QuestList
