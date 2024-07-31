@@ -5,18 +5,22 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField]
-    private Camera cam; 
+    private Camera cam;
 
     [SerializeField]
-    private float zoomStep, minCamSize, maxCamSize; 
+    private float zoomStep, minCamSize, maxCamSize;
 
     [SerializeField]
     private SpriteRenderer mapRenderer;
+
+    [SerializeField]
+    private Transform player; // Reference to the player's transform
+
     private float mapMinX, mapMaxX, mapMinY, mapMaxY;
 
     private Vector3 dragOrigin;
+    private bool isDragging = false; // Track if the camera is being dragged
     public float scrollThreshold = 0.01f;
-
 
     private void Awake()
     {
@@ -27,41 +31,41 @@ public class CameraMovement : MonoBehaviour
         mapMaxY = mapRenderer.transform.position.y + mapRenderer.bounds.size.y / 2f;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        Debug.Log("Scroll value: " + scroll); // Log scroll value
 
         if (Mathf.Abs(scroll) > scrollThreshold)
         {
             OnScroll(scroll);
-            Debug.Log("Scroll detected");
         }
-        PanCamera();
-    }
 
+        PanCamera();
+
+        // Follow the player only when not dragging
+        if (!isDragging)
+        {
+            FollowPlayer();
+        }
+    }
 
     private void PanCamera()
     {
-        
         if (Input.GetMouseButtonDown(0))
+        {
             dragOrigin = cam.ScreenToWorldPoint(Input.mousePosition);
+            isDragging = true; // Start dragging
+        }
 
         if (Input.GetMouseButton(0))
         {
             Vector3 difference = dragOrigin - cam.ScreenToWorldPoint(Input.mousePosition);
-            print("origin " + dragOrigin + " newPosition " + cam.ScreenToWorldPoint(Input.mousePosition) + " =difference" + difference);
+            cam.transform.position = ClampCamera(cam.transform.position + difference);
+        }
 
-
-            cam.transform.position = ClampCamera(cam.transform.position + difference);  
+        if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false; // Stop dragging
         }
     }
 
@@ -69,29 +73,26 @@ public class CameraMovement : MonoBehaviour
     {
         float newSize = cam.orthographicSize - zoomStep;
         cam.orthographicSize = Mathf.Clamp(newSize, minCamSize, maxCamSize);
-        cam.transform.position = ClampCamera(cam.transform.position);  
+        cam.transform.position = ClampCamera(cam.transform.position);
     }
-
 
     private void OnScroll(float scrollAmount)
     {
-        
         if (scrollAmount > 0)
         {
-            // Call your method for scrolling up (Zoom In)
             ZoomIn();
         }
         else
         {
-            // Call your method for scrolling down (Zoom Out)
             ZoomOut();
         }
     }
+
     public void ZoomOut()
     {
         float newSize = cam.orthographicSize + zoomStep;
         cam.orthographicSize = Mathf.Clamp(newSize, minCamSize, maxCamSize);
-        cam.transform.position = ClampCamera(cam.transform.position); 
+        cam.transform.position = ClampCamera(cam.transform.position);
     }
 
     private Vector3 ClampCamera(Vector3 targetPosition)
@@ -108,5 +109,14 @@ public class CameraMovement : MonoBehaviour
         float newY = Mathf.Clamp(targetPosition.y, minY, maxY);
 
         return new Vector3(newX, newY, targetPosition.z);
+    }
+
+    private void FollowPlayer()
+    {
+        if (player != null)
+        {
+            Vector3 playerPosition = new Vector3(player.position.x, player.position.y, cam.transform.position.z);
+            cam.transform.position = ClampCamera(playerPosition);
+        }
     }
 }
