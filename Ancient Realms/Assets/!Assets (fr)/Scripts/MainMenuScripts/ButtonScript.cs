@@ -33,7 +33,7 @@ public class ButtonScript : MonoBehaviour
     [SerializeField] GameObject artifactsPanel;
     [SerializeField] GameObject eventsPanel;
 
-    private void OnDisable(){
+    public void Close(){
         CharacterButtonPressed();
     }
     public void CharacterButtonPressed()
