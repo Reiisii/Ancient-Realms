@@ -32463,7 +32463,6 @@ GameObject:
   - component: {fileID: 2034276331}
   - component: {fileID: 2034276330}
   - component: {fileID: 2034276333}
-  - component: {fileID: 2034276335}
   - component: {fileID: 2034276336}
   m_Layer: 0
   m_Name: Main Camera
@@ -32590,24 +32589,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!114 &2034276335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2034276329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ecd7a74555cc77449a0d0473bbfe545, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 2034276331}
-  zoomStep: 50
-  minCamSize: 100
-  maxCamSize: 539
-  mapRenderer: {fileID: 0}
-  scrollThreshold: 0.01
 --- !u!114 &2034276336
 MonoBehaviour:
   m_ObjectHideFlags: 0
