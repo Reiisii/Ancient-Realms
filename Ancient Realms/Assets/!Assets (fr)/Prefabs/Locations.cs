@@ -8,9 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Locations : MonoBehaviour
-{
-    locationData locations;
-    
+{    
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI locationName;
     [SerializeField] GameObject panel;

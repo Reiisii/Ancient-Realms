@@ -11,9 +11,12 @@ public class Events : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI eventsTitle;
     [SerializeField] TextMeshProUGUI eventsDescription;
-    
-    public void setData(eventsData eventData){
-        eventsTitle.SetText(eventData.title);
-        eventsDescription.SetText(eventData.description);
+    public EventSO events;
+    void Start(){
+        eventsTitle.SetText(events.eventTitle);
+        eventsDescription.SetText(events.eventDescription);
+    }
+    public void setData(EventSO eventData){
+        events = eventData;
     }
 }

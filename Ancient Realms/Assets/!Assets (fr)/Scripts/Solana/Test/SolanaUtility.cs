@@ -56,9 +56,9 @@ public class SolanaUtility : MonoBehaviour
 
         var metadata = new Metadata()
         {
-            name = "Legionnaire",
+            name = "Marcus Antonius",
             symbol = "AR",
-            uri = "https://5bhev6763ti6lldpizrqnt5lagaxaie37rj7dimvskwotmyaec4a.arweave.net/6E5K-_7c0eWsb0ZjBs-rAYFwIJv8U_GhlZKs6bMAILg",
+            uri = "https://7e5vdeyk2xiqps6ypfkbcn4lk6avnnsaslaa4vco6mxhsbrv3f4a.arweave.net/-TtRkwrV0QfL2HlUETeLV4FWtkCSwA5UTvMueQY12Xg",
             sellerFeeBasisPoints = 0,
             creators = new List<Creator> { new(Web3.Account.PublicKey, 100, true) }
         };

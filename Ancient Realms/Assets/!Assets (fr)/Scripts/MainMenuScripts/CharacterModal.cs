@@ -29,16 +29,17 @@ public class CharacterModal : MonoBehaviour
     private ArtifactsSO[] artifactArray;
     private LocationSO[] locationArray;
     private TriviaSO[] triviaArray;
-    IEnumerator Start()
+    private EventSO[] eventArray;
+    private NFTSO[] nftArray;
+    void Start()
     {
         InitializeCharacters();
         InitializeEquipments();
         InitializeArtifacts();
         InitializeTrivia();
-        yield return InitializeEvents();
+        InitializeEvents();
         InitializeLocations();
-        yield return InitializeNFTs();
-
+        InitializeNFTs();
     }
     // Character Initialize
     public void InitializeCharacters()
@@ -54,30 +55,16 @@ public class CharacterModal : MonoBehaviour
         }
 
     }
-    IEnumerator InitializeNFTs()
+    public void InitializeNFTs()
     {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, "NFT.json"); 
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        nftArray = Resources.LoadAll<NFTSO>("NFTSO").OrderBy(nft => nft.id).ToArray();
+        foreach(NFTSO nftSO in nftArray)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string jsonString = www.downloadHandler.text;
-                    yield return StartCoroutine(ProcessJSONDataNFT(jsonString));
-                }
-                else
-                {
-                    Debug.LogError("Failed to load JSON file: " + www.error);
-                }
-            }
-        }
-        else
-        {
-            string jsonString = File.ReadAllText(jsonFilePath);
-            yield return StartCoroutine(ProcessJSONDataNFT(jsonString));
+                NFTPortrait nftPrefab = Instantiate(nfPrefab, Vector3.zero, Quaternion.identity);
+                nftPrefab.transform.SetParent(nftPanel);
+                nftPrefab.transform.localScale = Vector3.one;
+                nftPrefab.setGameObject(EncycPanel);
+                nftPrefab.setNFT(nftSO);
         }
     }
     public void InitializeLocations()
@@ -108,7 +95,7 @@ public class CharacterModal : MonoBehaviour
     // Artifacts Initialize
     public void InitializeArtifacts()
     {
-        artifactArray = Resources.LoadAll<ArtifactsSO>("ArtifactSO").OrderBy(artifact => artifact.culture).ToArray();
+        artifactArray = Resources.LoadAll<ArtifactsSO>("ArtifactSO").OrderBy(events => events.name).ToArray();
         foreach(ArtifactsSO artifactSO in artifactArray)
         {
                 Artifacts artifactPrefab = Instantiate(artPrefab, Vector3.zero, Quaternion.identity);
@@ -131,167 +118,17 @@ public class CharacterModal : MonoBehaviour
         }
     }
     // Events Initialize
-    IEnumerator InitializeEvents()
+    public void InitializeEvents()
     {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Events.json"); 
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        eventArray = Resources.LoadAll<EventSO>("EventSO").OrderByDescending(events => events.name).ToArray();
+        foreach(EventSO eventSO in eventArray)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string jsonString = www.downloadHandler.text;
-                    yield return StartCoroutine(ProcessJSONDataEvents(jsonString));
-                }
-                else
-                {
-                    Debug.LogError("Failed to load JSON file: " + www.error);
-                }
-            }
-        }
-        else
-        {
-            string jsonString = File.ReadAllText(jsonFilePath);
-            yield return StartCoroutine(ProcessJSONDataEvents(jsonString));
+                Events eventPrefab = Instantiate(evtPrefab, Vector3.zero, Quaternion.identity);
+                eventPrefab.transform.SetParent(eventPanel);
+                eventPrefab.transform.localScale = Vector3.one;
+                eventPrefab.setData(eventSO);
         }
     }
-    
-    // NFT JSON
-    IEnumerator ProcessJSONDataNFT(string jsonString)
-    {
-        Dictionary<string, List<NFTJson>> characterDict = JsonConvert.DeserializeObject<Dictionary<string, List<NFTJson>>>(jsonString);
-
-        foreach (var category in characterDict)
-        {
-            foreach (var character in category.Value)
-            {
-                
-                NFTPortrait nftPrefab = Instantiate(nfPrefab, Vector3.zero, Quaternion.identity);
-                nftPrefab.transform.SetParent(nftPanel);
-                nftPrefab.transform.localScale = Vector3.one;
-                nftPrefab.setName(character.name);
-                nftPrefab.setGameObject(EncycPanel);
-                nftData charData = new nftData
-                {
-                    name = character.name,
-                    description = character.description,
-                    rarity = character.rarity,
-                    imagePath = Path.Combine(Application.streamingAssetsPath, character.imagePath)
-                };
-                nftPrefab.setNFT(charData);
-                yield return StartCoroutine(LoadImage(charData.imagePath, nftPrefab));
-            }
-
-        }
-    }
-        // TRIVA JSON
-    IEnumerator ProcessJSONDataEvents(string jsonString)
-    {
-        Dictionary<string, List<EventsJson>> characterDict = JsonConvert.DeserializeObject<Dictionary<string, List<EventsJson>>>(jsonString);
-
-        foreach (var category in characterDict)
-        {
-            foreach (var character in category.Value)
-            {
-                
-                Events eventsPrefab = Instantiate(evtPrefab, Vector3.zero, Quaternion.identity);
-                eventsPrefab.transform.SetParent(eventPanel);
-                eventsPrefab.transform.localScale = Vector3.one;
-                eventsData charData = new eventsData
-                {
-                    title = character.title,
-                    description = character.description,
-                };
-                eventsPrefab.setData(charData);
-            }
-            yield return null;
-        }
-    }
-    IEnumerator LoadImage(string imagePath, Locations locationsPrefab)
-    {
-        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Texture2D texture = DownloadHandlerTexture.GetContent(www);
-                locationsPrefab.setImage(texture);
-            }
-            else
-            {
-                Debug.LogError("Failed to load image: " + www.error);
-            }
-        }
-    }
-    IEnumerator LoadImage(string imagePath, NFTPortrait nftPrefab)
-    {
-        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Texture2D texture = DownloadHandlerTexture.GetContent(www);
-                nftPrefab.setImage(texture);
-            }
-            else
-            {
-                Debug.LogError("Failed to load image: " + www.error);
-            }
-        }
-    }
-}
-
-[System.Serializable]
-public class Character
-{
-    public int id;
-    public string firstName;
-    public string lastName;
-    public string portraitPath;
-    public string biography;
-}
-[System.Serializable]
-public class EquipmentJson
-{
-    public int id;
-    public string culture;
-    public string name;
-    public string description;
-    public string imagePath;
-}
-[System.Serializable]
-public class locationsJson
-{
-    public int id;
-    public string culture;
-    public string name;
-    public string description;
-    public string imagePath;
-}
-[System.Serializable]
-public class ArtifactsJson
-{
-    public int id;
-    public string culture;
-    public string name;
-    public string description;
-    public string imagePath;
-}
-[System.Serializable]
-public class TriviaJson
-{
-    public string title;
-    public string description;
-}
-[System.Serializable]
-public class EventsJson
-{
-    public string title;
-    public string description;
 }
 [System.Serializable]
 public class NFTJson

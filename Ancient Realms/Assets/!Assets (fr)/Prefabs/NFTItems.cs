@@ -12,30 +12,26 @@ public class NftItems : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI nftName;
     [SerializeField] GameObject accountPanel;
-    
-    Nft nft;
+    public Nft nft;
+    public NFTSO nftSO;
+    void Start(){
+        nftName.SetText(nftSO.nftName);
+        image.sprite = nftSO.image;
+    }
     public void OnItemClick()
     {
-        NFTPanel.Instance.ShowItemDetails(nft);
+        NFTPanel.Instance.ShowItemDetails(nft, nftSO);
         UIManager.DisableAllButtons(accountPanel);
         accountPanel.GetComponent<RectTransform>().DOAnchorPosY(962f, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
            accountPanel.SetActive(false);
         });
     }
-    public void setImage(Texture2D nftImage){
-        Sprite sprites = Sprite.Create(nftImage, new Rect(0, 0, nftImage.width, nftImage.height), Vector2.one * 0.5f);
-
-        // Set the sprite to the Image component
-        image.sprite = sprites;
-    }
     public void setGameObject(GameObject panel){
         accountPanel = panel;
     }
-    public void setName(string name){
-        nftName.SetText(name);
-    }
-    public void setNFT(Nft nftData){
+    public void setNFT(Nft nftData, NFTSO nftd){
         nft = nftData;
+        nftSO = nftd;
     }
 
 }
