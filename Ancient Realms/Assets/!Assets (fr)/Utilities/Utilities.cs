@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -36,6 +37,17 @@ public class Utilities {
                 return Utilities.HexToColor("#00FFFF"); // Example color for Germanic (brownish)
                 default:
                         return Color.white; // Default color
+                }
+        }
+        public static RarityEnum GetRarityFromString(string rarityString)
+        {
+                if (Enum.TryParse(rarityString, true, out RarityEnum rarity))
+                {
+                        return rarity;
+                }
+                else
+                {
+                        throw new ArgumentException($"Invalid rarity string: {rarityString}");
                 }
         }
         public static Color HexToColor(string hex)

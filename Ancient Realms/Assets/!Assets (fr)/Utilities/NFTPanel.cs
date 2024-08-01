@@ -26,14 +26,14 @@ public static NFTPanel Instance;
         }
     }
 
-    public void ShowItemDetails(Nft nft)
+    public void ShowItemDetails(Nft nft, NFTSO nftSO)
     {
         itemDetailPanel.SetActive(true);
-        itemNameText.SetText(nft.metaplexData.data.offchainData.name);
-        descriptionText.SetText(nft.metaplexData.data.offchainData.description);
-        rarityText.SetText(nft.metaplexData.data.offchainData.attributes[0].value);
+        itemNameText.SetText(nftSO.nftName);
+        descriptionText.SetText(nftSO.description);
+        rarityText.SetText(nftSO.rarity.ToString());
         acquiredDate.SetText(nft.metaplexData.data.offchainData.attributes[1].value);
-        setImage(nft.metaplexData.nftImage.file);
+        itemImage.sprite = nftSO.image;
     }
     public void ClosePanel()
     {
@@ -46,11 +46,5 @@ public static NFTPanel Instance;
         descriptionText.SetText("");
         rarityText.SetText("");
         acquiredDate.SetText("");
-    }
-    public void setImage(Texture2D nftImage){
-        Sprite sprites = Sprite.Create(nftImage, new Rect(0, 0, nftImage.width, nftImage.height), Vector2.one * 0.5f);
-
-        // Set the sprite to the Image component
-        itemImage.sprite = sprites;
     }
 }

@@ -82,12 +82,13 @@ public class EncycHandler : MonoBehaviour
         dataImage.sprite = artifact.image;
         dataPanel.SetActive(true);
     }
-    public IEnumerator ShowItemDetails(nftData nft)
+    public void ShowItemDetails(NFTSO nft)
     {
         nftText.SetText(nft.name);
         nftDescription.SetText(nft.description);
-        nftRarity.SetText(nft.rarity);
-        yield return StartCoroutine(LoadImageNFT(nft.imagePath));
+        nftRarity.SetText(nft.rarity.ToString());
+        nftImage.sprite = nft.image;
+        nftPanel.SetActive(true);
     }
     public void HideItemDetails()
     {

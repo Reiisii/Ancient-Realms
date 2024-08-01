@@ -7,6 +7,8 @@ using TMPro;
 using DG.Tweening;
 using Solana.Unity.SDK;
 using Unity.VisualScripting;
+using System.Linq;
+using System;
 public class AccountModal : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -20,6 +22,7 @@ public class AccountModal : MonoBehaviour
     double accountBalance;
     List<Nft> accountNft;
     int nftTotal;
+    private NFTSO[] nftArray;
     // private IEnumerator coroutine;
     void Start()
     {
@@ -56,12 +59,12 @@ public class AccountModal : MonoBehaviour
         if (accountNft == null) return;
         for(int i = 0; i < nftTotal; i++){
             NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            nftArray = Resources.LoadAll<NFTSO>("NFTSO").Where(nft => nft.id == Convert.ToInt32(accountNft[i].metaplexData.data.offchainData.attributes[2].value)).ToArray();
+            NFTSO nftData = nftArray[0];
             nft.transform.SetParent(contentPanel);
             nft.transform.localScale = new Vector3(1, 1, 1);
             nft.setGameObject(accountPanel);
-            nft.setName(accountNft[i].metaplexData.data.offchainData.name);
-            nft.setImage(accountNft[i].metaplexData.nftImage.file);
-            nft.setNFT(accountNft[i]);
+            nft.setNFT(accountNft[i], nftData);
         }
     }
 

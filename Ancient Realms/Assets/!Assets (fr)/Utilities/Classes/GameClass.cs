@@ -39,6 +39,13 @@ public enum CultureEnum {
     Germanic,
     HellenisticEgyptian
 }
+public enum RarityEnum {
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
+}
 public enum EquipmentEnum {
     Helmet,
     Chest,
