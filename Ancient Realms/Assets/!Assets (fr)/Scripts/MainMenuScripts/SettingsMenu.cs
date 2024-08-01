@@ -12,18 +12,17 @@ public class SettingsMenu : MonoBehaviour
     [Header("Panel")]
     [SerializeField] SettingsAnimation settingsPanel;
     [SerializeField] GameObject mainMenuPanel;
+    [SerializeField] GameObject confirmationPanel;
     [Header("Slider")]
     [SerializeField] Slider masterSlider;
     [SerializeField] Slider musicSlider;
     public AudioMixer audioMixer;
     public float masterVolume, oldMasterVolume;
     public float musicVolume, oldMusicVolume;
-    private async void OnEnable(){
-        PlayerData playerData = await AccountManager.GetPlayer();
-        oldMasterVolume = playerData.gameData.settings.masterVolume;
-        oldMusicVolume = playerData.gameData.settings.musicVolume;
-        masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
-        musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);
+
+    async void Start(){
+        oldMusicVolume = musicSlider.value;
+        oldMasterVolume = masterSlider.value;
     }
     public void SetMasterVolume(float volume)
     {
@@ -42,6 +41,8 @@ public class SettingsMenu : MonoBehaviour
         if(oldMusicVolume != musicVolume) playerData.gameData.settings.musicVolume = musicVolume;
         // Save the modified entity
         if(oldMasterVolume != masterVolume || oldMusicVolume != musicVolume) await AccountManager.SaveData(playerData);
+        oldMasterVolume = masterVolume;
+        oldMusicVolume = musicVolume;
         settingsPanel.Close();
         mainMenuPanel.SetActive(true);
         audioMixer.SetFloat("volume", masterVolume);
@@ -53,10 +54,15 @@ public class SettingsMenu : MonoBehaviour
         if(oldMusicVolume != musicVolume) changed = true;
         
         if(changed == true){
-            Debug.Log("Are you sure?");
+            confirmationPanel.SetActive(true);
+            settingsPanel.Close();
         }else{
             settingsPanel.Close();
             mainMenuPanel.SetActive(true);
         }
+    }
+    public void Retain(){
+        musicSlider.value = musicVolume;
+        masterSlider.value = masterVolume;
     }
 }

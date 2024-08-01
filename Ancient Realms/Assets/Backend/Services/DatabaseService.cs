@@ -23,6 +23,13 @@ public class DatabaseService : Facet
 
         return player;
     }
+    public PlayerData GetPlayerByPublicKey(string pubkey)
+    {
+        List<PlayerData> playerList = DB.TakeAll<PlayerData>().Get();
+        PlayerData player = playerList.FirstOrDefault(data => data.publicKey == pubkey);
+        
+        return player;
+    }
     public string SaveData(PlayerData givenPlayer)
     {
         List<PlayerData> playerList = DB.TakeAll<PlayerData>().Get();

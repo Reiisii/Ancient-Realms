@@ -100,6 +100,23 @@ public class AccountManager : MonoBehaviour
         });
         return player;
     }
+    public async static Task<PlayerData> GetPlayerByPublicKey(string id)
+    {
+        Instance.loadingPanel.SetActive(true);
+        PlayerData player = null;
+        await FacetClient.CallFacet((DatabaseService facet) => facet.GetPlayerByPublicKey(id))
+        .Then(response => 
+        {
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            player = response;
+        })
+        .Catch(error => 
+        {
+            Debug.LogError("Failed to fetch player data: " + error);
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        });
+        return player;
+    }
     public async static Task SaveData(PlayerData player)
     {
         Instance.loadingPanel.SetActive(true);
