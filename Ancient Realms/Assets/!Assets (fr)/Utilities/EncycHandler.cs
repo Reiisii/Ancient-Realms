@@ -54,12 +54,13 @@ public class EncycHandler : MonoBehaviour
         dataPanel.SetActive(true);
     }
 
-    public IEnumerator ShowItemDetails(locationData locations) 
+    public void ShowItemDetails(LocationSO location) 
     {
-        locationNameText.SetText(locations.name);
+        locationNameText.SetText(location.locationName);
         locationTitle.SetText("Location");
-        locationDescription.SetText(locations.description);
-        yield return StartCoroutine(LoadImageLocation(locations.imagePath));
+        locationDescription.SetText(location.description);
+        locationImage.sprite = location.image;
+        locationPanel.SetActive(true);
     }
 
     public void ShowItemDetails(EquipmentSO equipment)

@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 942858895063747022}
   - component: {fileID: 8143464205618705029}
   - component: {fileID: 3575490194625955687}
+  - component: {fileID: 6193478947497796674}
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 1395405347677754809}
   - component: {fileID: 6848718779965713162}
@@ -271,7 +272,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 82cbc050739f087439c5eff3c1f8529f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 60680613f43a2bf4e9a2ae90cac7379d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -318,6 +319,21 @@ MonoBehaviour:
     m_Extent: {x: 64.1875, y: 40.749817, z: 0}
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
+--- !u!114 &6193478947497796674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1feee9d8d4e4a499907650a37082fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 5
+  runSpeed: 8
+  _isFacingRight: 1
 --- !u!95 &1069500992766602489
 Animator:
   serializedVersion: 5

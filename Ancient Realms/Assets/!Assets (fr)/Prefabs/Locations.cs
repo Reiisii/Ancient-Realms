@@ -14,9 +14,14 @@ public class Locations : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI locationName;
     [SerializeField] GameObject panel;
+    public LocationSO location;
+    void Start(){
+        image.sprite = location.image;
+        locationName.SetText(location.locationName);
+    }
     public void OnItemClick()
     {
-        StartCoroutine(EncycHandler.Instance.ShowItemDetails(locations));
+        EncycHandler.Instance.ShowItemDetails(location);
         UIManager.DisableAllButtons(panel);
         panel.GetComponent<RectTransform>().DOAnchorPosY(-1050, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => {
            panel.SetActive(false);
@@ -31,10 +36,7 @@ public class Locations : MonoBehaviour
     public void setGameObject(GameObject pnl){
         panel = pnl;
     }
-    public void setName(string name){
-        locationName.SetText(name);
-    }
-    public void setData(locationData locationData){
-        locations = locationData;
+    public void setData(LocationSO locationData){
+        location = locationData;
     }
 }
