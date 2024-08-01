@@ -14,7 +14,7 @@ public class CharacterModal : MonoBehaviour
     [SerializeField] RectTransform equipmentPanel;
     [SerializeField] Artifacts artPrefab;
     [SerializeField] RectTransform artifactsPanel;
-    [SerializeField] Trivia trPrefab;
+    [SerializeField] TriviaPrefab trPrefab;
     [SerializeField] RectTransform triviaPanel;
     [SerializeField] Events evtPrefab;
     [SerializeField] RectTransform eventPanel;
@@ -27,14 +27,16 @@ public class CharacterModal : MonoBehaviour
     private CharacterSO[] characterArray;
     private EquipmentSO[] equipmentArray;
     private ArtifactsSO[] artifactArray;
+    private LocationSO[] locationArray;
+    private TriviaSO[] triviaArray;
     IEnumerator Start()
     {
         InitializeCharacters();
         InitializeEquipments();
         InitializeArtifacts();
-        yield return InitializeTrivia();
+        InitializeTrivia();
         yield return InitializeEvents();
-        yield return InitializeLocations();
+        InitializeLocations();
         yield return InitializeNFTs();
 
     }
@@ -78,30 +80,16 @@ public class CharacterModal : MonoBehaviour
             yield return StartCoroutine(ProcessJSONDataNFT(jsonString));
         }
     }
-    IEnumerator InitializeLocations()
+    public void InitializeLocations()
     {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Locations.json"); 
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        locationArray = Resources.LoadAll<LocationSO>("LocationSO").OrderBy(location => location.culture).ToArray();
+        foreach(LocationSO locationSO in locationArray)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string jsonString = www.downloadHandler.text;
-                    yield return StartCoroutine(ProcessJSONDataLocations(jsonString));
-                }
-                else
-                {
-                    Debug.LogError("Failed to load JSON file: " + www.error);
-                }
-            }
-        }
-        else
-        {
-            string jsonString = File.ReadAllText(jsonFilePath);
-            yield return StartCoroutine(ProcessJSONDataLocations(jsonString));
+                Locations locationPrefab = Instantiate(locPrefab, Vector3.zero, Quaternion.identity);
+                locationPrefab.transform.SetParent(locationsPanel);
+                locationPrefab.transform.localScale = Vector3.one;
+                locationPrefab.setGameObject(EncycPanel);
+                locationPrefab.setData(locationSO);
         }
     }
     // Equipment Initialize
@@ -131,30 +119,15 @@ public class CharacterModal : MonoBehaviour
         }
     }
     // Trivia Initialize
-    IEnumerator InitializeTrivia()
+    public void InitializeTrivia()
     {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Trivia.json"); 
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        triviaArray = Resources.LoadAll<TriviaSO>("TriviaSO").ToArray();
+        foreach(TriviaSO triviaSO in triviaArray)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string jsonString = www.downloadHandler.text;
-                    yield return StartCoroutine(ProcessJSONDataTrivia(jsonString));
-                }
-                else
-                {
-                    Debug.LogError("Failed to load JSON file: " + www.error);
-                }
-            }
-        }
-        else
-        {
-            string jsonString = File.ReadAllText(jsonFilePath);
-            yield return StartCoroutine(ProcessJSONDataTrivia(jsonString));
+                TriviaPrefab triviaPrefab = Instantiate(trPrefab, Vector3.zero, Quaternion.identity);
+                triviaPrefab.transform.SetParent(triviaPanel);
+                triviaPrefab.transform.localScale = Vector3.one;
+                triviaPrefab.setData(triviaSO);
         }
     }
     // Events Initialize
@@ -211,56 +184,6 @@ public class CharacterModal : MonoBehaviour
                 yield return StartCoroutine(LoadImage(charData.imagePath, nftPrefab));
             }
 
-        }
-    }
-    // Locations JSON
-    IEnumerator ProcessJSONDataLocations(string jsonString)
-    {
-        Dictionary<string, List<locationsJson>> characterDict = JsonConvert.DeserializeObject<Dictionary<string, List<locationsJson>>>(jsonString);
-
-        foreach (var category in characterDict)
-        {
-            foreach (var character in category.Value)
-            {
-                
-                Locations locationsPrefab = Instantiate(locPrefab, Vector3.zero, Quaternion.identity);
-                locationsPrefab.transform.SetParent(locationsPanel);
-                locationsPrefab.transform.localScale = Vector3.one;
-                locationsPrefab.setName(character.name);
-                locationsPrefab.setGameObject(EncycPanel);
-                locationData charData = new locationData
-                {
-                    name = character.name,
-                    description = character.description,
-                    imagePath = Path.Combine(Application.streamingAssetsPath, character.imagePath)
-                };
-                locationsPrefab.setData(charData);
-                yield return StartCoroutine(LoadImage(charData.imagePath, locationsPrefab));
-            }
-            yield return null;
-        }
-    }
-    // TRIVA JSON
-    IEnumerator ProcessJSONDataTrivia(string jsonString)
-    {
-        Dictionary<string, List<TriviaJson>> characterDict = JsonConvert.DeserializeObject<Dictionary<string, List<TriviaJson>>>(jsonString);
-
-        foreach (var category in characterDict)
-        {
-            foreach (var character in category.Value)
-            {
-                
-                Trivia triviaPrefab = Instantiate(trPrefab, Vector3.zero, Quaternion.identity);
-                triviaPrefab.transform.SetParent(triviaPanel);
-                triviaPrefab.transform.localScale = Vector3.one;
-                triviaData charData = new triviaData
-                {
-                    title = character.title,
-                    description = character.description,
-                };
-                triviaPrefab.setData(charData);
-            }
-            yield return null;
         }
     }
         // TRIVA JSON
