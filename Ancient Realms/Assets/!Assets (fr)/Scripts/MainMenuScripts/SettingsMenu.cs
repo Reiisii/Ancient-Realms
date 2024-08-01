@@ -20,7 +20,7 @@ public class SettingsMenu : MonoBehaviour
     public float masterVolume, oldMasterVolume;
     public float musicVolume, oldMusicVolume;
 
-    public void OnEnable(){
+    async void Start(){
         oldMusicVolume = musicSlider.value;
         oldMasterVolume = masterSlider.value;
     }
@@ -41,11 +41,13 @@ public class SettingsMenu : MonoBehaviour
         if(oldMusicVolume != musicVolume) playerData.gameData.settings.musicVolume = musicVolume;
         // Save the modified entity
         if(oldMasterVolume != masterVolume || oldMusicVolume != musicVolume) await AccountManager.SaveData(playerData);
+        oldMasterVolume = masterVolume;
+        oldMusicVolume = musicVolume;
         settingsPanel.Close();
         mainMenuPanel.SetActive(true);
         audioMixer.SetFloat("volume", masterVolume);
     }
-    public void CheckChanges()
+    public async void CheckChanges()
     {
         bool changed = false;
         if(oldMasterVolume != masterVolume) changed = true;
@@ -58,5 +60,9 @@ public class SettingsMenu : MonoBehaviour
             settingsPanel.Close();
             mainMenuPanel.SetActive(true);
         }
+    }
+    public void Retain(){
+        musicSlider.value = musicVolume;
+        masterSlider.value = masterVolume;
     }
 }
