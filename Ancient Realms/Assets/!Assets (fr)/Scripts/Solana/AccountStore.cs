@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using ESDatabase.Entities;
 using Solana.Unity.SDK;
 using Solana.Unity.SDK.Nft;
 using Solana.Unity.Wallet;
@@ -8,6 +9,7 @@ using Unisave.Facets;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class AccountStore : MonoBehaviour
 {
     [SerializeField]
@@ -15,6 +17,9 @@ public class AccountStore : MonoBehaviour
 
     [SerializeField]
     GameObject connectionMenu;
+    [Header("Slider")]
+    [SerializeField] Slider masterSlider;
+    [SerializeField] Slider musicSlider;
     
     private void OnEnable(){
         Web3.OnLogin += OnLogin;
@@ -24,8 +29,11 @@ public class AccountStore : MonoBehaviour
         Web3.OnLogin -= OnLogin;
         Web3.OnLogout -= OnLogout;
     }
-    private void OnLogin(Account account){
+    private async void OnLogin(Account account){
         AccountManager.InitializeLogin(account.PublicKey.ToString());
+        PlayerData playerData = await AccountManager.GetPlayerByPublicKey(account.PublicKey.ToString());
+        masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
+        musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);
     }
     private void OnLogout(){
         Debug.Log("Logout");
