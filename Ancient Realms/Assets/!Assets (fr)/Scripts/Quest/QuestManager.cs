@@ -96,23 +96,26 @@ public class QuestManager : MonoBehaviour
     }
     public void UpdateWalkGoals(float deltaX)
     {
+        
         foreach (var quest in activeQuests.Values)
         {
-            Goal goal = quest.goals[quest.currentGoal];
-            if (goal.goalType == GoalTypeEnum.WalkRight && deltaX > 0)
-            {
-                goal.IncrementProgress(1);
-                if (goal.currentAmount >= goal.requiredAmount)
+                if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.WalkRight && deltaX > 0)
                 {
-                    CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    goal.IncrementProgress(1);
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
                 }
-            }
-            else if (goal.goalType == GoalTypeEnum.WalkLeft && deltaX < 0)
-            {
-                goal.IncrementProgress(1); 
-                if (goal.currentAmount >= goal.requiredAmount)
+                else if (goal.goalType == GoalTypeEnum.WalkLeft && deltaX < 0)
                 {
-                    CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    goal.IncrementProgress(1); 
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
                 }
             }
         }
@@ -121,21 +124,23 @@ public class QuestManager : MonoBehaviour
     {
         foreach (var quest in activeQuests.Values)
         {
-            Goal goal = quest.goals[quest.currentGoal];
-            if (goal.goalType == GoalTypeEnum.RunRight && deltaX > 0)
-            {
-                goal.IncrementProgress(1);
-                if (goal.currentAmount >= goal.requiredAmount)
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.RunRight && deltaX > 0)
                 {
-                    CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    goal.IncrementProgress(1);
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
                 }
-            }
-            else if (goal.goalType == GoalTypeEnum.RunLeft && deltaX < 0)
-            {
-                goal.IncrementProgress(1); 
-                if (goal.currentAmount >= goal.requiredAmount)
+                else if (goal.goalType == GoalTypeEnum.RunLeft && deltaX < 0)
                 {
-                    CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    goal.IncrementProgress(1); 
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
                 }
             }
         }
@@ -145,18 +150,19 @@ public class QuestManager : MonoBehaviour
     {
         foreach (var quest in activeQuests.Values)
         {
-            if(quest.isActive){
-                Goal goal = quest.goals[quest.currentGoal];
-                if (goal.goalType == GoalTypeEnum.Talk)
-                {
-                    goal.IncrementProgress(1);
-                    if (goal.currentAmount >= goal.requiredAmount)
+            if(quest.currentGoal < quest.goals.Capacity){
+                if(quest.isActive){
+                    Goal goal = quest.goals[quest.currentGoal];
+                    if (goal.goalType == GoalTypeEnum.Talk)
                     {
-                        CompleteGoal(quest, goal.goalID);
+                        goal.IncrementProgress(1);
+                        if (goal.currentAmount >= goal.requiredAmount)
+                        {
+                            CompleteGoal(quest, goal.goalID);
+                        }
                     }
                 }
             }
-            
         }
     }
 }
