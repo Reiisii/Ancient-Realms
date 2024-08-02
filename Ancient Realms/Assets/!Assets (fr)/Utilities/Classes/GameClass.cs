@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ESDatabase.Classes;
+using UnityEngine;
 [Serializable]
 public class Quest
 {
@@ -20,9 +21,23 @@ public class Goal
 {
     public string goalID;
     public string goalDescription;
-    public string goalType;
+    public GoalTypeEnum goalType;
     public int requiredAmount;
     public int currentAmount;
+    public TextAsset dialogueJSON;
+
+    public bool isReached(){
+        return (currentAmount >= requiredAmount);
+    }
+    public void IncrementProgress(int amount)
+    {
+        currentAmount += amount;
+        if (currentAmount > requiredAmount)
+        {
+            currentAmount = requiredAmount;
+        }
+    }
+
 }
 
 [Serializable]
@@ -38,6 +53,14 @@ public enum CultureEnum {
     Greek,
     Germanic,
     HellenisticEgyptian
+}
+public enum ChapterEnum {
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six
 }
 public enum RarityEnum {
     Common,

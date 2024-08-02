@@ -3,5 +3,9 @@ public enum GoalTypeEnum
     Kill,
     Gather,
     Talk,
-    Move
+    Move,
+    WalkLeft,
+    WalkRight,
+    RunLeft,
+    RunRight
 }

@@ -12,6 +12,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] public PlayerController playerController;
     private static DialogueManager instance;
+    [SerializeField] public QuestManager questManager;
+    [SerializeField] public string questID;
     private Story currentStory;
     public bool dialogueIsPlaying { get; private set;}
     private void Awake(){
@@ -48,6 +50,7 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
+        questManager.StartQuest(questID);
     }
     private void ContinueStory(){
         if(currentStory.canContinue){
