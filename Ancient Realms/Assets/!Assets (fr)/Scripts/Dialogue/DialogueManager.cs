@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Ink.Runtime;
+using UnityEngine.UI;
+using System.Linq;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -10,11 +12,13 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private Image npcImage;
     [SerializeField] public PlayerController playerController;
     private static DialogueManager instance;
     [SerializeField] public QuestManager questManager;
     [SerializeField] public string questID;
     private Story currentStory;
+    private QuestSO[] questArray;
     public bool dialogueIsPlaying { get; private set;}
     private void Awake(){
         if(instance != null){
@@ -39,11 +43,21 @@ public class DialogueManager : MonoBehaviour
             ContinueStory();
         }
     }
-    public void EnterDialogueMode(TextAsset inkJSON){
-        currentStory = new Story(inkJSON.text);
+    public void EnterDialogueMode(NPCData npc){
+        QuestSO questData = QuestManager.GetInstance().quests.Find(quest => quest.questID == npc.giveableQuest[0]);
+        if(!QuestManager.GetInstance().activeQuests.ContainsKey(npc.giveableQuest[0])){
+            QuestManager.GetInstance().StartQuest(npc.giveableQuest[0]);
+            currentStory = new Story(questData.dialogue.text);
+            currentStory.ChoosePathString(questData.currentKnot);
+        }else if(QuestManager.GetInstance().activeQuests[npc.giveableQuest[0]] && QuestManager.GetInstance().activeQuests[npc.giveableQuest[0]].isActive){
+            QuestSO quest = QuestManager.GetInstance().activeQuests[npc.giveableQuest[0]];
+            currentStory = new Story(questData.dialogue.text);
+            currentStory.ChoosePathString(quest.currentKnot);
+        }
+        nameText.SetText(npc.name);
+        npcImage.sprite = npc.portrait;
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
-
         ContinueStory();
     }
     public void ExitDialogueMode(){
@@ -51,6 +65,7 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
         questManager.StartQuest(questID);
+        QuestManager.GetInstance().UpdateTalkGoal();
     }
     private void ContinueStory(){
         if(currentStory.canContinue){

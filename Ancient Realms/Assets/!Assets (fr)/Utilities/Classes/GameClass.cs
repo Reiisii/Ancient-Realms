@@ -15,7 +15,13 @@ public class Quest
     public List<Goal> goals;
     public List<Reward> rewards;
 }
-
+public class NPCData{
+    public string name {get;set;}
+    public Sprite portrait {get;set;}
+    public string dialogueKnot {get;set;}
+    public TextAsset npcDialogue;
+    public List<string> giveableQuest;
+}
 [Serializable]
 public class Goal
 {
@@ -24,7 +30,7 @@ public class Goal
     public GoalTypeEnum goalType;
     public int requiredAmount;
     public int currentAmount;
-    public TextAsset dialogueJSON;
+    public string inkyRedirect;
 
     public bool isReached(){
         return (currentAmount >= requiredAmount);
@@ -43,7 +49,7 @@ public class Goal
 [Serializable]
 public class Reward
 {
-    public string rewardType;
+    public RewardsEnum rewardType;
     public int value;
 }
 public enum CultureEnum {
@@ -110,6 +116,8 @@ public class GoalListener{
         if(goalType == GoalTypeEnum.Kill) currentAmount++;
         if(goalType == GoalTypeEnum.Gather) currentAmount++;
         if(goalType == GoalTypeEnum.Talk) currentAmount++;
-        if(goalType == GoalTypeEnum.Move) currentAmount++;
+        if(goalType == GoalTypeEnum.WalkRight){
+            currentAmount++;
+        };
     }
 }
