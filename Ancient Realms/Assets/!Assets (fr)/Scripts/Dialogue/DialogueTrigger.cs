@@ -15,7 +15,6 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     private bool playerInRange;
     private Story currentStory;
-
     private bool dialogueIsPlaying;
     private void Awake(){
         VisualCue.SetActive(false);
@@ -23,7 +22,6 @@ public class DialogueTrigger : MonoBehaviour
     }
     private void Update(){
         if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying){
-            Debug.Log("Player in Range");
             VisualCue.SetActive(true);
             if(playerController.GetInteractPressed()){
                 DialogueManager.GetInstance().EnterDialogueMode(inkJSON);

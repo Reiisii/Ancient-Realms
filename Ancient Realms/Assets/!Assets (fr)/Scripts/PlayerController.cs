@@ -2,24 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] Slider hp;
+    [SerializeField] Slider staminaSlider;
+
+    public float HP = 100f;
+    public float maxStamina = 70f;
+    public float stamina = 70f;
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
+    public float staminaDepletionRate = 40f;
+    public float staminaRegenRate = 5f; 
+    private Vector2 lastPosition;
+    private float distanceMoved;
+    private const float moveThreshold = 2f;
+    private const float staminaThreshold = 0.5f;
     Vector2 moveInput;
     private bool moveInputActive = false;
     private bool interactPressed = false;
     private bool submitPressed = false;
     Rigidbody2D rb;
     Animator animator;
+    
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
+    private void Start(){
+        lastPosition = transform.position;
+    }
+    private void Update()
+    {
+        if (!moveInputActive && IsRunning || !IsRunning)
+        {
+            stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
+        }
 
+        // Update stamina slider
+        staminaSlider.value = stamina;
+    }
     public float CurrentMoveSpeed 
     { get 
         {
@@ -98,9 +125,44 @@ public class PlayerController : MonoBehaviour
             IsMoving = false;
             return;
         }
+        
+        if(IsMoving){
+            if (IsRunning && moveInputActive)
+            {
+                if (stamina > 0)
+                {
+                    stamina -= staminaDepletionRate * Time.deltaTime;
+                    stamina = Mathf.Max(0, stamina);
+                }
+                else
+                {
+                    IsRunning = false;
+                }
+            }
+        }
         if (moveInputActive)
         {
             rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+            Vector2 currentPosition = transform.position;
+            float deltaX = currentPosition.x - lastPosition.x;
+            
+            if (Mathf.Abs(deltaX) > 0.01f)
+            {
+                distanceMoved += Mathf.Abs(deltaX);
+                if (distanceMoved >= moveThreshold)
+                {
+                    if (IsRunning == true){
+                        QuestManager.GetInstance().UpdateRunGoals(deltaX);
+                        distanceMoved = 0f;
+                    }else if (!IsRunning){
+                        QuestManager.GetInstance().UpdateWalkGoals(deltaX);
+                        distanceMoved = 0f;
+                    }
+                    // Reset the distanceMoved counter
+                }
+                lastPosition = currentPosition;
+            }
+
         }
         else
         {

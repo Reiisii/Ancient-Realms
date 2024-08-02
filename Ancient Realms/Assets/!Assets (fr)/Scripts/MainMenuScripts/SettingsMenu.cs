@@ -20,7 +20,7 @@ public class SettingsMenu : MonoBehaviour
     public float masterVolume, oldMasterVolume;
     public float musicVolume, oldMusicVolume;
 
-    async void Start(){
+    void Start(){
         oldMusicVolume = musicSlider.value;
         oldMasterVolume = masterSlider.value;
     }
@@ -47,7 +47,7 @@ public class SettingsMenu : MonoBehaviour
         mainMenuPanel.SetActive(true);
         audioMixer.SetFloat("volume", masterVolume);
     }
-    public async void CheckChanges()
+    public void CheckChanges()
     {
         bool changed = false;
         if(oldMasterVolume != masterVolume) changed = true;
@@ -60,6 +60,10 @@ public class SettingsMenu : MonoBehaviour
             settingsPanel.Close();
             mainMenuPanel.SetActive(true);
         }
+    }
+    public void Reset(){
+        musicSlider.value = oldMusicVolume;
+        masterSlider.value = oldMasterVolume;
     }
     public void Retain(){
         musicSlider.value = musicVolume;
