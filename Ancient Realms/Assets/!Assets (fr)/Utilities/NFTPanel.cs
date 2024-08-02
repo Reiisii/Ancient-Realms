@@ -35,16 +35,4 @@ public static NFTPanel Instance;
         acquiredDate.SetText(nft.metaplexData.data.offchainData.attributes[1].value);
         itemImage.sprite = nftSO.image;
     }
-    public void ClosePanel()
-    {
-        Instance.HideItemDetails();
-    }
-    public void HideItemDetails()
-    {
-        itemDetailPanel.SetActive(false);
-        itemNameText.SetText("");
-        descriptionText.SetText("");
-        rarityText.SetText("");
-        acquiredDate.SetText("");
-    }
 }

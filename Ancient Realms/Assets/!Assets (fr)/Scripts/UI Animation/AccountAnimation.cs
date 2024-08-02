@@ -13,6 +13,7 @@ public class AccountAnimation : MonoBehaviour
     [SerializeField] float newPanelPosY;
     [SerializeField] EaseTypes panelEaseType;
     private void OnEnable(){
+        UIManager.DisableAllButtons(PanelGO);
         Panel.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
         // Panel.DOAnchorPosX(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
     }
@@ -20,6 +21,7 @@ public class AccountAnimation : MonoBehaviour
         UIManager.DisableAllButtons(PanelGO);
         Panel.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => {
            PanelGO.SetActive(false);
+           UIManager.DisableAllButtons(PanelGO);
         });
         // Panel.DOAnchorPosX(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
     }
