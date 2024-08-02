@@ -6,10 +6,15 @@ public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager instance;
 
-    private bool isBladePlaced = false;
-    private bool isRainGuardPlaced = false;
-    private bool isGripPlaced = false;
-    private bool isPommelPlaced = false;
+    private bool isSwordBladePlaced = false;
+    private bool isSwordRainGuardPlaced = false;
+    private bool isSwordGripPlaced = false;
+    private bool isSwordPommelPlaced = false;
+
+    private bool isPila1Placed = false;
+    private bool isPila2Placed = false;
+    private bool isPila3Placed = false;
+    private bool isPila4Placed = false;
 
     private void Awake()
     {
@@ -27,17 +32,32 @@ public class PuzzleManager : MonoBehaviour
     {
         switch (pieceName)
         {
+            // Sword parts
             case "SwordBlade":
-                isBladePlaced = true;
+                isSwordBladePlaced = true;
                 break;
             case "SwordRainGuard":
-                isRainGuardPlaced = true;
+                isSwordRainGuardPlaced = true;
                 break;
             case "SwordGrip":
-                isGripPlaced = true;
+                isSwordGripPlaced = true;
                 break;
             case "SwordPommel":
-                isPommelPlaced = true;
+                isSwordPommelPlaced = true;
+                break;
+            
+            // Pila parts
+            case "1":
+                isPila1Placed = true;
+                break;
+            case "2":
+                isPila2Placed = true;
+                break;
+            case "3":
+                isPila3Placed = true;
+                break;
+            case "4":
+                isPila4Placed = true;
                 break;
         }
 
@@ -46,10 +66,14 @@ public class PuzzleManager : MonoBehaviour
 
     private void CheckIfPuzzleComplete()
     {
-        if (isBladePlaced && isRainGuardPlaced && isGripPlaced && isPommelPlaced)
+        if (isSwordBladePlaced && isSwordRainGuardPlaced && isSwordGripPlaced && isSwordPommelPlaced)
         {
             Debug.Log("The sword is built!");
-            // You can also use Unity's UI system to display a message to the player
+        }
+
+        if (isPila1Placed && isPila2Placed && isPila3Placed && isPila4Placed)
+        {
+            Debug.Log("The pila is built!");
         }
     }
 }
