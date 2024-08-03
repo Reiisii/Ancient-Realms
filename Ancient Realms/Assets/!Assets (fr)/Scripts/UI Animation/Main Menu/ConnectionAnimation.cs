@@ -13,6 +13,7 @@ public class ConnectionAnimation : MonoBehaviour
     [SerializeField] float newPanelPosY;
     [SerializeField] EaseTypes panelEaseType;
     private void OnEnable(){
+        UIManager.DisableAllButtons(LogoGO);
         Logo.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(LogoGO));
     }
     

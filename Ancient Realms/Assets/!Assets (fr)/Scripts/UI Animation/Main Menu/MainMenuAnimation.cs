@@ -14,6 +14,7 @@ public class MainMenuAnimation : MonoBehaviour
     [SerializeField] EaseTypes panelEaseType;
     [SerializeField] GameObject ParentMenu;
     private void OnEnable(){
+        UIManager.DisableAllButtons(MainMenuGO);
         MainMenu.DOAnchorPosX(newPanelPosX, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(MainMenuGO));
     }
     public void Close(){
