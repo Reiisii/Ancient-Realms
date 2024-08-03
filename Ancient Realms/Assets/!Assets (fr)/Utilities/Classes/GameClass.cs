@@ -50,7 +50,7 @@ public class Goal
 public class Reward
 {
     public RewardsEnum rewardType;
-    public int value;
+    public string value;
 }
 public enum CultureEnum {
     Roman,

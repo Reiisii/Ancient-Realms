@@ -7,107 +7,34 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] Slider hp;
-    [SerializeField] Slider staminaSlider;
-
-    public float HP = 100f;
-    public float maxStamina = 70f;
-    public float stamina = 70f;
-    public float walkSpeed = 5f;
-    public float runSpeed = 8f;
-    public float staminaDepletionRate = 40f;
-    public float staminaRegenRate = 5f; 
+    [SerializeField] public PlayerStats playerStats;
     private Vector2 lastPosition;
     private float distanceMoved;
     private const float moveThreshold = 2f;
     private const float staminaThreshold = 0.5f;
     Vector2 moveInput;
-    private bool moveInputActive = false;
+    public bool moveInputActive = false;
     private bool interactPressed = false;
     private bool submitPressed = false;
     Rigidbody2D rb;
     Animator animator;
-    
-
+    private static PlayerController Instance;
     private void Awake()
     {
+        if(Instance != null){
+            Debug.LogWarning("Found more than one Player Controller in the scene");
+        }
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
+    
     private void Start(){
         lastPosition = transform.position;
     }
-    private void Update()
-    {
-        if (!moveInputActive && IsRunning || !IsRunning)
-        {
-            stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
-        }
-
-        // Update stamina slider
-        staminaSlider.value = stamina;
+    public static PlayerController GetInstance(){
+        return Instance;
     }
-    public float CurrentMoveSpeed 
-    { get 
-        {
-            if(IsMoving)
-            {
-                if(IsRunning)
-                {
-                    return runSpeed;
-                } else
-                {
-                    return walkSpeed;
-                }
-            } else 
-            {
-                // idle speed 0
-                return 0;
-            }
-        }
-    }
-    
-    // When character is moving
-    private bool _isMoving = false;
-
-    public bool IsMoving 
-    { 
-        get 
-        {
-            return _isMoving;
-        } 
-        private set 
-        {
-            _isMoving = value;
-            animator.SetBool("isMoving", value);
-        }
-    } 
-
-    // When character is Running
-    private bool _isRunning = false;
-    public bool IsRunning
-    {
-        get
-        {
-            return _isRunning;
-        } private set
-        {
-            _isRunning = value;
-            animator.SetBool("isRunning", value);
-        }
-    }
-
-    public bool _isFacingRight = true;
-    public bool IsFacingRight { get { return _isFacingRight; } private set {
-            if(_isFacingRight !=value)
-            {
-                // Flip the local scale to make the player face the opposite direction
-                transform.localScale *= new Vector2(-1, 1);
-            }
-
-            _isFacingRight = value;
-    } }
-
     public bool GetInteractPressed() 
     {
         bool result = interactPressed;
@@ -129,10 +56,10 @@ public class PlayerController : MonoBehaviour
         if(IsMoving){
             if (IsRunning && moveInputActive)
             {
-                if (stamina > 0)
+                if (playerStats.stamina > 0)
                 {
-                    stamina -= staminaDepletionRate * Time.deltaTime;
-                    stamina = Mathf.Max(0, stamina);
+                    playerStats.stamina -= playerStats.staminaDepletionRate * Time.deltaTime;
+                    playerStats.stamina = Mathf.Max(0, playerStats.stamina);
                 }
                 else
                 {
@@ -241,4 +168,65 @@ public class PlayerController : MonoBehaviour
             IsRunning = false;
         }
     }
+        public float CurrentMoveSpeed 
+    { get 
+        {
+            if(IsMoving)
+            {
+                if(IsRunning)
+                {
+                    return playerStats.runSpeed;
+                } else
+                {
+                    return playerStats.walkSpeed;
+                }
+            } else 
+            {
+                // idle speed 0
+                return 0;
+            }
+        }
+    }
+    
+    // When character is moving
+    public bool _isMoving = false;
+
+    public bool IsMoving 
+    { 
+        get 
+        {
+            return _isMoving;
+        } 
+        private set 
+        {
+            _isMoving = value;
+            animator.SetBool("isMoving", value);
+        }
+    } 
+
+    // When character is Running
+    public bool _isRunning = false;
+    public bool IsRunning
+    {
+        get
+        {
+            return _isRunning;
+        } private set
+        {
+            _isRunning = value;
+            animator.SetBool("isRunning", value);
+        }
+    }
+
+    public bool _isFacingRight = true;
+    public bool IsFacingRight { get { return _isFacingRight; } private set {
+            if(_isFacingRight !=value)
+            {
+                // Flip the local scale to make the player face the opposite direction
+                transform.localScale *= new Vector2(-1, 1);
+            }
+
+            _isFacingRight = value;
+    } }
+
 }

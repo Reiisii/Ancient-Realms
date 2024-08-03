@@ -16,10 +16,10 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] public PlayerController playerController;
     private static DialogueManager instance;
     [SerializeField] public QuestManager questManager;
-    [SerializeField] public string questID;
     private Story currentStory;
     private QuestSO[] questArray;
     public bool dialogueIsPlaying { get; private set;}
+    NPCData npcData;
     private void Awake(){
         if(instance != null){
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
@@ -45,12 +45,15 @@ public class DialogueManager : MonoBehaviour
     }
     public void EnterDialogueMode(NPCData npc){
         QuestSO questData = QuestManager.GetInstance().quests.Find(quest => quest.questID == npc.giveableQuest[0]);
-        if(!QuestManager.GetInstance().activeQuests.ContainsKey(npc.giveableQuest[0])){
-            QuestManager.GetInstance().StartQuest(npc.giveableQuest[0]);
+        npcData = npc;
+        if(questData.isCompleted && !questData.isActive){
+            currentStory = new Story(npcData.npcDialogue.text);
+            currentStory.ChoosePathString(npcData.dialogueKnot);
+        }else if(!PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0])){
             currentStory = new Story(questData.dialogue.text);
             currentStory.ChoosePathString(questData.currentKnot);
-        }else if(QuestManager.GetInstance().activeQuests[npc.giveableQuest[0]] && QuestManager.GetInstance().activeQuests[npc.giveableQuest[0]].isActive){
-            QuestSO quest = QuestManager.GetInstance().activeQuests[npc.giveableQuest[0]];
+        }else if(PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]) && PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]).isActive){
+            QuestSO quest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
             currentStory = new Story(questData.dialogue.text);
             currentStory.ChoosePathString(quest.currentKnot);
         }
@@ -64,7 +67,11 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
-        questManager.StartQuest(questID);
+        QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+        if(quest.isActive == false && !quest.isCompleted){
+            QuestManager.GetInstance().StartQuest(quest.questID);
+        }
+        
         QuestManager.GetInstance().UpdateTalkGoal();
     }
     private void ContinueStory(){
