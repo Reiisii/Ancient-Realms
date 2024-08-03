@@ -20,6 +20,7 @@ public class AccountStore : MonoBehaviour
     [Header("Slider")]
     [SerializeField] Slider masterSlider;
     [SerializeField] Slider musicSlider;
+    [SerializeField] Slider soundFXSlider;
     
     private void OnEnable(){
         Web3.OnLogin += OnLogin;
@@ -34,6 +35,7 @@ public class AccountStore : MonoBehaviour
         PlayerData playerData = await AccountManager.GetPlayerByPublicKey(account.PublicKey.ToString());
         masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
         musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);
+        soundFXSlider.value = Mathf.Clamp(playerData.gameData.settings.soundFXVolume, soundFXSlider.minValue, soundFXSlider.maxValue);
     }
     private void OnLogout(){
         Debug.Log("Logout");

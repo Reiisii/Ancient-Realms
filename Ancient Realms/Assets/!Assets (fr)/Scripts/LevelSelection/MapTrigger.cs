@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ink.Parsed;
+using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -8,11 +9,19 @@ using UnityEngine;
 
 public class MapTrigger : MonoBehaviour
 {
-    [Header("Location Name")]
-    [SerializeField] private string locationName;
+    [Header("Location Data")]
+    [SerializeField] private LocationSO location;
     [Header("Panel")]
     [SerializeField] private GameObject Panel;
+    [SerializeField] private TextMeshProUGUI locationName;
+    [SerializeField] private SpriteRenderer locationImage;
     private bool playerInRange;
+
+    void Start()
+    {
+        locationName.SetText(location.locationName);
+        locationImage.sprite = location.image;
+    }
 
     private void Awake(){
         Panel.SetActive(false);
@@ -26,7 +35,6 @@ public class MapTrigger : MonoBehaviour
         }else{
             Panel.SetActive(false);
         }
-
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
