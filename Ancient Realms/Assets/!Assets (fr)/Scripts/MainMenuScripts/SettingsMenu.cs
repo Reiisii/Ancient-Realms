@@ -28,29 +28,14 @@ public class SettingsMenu : MonoBehaviour
         oldSoundFXVolume = soundFXSlider.value; 
     }
 
-    public void SetMasterVolume(float volume)
-    {
-        masterVolume = volume;
-    }
-
-    public void SetMusicVolume(float volume)
-    {
-        musicVolume = volume;
-    }
-
-    public void SetSoundFXVolume(float volume)
-    {
-        soundFXVolume = volume;
-    }
-
     public async void SaveSettings()
     {
         PlayerData playerData = await AccountManager.GetPlayer();
 
         
-        if (oldMasterVolume != masterVolume) playerData.gameData.settings.masterVolume = masterVolume;
-        if (oldMusicVolume != musicVolume) playerData.gameData.settings.musicVolume = musicVolume;
-        if (oldSoundFXVolume != soundFXVolume) playerData.gameData.settings.soundFXVolume = soundFXVolume; 
+        playerData.gameData.settings.masterVolume = masterSlider.value;
+        playerData.gameData.settings.musicVolume = musicSlider.value;
+        playerData.gameData.settings.soundFXVolume = soundFXSlider.value; 
 
         
         if (oldMasterVolume != masterVolume || oldMusicVolume != musicVolume || oldSoundFXVolume != soundFXVolume)
@@ -59,22 +44,19 @@ public class SettingsMenu : MonoBehaviour
             AudioManager.GetInstance().SetSoundFXVolume(soundFXVolume);
             AudioManager.GetInstance().SetMusicVolume(musicVolume);
             AudioManager.GetInstance().SetMasterVolume(masterVolume);
+             oldMasterVolume = masterSlider.value;
+            oldMusicVolume = musicSlider.value;
+            oldSoundFXVolume = soundFXSlider.value;
+            settingsPanel.Close();
+            mainMenuPanel.SetActive(true);
         }
-
-        oldMasterVolume = masterVolume;
-        oldMusicVolume = musicVolume;
-        oldSoundFXVolume = soundFXVolume; 
-
-        settingsPanel.Close();
-        mainMenuPanel.SetActive(true);
-
     }
     public void CheckChanges()
     {
         bool changed = false;
-        if (oldMasterVolume != masterVolume) changed = true;
-        if (oldMusicVolume != musicVolume) changed = true;
-        if (oldSoundFXVolume != soundFXVolume) changed = true; 
+        if (oldMasterVolume != masterSlider.value) changed = true;
+        if (oldMusicVolume != musicSlider.value) changed = true;
+        if (oldSoundFXVolume != soundFXSlider.value) changed = true; 
 
         if (changed == true)
         {
@@ -94,8 +76,8 @@ public class SettingsMenu : MonoBehaviour
         soundFXSlider.value = oldSoundFXVolume;
     }
     public void Retain(){
-        musicSlider.value = musicVolume;
-        masterSlider.value = masterVolume;
-        soundFXSlider.value = soundFXVolume; 
+        musicSlider.value = musicSlider.value;
+        masterSlider.value = masterSlider.value;
+        soundFXSlider.value = soundFXSlider.value; 
     }
 }

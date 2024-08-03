@@ -13,6 +13,7 @@ public class LogoutAnimation : MonoBehaviour
     [SerializeField] float newPanelPosY;
     [SerializeField] EaseTypes panelEaseType;
     private void OnEnable(){
+        UIManager.DisableAllButtons(PanelGO);
         Panel.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
         // Panel.DOAnchorPosX(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
     }

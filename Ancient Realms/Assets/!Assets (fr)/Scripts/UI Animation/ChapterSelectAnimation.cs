@@ -13,6 +13,7 @@ public class ChapterSelectAnimation : MonoBehaviour
     [SerializeField] float newPanelPosY;
     [SerializeField] EaseTypes panelEaseType;
     private void OnEnable(){
+        UIManager.DisableAllButtons(ChapterSelectGO);
         ChapterSelect.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(ChapterSelectGO));
     }
     public void Close(){

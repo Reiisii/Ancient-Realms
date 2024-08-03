@@ -56,8 +56,8 @@ public class AccountManager : MonoBehaviour
             UIManager.DisableAllButtons(Instance.connectionMenu);
             Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
                 Instance.connectionMenu.SetActive(false);
+                Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
             });
-            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
             
         })
         .Catch(error => 

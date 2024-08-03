@@ -14,6 +14,7 @@ public class EncyclopediaAnimation : MonoBehaviour
     [SerializeField] EaseTypes panelEaseType;
     [SerializeField] ButtonScript buttonScript;
     private void OnEnable(){
+        UIManager.DisableAllButtons(EncycPanelGO);
         EncycPanel.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(EncycPanelGO));
     }
     public void Close(){
