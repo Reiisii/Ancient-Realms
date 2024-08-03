@@ -12,9 +12,9 @@ namespace ESDatabase.Classes
 
         public SettingsData()
         {
-            masterVolume = 100;
-            musicVolume = 100;
-            soundFXVolume = 100; 
+            masterVolume = 1;
+            musicVolume = 1;
+            soundFXVolume = 1; 
         }
     }
 }

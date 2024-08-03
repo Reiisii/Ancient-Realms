@@ -18,7 +18,6 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider soundFXSlider; 
 
-    public AudioMixer audioMixer;
     public float masterVolume, oldMasterVolume;
     public float musicVolume, oldMusicVolume;
     public float soundFXVolume, oldSoundFXVolume; 
@@ -57,6 +56,9 @@ public class SettingsMenu : MonoBehaviour
         if (oldMasterVolume != masterVolume || oldMusicVolume != musicVolume || oldSoundFXVolume != soundFXVolume)
         {
             await AccountManager.SaveData(playerData);
+            AudioManager.GetInstance().SetSoundFXVolume(soundFXVolume);
+            AudioManager.GetInstance().SetMusicVolume(musicVolume);
+            AudioManager.GetInstance().SetMasterVolume(masterVolume);
         }
 
         oldMasterVolume = masterVolume;
@@ -65,9 +67,7 @@ public class SettingsMenu : MonoBehaviour
 
         settingsPanel.Close();
         mainMenuPanel.SetActive(true);
-        audioMixer.SetFloat("masterVolume", masterVolume); 
-        audioMixer.SetFloat("musicVolume", musicVolume); 
-        audioMixer.SetFloat("soundFXVolume", soundFXVolume); 
+
     }
     public void CheckChanges()
     {

@@ -21,57 +21,57 @@ MonoBehaviour:
   chapter: 0
   isMain: 1
   isActive: 0
-  isCompleted: 0
-  currentGoal: 0
-  currentKnot: start
+  isCompleted: 1
+  currentGoal: 8
+  currentKnot: exhaust
   goals:
   - goalID: 0
     goalDescription: Walk to the right!
     goalType: 5
     requiredAmount: 10
-    currentAmount: 0
+    currentAmount: 11
     inkyRedirect: goal_1
   - goalID: 1
     goalDescription: Talk to Centurion
     goalType: 2
     requiredAmount: 1
-    currentAmount: 0
+    currentAmount: 2
     inkyRedirect: exhaust
   - goalID: 2
     goalDescription: Walk to the left!
     goalType: 4
     requiredAmount: 10
-    currentAmount: 0
+    currentAmount: 11
     inkyRedirect: goal_2
   - goalID: 3
     goalDescription: Talk to Centurion
     goalType: 2
     requiredAmount: 1
-    currentAmount: 0
+    currentAmount: 2
     inkyRedirect: exhaust
   - goalID: 4
     goalDescription: Run to the Right!
     goalType: 7
     requiredAmount: 10
-    currentAmount: 0
+    currentAmount: 11
     inkyRedirect: goal_3
   - goalID: 5
     goalDescription: Talk to Centurion
     goalType: 2
     requiredAmount: 1
-    currentAmount: 0
+    currentAmount: 2
     inkyRedirect: exhaust
   - goalID: 6
     goalDescription: Run to the Left!
     goalType: 6
     requiredAmount: 10
-    currentAmount: 0
+    currentAmount: 11
     inkyRedirect: goal_4
   - goalID: 7
     goalDescription: Talk to Centurion
     goalType: 2
     requiredAmount: 1
-    currentAmount: 0
+    currentAmount: 2
     inkyRedirect: exhaust
   rewards:
   - rewardType: 1
