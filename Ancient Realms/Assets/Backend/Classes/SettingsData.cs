@@ -9,9 +9,11 @@ namespace ESDatabase.Classes
     {
         [Fillable] public float masterVolume {get;set;}
         [Fillable] public float musicVolume {get;set;}
+        [Fillable] public float sfxVolume {get;set;}
         public SettingsData(){
             masterVolume = 100;
             musicVolume = 100;
+            sfxVolume = 100;
         }
     }
 }
