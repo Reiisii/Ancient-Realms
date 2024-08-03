@@ -2,85 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    public float walkSpeed = 5f;
-    public float runSpeed = 8f;
+    [SerializeField] public PlayerStats playerStats;
+    private Vector2 lastPosition;
+    private float distanceMoved;
+    private const float moveThreshold = 2f;
+    private const float staminaThreshold = 0.5f;
     Vector2 moveInput;
-    private bool moveInputActive = false;
+    public bool moveInputActive = false;
     private bool interactPressed = false;
     private bool submitPressed = false;
     Rigidbody2D rb;
     Animator animator;
+    private static PlayerController Instance;
     private void Awake()
     {
+        if(Instance != null){
+            Debug.LogWarning("Found more than one Player Controller in the scene");
+        }
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
-
-    public float CurrentMoveSpeed 
-    { get 
-        {
-            if(IsMoving)
-            {
-                if(IsRunning)
-                {
-                    return runSpeed;
-                } else
-                {
-                    return walkSpeed;
-                }
-            } else 
-            {
-                // idle speed 0
-                return 0;
-            }
-        }
-    }
     
-    // When character is moving
-    private bool _isMoving = false;
-
-    public bool IsMoving 
-    { 
-        get 
-        {
-            return _isMoving;
-        } 
-        private set 
-        {
-            _isMoving = value;
-            animator.SetBool("isMoving", value);
-        }
-    } 
-
-    // When character is Running
-    private bool _isRunning = false;
-    public bool IsRunning
-    {
-        get
-        {
-            return _isRunning;
-        } private set
-        {
-            _isRunning = value;
-            animator.SetBool("isRunning", value);
-        }
+    private void Start(){
+        lastPosition = transform.position;
     }
-
-    public bool _isFacingRight = true;
-    public bool IsFacingRight { get { return _isFacingRight; } private set {
-            if(_isFacingRight !=value)
-            {
-                // Flip the local scale to make the player face the opposite direction
-                transform.localScale *= new Vector2(-1, 1);
-            }
-
-            _isFacingRight = value;
-    } }
-
+    public static PlayerController GetInstance(){
+        return Instance;
+    }
     public bool GetInteractPressed() 
     {
         bool result = interactPressed;
@@ -98,9 +52,44 @@ public class PlayerController : MonoBehaviour
             IsMoving = false;
             return;
         }
+        
+        if(IsMoving){
+            if (IsRunning && moveInputActive)
+            {
+                if (playerStats.stamina > 0)
+                {
+                    playerStats.stamina -= playerStats.staminaDepletionRate * Time.deltaTime;
+                    playerStats.stamina = Mathf.Max(0, playerStats.stamina);
+                }
+                else
+                {
+                    IsRunning = false;
+                }
+            }
+        }
         if (moveInputActive)
         {
             rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+            Vector2 currentPosition = transform.position;
+            float deltaX = currentPosition.x - lastPosition.x;
+            
+            if (Mathf.Abs(deltaX) > 0.01f)
+            {
+                distanceMoved += Mathf.Abs(deltaX);
+                if (distanceMoved >= moveThreshold)
+                {
+                    if (IsRunning == true){
+                        QuestManager.GetInstance().UpdateRunGoals(deltaX);
+                        distanceMoved = 0f;
+                    }else if (!IsRunning){
+                        QuestManager.GetInstance().UpdateWalkGoals(deltaX);
+                        distanceMoved = 0f;
+                    }
+                    // Reset the distanceMoved counter
+                }
+                lastPosition = currentPosition;
+            }
+
         }
         else
         {
@@ -179,4 +168,65 @@ public class PlayerController : MonoBehaviour
             IsRunning = false;
         }
     }
+        public float CurrentMoveSpeed 
+    { get 
+        {
+            if(IsMoving)
+            {
+                if(IsRunning)
+                {
+                    return playerStats.runSpeed;
+                } else
+                {
+                    return playerStats.walkSpeed;
+                }
+            } else 
+            {
+                // idle speed 0
+                return 0;
+            }
+        }
+    }
+    
+    // When character is moving
+    public bool _isMoving = false;
+
+    public bool IsMoving 
+    { 
+        get 
+        {
+            return _isMoving;
+        } 
+        private set 
+        {
+            _isMoving = value;
+            animator.SetBool("isMoving", value);
+        }
+    } 
+
+    // When character is Running
+    public bool _isRunning = false;
+    public bool IsRunning
+    {
+        get
+        {
+            return _isRunning;
+        } private set
+        {
+            _isRunning = value;
+            animator.SetBool("isRunning", value);
+        }
+    }
+
+    public bool _isFacingRight = true;
+    public bool IsFacingRight { get { return _isFacingRight; } private set {
+            if(_isFacingRight !=value)
+            {
+                // Flip the local scale to make the player face the opposite direction
+                transform.localScale *= new Vector2(-1, 1);
+            }
+
+            _isFacingRight = value;
+    } }
+
 }

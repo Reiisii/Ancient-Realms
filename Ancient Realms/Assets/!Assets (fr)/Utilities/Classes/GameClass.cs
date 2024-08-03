@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ESDatabase.Classes;
+using UnityEngine;
 [Serializable]
 public class Quest
 {
@@ -14,22 +15,42 @@ public class Quest
     public List<Goal> goals;
     public List<Reward> rewards;
 }
-
+public class NPCData{
+    public string name {get;set;}
+    public Sprite portrait {get;set;}
+    public string dialogueKnot {get;set;}
+    public TextAsset npcDialogue;
+    public List<string> giveableQuest;
+}
 [Serializable]
 public class Goal
 {
     public string goalID;
     public string goalDescription;
-    public string goalType;
+    public GoalTypeEnum goalType;
     public int requiredAmount;
     public int currentAmount;
+    public string inkyRedirect;
+
+    public bool isReached(){
+        return (currentAmount >= requiredAmount);
+    }
+    public void IncrementProgress(int amount)
+    {
+        currentAmount += amount;
+        if (currentAmount > requiredAmount)
+        {
+            currentAmount = requiredAmount;
+        }
+    }
+
 }
 
 [Serializable]
 public class Reward
 {
-    public string rewardType;
-    public int value;
+    public RewardsEnum rewardType;
+    public string value;
 }
 public enum CultureEnum {
     Roman,
@@ -38,6 +59,14 @@ public enum CultureEnum {
     Greek,
     Germanic,
     HellenisticEgyptian
+}
+public enum ChapterEnum {
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six
 }
 public enum RarityEnum {
     Common,
@@ -87,6 +116,8 @@ public class GoalListener{
         if(goalType == GoalTypeEnum.Kill) currentAmount++;
         if(goalType == GoalTypeEnum.Gather) currentAmount++;
         if(goalType == GoalTypeEnum.Talk) currentAmount++;
-        if(goalType == GoalTypeEnum.Move) currentAmount++;
+        if(goalType == GoalTypeEnum.WalkRight){
+            currentAmount++;
+        };
     }
 }

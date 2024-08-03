@@ -13,14 +13,16 @@ public class NFTPanelAnimation : MonoBehaviour
     [SerializeField] float newPanelPosY;
     [SerializeField] EaseTypes panelEaseType;
     private void OnEnable(){
+        UIManager.DisableAllButtons(PanelGO);
         Panel.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
         // Panel.DOAnchorPosX(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
     }
-    public void Close(){
+    public async void Close(){
         UIManager.DisableAllButtons(PanelGO);
-        Panel.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => {
+        await Panel.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => {
            PanelGO.SetActive(false);
-        });
+           UIManager.DisableAllButtons(PanelGO);
+        }).AsyncWaitForCompletion();
         // Panel.DOAnchorPosX(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(PanelGO));
     }
 }

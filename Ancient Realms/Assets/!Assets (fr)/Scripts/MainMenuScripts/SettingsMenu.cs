@@ -23,8 +23,7 @@ public class SettingsMenu : MonoBehaviour
     public float musicVolume, oldMusicVolume;
     public float soundFXVolume, oldSoundFXVolume; 
 
-    async void Start()
-    {
+    void Start(){
         oldMusicVolume = musicSlider.value;
         oldMasterVolume = masterSlider.value;
         oldSoundFXVolume = soundFXSlider.value; 
@@ -70,8 +69,7 @@ public class SettingsMenu : MonoBehaviour
         audioMixer.SetFloat("musicVolume", musicVolume); 
         audioMixer.SetFloat("soundFXVolume", soundFXVolume); 
     }
-
-    public async void CheckChanges()
+    public void CheckChanges()
     {
         bool changed = false;
         if (oldMasterVolume != masterVolume) changed = true;
@@ -90,8 +88,12 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    public void Retain()
-    {
+    public void Reset(){
+        musicSlider.value = oldMusicVolume;
+        masterSlider.value = oldMasterVolume;
+        soundFXSlider.value = oldSoundFXVolume;
+    }
+    public void Retain(){
         musicSlider.value = musicVolume;
         masterSlider.value = masterVolume;
         soundFXSlider.value = soundFXVolume; 

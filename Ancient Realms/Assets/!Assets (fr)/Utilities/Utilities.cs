@@ -18,6 +18,14 @@ public class Utilities {
                         return culture.ToString();
                 }
         }
+        public static string FormatNumber(int number)
+        {
+                return string.Format("{0:N0}", number);
+        }
+        public static string FormatSolana(double number)
+        {
+                return number.ToString("F9");
+        }
         public static Color GetColorForCulture(CultureEnum culture)
         {
                 switch (culture)

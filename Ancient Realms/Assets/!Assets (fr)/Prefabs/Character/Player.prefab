@@ -200,6 +200,10 @@ GameObject:
   - component: {fileID: 942858895063747022}
   - component: {fileID: 8143464205618705029}
   - component: {fileID: 3575490194625955687}
+  - component: {fileID: 4010303813203675558}
+  - component: {fileID: 6193478947497796674}
+  - component: {fileID: 8648515302414181397}
+  - component: {fileID: 4731954973759446107}
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 1395405347677754809}
   - component: {fileID: 6848718779965713162}
@@ -318,6 +322,86 @@ MonoBehaviour:
     m_Extent: {x: 64.1875, y: 40.749817, z: 0}
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
+--- !u!114 &4010303813203675558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2611790ccb491b6449bc9850ca227a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI: {fileID: 0}
+  QuestPanel: {fileID: 0}
+  hpSlider: {fileID: 0}
+  staminaSlider: {fileID: 0}
+  level: {fileID: 0}
+  denariiText: {fileID: 0}
+  sol: {fileID: 0}
+  HP: 100
+  maxStamina: 70
+  stamina: 70
+  walkSpeed: 3.5
+  runSpeed: 5.5
+  staminaDepletionRate: 20
+  staminaRegenRate: 10
+  Level: 0
+  denarii: 0
+  xp: 0
+  solBalance: 56.25015
+--- !u!114 &6193478947497796674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1feee9d8d4e4a499907650a37082fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 4010303813203675558}
+  moveInputActive: 0
+  _isMoving: 0
+  _isRunning: 0
+  _isFacingRight: 1
+--- !u!114 &8648515302414181397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa56ef00fc1b1b43ba901eb4ba902e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questPrefab: {fileID: 5446196464397879909, guid: 314f2b9f2356fe642aa529a428df681b, type: 3}
+  questPanel: {fileID: 0}
+  quests: []
+--- !u!114 &4731954973759446107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a7a60a025b8fea43b66d9ec0bfb7106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialoguePanel: {fileID: 0}
+  nameText: {fileID: 0}
+  dialogueText: {fileID: 0}
+  npcImage: {fileID: 0}
+  playerController: {fileID: 6193478947497796674}
+  questManager: {fileID: 8648515302414181397}
 --- !u!95 &1069500992766602489
 Animator:
   serializedVersion: 5
@@ -378,8 +462,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a1feee9d8d4e4a499907650a37082fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 8
+  playerStats: {fileID: 0}
+  moveInputActive: 0
+  _isMoving: 0
+  _isRunning: 0
   _isFacingRight: 1
 --- !u!114 &7034091263014463200
 MonoBehaviour:
