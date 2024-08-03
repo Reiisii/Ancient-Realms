@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Create Quest", menuName = "SO/Quest")]
 public class QuestSO : ScriptableObject
