@@ -16,6 +16,10 @@ public class Events : MonoBehaviour
         eventsTitle.SetText(events.eventTitle);
         eventsDescription.SetText(events.eventDescription);
     }
+    public void OnItemClick()
+    {
+        Application.OpenURL(events.link);
+    }
     public void setData(EventSO eventData){
         events = eventData;
     }
