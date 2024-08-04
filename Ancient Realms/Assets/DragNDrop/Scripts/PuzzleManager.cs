@@ -16,6 +16,11 @@ public class PuzzleManager : MonoBehaviour
     private bool isPila3Placed = false;
     private bool isPila4Placed = false;
 
+    private bool isPugioBladePlaced = false;
+    private bool isPugioRainGuardPlaced = false;
+    private bool isPugioGripPlaced = false;
+    private bool isPugioPommelPlaced = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -59,6 +64,20 @@ public class PuzzleManager : MonoBehaviour
             case "4":
                 isPila4Placed = true;
                 break;
+            
+            // Pugio parts
+            case "PugioBlade":
+                isPugioBladePlaced = true;
+                break;
+            case "PugioRainGuard":
+                isPugioRainGuardPlaced = true;
+                break;
+            case "PugioGrip":
+                isPugioGripPlaced = true;
+                break;
+            case "PugioPommel":
+                isPugioPommelPlaced = true;
+                break;
         }
 
         CheckIfPuzzleComplete();
@@ -74,6 +93,11 @@ public class PuzzleManager : MonoBehaviour
         if (isPila1Placed && isPila2Placed && isPila3Placed && isPila4Placed)
         {
             Debug.Log("The pila is built!");
+        }
+
+        if (isPugioBladePlaced && isPugioRainGuardPlaced && isPugioGripPlaced && isPugioPommelPlaced)
+        {
+            Debug.Log("The pugio is built!");
         }
     }
 }
