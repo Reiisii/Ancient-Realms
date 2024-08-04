@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class CursorTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private CursorManager cursorManager;
-    [SerializeField] bool isWarning;
+    [SerializeField] MouseEnum hoverType;
 
     void Start()
     {
@@ -18,11 +18,12 @@ public class CursorTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        cursorManager.SetHoverCursor(isWarning);
+        cursorManager.SetHoverCursor(hoverType);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         cursorManager.SetDefaultCursor();
     }
+    
 }

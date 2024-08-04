@@ -18,7 +18,6 @@ public class Locations : MonoBehaviour
         image.sprite = location.image;
         locationName.SetText(location.locationName);
         Color color = Utilities.GetColorForCulture(location.culture);
-        Debug.Log(location.culture);
         ribbonColor.color = color;
     }
     public void OnItemClick()
