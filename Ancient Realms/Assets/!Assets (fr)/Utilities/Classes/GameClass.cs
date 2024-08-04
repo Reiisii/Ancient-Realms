@@ -92,6 +92,17 @@ public enum WeaponType{
     SpearJavelin,
     Dagger
 }
+public enum MouseEnum {
+    Default,
+    Warning,
+    Link,
+    Accept,
+    SlideHorizontal,
+    SlideVertical,
+    Info,
+    Help,
+    TextBox
+}
 
 [Serializable]
 public class QuestList
