@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Ink.Parsed;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
     [Header("NPC Details")]
+    [SerializeField] private string npcID;
     [SerializeField] private string npcName;
     [SerializeField] private Sprite npcIcon;
     [SerializeField] private string currentKnot;
@@ -30,8 +29,12 @@ public class DialogueTrigger : MonoBehaviour
     private void Awake(){
         VisualCue.SetActive(false);
         playerInRange = false;
+        
+    }
+    private void Start(){
         npcData = new NPCData
                 {
+                    id = npcID,
                     name = npcName,
                     portrait = npcIcon,
                     dialogueKnot = currentKnot,
@@ -41,11 +44,9 @@ public class DialogueTrigger : MonoBehaviour
     }
     private void Update(){
         if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying){
-            setVisualCue();
             VisualCue.SetActive(true);
+            setVisualCue();
             if(playerController.GetInteractPressed()){
-                
-                
                 DialogueManager.GetInstance().EnterDialogueMode(npcData);
             }
         }else{
@@ -54,6 +55,7 @@ public class DialogueTrigger : MonoBehaviour
 
     }
     public void setVisualCue(){
+
             if(hasMainQuest()){
                     icon.sprite = questIcon;
             }else if(completion()){
@@ -63,12 +65,31 @@ public class DialogueTrigger : MonoBehaviour
             }
     }
     public bool hasMainQuest(){
-        QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-        return !quest.isActive && !quest.isCompleted;
+        if(npcData.giveableQuest.Count > 0){
+            QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+            return !quest.isActive && !quest.isCompleted;
+        }else{
+            return false;
+        }
+        
     }
     public bool completion(){
-        QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-        return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
+        List<QuestSO> activeQuest = PlayerStats.GetInstance().activeQuests.ToList();
+        bool isInActiveQuest = activeQuest.Any(quest => quest.characters.Contains(npcData.id));
+        if(npcData.giveableQuest.Count > 0){
+            if(PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
+            QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+            return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
+            }else{
+                return false;
+            }
+        }else if(PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
+            QuestSO quest = activeQuest.Find(quest => quest.characters.Contains(npcData.id));
+            return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
+        }else{
+            return false;
+        }
+        
     }
     
     private void OnTriggerEnter2D(Collider2D collider){

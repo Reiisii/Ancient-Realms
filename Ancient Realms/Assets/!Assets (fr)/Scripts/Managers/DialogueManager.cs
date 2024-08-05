@@ -19,7 +19,7 @@ public class DialogueManager : MonoBehaviour
     private Story currentStory;
     private QuestSO[] questArray;
     public bool dialogueIsPlaying { get; private set;}
-    NPCData npcData;
+    private NPCData npcData;
     private void Awake(){
         if(instance != null){
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
@@ -44,35 +44,84 @@ public class DialogueManager : MonoBehaviour
         }
     }
     public void EnterDialogueMode(NPCData npc){
-        QuestSO questData = QuestManager.GetInstance().quests.Find(quest => quest.questID == npc.giveableQuest[0]);
         npcData = npc;
-        if(questData.isCompleted && !questData.isActive){
-            currentStory = new Story(npcData.npcDialogue.text);
-            currentStory.ChoosePathString(npcData.dialogueKnot);
-        }else if(!PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0])){
-            currentStory = new Story(questData.dialogue.text);
-            currentStory.ChoosePathString(questData.currentKnot);
-        }else if(PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]) && PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]).isActive){
-            QuestSO quest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
-            currentStory = new Story(questData.dialogue.text);
-            currentStory.ChoosePathString(quest.currentKnot);
+        if(npc.giveableQuest.Count > 0){
+            QuestSO questData = QuestManager.GetInstance().quests.Find(quest => quest.questID == npc.giveableQuest[0]);
+            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
+            if(questData.isCompleted && !questData.isActive){
+                // If Quest is complete AND is not Active
+                currentStory = new Story(npcData.npcDialogue.text);
+                currentStory.ChoosePathString(npcData.dialogueKnot);
+            }else if(!activeQuest){
+                // If NPC Quest IS NOT existing on active quest list
+                currentStory = new Story(questData.dialogue.text);
+                currentStory.ChoosePathString(questData.currentKnot);
+            }else if(activeQuest && PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]).isActive && PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
+                // IF NPC's Quest is in ActiveQuest AND the quest is Active AND is Talking to the NPC that has the talk quest goal
+                currentStory = new Story(questData.dialogue.text);
+                currentStory.ChoosePathString(activeQuest.currentKnot);
+            }else{
+                currentStory = new Story(npc.npcDialogue.text);
+                currentStory.ChoosePathString(npc.dialogueKnot);
+            }
+            nameText.SetText(npc.name);
+            npcImage.sprite = npc.portrait;
+            dialogueIsPlaying = true;
+            dialoguePanel.SetActive(true);
+            ContinueStory();
+        }else{
+            List<QuestSO> activeQuest = PlayerStats.GetInstance().activeQuests.ToList();
+
+            foreach(QuestSO quest in activeQuest){
+                if(quest.characters.Contains(npcData.id)){
+                    currentStory = new Story(quest.dialogue.text);
+                    currentStory.ChoosePathString(quest.currentKnot);
+                    nameText.SetText(npc.name);
+                    npcImage.sprite = npc.portrait;
+                    dialogueIsPlaying = true;
+                    dialoguePanel.SetActive(true);
+                    ContinueStory();
+                    return;
+                }
+            }
+            currentStory = new Story(npc.npcDialogue.text);
+            currentStory.ChoosePathString(npc.dialogueKnot);
+            nameText.SetText(npc.name);
+            npcImage.sprite = npc.portrait;
+            dialogueIsPlaying = true;
+            dialoguePanel.SetActive(true);
+            ContinueStory();
         }
-        nameText.SetText(npc.name);
-        npcImage.sprite = npc.portrait;
-        dialogueIsPlaying = true;
-        dialoguePanel.SetActive(true);
-        ContinueStory();
+        
     }
     public void ExitDialogueMode(){
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
-        QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-        if(quest.isActive == false && !quest.isCompleted){
-            QuestManager.GetInstance().StartQuest(quest.questID);
+        QuestSO q = PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id);
+        if(Utilities.npcHasQuest(npcData)){
+            QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+            Debug.Log("Character Talking: " + npcData.id);
+            Debug.Log("Quest Needs talking to: " + quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id);
+            if(!quest.isActive && !quest.isCompleted){
+                // IF Quest is not Active AND NOT Completed
+                QuestManager.GetInstance().StartQuest(quest.questID);
+            }
+            if(quest.isActive && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
+                // IF NPC's giveable Quest is Active AND if the QUEST matches the Character ID
+                QuestManager.GetInstance().UpdateTalkGoal();
+            }
+        }else if(q != null){
+
+            Debug.Log("Character Talking: " + npcData.id);
+            Debug.Log("Quest Needs talking to: " + q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
+            if(q.isActive && q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id){
+                // IF NPC's giveable Quest is Active AND if the QUEST matches the Character ID
+                QuestManager.GetInstance().UpdateTalkGoal();
+            }
         }
         
-        QuestManager.GetInstance().UpdateTalkGoal();
+        
     }
     private void ContinueStory(){
         if(currentStory.canContinue){

@@ -31,6 +31,7 @@ public class QuestManager : MonoBehaviour
             if (quest != null)
             {
                 quest.isActive = true;
+                if(!quest.isChained)quest.currentKnot = "exhaust";
                 playerStats.activeQuests.Add(quest);
                 Debug.Log("Started Quest:" + questID);
                 QuestPrefab questPrefab = Instantiate(qPrefab, Vector3.zero, Quaternion.identity);
