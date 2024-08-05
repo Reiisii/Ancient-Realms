@@ -9,8 +9,11 @@ namespace ESDatabase.Classes
                 public int level { get; set;}
                 public string rank { get; set;}
                 public int xp {get; set;}
+                public int maxEnergy {get;set;}
+                public int currentEnergy {get;set;}
                 public Inventory inventory {get;set;}
                 public List<QuestData> quests {get; set;}
+                public List<ArtifactsData> artifacts {get;set;}
                 public SettingsData settings {get;set;}
                 public GameData(){
                         this.playerName = "Unnamed Legionnaire";
@@ -20,6 +23,7 @@ namespace ESDatabase.Classes
                         this.rank = "Tiro";
                         this.inventory = new Inventory();
                         this.quests = new List<QuestData>();
+                        this.artifacts = new List<ArtifactsData>();
                         this.settings = new SettingsData();
                 }
         }
