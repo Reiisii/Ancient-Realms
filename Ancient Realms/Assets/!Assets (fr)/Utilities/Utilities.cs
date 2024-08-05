@@ -26,6 +26,9 @@ public class Utilities {
         {
                 return number.ToString("F9");
         }
+        public static bool npcHasQuest(NPCData npc){
+                return npc.giveableQuest.Count > 0;
+        }
         public static Color GetColorForCulture(CultureEnum culture)
         {
                 switch (culture)
