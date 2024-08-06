@@ -16,14 +16,17 @@ MonoBehaviour:
   questTitle: A Legionnaire's Training II
   questDescription: I finished the movement training, Now I need to look for the
     Legate to start my combat training
-  dialogue: {fileID: 0}
+  dialogue: {fileID: 4900000, guid: 423ada08cd47d344a9a8b0f20c3305db, type: 3}
+  characters:
+  - Legate-00-001
   requirements:
   - quest-00-000
   chapter: 0
   isMain: 1
-  isActive: 0
+  isActive: 1
   isCompleted: 0
-  currentGoal: 0
+  isChained: 1
+  currentGoal: 1
   currentKnot: exhaust
   goals:
   - goalID: 0
@@ -32,12 +35,14 @@ MonoBehaviour:
     requiredAmount: 1
     currentAmount: 2
     inkyRedirect: exhaust
+    characterIndex: 0
   - goalID: 1
     goalDescription: Destory 5 Training Dummy
     goalType: 0
     requiredAmount: 5
     currentAmount: 0
     inkyRedirect: exhaust
+    characterIndex: 0
   rewards:
   - rewardType: 1
     value: 50
