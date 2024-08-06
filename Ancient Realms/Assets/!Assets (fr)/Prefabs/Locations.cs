@@ -12,10 +12,13 @@ public class Locations : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI locationName;
     [SerializeField] GameObject panel;
+    [SerializeField] Image ribbonColor;
     public LocationSO location;
     void Start(){
         image.sprite = location.image;
         locationName.SetText(location.locationName);
+        Color color = Utilities.GetColorForCulture(location.culture);
+        ribbonColor.color = color;
     }
     public void OnItemClick()
     {

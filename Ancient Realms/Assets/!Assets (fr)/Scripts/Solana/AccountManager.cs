@@ -24,18 +24,11 @@ public class AccountManager : MonoBehaviour
     GameObject loadingPanel;
     public string EntityId;
     // Currently logged-in account
-    private void Awake()
-    {
-        // Ensure only one instance of AccountManager exists
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Persist between scenes
+    private void Awake(){
+        if(Instance != null){
+            Debug.LogWarning("Found more than one Account Manager in the scene");
         }
-        else
-        {
-            Destroy(gameObject); // Destroy duplicate instances
-        }
+        Instance = this;
     }
     public void Logout()
     {

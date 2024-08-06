@@ -16,6 +16,7 @@ public class Quest
     public List<Reward> rewards;
 }
 public class NPCData{
+    public string id {get;set;}
     public string name {get;set;}
     public Sprite portrait {get;set;}
     public string dialogueKnot {get;set;}
@@ -31,6 +32,7 @@ public class Goal
     public int requiredAmount;
     public int currentAmount;
     public string inkyRedirect;
+    public int characterIndex;
 
     public bool isReached(){
         return (currentAmount >= requiredAmount);
@@ -91,6 +93,17 @@ public enum WeaponType{
     Javelin,
     SpearJavelin,
     Dagger
+}
+public enum MouseEnum {
+    Default,
+    Warning,
+    Link,
+    Accept,
+    SlideHorizontal,
+    SlideVertical,
+    Info,
+    Help,
+    TextBox
 }
 
 [Serializable]
