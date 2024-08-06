@@ -10,12 +10,14 @@ public class QuestSO : ScriptableObject
     public string questTitle;
     public string questDescription;
     public TextAsset dialogue;
+    public List<string> characters;
     public List<string> requirements;
     public ChapterEnum chapter;
     public NPCData npcGiver;
     public bool isMain;
     public bool isActive;
     public bool isCompleted;
+    public bool isChained;
     public int currentGoal;
     public string currentKnot;
     public List<Goal> goals;
