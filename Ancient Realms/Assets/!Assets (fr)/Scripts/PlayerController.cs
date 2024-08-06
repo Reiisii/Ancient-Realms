@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
         moveInputActive = context.phase == InputActionPhase.Performed;
-
+        
         if (!DialogueManager.GetInstance().dialogueIsPlaying && !interactPressed)
         {
             IsMoving = moveInputActive;

@@ -101,8 +101,6 @@ public class DialogueManager : MonoBehaviour
         QuestSO q = PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id);
         if(Utilities.npcHasQuest(npcData)){
             QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-            Debug.Log("Character Talking: " + npcData.id);
-            Debug.Log("Quest Needs talking to: " + quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id);
             if(!quest.isActive && !quest.isCompleted){
                 // IF Quest is not Active AND NOT Completed
                 QuestManager.GetInstance().StartQuest(quest.questID);
