@@ -10,6 +10,8 @@ public class QuestManager : MonoBehaviour
     public List<QuestSO> quests;
     private static QuestManager Instance;
     private PlayerStats playerStats;
+    private Dictionary<string, QuestPrefab> activeQuestPrefabs = new Dictionary<string, QuestPrefab>();
+
     private void Awake(){
         if(Instance != null){
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
@@ -34,13 +36,48 @@ public class QuestManager : MonoBehaviour
                 if(!quest.isChained)quest.currentKnot = "exhaust";
                 playerStats.activeQuests.Add(quest);
                 Debug.Log("Started Quest:" + questID);
-                QuestPrefab questPrefab = Instantiate(qPrefab, Vector3.zero, Quaternion.identity);
-                questPrefab.transform.SetParent(questPanel);
-                questPrefab.transform.localScale = Vector3.one;
-                questPrefab.setQuestSO(quest);
+
             }
         }
     }
+    public void Update(){
+        UpdateQuestBoard();
+    }
+    private void UpdateQuestBoard()
+    {
+        // Remove completed quests from the board
+        var completedQuests = activeQuestPrefabs.Keys.Except(playerStats.activeQuests.Select(q => q.questID)).ToList();
+        foreach (var questID in completedQuests)
+        {
+            if (activeQuestPrefabs.TryGetValue(questID, out QuestPrefab questPrefab))
+            {
+                Destroy(questPrefab.gameObject);
+                activeQuestPrefabs.Remove(questID);
+            }
+        }
+
+        // Update or add active quests
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if (!activeQuestPrefabs.ContainsKey(quest.questID))
+            {
+                AddQuestToBoard(quest);
+            }
+            else
+            {
+                activeQuestPrefabs[quest.questID].UpdateQuestDisplay();
+            }
+        }
+    }
+    private void AddQuestToBoard(QuestSO quest)
+    {
+        QuestPrefab questPrefab = Instantiate(qPrefab, Vector3.zero, Quaternion.identity);
+        questPrefab.transform.SetParent(questPanel);
+        questPrefab.transform.localScale = Vector3.one;
+        questPrefab.setQuestSO(quest);
+        activeQuestPrefabs.Add(quest.questID, questPrefab);
+    }
+
     public void UpdateWalkGoals(float deltaX)
     {
         
