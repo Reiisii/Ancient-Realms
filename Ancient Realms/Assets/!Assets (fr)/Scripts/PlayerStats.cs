@@ -13,7 +13,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] public GameObject QuestPanel;
     [SerializeField] public Slider hpSlider;
     [SerializeField] public Slider staminaSlider;
-    [SerializeField] public TextMeshProUGUI level;
+    [SerializeField] public Slider xpSlider;
+    [SerializeField] public TextMeshProUGUI levelText;
     [SerializeField] public TextMeshProUGUI denariiText;
     [SerializeField] public TextMeshProUGUI sol;
     [Header("Scripts")]
@@ -26,27 +27,35 @@ public class PlayerStats : MonoBehaviour
     public float runSpeed = 8f;
     public float staminaDepletionRate = 40f;
     public float staminaRegenRate = 10f;
+    public float attack = 30;
     [Header("Temp")]
-    public int Level = 0;
+    public int level = 0;
     public int denarii = 0;
-    public int xp = 0;
+    public int maxXP = 30;
+    public int currentXP = 0;
     public double solBalance = 101.023123045;
     public List<QuestSO> activeQuests;
     public List<QuestSO> completedQuests;
     private static PlayerStats Instance;
-    
-    private void Awake(){
-        if(Instance != null){
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
             Debug.LogWarning("Found more than one Player Stats in the scene");
         }
         Instance = this;
     }
+
     void Start()
     {
-        level.SetText(Utilities.FormatNumber(Level));
+        levelText.SetText(Utilities.FormatNumber(level));
         denariiText.SetText(Utilities.FormatNumber(denarii));
         sol.SetText(Utilities.FormatSolana(solBalance));
+        xpSlider.value = currentXP;
+        xpSlider.maxValue = maxXP;
     }
+
     private void Update()
     {
         updateValues();
@@ -58,9 +67,12 @@ public class PlayerStats : MonoBehaviour
         // Update stamina slider
         staminaSlider.value = stamina;
     }
-    public static PlayerStats GetInstance(){
+
+    public static PlayerStats GetInstance()
+    {
         return Instance;
     }
+
     public void AddGold(int amount)
     {
         denarii += amount;
@@ -70,16 +82,36 @@ public class PlayerStats : MonoBehaviour
 
     public void AddXp(int amount)
     {
-        xp += amount;
-        Debug.Log("XP added: " + amount);
+        StartCoroutine(AddXpCoroutine(amount));
     }
+
+    private IEnumerator AddXpCoroutine(int amount)
+    {
+        int startXP = currentXP;
+        int totalXP = currentXP + amount;
+        
+        while (totalXP >= maxXP && level < 30)
+        {
+            int xpToNextLevel = maxXP - currentXP;
+            AnimateXPChange(currentXP, maxXP);
+            yield return new WaitForSeconds(1f); // Wait for the XP animation to complete
+            
+            totalXP -= xpToNextLevel;
+            currentXP = 0;
+            LevelUp();
+        }
+
+        currentXP = totalXP;
+        AnimateXPChange(0, currentXP);
+    }
+
     public void updateValues()
     {
-        // Optionally, animate changes here as well
-        // For now, it directly updates the text
         denariiText.SetText(Utilities.FormatNumber(denarii));
         sol.SetText(Utilities.FormatSolana(solBalance));
-        level.SetText(Utilities.FormatNumber(Level));
+        levelText.SetText(Utilities.FormatNumber(level));
+        xpSlider.value = currentXP;
+        xpSlider.maxValue = maxXP;
     }
 
     private void AnimateGoldChange(int startValue, int endValue)
@@ -89,5 +121,30 @@ public class PlayerStats : MonoBehaviour
             startValue = x;
             denariiText.SetText(Utilities.FormatNumber(startValue));
         }, endValue, 1f).SetEase(Ease.Linear);
+    }
+
+    private void AnimateXPChange(int startValue, int endValue)
+    {
+        DOTween.To(() => startValue, x =>
+        {
+            startValue = x;
+            xpSlider.value = startValue;
+        }, endValue, 1f).SetEase(Ease.Linear);
+    }
+
+    private void LevelUp()
+    {
+        level++;
+        maxXP = CalculateXPToNextLevel(level);
+        HP *= 1.05f; // Increase health by 5%
+        maxStamina *= 1.03f; // Increase stamina by 3%
+        attack *= 1.04f; // Increase attack by 4%
+
+        updateValues();
+    }
+
+    private int CalculateXPToNextLevel(int level)
+    {
+        return 30 + level * 10; // Example linear growth, starting at 30 XP
     }
 }
