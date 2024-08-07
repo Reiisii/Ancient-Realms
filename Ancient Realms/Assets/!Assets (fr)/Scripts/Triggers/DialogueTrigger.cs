@@ -15,6 +15,7 @@ public class DialogueTrigger : MonoBehaviour
 
     [Header("Visual Cue")]
     [SerializeField] private GameObject VisualCue;
+    [SerializeField] private GameObject VisualCueKey;
     [SerializeField] private SpriteRenderer icon;
     [SerializeField] private Sprite bubbleMessage;
     [SerializeField] private Sprite scroll;
@@ -22,12 +23,15 @@ public class DialogueTrigger : MonoBehaviour
     [Header("Ink JSON")]
     [SerializeField] private TextAsset dialogue;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private SpriteRenderer npcSpriteRenderer;
     private bool playerInRange;
     private Story currentStory;
     private bool dialogueIsPlaying;
     public NPCData npcData;
+    private bool initialFlipX;
     private void Awake(){
         VisualCue.SetActive(false);
+        VisualCueKey.SetActive(false);
         playerInRange = false;
         
     }
@@ -41,18 +45,22 @@ public class DialogueTrigger : MonoBehaviour
                     npcDialogue = dialogue,
                     giveableQuest = quests
                 };
+        initialFlipX = npcSpriteRenderer.flipX;;
     }
     private void Update(){
         if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying){
             VisualCue.SetActive(true);
+            VisualCueKey.SetActive(true);
             setVisualCue();
             if(playerController.GetInteractPressed()){
                 DialogueManager.GetInstance().EnterDialogueMode(npcData);
+                FlipPlayerSprite();
             }
         }else{
             VisualCue.SetActive(false);
+            VisualCueKey.SetActive(false);
         }
-
+        
     }
     public void setVisualCue(){
 
@@ -91,7 +99,21 @@ public class DialogueTrigger : MonoBehaviour
         }
         
     }
-    
+    private void FlipPlayerSprite()
+    {
+        if (playerInRange)
+        {
+            if (PlayerStats.GetInstance().gameObject.transform.position.x < transform.position.x)
+            {
+                npcSpriteRenderer.flipX = true; // Player is on the left side of the NPC
+            }
+            else
+            {
+                npcSpriteRenderer.flipX = false; // Player is on the right side of the NPC
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = true;
@@ -101,6 +123,7 @@ public class DialogueTrigger : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = false;
+            npcSpriteRenderer.flipX = initialFlipX;
         }
     }
 }

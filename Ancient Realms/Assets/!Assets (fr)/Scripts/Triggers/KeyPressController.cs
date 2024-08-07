@@ -47,5 +47,15 @@ public class KeyPressHandler : MonoBehaviour
             keyShift.SetActive(true);
             keyPressShift.SetActive(false);
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            keyE.SetActive(false);
+            keyPressE.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            keyE.SetActive(true);
+            keyPressE.SetActive(false);
+        }
     }
 }
