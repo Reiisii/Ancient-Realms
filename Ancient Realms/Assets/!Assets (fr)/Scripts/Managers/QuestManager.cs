@@ -20,6 +20,7 @@ public class QuestManager : MonoBehaviour
     }
     void Start(){
         playerStats = PlayerStats.GetInstance();
+        quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
     }
     public static QuestManager GetInstance(){
         return Instance;
