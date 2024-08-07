@@ -7,8 +7,12 @@ public class QuestPrefab : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI questTitle;
     [SerializeField] TextMeshProUGUI questTask;
+    [SerializeField] TextMeshProUGUI questProgress;
     public QuestSO questSO;
     void Start(){
+        UpdateQuestDisplay();
+    }
+    void Update(){
         UpdateQuestDisplay();
     }
     public void setQuestSO(QuestSO quest){
@@ -16,9 +20,10 @@ public class QuestPrefab : MonoBehaviour
     }
     public void UpdateQuestDisplay(){
         if(questSO.currentGoal < questSO.goals.Capacity){
+            Goal questGoal = questSO.goals[questSO.currentGoal];
             questTitle.SetText(questSO.questTitle);
-            questTask.SetText("- " + questSO.goals[questSO.currentGoal].goalDescription);
+            questTask.SetText("- " + questGoal.goalDescription);
+            questProgress.SetText(questGoal.goalType == GoalTypeEnum.Talk ? "" : "[" + questGoal.currentAmount + "/" + questGoal.requiredAmount + "]");
         }
-        
     }
 }
