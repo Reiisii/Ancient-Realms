@@ -6,7 +6,7 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
     [SerializeField] QuestPrefab qPrefab;
-    [SerializeField] RectTransform questPanel;
+    [SerializeField] public RectTransform questPanel;
     public List<QuestSO> quests;
     private static QuestManager Instance;
     private PlayerStats playerStats;

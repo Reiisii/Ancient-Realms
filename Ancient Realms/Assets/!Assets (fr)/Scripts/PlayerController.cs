@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -79,11 +80,24 @@ public class PlayerController : MonoBehaviour
                 if (distanceMoved >= moveThreshold)
                 {
                     if (IsRunning == true){
-                        QuestManager.GetInstance().UpdateRunGoals(deltaX);
+                        List<QuestSO> quest = playerStats.activeQuests.ToList();
+                        foreach(QuestSO q in quest){
+                            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.RunLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.RunRight){
+                                QuestManager.GetInstance().UpdateRunGoals(deltaX);
+                                distanceMoved = 0f;
+                            } 
+                        }
+                        
                         distanceMoved = 0f;
                     }else if (!IsRunning){
-                        QuestManager.GetInstance().UpdateWalkGoals(deltaX);
-                        distanceMoved = 0f;
+                        List<QuestSO> quest = playerStats.activeQuests.ToList();
+                        foreach(QuestSO q in quest){
+                            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkRight){
+                                QuestManager.GetInstance().UpdateWalkGoals(deltaX);
+                                distanceMoved = 0f;
+                            } 
+                        }
+                        
                     }
                     // Reset the distanceMoved counter
                 }

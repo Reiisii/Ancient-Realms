@@ -20,7 +20,8 @@ public class PlayerStats : MonoBehaviour
     [Header("Scripts")]
     public PlayerData playerData;
     [Header("Player Stats")]
-    public float HP = 100f;
+    public float currentHP = 100f;
+    public float maxHP = 100f;
     public float maxStamina = 70f;
     public float stamina = 70f;
     public float walkSpeed = 5f;
@@ -52,6 +53,8 @@ public class PlayerStats : MonoBehaviour
         levelText.SetText(Utilities.FormatNumber(level));
         denariiText.SetText(Utilities.FormatNumber(denarii));
         sol.SetText(Utilities.FormatSolana(solBalance));
+        hpSlider.maxValue = maxHP;
+        hpSlider.value = currentHP;
         xpSlider.value = currentXP;
         xpSlider.maxValue = maxXP;
     }
@@ -64,8 +67,6 @@ public class PlayerStats : MonoBehaviour
         {
             stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
         }
-        // Update stamina slider
-        staminaSlider.value = stamina;
     }
 
     public static PlayerStats GetInstance()
@@ -82,27 +83,9 @@ public class PlayerStats : MonoBehaviour
 
     public void AddXp(int amount)
     {
-        StartCoroutine(AddXpCoroutine(amount));
-    }
-
-    private IEnumerator AddXpCoroutine(int amount)
-    {
-        int startXP = currentXP;
-        int totalXP = currentXP + amount;
-        
-        while (totalXP >= maxXP && level < 30)
-        {
-            int xpToNextLevel = maxXP - currentXP;
-            AnimateXPChange(currentXP, maxXP);
-            yield return new WaitForSeconds(1f); // Wait for the XP animation to complete
-            
-            totalXP -= xpToNextLevel;
-            currentXP = 0;
-            LevelUp();
-        }
-
-        currentXP = totalXP;
-        AnimateXPChange(0, currentXP);
+        currentXP += amount;
+        if(currentXP >= maxXP) LevelUp();
+        AnimateXPChange(currentXP - amount, currentXP);
     }
 
     public void updateValues()
@@ -110,8 +93,12 @@ public class PlayerStats : MonoBehaviour
         denariiText.SetText(Utilities.FormatNumber(denarii));
         sol.SetText(Utilities.FormatSolana(solBalance));
         levelText.SetText(Utilities.FormatNumber(level));
+        staminaSlider.value = stamina;
+        staminaSlider.maxValue = maxStamina;
         xpSlider.value = currentXP;
         xpSlider.maxValue = maxXP;
+        hpSlider.maxValue = maxHP;
+        hpSlider.value = currentHP;
     }
 
     private void AnimateGoldChange(int startValue, int endValue)
@@ -136,15 +123,17 @@ public class PlayerStats : MonoBehaviour
     {
         level++;
         maxXP = CalculateXPToNextLevel(level);
-        HP *= 1.05f; // Increase health by 5%
+        maxHP *= 1.05f; // Increase health by 5%
+        currentHP = maxHP;
         maxStamina *= 1.03f; // Increase stamina by 3%
         attack *= 1.04f; // Increase attack by 4%
-
+        staminaRegenRate *= 1.03f;
+        currentXP = 0;
         updateValues();
     }
 
     private int CalculateXPToNextLevel(int level)
     {
-        return 30 + level * 10; // Example linear growth, starting at 30 XP
+        return 30 + level * 15; // Example linear growth, starting at 30 XP
     }
 }
