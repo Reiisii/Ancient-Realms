@@ -12,9 +12,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] public GameObject UI;
     [SerializeField] public GameObject QuestPanel;
     [SerializeField] public Slider hpSlider;
-    [SerializeField] public TextMeshProUGUI hpText;
     [SerializeField] public Slider staminaSlider;
-    [SerializeField] public TextMeshProUGUI staminaText;
     [SerializeField] public Slider xpSlider;
     [SerializeField] public TextMeshProUGUI levelText;
     [SerializeField] public TextMeshProUGUI denariiText;
@@ -101,12 +99,6 @@ public class PlayerStats : MonoBehaviour
         xpSlider.maxValue = maxXP;
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
-        int currentHPInt = Mathf.RoundToInt(currentHP);
-        int maxHPInt = Mathf.RoundToInt(maxHP);
-        int staminaInt = Mathf.RoundToInt(stamina);
-        int maxStaminaInt = Mathf.RoundToInt(maxStamina);
-        hpText.SetText("[" + currentHPInt + "/" + maxHPInt + "]");
-        staminaText.SetText("[" + staminaInt + "/" + maxStaminaInt + "]");
     }
 
     private void AnimateGoldChange(int startValue, int endValue)
