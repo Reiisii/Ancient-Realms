@@ -10746,6 +10746,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2131031214}
     - target: {fileID: 4010303813203675558, guid: 7e05dd811957688458f041ae8bc2059d, type: 3}
+      propertyPath: toggleStamina
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010303813203675558, guid: 7e05dd811957688458f041ae8bc2059d, type: 3}
       propertyPath: staminaRegenRate
       value: 5
       objectReference: {fileID: 0}
@@ -43042,8 +43046,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1387794888}
   m_HandleRect: {fileID: 1387794887}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
