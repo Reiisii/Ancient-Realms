@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using ESDatabase.Classes;
 using ESDatabase.Entities;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +35,7 @@ public class PlayerStats : MonoBehaviour
     public float staminaDepletionRate = 40f;
     public float staminaRegenRate = 10f;
     public float attack = 30;
+    public bool toggleStamina = true;
     [Header("Temp")]
     public bool isDataDirty = false;
     public int level = 0;
@@ -103,7 +106,28 @@ public class PlayerStats : MonoBehaviour
         xpSlider.value = currentXP;
         xpSlider.maxValue = maxXP;
     }
-
+    public void SaveQuestToServer()
+    {
+        GameData playerGameData = localPlayerData.gameData;
+        
+        foreach(QuestData quest in playerGameData.quests){
+            QuestSO qData = activeQuests.Find(q => q.questID == quest.questID);
+            if(quest.isActive == true){
+                quest.isActive = qData.isActive;
+                quest.completed = qData.isCompleted;
+                quest.currentKnot = qData.currentKnot;
+                quest.currentGoal = qData.currentGoal;
+                int i = 0;
+                foreach(GoalData goal in quest.goals){
+                    quest.goals[i].currentAmount = qData.goals[i].currentAmount;
+                    quest.goals[i].requiredAmount = qData.goals[i].requiredAmount;
+                    i++;
+                }
+                isDataDirty = true;
+            }
+        }
+        
+    }
     private async void SaveDataToServer()
     {
         if (isDataDirty)

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2178126227165790211}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RIGHT FOREARM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6792529977246440195}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LEFT FOREARM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8756672876995964187}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CAPE 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2747676890279308748}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HEAD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3132587481712873219}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RIGHT HAND
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8102528665831605054}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LEFT ARM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,10 +206,12 @@ GameObject:
   - component: {fileID: 4731954973759446107}
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 1395405347677754809}
-  - component: {fileID: 7034091263014463200}
-  m_Layer: 0
+  - component: {fileID: 2789649550434240155}
+  - component: {fileID: 6077273384365606680}
+  - component: {fileID: 3364556806988158725}
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -224,8 +226,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.8, y: -8.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.022906493, y: 0.022906493, z: 0.022906493}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1126133850367803884}
   - {fileID: 658589911692689632}
@@ -271,9 +273,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1414125273
+  m_SortingLayer: 2
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 60680613f43a2bf4e9a2ae90cac7379d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -336,20 +338,28 @@ MonoBehaviour:
   UI: {fileID: 0}
   QuestPanel: {fileID: 0}
   hpSlider: {fileID: 0}
+  hpText: {fileID: 0}
   staminaSlider: {fileID: 0}
-  level: {fileID: 0}
+  staminaText: {fileID: 0}
+  xpSlider: {fileID: 0}
+  levelText: {fileID: 0}
   denariiText: {fileID: 0}
   sol: {fileID: 0}
-  HP: 100
+  currentHP: 100
+  maxHP: 100
   maxStamina: 70
   stamina: 70
-  walkSpeed: 3.5
+  walkSpeed: 2.5
   runSpeed: 5.5
-  staminaDepletionRate: 20
-  staminaRegenRate: 10
-  Level: 0
+  staminaDepletionRate: 10
+  staminaRegenRate: 5
+  attack: 30
+  toggleStamina: 0
+  isDataDirty: 0
+  level: 0
   denarii: 0
-  xp: 0
+  maxXP: 30
+  currentXP: 0
   solBalance: 56.25015
   activeQuests: []
   completedQuests: []
@@ -382,7 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa56ef00fc1b1b43ba901eb4ba902e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  qPrefab: {fileID: 0}
+  qPrefab: {fileID: 5446196464397879909, guid: 314f2b9f2356fe642aa529a428df681b, type: 3}
   questPanel: {fileID: 0}
   quests: []
 --- !u!114 &4731954973759446107
@@ -416,7 +426,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 7afee66fd75af3a40834701fea88bd81, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -451,7 +461,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7034091263014463200
+--- !u!61 &2789649550434240155
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.045610428, y: -5.697624}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 140.625, y: 93.75}
+    newSize: {x: 140.625, y: 93.75}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 39.562904, y: 79.637344}
+  m_EdgeRadius: 0
+--- !u!114 &6077273384365606680
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -463,7 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 6e74a8c32e8a72d4daa237264781b553, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: 3f6716e9ea27bdc469a20e6fd6ecc768, type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -478,7 +533,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6193478947497796674}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -490,59 +545,59 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 03e93c47-58db-4222-98aa-456bbf6e18d1
+    m_ActionId: a859781a-9c19-43ad-8c60-5c4214bb44e7
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 1fbfecea-dfb7-4d67-89c5-d1e5aeb5fe54
+    m_ActionId: e697374a-8f7e-46c6-853b-17b6f39e4183
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ee462a79-086a-42fc-9788-e83c80bc3109
+    m_ActionId: 3c14fb72-315b-42b7-ae25-37934a6010bf
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 48585779-6aa7-4fba-b042-9539971f6b31
+    m_ActionId: f460bfb1-94e9-4b40-8d26-de056d030029
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 985dc920-5330-481e-8fa6-98636e2244a5
+    m_ActionId: 31edc325-6de7-4509-9da6-449fa8c80f5d
     m_ActionName: UI/Submit[/Keyboard/enter]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 8ab25f27-bcff-4f60-b39f-18ff0b462e77
+    m_ActionId: 48f758ae-304e-46fb-bb89-09ea1d099ba7
     m_ActionName: UI/Cancel[/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5aecab9c-1b16-4c5a-8ec4-c21991a4c9a1
+    m_ActionId: af7713cc-04ff-4de5-97f2-e235c9cf7344
     m_ActionName: UI/Point[/Mouse/position]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 8c209610-c5f2-4802-b6af-1b19981d7a86
+    m_ActionId: 6c972cab-aa6d-4efe-92a9-12a03d3bdc13
     m_ActionName: UI/Click[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 34d56d55-7527-4fb4-b256-e1f5561c468d
+    m_ActionId: 8e7e1cd1-515b-4181-83a7-3e02b19fedc7
     m_ActionName: UI/ScrollWheel[/Mouse/scroll]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 06a49081-16ea-44ec-8e1d-4cb83b8e3865
+    m_ActionId: 1e0c24f4-8866-4b31-9727-1d7332ca4937
     m_ActionName: UI/MiddleClick[/Mouse/middleButton]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 57654688-37eb-4a4d-817d-298e67be9abb
+    m_ActionId: 5da496dd-80c9-4c78-9db8-f3422aed9da8
     m_ActionName: UI/RightClick[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: f9909913-b6ed-4ea7-a613-36271b51021d
+    m_ActionId: d5bfe852-1cc7-4966-9877-5792f723a662
     m_ActionName: UI/TrackedDevicePosition
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 6d6576af-3a48-4f16-bcc1-674856bc3497
+    m_ActionId: 9e23eceb-91ff-4775-a922-82d5a8e86b9f
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6193478947497796674}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnRun
         m_Mode: 0
@@ -554,13 +609,57 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: bac817fd-715d-4fd3-bbe3-39ed895024d5
-    m_ActionName: Player/Run
+    m_ActionId: 5c4a71f0-4ccf-4b89-b7aa-3f79f64aae66
+    m_ActionName: Player/Run[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6193478947497796674}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: InteractButtonPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2e181550-653b-4a1e-831f-f5872a90a50c
+    m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6193478947497796674}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SubmitPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8989f45c-3ed7-430a-9a1d-2cfdeae585f6
+    m_ActionName: Player/Submit[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3364556806988158725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada590f0be74bf245a8f83d06abec86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5047345316725026253
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1286279231919517291}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CAPE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,7 +701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 658589911692689632}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RIGHT THIGH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -634,7 +733,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1126133850367803884}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PELVIS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -665,7 +764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6750508753464357918}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CHEST
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -700,7 +799,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3611516311895604977}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RIGHT ARM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -732,7 +831,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7991418472374330947}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CAPE 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,7 +863,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6373694827993075427}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LEFT HAND
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +894,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4317674446013926589}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: STOMACH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -827,7 +926,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2117614171478419166}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LEFT LEG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,7 +957,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 941632026435257940}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RIGHT LEG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -889,7 +988,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5443969735153458722}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LEFT THIGH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
