@@ -66,10 +66,10 @@ public class EnterBuilding : MonoBehaviour
             playerInRange = false;
             if(interiorGrid.activeSelf){
                 text.SetText(districtName);
-                districtPanel.SetActive(false);
+                districtPanel.GetComponent<LogoutAnimation>().Close();
             }else{
                 text.SetText(buildingName);
-                districtPanel.SetActive(false);
+                districtPanel.GetComponent<LogoutAnimation>().Close();
             }
         }
     }
