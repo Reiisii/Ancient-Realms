@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ESDatabase.Classes;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
@@ -35,7 +36,25 @@ public class QuestManager : MonoBehaviour
             {
                 quest.isActive = true;
                 if(!quest.isChained)quest.currentKnot = "exhaust";
-                playerStats.activeQuests.Add(quest);
+                QuestData questData = new QuestData();
+                questData.questID = questID;
+                questData.isActive = false;
+                questData.completed = false;
+                questData.currentKnot = "start";
+                questData.currentGoal = 0;
+                questData.goals = new List<GoalData>();
+                 foreach (Goal goal in quest.goals)
+                {
+                    GoalData goalData = new GoalData();
+                    goalData.goalID = goal.goalID;
+                    goalData.currentAmount = goal.currentAmount;
+                    goalData.requiredAmount = goal.requiredAmount;
+                    
+                    // Add the initialized goal data to the questData.goals list
+                    questData.goals.Add(goalData);
+                }
+
+                playerStats.AddQuest(questData, quest);
                 Debug.Log("Started Quest:" + questID);
 
             }
@@ -91,6 +110,7 @@ public class QuestManager : MonoBehaviour
                     goal.IncrementProgress(1);
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        playerStats.isDataDirty = true;
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
@@ -99,6 +119,7 @@ public class QuestManager : MonoBehaviour
                     goal.IncrementProgress(1); 
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        playerStats.isDataDirty = true;
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
@@ -116,6 +137,7 @@ public class QuestManager : MonoBehaviour
                     goal.IncrementProgress(1);
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        playerStats.isDataDirty = true;
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
@@ -124,6 +146,7 @@ public class QuestManager : MonoBehaviour
                     goal.IncrementProgress(1); 
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        playerStats.isDataDirty = true;
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
@@ -147,10 +170,12 @@ public class QuestManager : MonoBehaviour
                         goal.IncrementProgress(1);
                         if (goal.currentAmount >= goal.requiredAmount)
                         {
+                            playerStats.isDataDirty = true;
                             CompleteGoal(quest, goal.goalID);
                             if (quest.isCompleted)
                             {
                                 questsToRemove.Add(quest);
+                                playerStats.isDataDirty = true;
                             }
                         }
                     }
@@ -162,11 +187,12 @@ public class QuestManager : MonoBehaviour
         {
             playerStats.activeQuests.Remove(completedQuest);
             playerStats.completedQuests.Add(completedQuest); // Optionally add to completed quests here
+            playerStats.isDataDirty = true;
         }
 
 
     }
-    public void CompleteGoal(QuestSO quest, string goalID)
+    public void CompleteGoal(QuestSO quest, int goalID)
     {
         if(!quest.isActive) return;
         Goal goal = quest.goals.Find(g => g.goalID == goalID);
@@ -220,6 +246,7 @@ public class QuestManager : MonoBehaviour
                     break;
                 }
             }
+            playerStats.isDataDirty = true;
             RewardPlayer(quest);
             Debug.Log("Quest Completed: " + quest.questID);
             

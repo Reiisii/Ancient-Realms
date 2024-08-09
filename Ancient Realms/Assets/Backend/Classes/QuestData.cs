@@ -8,6 +8,7 @@ namespace ESDatabase.Classes
         [Fillable] public string questID {get;set;}
         [Fillable] public bool isActive {get;set;}
         [Fillable] public bool completed {get;set;}
+        [Fillable] public int currentGoal {get;set;}
         [Fillable] public string currentKnot {get;set;}
         [Fillable] public List<GoalData> goals {get;set;}
         public QuestData() {}
