@@ -18,4 +18,5 @@ public class FadeAnimation : MonoBehaviour
             panelGO.SetActive(false);
         });
     }
+    
 }
