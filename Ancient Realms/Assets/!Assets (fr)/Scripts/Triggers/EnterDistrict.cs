@@ -52,8 +52,7 @@ public class EnterDistrict : MonoBehaviour
         if(collider.gameObject.tag == "Player"){
             playerInRange = false;
             text.SetText(locationName);
-            districtPanel.SetActive(false);
-            
+            districtPanel.GetComponent<LogoutAnimation>().Close();
         }
     }
 }
