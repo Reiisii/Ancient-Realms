@@ -26,7 +26,7 @@ public class NPCData{
 [Serializable]
 public class Goal
 {
-    public string goalID;
+    public int goalID;
     public string goalDescription;
     public GoalTypeEnum goalType;
     public int requiredAmount;
@@ -110,27 +110,4 @@ public enum MouseEnum {
 public class QuestList
 {
     public List<Quest> quests;
-}
-public class GoalListener{
-    public GoalTypeEnum goalType;
-    public int currentAmount;
-    public int requiredAmount;
-
-    public GoalListener(GoalData goal, GoalTypeEnum type){
-        this.goalType = type;
-        this.currentAmount = goal.currentAmount;
-        this.requiredAmount = goal.requiredAmount;
-    }
-    public bool isReached(){
-            return (currentAmount >= requiredAmount);
-    }
-
-    public void Listen(){
-        if(goalType == GoalTypeEnum.Kill) currentAmount++;
-        if(goalType == GoalTypeEnum.Gather) currentAmount++;
-        if(goalType == GoalTypeEnum.Talk) currentAmount++;
-        if(goalType == GoalTypeEnum.WalkRight){
-            currentAmount++;
-        };
-    }
 }

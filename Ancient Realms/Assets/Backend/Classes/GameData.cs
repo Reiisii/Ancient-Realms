@@ -8,7 +8,8 @@ namespace ESDatabase.Classes
                 public int denarii {get; set;}
                 public int level { get; set;}
                 public string rank { get; set;}
-                public int xp {get; set;}
+                public int maxXP {get; set;}
+                public int currentXP {get; set;}
                 public int maxEnergy {get;set;}
                 public string lastLocationVisited {get;set;}
                 public string lastDistrict {get;set;}
@@ -21,7 +22,8 @@ namespace ESDatabase.Classes
                         this.playerName = "Unnamed Legionnaire";
                         this.denarii = 0;
                         this.level = 0;
-                        this.xp = 0;
+                        this.maxXP = 30;
+                        this.currentXP = 0;
                         this.maxEnergy = 90;
                         this.currentEnergy = 90;
                         this.lastLocationVisited = "";
