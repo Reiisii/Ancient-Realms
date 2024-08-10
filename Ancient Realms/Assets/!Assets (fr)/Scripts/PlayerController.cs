@@ -139,6 +139,16 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    public void CombatMode(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            IsRunning = false;
+            IsMoving = false;
+            animator.SetBool("isCombatMode", !playerStats.isCombatMode);
+            playerStats.isCombatMode = !playerStats.isCombatMode;
+        }
+    }
     public void SubmitPressed(InputAction.CallbackContext context)
     {
         if (context.performed)
