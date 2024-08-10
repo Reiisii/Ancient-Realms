@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,7 @@ public class Play : MonoBehaviour
 
     public void PlayGame()
     {
+        DOTween.Clear(true);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         asyncLoad.allowSceneActivation = false;
 
