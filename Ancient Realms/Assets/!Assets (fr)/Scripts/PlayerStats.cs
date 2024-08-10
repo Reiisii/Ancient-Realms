@@ -30,11 +30,14 @@ public class PlayerStats : MonoBehaviour
     public float maxHP = 100f;
     public float maxStamina = 70f;
     public float stamina = 70f;
+    [Header("Movement Stats")]
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
     public float staminaDepletionRate = 40f;
     public float staminaRegenRate = 10f;
+    [Header("Combat Stats")]
     public float attack = 30;
+    public bool isCombatMode = false;
     public bool toggleStamina = true;
     [Header("Temp")]
     public bool isDataDirty = false;
@@ -60,7 +63,7 @@ public class PlayerStats : MonoBehaviour
     {
         localPlayerData = await AccountManager.GetPlayer();
         LoadPlayerData(localPlayerData);
-        InvokeRepeating("SaveDataToServer", 5f, 5f); // Save data to the server every 10 seconds
+        InvokeRepeating("SaveDataToServer", 3f, 3f); // Save data to the server every 10 seconds
     }
     private void LoadPlayerData(PlayerData data)
     {

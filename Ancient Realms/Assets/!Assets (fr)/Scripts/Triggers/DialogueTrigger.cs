@@ -22,7 +22,6 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private Sprite questIcon;
     [Header("Ink JSON")]
     [SerializeField] private TextAsset dialogue;
-    [SerializeField] private PlayerController playerController;
     [SerializeField] private SpriteRenderer npcSpriteRenderer;
     private bool playerInRange;
     private Story currentStory;
@@ -52,7 +51,7 @@ public class DialogueTrigger : MonoBehaviour
             VisualCue.SetActive(true);
             VisualCueKey.SetActive(true);
             setVisualCue();
-            if(playerController.GetInteractPressed()){
+            if(PlayerController.GetInstance().GetInteractPressed()){
                 DialogueManager.GetInstance().EnterDialogueMode(npcData);
                 FlipPlayerSprite();
             }

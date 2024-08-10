@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -12,11 +13,12 @@ public class PlayerController : MonoBehaviour
     private Vector2 lastPosition;
     private float distanceMoved;
     private const float moveThreshold = 2f;
-    private const float staminaThreshold = 0.5f;
     Vector2 moveInput;
     public bool moveInputActive = false;
     private bool interactPressed = false;
     private bool submitPressed = false;
+    public bool canReceiveInput;
+    public bool inputReceived;
     Rigidbody2D rb;
     Animator animator;
     private static PlayerController Instance;
@@ -51,6 +53,8 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector2.zero;
             IsRunning = false;
             IsMoving = false;
+            animator.SetBool("isCombatMode", false);
+            playerStats.isCombatMode = false;
             return;
         }
         
@@ -109,16 +113,53 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
     }
+    public void Attack(InputAction.CallbackContext context){
+        if(context.performed){
+            if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsMoving == false && IsRunning == false){
+                inputReceived = true;
+                canReceiveInput = false;
+                StartCoroutine(MoveCharacterAfterDelay());
+
+            }else{
+                return;
+            }
+        }
+    }
+    private IEnumerator MoveCharacterAfterDelay()
+    {
+        // Define the delay before movement (in seconds)
+        float delay = 0.2f; // Adjust this value as needed
+
+        // Wait for the delay
+        yield return new WaitForSeconds(delay);
+
+        // Get the character's current position
+        Vector2 cP = PlayerStats.GetInstance().gameObject.transform.position;
+
+        // Define the movement distance (adjust as needed)
+        float moveDistance = 0.7f;
+
+        // Calculate the new position based on the direction the character is facing
+        Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 newPosition = cP + moveDirection * moveDistance;
+
+        // Define the duration for the smooth movement (adjust as needed)
+        float moveDuration = 0.2f;
+
+        // Use DOTween to smoothly move the character to the new position
+        PlayerStats.GetInstance().gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+    }
     public void OnMove(InputAction.CallbackContext context) 
     {
-        moveInput = context.ReadValue<Vector2>();
-        moveInputActive = context.phase == InputActionPhase.Performed;
-        
-        if (!DialogueManager.GetInstance().dialogueIsPlaying && !interactPressed)
-        {
-            IsMoving = moveInputActive;
-            SetFacingDirection(moveInput);
-        }
+            moveInput = context.ReadValue<Vector2>();
+            moveInputActive = context.phase == InputActionPhase.Performed;
+            
+            if (!DialogueManager.GetInstance().dialogueIsPlaying && !interactPressed)
+            {
+                IsMoving = moveInputActive;
+                SetFacingDirection(moveInput);
+            }
     }
     public void InteractButtonPressed(InputAction.CallbackContext context)
     {
@@ -137,6 +178,16 @@ public class PlayerController : MonoBehaviour
                 IsMoving = true;
                 SetFacingDirection(moveInput);
             }
+        }
+    }
+    public void CombatMode(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            IsRunning = false;
+            IsMoving = false;
+            animator.SetBool("isCombatMode", !playerStats.isCombatMode);
+            playerStats.isCombatMode = !playerStats.isCombatMode;
         }
     }
     public void SubmitPressed(InputAction.CallbackContext context)
@@ -181,7 +232,7 @@ public class PlayerController : MonoBehaviour
             IsRunning = false;
         }
     }
-        public float CurrentMoveSpeed 
+    public float CurrentMoveSpeed 
     { get 
         {
             if(IsMoving)
