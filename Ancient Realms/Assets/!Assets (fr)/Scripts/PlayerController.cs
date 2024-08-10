@@ -57,13 +57,12 @@ public class PlayerController : MonoBehaviour
         if(IsMoving){
             if (IsRunning && moveInputActive)
             {
-                if (playerStats.stamina > 0)
+                if (playerStats.stamina > 0 && playerStats.toggleStamina == true)
                 {
                     playerStats.stamina -= playerStats.staminaDepletionRate * Time.deltaTime;
                     playerStats.stamina = Mathf.Max(0, playerStats.stamina);
                 }
-                else
-                {
+                else if(playerStats.stamina < 1){
                     IsRunning = false;
                 }
             }

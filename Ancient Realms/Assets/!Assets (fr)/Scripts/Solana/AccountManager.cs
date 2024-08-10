@@ -61,7 +61,6 @@ public class AccountManager : MonoBehaviour
     }
     public async static Task<PlayerData> GetPlayer()
     {
-        Instance.loadingPanel.SetActive(true);
         PlayerData player = null;
         await FacetClient.CallFacet((DatabaseService facet) => facet.GetPlayerById(Instance.EntityId))
         .Then(response => 
@@ -112,17 +111,16 @@ public class AccountManager : MonoBehaviour
     }
     public async static Task SaveData(PlayerData player)
     {
-        Instance.loadingPanel.SetActive(true);
+
         await FacetClient.CallFacet((DatabaseService facet) => facet.SaveData(player))
         .Then(response =>
         {
-            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            
             Debug.Log(response);
         })
         .Catch(error =>
         {
             Debug.LogError("Failed to save player data: " + error);
-            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
     }
 

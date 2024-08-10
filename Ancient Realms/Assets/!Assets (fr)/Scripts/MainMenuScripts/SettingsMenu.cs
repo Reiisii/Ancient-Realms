@@ -44,7 +44,7 @@ public class SettingsMenu : MonoBehaviour
             AudioManager.GetInstance().SetSoundFXVolume(soundFXVolume);
             AudioManager.GetInstance().SetMusicVolume(musicVolume);
             AudioManager.GetInstance().SetMasterVolume(masterVolume);
-             oldMasterVolume = masterSlider.value;
+            oldMasterVolume = masterSlider.value;
             oldMusicVolume = musicSlider.value;
             oldSoundFXVolume = soundFXSlider.value;
             settingsPanel.Close();

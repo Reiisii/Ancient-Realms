@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ESDatabase.Classes;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
@@ -35,7 +36,25 @@ public class QuestManager : MonoBehaviour
             {
                 quest.isActive = true;
                 if(!quest.isChained)quest.currentKnot = "exhaust";
-                playerStats.activeQuests.Add(quest);
+                QuestData questData = new QuestData();
+                questData.questID = questID;
+                questData.isActive = true;
+                questData.completed = false;
+                questData.currentKnot = "start";
+                questData.currentGoal = 0;
+                questData.goals = new List<GoalData>();
+                foreach (Goal goal in quest.goals)
+                {
+                    GoalData goalData = new GoalData();
+                    goalData.goalID = goal.goalID;
+                    goalData.currentAmount = goal.currentAmount;
+                    goalData.requiredAmount = goal.requiredAmount;
+                    
+                    // Add the initialized goal data to the questData.goals list
+                    questData.goals.Add(goalData);
+                }
+
+                playerStats.AddQuest(questData, quest);
                 Debug.Log("Started Quest:" + questID);
 
             }
@@ -89,16 +108,20 @@ public class QuestManager : MonoBehaviour
                 if (goal.goalType == GoalTypeEnum.WalkRight && deltaX > 0)
                 {
                     goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        // COMPLETE TRIGGER CODE
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
                 else if (goal.goalType == GoalTypeEnum.WalkLeft && deltaX < 0)
                 {
                     goal.IncrementProgress(1); 
+                    playerStats.SaveQuestToServer();
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        // COMPLETE TRIGGER CODE
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
@@ -114,16 +137,20 @@ public class QuestManager : MonoBehaviour
                 if (goal.goalType == GoalTypeEnum.RunRight && deltaX > 0)
                 {
                     goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        // COMPLETE TRIGGER CODE
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
                 else if (goal.goalType == GoalTypeEnum.RunLeft && deltaX < 0)
                 {
                     goal.IncrementProgress(1); 
+                    playerStats.SaveQuestToServer();
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
+                        // COMPLETE TRIGGER CODE 
                         CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
                     }
                 }
@@ -145,6 +172,7 @@ public class QuestManager : MonoBehaviour
                     if (goal.goalType == GoalTypeEnum.Talk)
                     {
                         goal.IncrementProgress(1);
+                        playerStats.SaveQuestToServer();
                         if (goal.currentAmount >= goal.requiredAmount)
                         {
                             CompleteGoal(quest, goal.goalID);
@@ -162,17 +190,19 @@ public class QuestManager : MonoBehaviour
         {
             playerStats.activeQuests.Remove(completedQuest);
             playerStats.completedQuests.Add(completedQuest); // Optionally add to completed quests here
+            playerStats.isDataDirty = true;
         }
 
 
     }
-    public void CompleteGoal(QuestSO quest, string goalID)
+    public void CompleteGoal(QuestSO quest, int goalID)
     {
         if(!quest.isActive) return;
         Goal goal = quest.goals.Find(g => g.goalID == goalID);
         if (goal != null)
         {
             goal.currentAmount++;
+            playerStats.SaveQuestToServer();
             if (goal.currentAmount >= goal.requiredAmount)
             {
                 quest.currentGoal++;
@@ -186,8 +216,8 @@ public class QuestManager : MonoBehaviour
                         questPrefab.UpdateQuestDisplay();
                     }
                 }
-                
             CheckQuestCompletion(quest);
+            playerStats.SaveQuestToServer();
             }
         }
     }
@@ -211,6 +241,7 @@ public class QuestManager : MonoBehaviour
 
             quest.isCompleted = true;
             quest.isActive = false;
+            playerStats.SaveQuestToServer();
             foreach (Transform child in questPanel)
             {
                 QuestPrefab questPrefab = child.GetComponent<QuestPrefab>();
