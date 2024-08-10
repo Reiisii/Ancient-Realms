@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     public bool moveInputActive = false;
     private bool interactPressed = false;
     private bool submitPressed = false;
+    public bool canReceiveInput;
+    public bool inputReceived;
     Rigidbody2D rb;
     Animator animator;
     private static PlayerController Instance;
@@ -111,15 +113,27 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
     }
+    public void Attack(InputAction.CallbackContext context){
+        if(context.performed){
+            if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsMoving == false && IsRunning == false){
+                inputReceived = true;
+                canReceiveInput = false;
+            }else{
+                return;
+            }
+        }
+    }
     public void OnMove(InputAction.CallbackContext context) 
     {
-        moveInput = context.ReadValue<Vector2>();
-        moveInputActive = context.phase == InputActionPhase.Performed;
-        
-        if (!DialogueManager.GetInstance().dialogueIsPlaying && !interactPressed)
-        {
-            IsMoving = moveInputActive;
-            SetFacingDirection(moveInput);
+        if(canReceiveInput){
+            moveInput = context.ReadValue<Vector2>();
+            moveInputActive = context.phase == InputActionPhase.Performed;
+            
+            if (!DialogueManager.GetInstance().dialogueIsPlaying && !interactPressed)
+            {
+                IsMoving = moveInputActive;
+                SetFacingDirection(moveInput);
+            }
         }
     }
     public void InteractButtonPressed(InputAction.CallbackContext context)
@@ -193,7 +207,7 @@ public class PlayerController : MonoBehaviour
             IsRunning = false;
         }
     }
-        public float CurrentMoveSpeed 
+    public float CurrentMoveSpeed 
     { get 
         {
             if(IsMoving)

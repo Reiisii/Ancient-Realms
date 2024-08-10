@@ -836,6 +836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStats: {fileID: 0}
   moveInputActive: 0
+  canReceiveInput: 1
+  inputReceived: 0
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -885,7 +887,19 @@ MonoBehaviour:
     m_ActionId: e697374a-8f7e-46c6-853b-17b6f39e4183
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 3c14fb72-315b-42b7-ae25-37934a6010bf
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -998,7 +1012,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 7afee66fd75af3a40834701fea88bd81, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
