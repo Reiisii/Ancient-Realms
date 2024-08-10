@@ -13,9 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private Image npcImage;
-    [SerializeField] public PlayerController playerController;
     private static DialogueManager instance;
-    [SerializeField] public QuestManager questManager;
     private Story currentStory;
     private QuestSO[] questArray;
     public bool dialogueIsPlaying { get; private set;}
@@ -39,7 +37,7 @@ public class DialogueManager : MonoBehaviour
         if(!dialogueIsPlaying){
             return;
         }
-        if(playerController.GetInteractPressed()){
+        if(PlayerController.GetInstance().GetInteractPressed()){
             ContinueStory();
         }
     }
