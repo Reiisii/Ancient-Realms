@@ -152,7 +152,6 @@ public class PlayerController : MonoBehaviour
     }
     public void OnMove(InputAction.CallbackContext context) 
     {
-        if(canReceiveInput){
             moveInput = context.ReadValue<Vector2>();
             moveInputActive = context.phase == InputActionPhase.Performed;
             
@@ -161,7 +160,6 @@ public class PlayerController : MonoBehaviour
                 IsMoving = moveInputActive;
                 SetFacingDirection(moveInput);
             }
-        }
     }
     public void InteractButtonPressed(InputAction.CallbackContext context)
     {
