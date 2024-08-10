@@ -63,7 +63,7 @@ public class PlayerStats : MonoBehaviour
     {
         localPlayerData = await AccountManager.GetPlayer();
         LoadPlayerData(localPlayerData);
-        InvokeRepeating("SaveDataToServer", 5f, 5f); // Save data to the server every 10 seconds
+        InvokeRepeating("SaveDataToServer", 3f, 3f); // Save data to the server every 10 seconds
     }
     private void LoadPlayerData(PlayerData data)
     {
