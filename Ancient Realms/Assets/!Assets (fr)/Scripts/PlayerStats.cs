@@ -206,7 +206,7 @@ public class PlayerStats : MonoBehaviour
         {
             startValue = x;
             denariiText.SetText(Utilities.FormatNumber(startValue));
-        }, endValue, 1f).SetEase(Ease.Linear);
+        }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
     }
 
     private void AnimateXPChange(int startValue, int endValue)
@@ -215,7 +215,7 @@ public class PlayerStats : MonoBehaviour
         {
             startValue = x;
             xpSlider.value = startValue;
-        }, endValue, 1f).SetEase(Ease.Linear);
+        }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
     }
 
     private async void LevelUp()
