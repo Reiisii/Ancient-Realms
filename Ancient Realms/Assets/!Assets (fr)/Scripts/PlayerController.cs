@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector2.zero;
             IsRunning = false;
             IsMoving = false;
+            animator.SetBool("isCombatMode", false);
+            playerStats.isCombatMode = false;
             return;
         }
         
