@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private bool interactPressed = false;
     private bool submitPressed = false;
     public bool canReceiveInput;
+    public bool canWalk;
+    public bool isBlocking;
     public bool inputReceived;
     Rigidbody2D rb;
     Animator animator;
@@ -71,53 +73,60 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        if (moveInputActive)
-        {
-            rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
-            Vector2 currentPosition = transform.position;
-            float deltaX = currentPosition.x - lastPosition.x;
-            
-            if (Mathf.Abs(deltaX) > 0.01f)
+        if(canWalk){
+            if (moveInputActive)
             {
-                distanceMoved += Mathf.Abs(deltaX);
-                if (distanceMoved >= moveThreshold)
+                IsMoving = true;
+                SetFacingDirection(moveInput);
+                rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+                Vector2 currentPosition = transform.position;
+                float deltaX = currentPosition.x - lastPosition.x;
+                
+                if (Mathf.Abs(deltaX) > 0.01f)
                 {
-                    if (IsRunning == true){
-                        List<QuestSO> quest = playerStats.activeQuests.ToList();
-                        foreach(QuestSO q in quest){
-                            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.RunLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.RunRight){
-                                QuestManager.GetInstance().UpdateRunGoals(deltaX);
-                                distanceMoved = 0f;
-                            } 
+                    distanceMoved += Mathf.Abs(deltaX);
+                    if (distanceMoved >= moveThreshold)
+                    {
+                        if (IsRunning == true){
+                            List<QuestSO> quest = playerStats.activeQuests.ToList();
+                            foreach(QuestSO q in quest){
+                                if(q.goals[q.currentGoal].goalType == GoalTypeEnum.RunLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.RunRight){
+                                    QuestManager.GetInstance().UpdateRunGoals(deltaX);
+                                    distanceMoved = 0f;
+                                } 
+                            }
+                            
+                            distanceMoved = 0f;
+                        }else if (!IsRunning){
+                            List<QuestSO> quest = playerStats.activeQuests.ToList();
+                            foreach(QuestSO q in quest){
+                                if(q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkRight){
+                                    QuestManager.GetInstance().UpdateWalkGoals(deltaX);
+                                    distanceMoved = 0f;
+                                } 
+                            }
+                            
                         }
-                        
-                        distanceMoved = 0f;
-                    }else if (!IsRunning){
-                        List<QuestSO> quest = playerStats.activeQuests.ToList();
-                        foreach(QuestSO q in quest){
-                            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkRight){
-                                QuestManager.GetInstance().UpdateWalkGoals(deltaX);
-                                distanceMoved = 0f;
-                            } 
-                        }
-                        
+                        // Reset the distanceMoved counter
                     }
-                    // Reset the distanceMoved counter
+                    lastPosition = currentPosition;
                 }
-                lastPosition = currentPosition;
-            }
 
-        }
-        else
-        {
-            rb.velocity = Vector2.zero;
+            }
+            else
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
     }
     public void Attack(InputAction.CallbackContext context){
         if(context.performed){
-            if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsMoving == false && IsRunning == false){
+            if(playerStats.stamina < 10) return;
+            if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsRunning == false){
                 inputReceived = true;
                 canReceiveInput = false;
+                canWalk = false;
+                playerStats.stamina -= 10f;
                 StartCoroutine(MoveCharacterAfterDelay());
 
             }else{
@@ -125,10 +134,25 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    public void Block(InputAction.CallbackContext context){
+        if(context.performed){
+            if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsRunning == false){
+                animator.SetBool("isBlocking", true);
+                canWalk = false;
+                isBlocking = true;
+                playerStats.stamina -= 5f * Time.deltaTime;
+            }
+        }else if (context.canceled)
+        {
+            canWalk = true;
+            isBlocking = false;
+            animator.SetBool("isBlocking", false);
+        }
+    }
     private IEnumerator MoveCharacterAfterDelay()
     {
         // Define the delay before movement (in seconds)
-        float delay = 0.2f; // Adjust this value as needed
+        float delay = 0.25f; // Adjust this value as needed
 
         // Wait for the delay
         yield return new WaitForSeconds(delay);
@@ -137,7 +161,7 @@ public class PlayerController : MonoBehaviour
         Vector2 cP = PlayerStats.GetInstance().gameObject.transform.position;
 
         // Define the movement distance (adjust as needed)
-        float moveDistance = 0.7f;
+        float moveDistance = 0.6f;
 
         // Calculate the new position based on the direction the character is facing
         Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
@@ -145,10 +169,11 @@ public class PlayerController : MonoBehaviour
         Vector2 newPosition = cP + moveDirection * moveDistance;
 
         // Define the duration for the smooth movement (adjust as needed)
-        float moveDuration = 0.2f;
+        float moveDuration = 0.1f;
 
         // Use DOTween to smoothly move the character to the new position
         PlayerStats.GetInstance().gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        
     }
     public void OnMove(InputAction.CallbackContext context) 
     {
