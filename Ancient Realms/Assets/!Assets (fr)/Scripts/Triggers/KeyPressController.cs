@@ -10,7 +10,10 @@ public class KeyPressHandler : MonoBehaviour
     [SerializeField] public GameObject keyShift;
     [SerializeField] public GameObject keyPressE;
     [SerializeField] public GameObject keyE;
-
+    [SerializeField] public GameObject keyPressSpacebar;
+    [SerializeField] public GameObject keySpacebar;
+    [SerializeField] public GameObject keyPressR;
+    [SerializeField] public GameObject keyR;
     void Update()
     {
         // Handle "A" key press
@@ -56,6 +59,26 @@ public class KeyPressHandler : MonoBehaviour
         {
             keyE.SetActive(true);
             keyPressE.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            keySpacebar.SetActive(false);
+            keyPressSpacebar.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            keySpacebar.SetActive(true);
+            keyPressSpacebar.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            keyR.SetActive(false);
+            keyPressR.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            keyR.SetActive(true);
+            keyPressR.SetActive(false);
         }
     }
 }

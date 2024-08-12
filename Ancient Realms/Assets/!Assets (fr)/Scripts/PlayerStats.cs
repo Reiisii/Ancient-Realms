@@ -144,8 +144,9 @@ public class PlayerStats : MonoBehaviour
     {
         updateValues();
         PlayerController playerController = PlayerController.GetInstance();
-        if (!playerController.moveInputActive && playerController.IsRunning || !playerController.IsRunning)
+        if (!playerController.moveInputActive && playerController.IsRunning || !playerController.IsRunning && playerController.canWalk)
         {
+            if(isCombatMode && playerController.IsMoving && playerController.isBlocking) return;
             stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
         }
     }
