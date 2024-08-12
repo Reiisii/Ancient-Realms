@@ -836,6 +836,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &-2072813284329572039
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Combat Walk Block
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 1b884f7a86fc1714f9c8c852715414cf, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &-1802117227268847012
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1680,6 +1706,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -8753146680994342775}
     m_Position: {x: 810, y: 700, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -2072813284329572039}
+    m_Position: {x: 810, y: 750, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: 3040818604837674823}
@@ -1690,12 +1719,12 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -2768609710652533465}
-    second:
-    - {fileID: 6721317539019443099}
   - first: {fileID: 3040818604837674823}
     second:
     - {fileID: 6921717101519033024}
+  - first: {fileID: -2768609710652533465}
+    second:
+    - {fileID: 6721317539019443099}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
