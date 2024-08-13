@@ -20,12 +20,11 @@ public class PlayerController : MonoBehaviour
     public bool moveInputActive = false;
     private bool interactPressed = false;
     private bool submitPressed = false;
-    public bool canReceiveInput;
+    public bool isAttacking = false;
     public bool canWalk;
     public bool isBlocking;
-    public bool inputReceived;
     Rigidbody2D rb;
-    Animator animator;
+    public Animator animator;
     private static PlayerController Instance;
     private void Awake()
     {
@@ -125,20 +124,18 @@ public class PlayerController : MonoBehaviour
     public void Attack(InputAction.CallbackContext context){
         if(context.performed){
             if(playerStats.stamina < 10) return;
-            if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsRunning == false){
-                inputReceived = true;
-                canReceiveInput = false;
-                canWalk = false;
+            if(PlayerStats.GetInstance().isCombatMode && !isAttacking && IsRunning == false){
+                isAttacking = true;
                 playerStats.stamina -= 10f;
-                Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
-                foreach(Collider2D enemy in hitEnemies){
-                    enemy.GetComponent<Enemy>().TakeDamage(playerStats.attack);
-                }
-                StartCoroutine(MoveCharacterAfterDelay());
-
             }else{
                 return;
             }
+        }
+    }
+    void Applydamage(){
+        Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
+        foreach(Collider2D enemy in hitEnemies){
+            enemy.GetComponent<Enemy>().TakeDamage(playerStats.attack);
         }
     }
     void OnDrawGizmosSelected(){
@@ -147,7 +144,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Block(InputAction.CallbackContext context){
         if(context.performed){
-            if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsRunning == false){
+            if(PlayerStats.GetInstance().isCombatMode && IsRunning == false){
                 animator.SetBool("isBlocking", true);
                 playerStats.stamina -= 5f * Time.deltaTime;
             }
@@ -156,14 +153,8 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isBlocking", false);
         }
     }
-    private IEnumerator MoveCharacterAfterDelay()
+    void MoveCharacterAfterDelay()
     {
-        // Define the delay before movement (in seconds)
-        float delay = 0.25f; // Adjust this value as needed
-
-        // Wait for the delay
-        yield return new WaitForSeconds(delay);
-
         // Get the character's current position
         Vector2 cP = PlayerStats.GetInstance().gameObject.transform.position;
 
@@ -271,7 +262,7 @@ public class PlayerController : MonoBehaviour
         {
             if(IsMoving)
             {
-                if(IsRunning)
+                if(IsRunning && playerStats.stamina > 0)
                 {
                     return playerStats.runSpeed;
                 } else
@@ -311,9 +302,9 @@ public class PlayerController : MonoBehaviour
             return _isRunning;
         } private set
         {
-            if(playerStats.stamina < 1) return;
-            _isRunning = value;
-            animator.SetBool("isRunning", value);
+                _isRunning = value;
+                if(playerStats.stamina < 1) animator.SetBool("isRunning", false);
+                else animator.SetBool("isRunning", value);            
         }
     }
 
