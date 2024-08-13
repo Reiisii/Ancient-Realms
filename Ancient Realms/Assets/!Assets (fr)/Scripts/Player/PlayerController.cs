@@ -311,6 +311,7 @@ public class PlayerController : MonoBehaviour
             return _isRunning;
         } private set
         {
+            if(playerStats.stamina < 1) return;
             _isRunning = value;
             animator.SetBool("isRunning", value);
         }
