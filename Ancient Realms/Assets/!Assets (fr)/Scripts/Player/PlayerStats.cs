@@ -4,6 +4,7 @@ using System.Linq;
 using DG.Tweening;
 using ESDatabase.Classes;
 using ESDatabase.Entities;
+using Solana.Unity.SDK;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -46,7 +47,8 @@ public class PlayerStats : MonoBehaviour
     public int maxXP = 30;
     public int currentXP = 0;
     public float attackRange = 0.5f;
-    public double solBalance = 101.023123045;
+    public double solBalance = 0;
+    private double previousSolBalance = 0;
     public List<QuestSO> activeQuests;
     public List<QuestSO> completedQuests;
     private static PlayerStats Instance;
@@ -65,6 +67,15 @@ public class PlayerStats : MonoBehaviour
         localPlayerData = await AccountManager.GetPlayer();
         LoadPlayerData(localPlayerData);
         InvokeRepeating("SaveDataToServer", 3f, 3f); // Save data to the server every 10 seconds
+    }
+    private void OnEnable()
+    {
+        Web3.OnBalanceChange += OnBalanceChange;
+    }
+
+    private void OnDisable()
+    {
+        Web3.OnBalanceChange -= OnBalanceChange;
     }
     private void LoadPlayerData(PlayerData data)
     {
@@ -104,7 +115,6 @@ public class PlayerStats : MonoBehaviour
         // Update UI elements
         levelText.SetText(Utilities.FormatNumber(level));
         denariiText.SetText(Utilities.FormatNumber(denarii));
-        sol.SetText(Utilities.FormatSolana(solBalance));
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
         xpSlider.value = currentXP;
@@ -201,7 +211,6 @@ public class PlayerStats : MonoBehaviour
     public void updateValues()
     {
         denariiText.SetText(Utilities.FormatNumber(denarii));
-        sol.SetText(Utilities.FormatSolana(solBalance));
         levelText.SetText(Utilities.FormatNumber(level));
         staminaSlider.value = stamina;
         staminaSlider.maxValue = maxStamina;
@@ -223,6 +232,14 @@ public class PlayerStats : MonoBehaviour
         {
             startValue = x;
             denariiText.SetText(Utilities.FormatNumber(startValue));
+        }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
+    }
+    private void AnimateSolChange(double startValue, double endValue)
+    {
+        DOTween.To(() => startValue, x =>
+        {
+            startValue = x;
+            sol.SetText(Utilities.FormatSolana(startValue));
         }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
     }
 
@@ -271,6 +288,13 @@ public class PlayerStats : MonoBehaviour
     {
         localPlayerData = await AccountManager.GetPlayer();
         LoadPlayerData(localPlayerData);
+    }
+    private void OnBalanceChange(double sb)
+    {
+        double oldBalance = previousSolBalance;
+        previousSolBalance = sb;
+
+        AnimateSolChange(oldBalance, sb);
     }
     private int CalculateXPToNextLevel(int level)
     {
