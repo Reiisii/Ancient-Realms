@@ -1,40 +1,21 @@
 ﻿-> start
 
 == start ==
-Legionnaire! I see you're done with Movement Training!
-It's time for your combat training!
-Every Legionnaire must know how to fight! so are you ready Legionnaire?
-Excellent! That's what I like to hear! more soldiers like you we would everything that oppose us.
-Proceeding to Training! First I'll teach you basic combat how to use your gladius, scutum, and pilum.
-Let's start with your Gladius.
-Think of this weapon as your woman, you must fight for it no matter what happens you must not lose it in the midst of a battle!
-The most effective way of using this is by stabbing it at your enemy!
-Now show me what you can do stab those training dummies 10 times!
--> goal_0
+Tiro! I see you've completed your Movement Training. Excellent work!
+Now, it's time to move on to the next stage—combat training. Every legionnaire must be skilled in the art of warfare, so are you prepared for the challenge ahead?"
+That's the spirit! With soldiers like you, our enemies don't stand a chance. We're about to begin your combat training, and I'll be teaching you how to wield the gladius, defend with your scutum, and throw the pilum with precision.
+Let's start with the gladius, the sword that defines a Roman soldier. This weapon is more than just a tool—it's your companion in battle. You must protect it as you would your own life. Lose it, and you risk everything.
+The gladius is most effective when used to stab, not slash. A precise thrust can end a fight swiftly. Now, show me what you've learned—stab those training dummies 10 times. Remember, accuracy and speed are key!
+-> DONE
 
 == goal_0 ==
-Great! now you can protect yourself against any enemy!
--> DONE
-
-== goal_1 ==
-Nice work Legionnaire! Easy right?!
-Now that's done, walk to the left!
--> DONE
-
-== goal_2 ==
-You are almost done with this small exercise, now show me if you can run! Run to the right!
--> DONE
-
-== goal_3 ==
-Impressive Legionnaire! before we end the training run to the left DAMN IT!
--> DONE
-
-== goal_4 ==
-Excellent Legionnaire! You have finished your movement training now move to the Legate for combat training.
+Well done, Tiro! You've shown skill and determination in your training today. Each thrust of your gladius brings you closer to becoming a true legionnaire.
+Remember, the lessons learned here on the training grounds will save your life on the battlefield. Your gladius, scutum, and pilum are not just weapons—they are extensions of your will, your discipline, and your duty to Rome.
+Dismissed, Tiro. Prepare yourself for what's next. This is just the beginning of your journey.
 -> DONE
 
 == exhaust ==
-What do you want? I gave you a task! DO IT!
+What is it Tiro? Do the task I gave you I don't have all day!
 -> DONE
 == scold ==
 Pft- You better be ready next time!

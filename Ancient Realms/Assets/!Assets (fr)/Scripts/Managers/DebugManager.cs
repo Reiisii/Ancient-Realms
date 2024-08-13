@@ -10,6 +10,8 @@ public class DebugManager : MonoBehaviour
         ClearContent(QuestManager.GetInstance().questPanel);
         PlayerStats.GetInstance().activeQuests.Clear();
         PlayerStats.GetInstance().completedQuests.Clear();
+        PlayerStats.GetInstance().localPlayerData.gameData.quests.Clear();
+        PlayerStats.GetInstance().isDataDirty = true;
         foreach(QuestSO quest in quests){
             quest.isActive = false;
             quest.isCompleted = false;
