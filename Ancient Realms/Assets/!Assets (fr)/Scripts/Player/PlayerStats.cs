@@ -4,6 +4,7 @@ using System.Linq;
 using DG.Tweening;
 using ESDatabase.Classes;
 using ESDatabase.Entities;
+using Solana.Unity.SDK;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -45,7 +46,9 @@ public class PlayerStats : MonoBehaviour
     public int denarii = 0;
     public int maxXP = 30;
     public int currentXP = 0;
-    public double solBalance = 101.023123045;
+    public float attackRange = 0.5f;
+    public double solBalance = 0;
+    private double previousSolBalance = 0;
     public List<QuestSO> activeQuests;
     public List<QuestSO> completedQuests;
     private static PlayerStats Instance;
@@ -64,6 +67,15 @@ public class PlayerStats : MonoBehaviour
         localPlayerData = await AccountManager.GetPlayer();
         LoadPlayerData(localPlayerData);
         InvokeRepeating("SaveDataToServer", 3f, 3f); // Save data to the server every 10 seconds
+    }
+    private void OnEnable()
+    {
+        Web3.OnBalanceChange += OnBalanceChange;
+    }
+
+    private void OnDisable()
+    {
+        Web3.OnBalanceChange -= OnBalanceChange;
     }
     private void LoadPlayerData(PlayerData data)
     {
@@ -103,7 +115,6 @@ public class PlayerStats : MonoBehaviour
         // Update UI elements
         levelText.SetText(Utilities.FormatNumber(level));
         denariiText.SetText(Utilities.FormatNumber(denarii));
-        sol.SetText(Utilities.FormatSolana(solBalance));
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
         xpSlider.value = currentXP;
@@ -146,8 +157,23 @@ public class PlayerStats : MonoBehaviour
         PlayerController playerController = PlayerController.GetInstance();
         if (!playerController.moveInputActive && playerController.IsRunning || !playerController.IsRunning && playerController.canWalk)
         {
-            if(isCombatMode && playerController.IsMoving && playerController.isBlocking) return;
-            stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
+            if(isCombatMode) {
+                walkSpeed = Mathf.Max(walkSpeed, walkSpeed - (walkSpeed * 0.25f) * Time.deltaTime);
+                staminaRegenRate = Mathf.Max(staminaRegenRate, staminaRegenRate - (staminaRegenRate * 0.25f) * Time.deltaTime);
+            }
+            if (isCombatMode && playerController.IsMoving && playerController.isBlocking){
+                // Walking and blocking - deplete stamina at 50% of the current depletion rate
+                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.5f) * Time.deltaTime);
+            }else if (isCombatMode && !playerController.IsMoving && playerController.isBlocking)
+            {
+                // Standing and blocking - regenerate stamina at 25% of the current regeneration rate
+                stamina = Mathf.Min(maxStamina, stamina + (staminaRegenRate * 0.25f) * Time.deltaTime);
+            }else if(isCombatMode && playerController.IsMoving){
+                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.25f) * Time.deltaTime);
+            }else{
+                stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
+            }
+            
         }
     }
 
@@ -185,7 +211,6 @@ public class PlayerStats : MonoBehaviour
     public void updateValues()
     {
         denariiText.SetText(Utilities.FormatNumber(denarii));
-        sol.SetText(Utilities.FormatSolana(solBalance));
         levelText.SetText(Utilities.FormatNumber(level));
         staminaSlider.value = stamina;
         staminaSlider.maxValue = maxStamina;
@@ -207,6 +232,14 @@ public class PlayerStats : MonoBehaviour
         {
             startValue = x;
             denariiText.SetText(Utilities.FormatNumber(startValue));
+        }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
+    }
+    private void AnimateSolChange(double startValue, double endValue)
+    {
+        DOTween.To(() => startValue, x =>
+        {
+            startValue = x;
+            sol.SetText(Utilities.FormatSolana(startValue));
         }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
     }
 
@@ -255,6 +288,13 @@ public class PlayerStats : MonoBehaviour
     {
         localPlayerData = await AccountManager.GetPlayer();
         LoadPlayerData(localPlayerData);
+    }
+    private void OnBalanceChange(double sb)
+    {
+        double oldBalance = previousSolBalance;
+        previousSolBalance = sb;
+
+        AnimateSolChange(oldBalance, sb);
     }
     private int CalculateXPToNextLevel(int level)
     {

@@ -10,6 +10,9 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerStats playerStats;
+    [SerializeField] public Transform attackPoint;
+    public LayerMask enemyLayer;
+
     private Vector2 lastPosition;
     private float distanceMoved;
     private const float moveThreshold = 2f;
@@ -127,6 +130,10 @@ public class PlayerController : MonoBehaviour
                 canReceiveInput = false;
                 canWalk = false;
                 playerStats.stamina -= 10f;
+                Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
+                foreach(Collider2D enemy in hitEnemies){
+                    enemy.GetComponent<Enemy>().TakeDamage(playerStats.attack);
+                }
                 StartCoroutine(MoveCharacterAfterDelay());
 
             }else{
@@ -134,18 +141,18 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    void OnDrawGizmosSelected(){
+        if(attackPoint == null) return;
+        Gizmos .DrawWireSphere(attackPoint.position, playerStats.attackRange);
+    }
     public void Block(InputAction.CallbackContext context){
         if(context.performed){
             if(PlayerStats.GetInstance().isCombatMode && canReceiveInput && IsRunning == false){
                 animator.SetBool("isBlocking", true);
-                canWalk = false;
-                isBlocking = true;
                 playerStats.stamina -= 5f * Time.deltaTime;
             }
         }else if (context.canceled)
         {
-            canWalk = true;
-            isBlocking = false;
             animator.SetBool("isBlocking", false);
         }
     }
@@ -211,6 +218,7 @@ public class PlayerController : MonoBehaviour
         {
             IsRunning = false;
             IsMoving = false;
+            canWalk = false;
             animator.SetBool("isCombatMode", !playerStats.isCombatMode);
             playerStats.isCombatMode = !playerStats.isCombatMode;
         }
@@ -250,6 +258,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
+            if(isBlocking && playerStats.isCombatMode) return;
             IsRunning = true;
         } 
         else if (context.canceled)
@@ -302,6 +311,7 @@ public class PlayerController : MonoBehaviour
             return _isRunning;
         } private set
         {
+            if(playerStats.stamina < 1) return;
             _isRunning = value;
             animator.SetBool("isRunning", value);
         }

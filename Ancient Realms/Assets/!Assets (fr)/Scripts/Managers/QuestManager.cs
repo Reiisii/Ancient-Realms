@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -157,7 +158,63 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-
+    public void UpdateHitGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.Hit)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateKillGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.Kill)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateDamageGoal(float damage)
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.Damage)
+                {
+                    goal.IncrementProgress(Convert.ToInt32(damage));
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
     public void UpdateTalkGoal()
     {
         List<QuestSO> questsToRemove = new List<QuestSO>();
@@ -192,8 +249,6 @@ public class QuestManager : MonoBehaviour
             playerStats.completedQuests.Add(completedQuest); // Optionally add to completed quests here
             playerStats.isDataDirty = true;
         }
-
-
     }
     public void CompleteGoal(QuestSO quest, int goalID)
     {
