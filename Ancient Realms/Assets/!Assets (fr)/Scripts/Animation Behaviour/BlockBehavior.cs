@@ -7,7 +7,7 @@ public class BlockBehavior : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerController.GetInstance().canReceiveInput = true;
-        PlayerController.GetInstance().canWalk = false;
+        PlayerController.GetInstance().isBlocking = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -15,6 +15,7 @@ public class BlockBehavior : StateMachineBehaviour
     {
         if(PlayerController.GetInstance().inputReceived){
             animator.SetTrigger("RomanAttackOne");
+            PlayerController.GetInstance().isBlocking = false;
             PlayerController.GetInstance().canReceiveInput = false;
             PlayerController.GetInstance().inputReceived = false;
         }

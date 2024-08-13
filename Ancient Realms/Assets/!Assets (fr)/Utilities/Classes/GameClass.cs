@@ -33,6 +33,7 @@ public class Goal
     public int currentAmount;
     public string inkyRedirect;
     public int characterIndex;
+    public string[] targetCharacters;
 
     public bool isReached(){
         return (currentAmount >= requiredAmount);

@@ -45,6 +45,7 @@ public class PlayerStats : MonoBehaviour
     public int denarii = 0;
     public int maxXP = 30;
     public int currentXP = 0;
+    public float attackRange = 0.5f;
     public double solBalance = 101.023123045;
     public List<QuestSO> activeQuests;
     public List<QuestSO> completedQuests;
@@ -146,8 +147,23 @@ public class PlayerStats : MonoBehaviour
         PlayerController playerController = PlayerController.GetInstance();
         if (!playerController.moveInputActive && playerController.IsRunning || !playerController.IsRunning && playerController.canWalk)
         {
-            if(isCombatMode && playerController.IsMoving && playerController.isBlocking) return;
-            stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
+            if(isCombatMode) {
+                walkSpeed = Mathf.Max(walkSpeed, walkSpeed - (walkSpeed * 0.25f) * Time.deltaTime);
+                staminaRegenRate = Mathf.Max(staminaRegenRate, staminaRegenRate - (staminaRegenRate * 0.25f) * Time.deltaTime);
+            }
+            if (isCombatMode && playerController.IsMoving && playerController.isBlocking){
+                // Walking and blocking - deplete stamina at 50% of the current depletion rate
+                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.5f) * Time.deltaTime);
+            }else if (isCombatMode && !playerController.IsMoving && playerController.isBlocking)
+            {
+                // Standing and blocking - regenerate stamina at 25% of the current regeneration rate
+                stamina = Mathf.Min(maxStamina, stamina + (staminaRegenRate * 0.25f) * Time.deltaTime);
+            }else if(isCombatMode && playerController.IsMoving){
+                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.25f) * Time.deltaTime);
+            }else{
+                stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
+            }
+            
         }
     }
 
