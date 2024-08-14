@@ -22,7 +22,9 @@ public class DebugManager : MonoBehaviour
             }
         }
     }
-
+    public void AddQuest(string questID){
+        QuestManager.GetInstance().StartQuest(questID);
+    }
     public void AddPlayerGold(int value){
         PlayerStats.GetInstance().AddGold(value);
     }
