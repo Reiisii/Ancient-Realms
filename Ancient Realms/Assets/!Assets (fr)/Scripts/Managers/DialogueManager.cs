@@ -96,28 +96,43 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
-        QuestSO q = PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id);
-        if(Utilities.npcHasQuest(npcData)){
-            QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-            if(!quest.isActive && !quest.isCompleted){
-                // IF Quest is not Active AND NOT Completed
-                QuestManager.GetInstance().StartQuest(quest.questID);
-            }
-            if(quest.isActive && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
-                // IF NPC's giveable Quest is Active AND if the QUEST matches the Character ID
-                QuestManager.GetInstance().UpdateTalkGoal();
-            }
-        }else if(q != null){
+        var relevantQuests = PlayerStats.GetInstance().activeQuests
+        .Where(q => q.goals.Any(g => g.goalType == GoalTypeEnum.Talk && 
+                                        q.characters[g.characterIndex] == npcData.id))
+        .ToList();
 
-            Debug.Log("Character Talking: " + npcData.id);
-            Debug.Log("Quest Needs talking to: " + q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
-            if(q.isActive && q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id){
-                // IF NPC's giveable Quest is Active AND if the QUEST matches the Character ID
-                QuestManager.GetInstance().UpdateTalkGoal();
+        if (Utilities.npcHasQuest(npcData))
+        {
+            QuestSO questToGive = QuestManager.GetInstance().quests
+                .FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
+
+            if (questToGive != null && !questToGive.isActive && !questToGive.isCompleted)
+            {
+                // Start the quest if it's not already active or completed
+                QuestManager.GetInstance().StartQuest(questToGive.questID);
             }
+
+            Debug.Log("T Needs Talking: " + questToGive.characters[questToGive.goals[questToGive.currentGoal].characterIndex]);
+            Debug.Log("T Talked to" + npcData.id);
         }
         
-        
+            // Update talk goals for each relevant quest
+            foreach (var quest in relevantQuests)
+            {
+                if (quest.isActive)
+                {
+                    Goal currentGoal = quest.goals[quest.currentGoal];
+                    Debug.Log("E Needs Talking: " + quest.characters[currentGoal.characterIndex]);
+                    Debug.Log("E Talked to" + npcData.id);
+                    if (currentGoal.goalType == GoalTypeEnum.Talk && 
+                        quest.characters[currentGoal.characterIndex] == npcData.id)
+                    {
+                        
+                        QuestManager.GetInstance().UpdateTalkGoal(quest);
+                    }
+                }
+            }
+    
     }
     private void ContinueStory(){
         if(currentStory.canContinue){

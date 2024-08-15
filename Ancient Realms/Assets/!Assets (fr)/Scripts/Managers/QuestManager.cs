@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using ESDatabase.Classes;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class QuestManager : MonoBehaviour
 {
     [SerializeField] QuestPrefab qPrefab;
     [SerializeField] public RectTransform questPanel;
+    [SerializeField] public GameObject journalPanel;
     public List<QuestSO> quests;
     private static QuestManager Instance;
     private PlayerStats playerStats;
@@ -98,7 +100,22 @@ public class QuestManager : MonoBehaviour
         questPrefab.setQuestSO(quest);
         activeQuestPrefabs.Add(quest.questID, questPrefab);
     }
-
+    public void OpenJournal(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if(journalPanel.activeSelf == true){
+                Time.timeScale = 1f;
+                PlayerController.GetInstance().GetComponent<PlayerInput>().enabled = true;
+                journalPanel.SetActive(false);
+            }else{
+                Time.timeScale = 0f;
+                PlayerController.GetInstance().GetComponent<PlayerInput>().enabled = false;
+                journalPanel.SetActive(true);
+            }
+            
+        }
+    }
     public void UpdateWalkGoals(float deltaX)
     {
         
@@ -215,12 +232,9 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-    public void UpdateTalkGoal()
+    public void UpdateTalkGoal(QuestSO quest)
     {
         List<QuestSO> questsToRemove = new List<QuestSO>();
-
-        foreach (var quest in playerStats.activeQuests.ToList()) // Create a copy for safe iteration
-        {
             if (quest.currentGoal < quest.goals.Count)
             {
                 if (quest.isActive)
@@ -240,7 +254,6 @@ public class QuestManager : MonoBehaviour
                         }
                     }
                 }
-            }
         }
 
         foreach (QuestSO completedQuest in questsToRemove)
