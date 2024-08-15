@@ -308,6 +308,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3316219582088618432, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+      propertyPath: particleSystem
+      value: 
+      objectReference: {fileID: 296788361307226400}
     - target: {fileID: 4644936873085406649, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
       propertyPath: m_Name
       value: Grindstone
@@ -329,6 +333,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+--- !u!198 &296788361307226400 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4341393060682605396, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+  m_PrefabInstance: {fileID: 296788361307226399}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2394287901257035993
 PrefabInstance:
   m_ObjectHideFlags: 0
