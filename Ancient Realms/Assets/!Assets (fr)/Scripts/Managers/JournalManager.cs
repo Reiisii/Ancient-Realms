@@ -14,7 +14,7 @@ public class JournalManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI questTitleText;
     [SerializeField] TextMeshProUGUI descriptionText;
     [SerializeField] RectTransform objectiveListPanel;
-    QuestSO displayedQuest;
+    public QuestSO displayedQuest;
     public List<QuestSO> mainQuest;
     [SerializeField] List<QuestSO> mainQuestList = new List<QuestSO>();
     [SerializeField] List<QuestSO> subQuestList = new List<QuestSO>();
@@ -26,7 +26,7 @@ public class JournalManager : MonoBehaviour
         Main,
         Sub,
         Completed
-}
+    }
     private void Awake()
     {
         if(Instance != null){
@@ -53,14 +53,32 @@ public class JournalManager : MonoBehaviour
     }
     private void Start()
     {
-        currentQuestType = QuestType.Main;
-        UpdateQuestLists();
-        UpdateQuestBoard();
+        InitializeJournal();
     }
     private void OnEnable(){
+        InitializeJournal();
+    }
+    private void InitializeJournal()
+    {
+        // Ensure the quest type is set to Main
         currentQuestType = QuestType.Main;
+        
+        // Update the lists of quests
         UpdateQuestLists();
+
+        // Display the main quests on the board
         UpdateQuestBoard();
+
+        // If there's at least one main quest, display its details
+        if (mainQuestList.Count > 0)
+        {
+            displayedQuest = mainQuestList[0];  // Set the first main quest as the displayed quest
+            ShowQuestDetails(displayedQuest);  // Display the details of the selected quest
+        }
+        else
+        {
+            ClearQuestDetails();  // Clear any previous quest details if there are no main quests
+        }
     }
     private void UpdateQuestLists()
     {
@@ -91,7 +109,7 @@ public class JournalManager : MonoBehaviour
         // Optionally show the details of the first quest
         if (questsToDisplay.Count > 0)
         {
-            ShowQuestDetails(questsToDisplay[0]);
+            displayedQuest = questsToDisplay[0];
         }
     }
 
@@ -112,9 +130,26 @@ public class JournalManager : MonoBehaviour
             "completed" => QuestType.Completed,
             _ => QuestType.Main
         };
-
+        ClearQuestDetails();
         UpdateQuestLists(); // Update the lists based on current state
         UpdateQuestBoard(); // Update the quest board with the new list
+    }
+    private void ClearQuestDetails()
+    {
+        questTitleText.SetText("");
+        descriptionText.SetText("");
+        ClearContent(objectiveListPanel);  // Clear the objectives list
+    }
+    public void DeselectAllQuests()
+    {
+        foreach (Transform child in questListPanel)
+        {
+            JournalListTitle questTitle = child.GetComponent<JournalListTitle>();
+            if (questTitle != null)
+            {
+                questTitle.Deselect();  
+            }
+        }
     }
 
     public void ClearContent(RectTransform cPanel)
