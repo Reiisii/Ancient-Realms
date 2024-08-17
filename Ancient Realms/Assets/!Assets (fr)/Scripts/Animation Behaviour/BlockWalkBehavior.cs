@@ -7,6 +7,7 @@ public class BlockWalkBehavior : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerController.GetInstance().isBlocking = true;
+         PlayerController.GetInstance().canWalk = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -14,8 +15,13 @@ public class BlockWalkBehavior : StateMachineBehaviour
     {
         if(PlayerController.GetInstance().isAttacking){
             PlayerController.GetInstance().isBlocking = false;
+            animator.Play("Combat Shield Bash");
+            PlayerController.GetInstance().canWalk = false;
+        }
+        if(PlayerStats.GetInstance().stamina < 1){
+            PlayerController.GetInstance().isBlocking = false;
             animator.SetBool("isBlocking", false);
-            animator.Play("RomanAttackOne");
+
         }
     }
 

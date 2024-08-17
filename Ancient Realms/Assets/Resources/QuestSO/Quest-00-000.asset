@@ -31,10 +31,11 @@ MonoBehaviour:
   - goalID: 0
     goalDescription: Walk to the right!
     goalType: 9
-    requiredAmount: 10
+    requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_1
     characterIndex: 0
+    targetCharacters: []
   - goalID: 1
     goalDescription: Talk to Centurion
     goalType: 2
@@ -42,13 +43,15 @@ MonoBehaviour:
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
+    targetCharacters: []
   - goalID: 2
     goalDescription: Walk to the left!
     goalType: 8
-    requiredAmount: 10
+    requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_2
     characterIndex: 0
+    targetCharacters: []
   - goalID: 3
     goalDescription: Talk to Centurion
     goalType: 2
@@ -56,13 +59,15 @@ MonoBehaviour:
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
+    targetCharacters: []
   - goalID: 4
     goalDescription: Run to the Right!
     goalType: 11
-    requiredAmount: 10
+    requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_3
     characterIndex: 0
+    targetCharacters: []
   - goalID: 5
     goalDescription: Talk to Centurion
     goalType: 2
@@ -70,13 +75,15 @@ MonoBehaviour:
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
+    targetCharacters: []
   - goalID: 6
     goalDescription: Run to the Left!
     goalType: 10
-    requiredAmount: 10
+    requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_4
     characterIndex: 0
+    targetCharacters: []
   - goalID: 7
     goalDescription: Talk to Centurion
     goalType: 2
@@ -84,6 +91,7 @@ MonoBehaviour:
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
+    targetCharacters: []
   rewards:
   - rewardType: 0
     value: 10
