@@ -18,14 +18,15 @@ public class JournalListTitle : MonoBehaviour
         titleText.SetText(questData.questTitle);
         UpdateBackgroundAlpha();
     }
-    void Update(){
+    public void Update(){
         UpdateBackgroundAlpha();
     }
     public void OnItemClick()
     {
-        isSelected = true;
+        JournalManager.GetInstance().DeselectAllQuests();
         JournalManager.GetInstance().ShowQuestDetails(questData);
-        UpdateBackgroundAlpha();
+        
+        isSelected = true;  
     }
     public void SetData(QuestSO questSO){
         questData = questSO;
@@ -34,16 +35,18 @@ public class JournalListTitle : MonoBehaviour
     {
         if (backgroundImage != null)
         {
-            // if (isSelected)
-            // {
-            //     // Animate the alpha of the background color to the target alpha
-            //     backgroundImage.DOFade(targetAlpha, duration);
-            // }
-            // else
-            // {
-            //     // Optionally, you can reset the alpha to fully transparent or another value
-            //     backgroundImage.DOFade(0f, duration);
-            // }
+            float alpha = isSelected ? targetAlpha : 0f;
+            Color currentColor = backgroundImage.color;
+            currentColor.a = alpha;
+            backgroundImage.color = currentColor;
         }
     }
+
+
+    public void Deselect()
+    {
+        isSelected = false;
+        UpdateBackgroundAlpha();
+    }
+
 }

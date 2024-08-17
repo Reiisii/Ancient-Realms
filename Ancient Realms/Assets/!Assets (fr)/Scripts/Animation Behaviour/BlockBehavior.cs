@@ -15,7 +15,7 @@ public class BlockBehavior : StateMachineBehaviour
         if(PlayerController.GetInstance().isAttacking){
             PlayerController.GetInstance().isBlocking = false;
             animator.SetBool("isBlocking", false);
-            animator.Play("RomanAttackOne");
+            animator.Play("Combat Shield Bash");
         }
     }
 

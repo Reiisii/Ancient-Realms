@@ -9442,6 +9442,7 @@ RectTransform:
   - {fileID: 1484188982}
   - {fileID: 592156162}
   - {fileID: 1784547378}
+  - {fileID: 1965909547}
   m_Father: {fileID: 1963618741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -67109,7 +67110,11 @@ MonoBehaviour:
   questTitleText: {fileID: 1770841951}
   descriptionText: {fileID: 1517808299}
   objectiveListPanel: {fileID: 1601666126}
+  displayedQuest: {fileID: 0}
   mainQuest: []
+  mainQuestList: []
+  subQuestList: []
+  completedQuestList: []
   currentQuestType: 0
 --- !u!4 &1965909547
 Transform:
@@ -67119,12 +67124,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965909545}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 806.5825, y: 558.83734, z: -2.3974738}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -153.41748, y: 18.837341, z: -2.3974738}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 246052596}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1985631836
 GameObject:
@@ -73139,5 +73144,4 @@ SceneRoots:
   - {fileID: 1726498160}
   - {fileID: 667978657}
   - {fileID: 1695428173}
-  - {fileID: 1965909547}
   - {fileID: 1225489166}
