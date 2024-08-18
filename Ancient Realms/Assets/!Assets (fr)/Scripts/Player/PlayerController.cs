@@ -167,6 +167,7 @@ public class PlayerController : MonoBehaviour
         // Apply force to the pilum in the forward direction
         Rigidbody2D rb = pilum.GetComponent<Rigidbody2D>();
         float throwForce = (holdTime / playerStats.maxHoldTime) * playerStats.maxThrowForce;
+        
         pilum.SetDamage(damage);
         rb.AddForce(transform.right * throwForce, ForceMode2D.Impulse);
         holdTime = 0f;
