@@ -11,8 +11,10 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerStats playerStats;
     [SerializeField] public Transform attackPoint;
+    [SerializeField] public JavelinPrefab javelinPrefab;
+    [SerializeField] public Transform javelinPoint;
+    
     public LayerMask enemyLayer;
-
     private Vector2 lastPosition;
     private float distanceMoved;
     private const float moveThreshold = 2f;
@@ -23,6 +25,8 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking = false;
     public bool canWalk;
     public bool isBlocking;
+    public float holdTime = 0f;
+    public bool isHolding = false;
     Rigidbody2D rb;
     public Animator animator;
     private static PlayerController Instance;
@@ -61,7 +65,6 @@ public class PlayerController : MonoBehaviour
             playerStats.isCombatMode = false;
             return;
         }
-        
         if(IsMoving){
             if (IsRunning && moveInputActive)
             {
@@ -124,13 +127,50 @@ public class PlayerController : MonoBehaviour
     public void Attack(InputAction.CallbackContext context){
         if(context.performed){
             if(playerStats.stamina < 10) return;
-            if(PlayerStats.GetInstance().isCombatMode && !isAttacking && IsRunning == false){
+            if(isHolding) return;
+            if(PlayerStats.GetInstance().isCombatMode && !isAttacking && IsRunning == false && !isHolding){
                 isAttacking = true;
                 playerStats.stamina -= 10f;
             }else{
                 return;
             }
         }
+    }
+    public void OnThrowPilum(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if(isAttacking) return;
+            if(playerStats.isCombatMode && !isAttacking && !IsRunning){
+                isHolding = true;
+            }
+        }else if (context.canceled)
+        {
+            // Release the W key
+            isHolding = false;
+        }
+
+    }
+    private void ThrowPilum()
+    {
+        // Calculate the throw force based on hold time
+        // Instantiate the pilum
+        float maxDamage = playerStats.attack * 1.5f;
+    
+    // Calculate the throw force and corresponding damage based on hold time
+        float damage = Mathf.Lerp(0, maxDamage, holdTime / playerStats.maxHoldTime);
+
+        JavelinPrefab pilum = Instantiate(javelinPrefab, javelinPoint.position, javelinPoint.rotation);
+        pilum.transform.SetParent(gameObject.GetComponent<Transform>());
+        pilum.transform.localScale = Vector3.one;
+        playerStats.stamina -= 10f;
+        // Apply force to the pilum in the forward direction
+        Rigidbody2D rb = pilum.GetComponent<Rigidbody2D>();
+        float throwForce = (holdTime / playerStats.maxHoldTime) * playerStats.maxThrowForce;
+        pilum.SetDamage(damage);
+        rb.AddForce(transform.right * throwForce, ForceMode2D.Impulse);
+        holdTime = 0f;
+        isHolding = false;
     }
     void Applydamage(){
         Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
@@ -191,6 +231,9 @@ public class PlayerController : MonoBehaviour
             interactPressed = true;
             IsMoving = false;
             IsRunning = false;
+            isAttacking = false;
+            isBlocking = false;
+            isHolding = false;
         }
         else if (context.canceled)
         {

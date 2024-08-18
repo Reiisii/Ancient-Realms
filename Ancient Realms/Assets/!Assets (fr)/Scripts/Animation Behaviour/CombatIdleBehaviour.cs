@@ -14,9 +14,14 @@ public class CombatIdleBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(PlayerController.GetInstance().isAttacking){
+        if(PlayerController.GetInstance().isAttacking && !PlayerController.GetInstance().isHolding){
             animator.Play("Roman Normal Attack 1");
             PlayerController.GetInstance().canWalk = false;
+        }
+        if(!PlayerController.GetInstance().isAttacking && PlayerController.GetInstance().isHolding){
+            animator.Play("Pilum Aim");
+            PlayerController.GetInstance().canWalk = false;
+            PlayerController.GetInstance().isHolding = true;
         }
     }
 

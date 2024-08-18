@@ -378,6 +378,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1566028121752837661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1778159934347875474}
+  m_Layer: 6
+  m_Name: PilumPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1778159934347875474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566028121752837661}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.4, y: 28.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 942858895063747022}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1771058265152185769
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,6 +893,7 @@ Transform:
   - {fileID: 5443969735153458722}
   - {fileID: 4317674446013926589}
   - {fileID: 8282441540707377666}
+  - {fileID: 1778159934347875474}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8143464205618705029
@@ -991,7 +1023,9 @@ MonoBehaviour:
   maxXP: 30
   currentXP: 0
   attackRange: 0.5
-  solBalance: 101.023123045
+  solBalance: 0
+  maxThrowForce: 20
+  maxHoldTime: 1
   activeQuests: []
   completedQuests: []
 --- !u!114 &-6049172724251349994
@@ -1008,6 +1042,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStats: {fileID: 1584943556720721348}
   attackPoint: {fileID: 8282441540707377666}
+  javelinPrefab: {fileID: 6826781879228552694, guid: f113a5f50e69bd44c9cca769c7076b35, type: 3}
+  javelinPoint: {fileID: 1778159934347875474}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -1015,6 +1051,8 @@ MonoBehaviour:
   isAttacking: 0
   canWalk: 1
   isBlocking: 0
+  holdTime: 0
+  isHolding: 0
   animator: {fileID: 0}
   _isMoving: 0
   _isRunning: 0
@@ -1169,17 +1207,57 @@ MonoBehaviour:
     m_ActionId: 9e23eceb-91ff-4775-a922-82d5a8e86b9f
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: CombatMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 981dbf1e-ab95-480c-a883-10e5120fec2c
     m_ActionName: Player/CombatMode[/Keyboard/r]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Block
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 11c0967f-ff2f-455f-83fc-340af3b6ef95
     m_ActionName: Player/Block[/Keyboard/ctrl]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 63aa9878-073d-4f8a-8f8b-4410a361f8ad
     m_ActionName: UI/Toggle Quest[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnThrowPilum
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0dc964cd-6c95-4c2e-a227-83ce17e5b250
+    m_ActionName: Player/Throw[/Keyboard/w]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
