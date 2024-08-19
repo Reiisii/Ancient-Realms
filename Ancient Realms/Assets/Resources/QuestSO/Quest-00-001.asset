@@ -54,6 +54,24 @@ MonoBehaviour:
     inkyRedirect: exhaust
     characterIndex: 0
     targetCharacters: []
+  - goalID: 3
+    goalDescription: Hit Dummy with Javelin
+    goalType: 4
+    requiredAmount: 10
+    currentAmount: 0
+    inkyRedirect: goal_1
+    characterIndex: 0
+    targetCharacters:
+    - dummy-00-001
+  - goalID: 4
+    goalDescription: Talk to Legate
+    goalType: 2
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: exhaust
+    characterIndex: 0
+    targetCharacters:
+    - dummy-00-001
   rewards:
   - rewardType: 0
     value: 10

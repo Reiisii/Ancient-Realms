@@ -9,8 +9,15 @@ The gladius is most effective when used to stab, not slash. A precise thrust can
 -> DONE
 
 == goal_0 ==
+Tiro, you've done well with the gladius. But a Roman soldier must master more than just the sword.
+Now! you will learn the art of the pilum, the javelin that can break through both shield and armor. The pilum is not just a throwing weapon, but a tool of precision
+Hold the pilum firmly, aim with your body, and release with strength and purpose.
+To throw your pilum hold W key for a second and then when you got your targe on sight release the key to throw the Pilum.
+-> DONE
+
+== goal_1 ==
 Well done, Tiro! You've shown skill and determination in your training today. Each thrust of your gladius brings you closer to becoming a true legionnaire.
-Remember, the lessons learned here on the training grounds will save your life on the battlefield. Your gladius, scutum, and pilum are not just weapons—they are extensions of your will, your discipline, and your duty to Rome.
+Remember, the lessons learned here on the training grounds will save your life on the battlefield. Your gladius, and pilum are not just weapons—they are extensions of your will, your discipline, and your duty to Rome.
 Dismissed, Tiro. Prepare yourself for what's next. This is just the beginning of your journey.
 -> DONE
 
