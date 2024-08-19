@@ -64,12 +64,15 @@ public enum CultureEnum {
     HellenisticEgyptian
 }
 public enum ChapterEnum {
+    Prologue,
     One,
     Two,
     Three,
     Four,
     Five,
-    Six
+    Six,
+    SubQuest,
+    Achievement
 }
 public enum RarityEnum {
     Common,
