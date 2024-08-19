@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
     void Applydamage(){
         Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
         foreach(Collider2D enemy in hitEnemies){
-            enemy.GetComponent<Enemy>().TakeDamage(playerStats.attack);
+            enemy.GetComponent<Enemy>().TakeDamage(playerStats.attack, GoalTypeEnum.HitMelee);
         }
     }
     void OnDrawGizmosSelected(){

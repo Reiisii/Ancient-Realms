@@ -130,6 +130,7 @@ public class PlayerStats : MonoBehaviour
             QuestSO qData = activeQuests.Find(q => q.questID == quest.questID);
             if(quest.isActive == true){
                 quest.isActive = qData.isActive;
+                quest.isRewarded = qData.isRewarded;
                 quest.completed = qData.isCompleted;
                 quest.currentKnot = qData.currentKnot;
                 quest.currentGoal = qData.currentGoal;
