@@ -1044,6 +1044,7 @@ MonoBehaviour:
   attackPoint: {fileID: 8282441540707377666}
   javelinPrefab: {fileID: 6826781879228552694, guid: f113a5f50e69bd44c9cca769c7076b35, type: 3}
   javelinPoint: {fileID: 1778159934347875474}
+  virtualCamera: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -1054,6 +1055,7 @@ MonoBehaviour:
   holdTime: 0
   isHolding: 0
   animator: {fileID: 0}
+  panSpeed: 2
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -1239,10 +1241,6 @@ MonoBehaviour:
     m_ActionId: 11c0967f-ff2f-455f-83fc-340af3b6ef95
     m_ActionName: Player/Block[/Keyboard/ctrl]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 63aa9878-073d-4f8a-8f8b-4410a361f8ad
-    m_ActionName: UI/Toggle Quest[/Keyboard/j]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: -6049172724251349994}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
@@ -1258,6 +1256,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0dc964cd-6c95-4c2e-a227-83ce17e5b250
     m_ActionName: Player/Throw[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -2407419223650497985}
+        m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
+        m_MethodName: OpenJournal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: caaddc51-8a67-4b55-8072-ba4d059d74a5
+    m_ActionName: Player/Toggle Quest[/Keyboard/j]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

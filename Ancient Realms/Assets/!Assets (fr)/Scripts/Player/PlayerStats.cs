@@ -49,7 +49,7 @@ public class PlayerStats : MonoBehaviour
     public float attackRange = 0.5f;
     public double solBalance = 0;
     private double previousSolBalance = 0;
-    public float maxThrowForce = 30f; // Maximum force applied to the throw
+    public float maxThrowForce = 20f; // Maximum force applied to the throw
     public float maxHoldTime = 1f;
     public List<QuestSO> activeQuests;
     public List<QuestSO> completedQuests;
@@ -66,8 +66,10 @@ public class PlayerStats : MonoBehaviour
 
     async void Start()
     {
+        PlayerController.GetInstance().canWalk = false;
         localPlayerData = await AccountManager.GetPlayer();
         LoadPlayerData(localPlayerData);
+        PlayerController.GetInstance().canWalk = true;
         InvokeRepeating("SaveDataToServer", 3f, 3f); // Save data to the server every 10 seconds
     }
     private void OnEnable()
@@ -121,6 +123,7 @@ public class PlayerStats : MonoBehaviour
         hpSlider.value = currentHP;
         xpSlider.value = currentXP;
         xpSlider.maxValue = maxXP;
+        staminaSlider.value = maxStamina;
     }
     public void SaveQuestToServer()
     {
