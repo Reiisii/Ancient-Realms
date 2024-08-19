@@ -22,15 +22,16 @@ MonoBehaviour:
   requirements: []
   chapter: 0
   isMain: 1
-  isActive: 0
+  isActive: 1
   isCompleted: 0
   isChained: 0
+  isRewarded: 0
   currentGoal: 0
-  currentKnot: start
+  currentKnot: exhaust
   goals:
   - goalID: 0
     goalDescription: Walk to the right!
-    goalType: 9
+    goalType: 12
     requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_1
@@ -46,7 +47,7 @@ MonoBehaviour:
     targetCharacters: []
   - goalID: 2
     goalDescription: Walk to the left!
-    goalType: 8
+    goalType: 11
     requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_2
@@ -62,7 +63,7 @@ MonoBehaviour:
     targetCharacters: []
   - goalID: 4
     goalDescription: Run to the Right!
-    goalType: 11
+    goalType: 14
     requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_3
@@ -78,7 +79,7 @@ MonoBehaviour:
     targetCharacters: []
   - goalID: 6
     goalDescription: Run to the Left!
-    goalType: 10
+    goalType: 13
     requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_4

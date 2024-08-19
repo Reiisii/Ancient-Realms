@@ -49,6 +49,8 @@ public class PlayerStats : MonoBehaviour
     public float attackRange = 0.5f;
     public double solBalance = 0;
     private double previousSolBalance = 0;
+    public float maxThrowForce = 30f; // Maximum force applied to the throw
+    public float maxHoldTime = 1f;
     public List<QuestSO> activeQuests;
     public List<QuestSO> completedQuests;
     private static PlayerStats Instance;
@@ -128,6 +130,7 @@ public class PlayerStats : MonoBehaviour
             QuestSO qData = activeQuests.Find(q => q.questID == quest.questID);
             if(quest.isActive == true){
                 quest.isActive = qData.isActive;
+                quest.isRewarded = qData.isRewarded;
                 quest.completed = qData.isCompleted;
                 quest.currentKnot = qData.currentKnot;
                 quest.currentGoal = qData.currentGoal;

@@ -175,13 +175,51 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-    public void UpdateHitGoal()
+    public void UpdateHitMeleeGoal()
     {
         foreach (var quest in playerStats.activeQuests)
         {
             if(quest.currentGoal < quest.goals.Capacity){
                 Goal goal = quest.goals[quest.currentGoal];
-                if (goal.goalType == GoalTypeEnum.Hit)
+                if (goal.goalType == GoalTypeEnum.HitMelee)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateHitJavelinGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.HitJavelin)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateHitAnyGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.HitAny)
                 {
                     goal.IncrementProgress(1);
                     playerStats.SaveQuestToServer();
@@ -309,6 +347,7 @@ public class QuestManager : MonoBehaviour
 
             quest.isCompleted = true;
             quest.isActive = false;
+            quest.isRewarded = true;
             playerStats.SaveQuestToServer();
             foreach (Transform child in questPanel)
             {
@@ -320,6 +359,7 @@ public class QuestManager : MonoBehaviour
                 }
             }
             RewardPlayer(quest);
+            
             Debug.Log("Quest Completed: " + quest.questID);
             
             // Add any additional logic for when a quest is completed, e.g., rewards, notifications

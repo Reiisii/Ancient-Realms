@@ -31010,6 +31010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 667978657}
   - component: {fileID: 667978656}
+  - component: {fileID: 667978658}
   m_Layer: 0
   m_Name: Active Manager
   m_TagString: Untagged
@@ -31048,6 +31049,21 @@ Transform:
   - {fileID: 1684164081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &667978658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667978655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8efe92539cbae469b2d7485650a981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gObject: {fileID: 1684164078}
+  questIDRequirement: quest-00-001
+  currentGoalRequirement: 3
 --- !u!1 &686754015
 GameObject:
   m_ObjectHideFlags: 0
@@ -39998,7 +40014,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 19
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_ActionId
@@ -40041,6 +40057,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1243452886}
@@ -40052,6 +40072,10 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1243452887}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1243452886}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -40077,6 +40101,10 @@ PrefabInstance:
       value: OpenJournal
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnThrowPilum
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PlayerController, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -40089,6 +40117,10 @@ PrefabInstance:
       value: QuestManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -40098,6 +40130,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: -6049172724251349994, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
@@ -40216,6 +40252,10 @@ PrefabInstance:
       propertyPath: denariiText
       value: 
       objectReference: {fileID: 281360322}
+    - target: {fileID: 1584943556720721348, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: maxHoldTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1584943556720721348, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: staminaText
       value: 

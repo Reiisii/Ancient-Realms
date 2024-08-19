@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     private void Start(){
         CalculateStatsForCurrentLevel();
     }
-    public void TakeDamage(float damage){
+    public void TakeDamage(float damage, GoalTypeEnum goal){
         List<QuestSO> quest = PlayerStats.GetInstance().activeQuests.ToList();
         foreach(QuestSO q in quest){
         if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Damage && q.goals[q.currentGoal].targetCharacters.Contains(id)){
@@ -38,9 +38,19 @@ public class Enemy : MonoBehaviour
         }
         if(isDummy){
             foreach(QuestSO q in quest){
-            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Hit && q.goals[q.currentGoal].targetCharacters.Contains(id)){
-                    QuestManager.GetInstance().UpdateHitGoal();
+            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitMelee && GoalTypeEnum.HitMelee == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                    QuestManager.GetInstance().UpdateHitMeleeGoal();
                 }
+            }
+            foreach(QuestSO q in quest){
+            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitAny  && GoalTypeEnum.HitAny == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                    QuestManager.GetInstance().UpdateHitAnyGoal();
+                } 
+            }
+            foreach(QuestSO q in quest){
+            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitJavelin && GoalTypeEnum.HitJavelin == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                    QuestManager.GetInstance().UpdateHitJavelinGoal();
+                } 
             }
         }else{
             if(invulnerable) return;
@@ -49,16 +59,25 @@ public class Enemy : MonoBehaviour
                 if(currentHP <= 0){
                     isDead = true;
                     gameObject.SetActive(false);
-                    QuestManager.GetInstance().Update();
                     foreach(QuestSO q in quest){
                     if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Kill && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                             QuestManager.GetInstance().UpdateKillGoal();
                         } 
                     }
                     foreach(QuestSO q in quest){
-                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Hit && q.goals[q.currentGoal].targetCharacters.Contains(id)){
-                            QuestManager.GetInstance().UpdateHitGoal();
+                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitMelee && GoalTypeEnum.HitMelee == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                            QuestManager.GetInstance().UpdateHitMeleeGoal();
                         }
+                    }
+                    foreach(QuestSO q in quest){
+                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitAny  && GoalTypeEnum.HitAny == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                            QuestManager.GetInstance().UpdateHitAnyGoal();
+                        } 
+                    }
+                    foreach(QuestSO q in quest){
+                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitJavelin && GoalTypeEnum.HitJavelin == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                            QuestManager.GetInstance().UpdateHitJavelinGoal();
+                        } 
                     }
                 }
             }
