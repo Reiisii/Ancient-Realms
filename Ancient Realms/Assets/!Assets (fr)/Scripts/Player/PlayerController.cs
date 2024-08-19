@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Transform attackPoint;
     [SerializeField] public JavelinPrefab javelinPrefab;
     [SerializeField] public Transform javelinPoint;
-    
+    [SerializeField] public CinemachineVirtualCamera virtualCamera;
+    private CinemachineFramingTransposer framingTransposer;
     public LayerMask enemyLayer;
     private Vector2 lastPosition;
     private float distanceMoved;
@@ -30,6 +32,10 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     public Animator animator;
     private static PlayerController Instance;
+    public float panSpeed = 2f;
+    private float panDistance = 7f;
+
+    private Vector3 originalCameraOffset;
     private void Awake()
     {
         if(Instance != null){
@@ -38,10 +44,13 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        
     }
     
     private void Start(){
         lastPosition = transform.position;
+        originalCameraOffset = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset;
+        
     }
     public static PlayerController GetInstance(){
         return Instance;
@@ -140,6 +149,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
+            if(playerStats.stamina < 10) return;
             if(isAttacking) return;
             if(playerStats.isCombatMode && !isAttacking && !IsRunning){
                 isHolding = true;
@@ -153,25 +163,69 @@ public class PlayerController : MonoBehaviour
     }
     private void ThrowPilum()
     {
-        // Calculate the throw force based on hold time
-        // Instantiate the pilum
         float maxDamage = playerStats.attack * 1.5f;
-    
-    // Calculate the throw force and corresponding damage based on hold time
+
+        // Calculate the throw force and corresponding damage based on hold time
         float damage = Mathf.Lerp(0, maxDamage, holdTime / playerStats.maxHoldTime);
 
+        // Instantiate the pilum
         JavelinPrefab pilum = Instantiate(javelinPrefab, javelinPoint.position, javelinPoint.rotation);
-        pilum.transform.SetParent(gameObject.GetComponent<Transform>());
-        pilum.transform.localScale = Vector3.one;
         playerStats.stamina -= 10f;
-        // Apply force to the pilum in the forward direction
+
+        // Apply force to the pilum in an arching trajectory
         Rigidbody2D rb = pilum.GetComponent<Rigidbody2D>();
         float throwForce = (holdTime / playerStats.maxHoldTime) * playerStats.maxThrowForce;
-        
+
+        float throwAngle = 27.752f; // Lower angle for a flatter trajectory
+
+        // Adjust the force direction based on whether the player is facing right or left
+        Vector2 forceDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 force = new Vector2(
+            forceDirection.x * throwForce * Mathf.Cos(throwAngle * Mathf.Deg2Rad), 
+            throwForce * Mathf.Sin(throwAngle * Mathf.Deg2Rad) * 0.5f // Reduce the vertical component
+        );
+
         pilum.SetDamage(damage);
-        rb.AddForce(transform.right * throwForce, ForceMode2D.Impulse);
+
+        // Apply the force to the pilum
+        rb.AddForce(force, ForceMode2D.Impulse);
+
+        // Apply rotation to the pilum for a realistic spinning effect
+        float torqueDirection = IsFacingRight ? -1 : 1; // Reverse torque direction based on facing
+        float torqueAmount = 0.1f; // Adjust this value for desired rotation speed
+        rb.AddTorque(torqueDirection * torqueAmount, ForceMode2D.Impulse); // Use a fixed torque value
+
+        // Flip the pilum if throwing to the left
+        if (!IsFacingRight)
+        {
+            Vector3 pilumScale = pilum.transform.localScale;
+            pilumScale.x *= -1; // Flip the pilum horizontally
+            pilum.transform.localScale = pilumScale;
+        }
+
         holdTime = 0f;
         isHolding = false;
+    }
+
+
+    public void PanCameraBasedOnPlayerDirection()
+    {
+        // Get the current offset of the camera
+        Vector3 currentOffset = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset;
+
+        // Determine the target offset based on the player's facing direction
+        float targetOffsetX = IsFacingRight ? panDistance : -panDistance;
+
+        // Smoothly move the camera to the target offset
+        Vector3 targetOffset = new Vector3(targetOffsetX, currentOffset.y, currentOffset.z);
+        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = Vector3.Lerp(currentOffset, targetOffset, panSpeed * Time.deltaTime);
+    }
+
+    public void ResetCameraPan()
+    {
+        // Reset the camera offset to the original position
+        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = originalCameraOffset;
     }
     void Applydamage(){
         Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
@@ -251,9 +305,6 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            IsRunning = false;
-            IsMoving = false;
-            canWalk = false;
             animator.SetBool("isCombatMode", !playerStats.isCombatMode);
             playerStats.isCombatMode = !playerStats.isCombatMode;
         }
@@ -344,7 +395,7 @@ public class PlayerController : MonoBehaviour
         get
         {
             return _isRunning;
-        } private set
+        }set
         {
                 _isRunning = value;
                 if(playerStats.stamina < 1) animator.SetBool("isRunning", false);
