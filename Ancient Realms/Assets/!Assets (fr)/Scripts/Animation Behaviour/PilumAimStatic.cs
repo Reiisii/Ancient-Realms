@@ -17,6 +17,7 @@ public class PilumAimStatic : StateMachineBehaviour
         {
             PlayerController.GetInstance().holdTime += Time.deltaTime;
             PlayerController.GetInstance().holdTime = Mathf.Min(PlayerController.GetInstance().holdTime, PlayerStats.GetInstance().maxHoldTime); // Cap the hold time to the max hold time
+            PlayerController.GetInstance().PanCameraBasedOnPlayerDirection();
         }
         if(!PlayerController.GetInstance().isHolding){
             animator.Play("Pilum Throw");
@@ -24,10 +25,6 @@ public class PilumAimStatic : StateMachineBehaviour
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
