@@ -1272,6 +1272,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: caaddc51-8a67-4b55-8072-ba4d059d74a5
     m_ActionName: Player/Toggle Quest[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -2407419223650497985}
+        m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
+        m_MethodName: OpenJournal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 97034710-95d6-4644-9506-bc3de6da0420
+    m_ActionName: UI/Toggle Quest[/Keyboard/j]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1386,6 +1402,7 @@ MonoBehaviour:
   questPanel: {fileID: 0}
   journalPanel: {fileID: 0}
   quests: []
+  inputActions: {fileID: -944628639613478452, guid: 3f6716e9ea27bdc469a20e6fd6ecc768, type: 3}
 --- !u!114 &-2701709620502470431
 MonoBehaviour:
   m_ObjectHideFlags: 0
