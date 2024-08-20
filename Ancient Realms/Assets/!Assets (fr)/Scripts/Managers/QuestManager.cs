@@ -43,22 +43,27 @@ public class QuestManager : MonoBehaviour
             if (quest != null)
             {
                 quest.isActive = true;
-                if(!quest.isChained)quest.currentKnot = "exhaust";
-                QuestData questData = new QuestData();
-                questData.questID = questID;
-                questData.isActive = true;
-                questData.completed = false;
-                questData.currentKnot = "start";
-                questData.currentGoal = 0;
-                questData.goals = new List<GoalData>();
+                QuestData questData = new QuestData(){
+                    questID = questID,
+                    isActive = true,
+                    completed = false,
+                    currentGoal = 0,
+                    goals = new List<GoalData>()
+                };
+                if(quest.isChained) {
+                    quest.currentKnot = "start";
+                    questData.currentKnot = "start"; 
+                }else{
+                    quest.currentKnot = "exhaust";
+                    questData.currentKnot = "exhaust";
+                }
                 foreach (Goal goal in quest.goals)
                 {
-                    GoalData goalData = new GoalData();
-                    goalData.goalID = goal.goalID;
-                    goalData.currentAmount = goal.currentAmount;
-                    goalData.requiredAmount = goal.requiredAmount;
-                    
-                    // Add the initialized goal data to the questData.goals list
+                    GoalData goalData = new GoalData(){
+                        goalID = goal.goalID,
+                        currentAmount = 0,
+                        requiredAmount = goal.requiredAmount
+                    };
                     questData.goals.Add(goalData);
                 }
 
@@ -114,7 +119,7 @@ public class QuestManager : MonoBehaviour
                 playerActionMap.Enable();
                 uiActionMap.Disable();
                 journalPanel.SetActive(false);
-            }else{
+            }else{  
                 Time.timeScale = 0f;
                 playerActionMap.Disable();
                 uiActionMap.Enable();
@@ -354,8 +359,6 @@ public class QuestManager : MonoBehaviour
 
             quest.isCompleted = true;
             quest.isActive = false;
-            quest.isRewarded = true;
-            playerStats.SaveQuestToServer();
             foreach (Transform child in questPanel)
             {
                 QuestPrefab questPrefab = child.GetComponent<QuestPrefab>();
@@ -384,26 +387,28 @@ public class QuestManager : MonoBehaviour
                     int goldAmount;
                     if (int.TryParse(reward.value, out goldAmount))
                     {
-                        playerStats.AddGold(goldAmount);
+                        if(!quest.isRewarded) playerStats.AddGold(goldAmount);
                     }
                     break;
                 case RewardsEnum.Xp:
                     int xpAmount;
                     if (int.TryParse(reward.value, out xpAmount))
                     {
-                        playerStats.AddXp(xpAmount);
+                        if(!quest.isRewarded) playerStats.AddXp(xpAmount);
                     }
                     break;
                 case RewardsEnum.Item:
                     // playerStats.AddItem(reward.value);
                     break;
                 case RewardsEnum.Artifact:
-                    // playerStats.AddArtifact(reward.value);
+                    if(!quest.isRewarded) playerStats.AddArtifact(reward.value);
                     break;
                 case RewardsEnum.Quest:
                     Instance.StartQuest(reward.value);
                     break;
             }
+            quest.isRewarded = true;
+            playerStats.SaveQuestToServer();
         }
     }
 }

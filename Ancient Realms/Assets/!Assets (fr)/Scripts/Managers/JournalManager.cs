@@ -74,6 +74,14 @@ public class JournalManager : MonoBehaviour
         {
             displayedQuest = mainQuestList[0];  // Set the first main quest as the displayed quest
             ShowQuestDetails(displayedQuest);  // Display the details of the selected quest
+            foreach (Transform child in questListPanel)
+            {
+                if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                    child.GetComponent<JournalListTitle>().isSelected = true;
+                }else{
+                    return;
+                }
+            }
         }
         else
         {

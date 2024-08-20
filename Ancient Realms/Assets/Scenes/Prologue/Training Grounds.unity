@@ -31121,7 +31121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reset Quests
+  m_text: Add Quest
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1ff35f50cb820543acec76deb494fed, type: 2}
   m_sharedMaterial: {fileID: 2530917771327191597, guid: c1ff35f50cb820543acec76deb494fed, type: 2}
@@ -39940,7 +39940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_ActionId
@@ -39951,12 +39951,20 @@ PrefabInstance:
       value: 11c0967f-ff2f-455f-83fc-340af3b6ef95
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_ActionId
+      value: 97034710-95d6-4644-9506-bc3de6da0420
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_ActionName
       value: Player/CombatMode[/Keyboard/r]
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[17].m_ActionName
       value: Player/Block[/Keyboard/ctrl]
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_ActionName
+      value: UI/Toggle Quest[/Keyboard/j]
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.size
@@ -39968,6 +39976,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
@@ -39987,6 +39999,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1243452886}
@@ -40003,6 +40019,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1243452887}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1243452887}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -40012,6 +40032,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
@@ -40031,6 +40055,10 @@ PrefabInstance:
       value: OpenJournal
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenJournal
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PlayerController, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -40047,6 +40075,10 @@ PrefabInstance:
       value: QuestManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: QuestManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -40060,6 +40092,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: -7447427150435233297, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: -6049172724251349994, guid: 94ba1c36e5c375543b6a9e86cec07587, type: 3}
@@ -62843,7 +62879,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: quest title
+  m_text: Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1ff35f50cb820543acec76deb494fed, type: 2}
   m_sharedMaterial: {fileID: 2530917771327191597, guid: c1ff35f50cb820543acec76deb494fed, type: 2}
@@ -62870,8 +62906,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 26.36
+  m_fontSizeBase: 26.36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -62882,7 +62918,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -76.14
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
