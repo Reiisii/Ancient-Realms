@@ -111,9 +111,6 @@ public class DialogueManager : MonoBehaviour
                 // Start the quest if it's not already active or completed
                 QuestManager.GetInstance().StartQuest(questToGive.questID);
             }
-
-            Debug.Log("T Needs Talking: " + questToGive.characters[questToGive.goals[questToGive.currentGoal].characterIndex]);
-            Debug.Log("T Talked to" + npcData.id);
         }
         
             // Update talk goals for each relevant quest
@@ -122,8 +119,6 @@ public class DialogueManager : MonoBehaviour
                 if (quest.isActive)
                 {
                     Goal currentGoal = quest.goals[quest.currentGoal];
-                    Debug.Log("E Needs Talking: " + quest.characters[currentGoal.characterIndex]);
-                    Debug.Log("E Talked to" + npcData.id);
                     if (currentGoal.goalType == GoalTypeEnum.Talk && 
                         quest.characters[currentGoal.characterIndex] == npcData.id)
                     {

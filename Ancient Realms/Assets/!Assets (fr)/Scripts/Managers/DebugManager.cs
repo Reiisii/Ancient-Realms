@@ -17,6 +17,7 @@ public class DebugManager : MonoBehaviour
             quest.isCompleted = false;
             quest.currentKnot = "start";
             quest.currentGoal = 0;
+            quest.isRewarded = false;
             foreach(Goal goal in quest.goals){
                 goal.currentAmount = 0;
             }

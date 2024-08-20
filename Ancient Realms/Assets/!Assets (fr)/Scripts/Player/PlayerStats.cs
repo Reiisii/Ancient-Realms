@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -213,7 +214,17 @@ public class PlayerStats : MonoBehaviour
         isDataDirty = true; // Mark data as dirty
     }
 
-
+    public void AddArtifact(string artifactID)
+    {
+        List<ArtifactsSO> artifactList = Resources.LoadAll<ArtifactsSO>("ArtifactSO").ToList();
+        ArtifactsSO artifact = artifactList.Where(q => q.id == Convert.ToInt32(artifactID)).FirstOrDefault();
+        ArtifactsData artifactData = new ArtifactsData(){
+            artifactID = Convert.ToInt32(artifactID),
+            acquiredDate = DateTime.Now,
+        };
+        localPlayerData.gameData.artifacts.Add(artifactData);
+        isDataDirty = true; // Mark data as dirty
+    }
     public void updateValues()
     {
         denariiText.SetText(Utilities.FormatNumber(denarii));
