@@ -59,8 +59,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleText: {fileID: 974750938076512254}
-  questData: {fileID: 0}
-  isActive: 0
+  quest: {fileID: 0}
+  goal:
+    goalID: 0
+    goalDescription: 
+    goalType: 0
+    requiredAmount: 0
+    currentAmount: 0
+    inkyRedirect: 
+    characterIndex: 0
+    targetCharacters: []
 --- !u!114 &974750938076512254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,8 +98,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3372220415
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.78431374}
+    rgba: 4197593650
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.98039216}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
