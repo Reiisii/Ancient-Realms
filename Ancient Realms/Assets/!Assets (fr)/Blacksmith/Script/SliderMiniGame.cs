@@ -9,6 +9,8 @@ public class SliderMiniGame : MonoBehaviour
     private bool isMovingRight = true;
 
     private float speedIncrement = 0.5f;
+    private int pressCount = 0;
+    private int maxPresses = 5;
 
     void Start()
     {
@@ -17,12 +19,13 @@ public class SliderMiniGame : MonoBehaviour
 
     void Update()
     {
-        if (isMoving)
+        // Only move the slider if it's supposed to be moving and we haven't exceeded max tries
+        if (isMoving && pressCount < maxPresses)
         {
             MoveSlider();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && pressCount < maxPresses)
         {
             if (isMoving)
             {
@@ -32,6 +35,14 @@ public class SliderMiniGame : MonoBehaviour
             {
                 StartSlider();
                 IncreaseSpeed();
+                pressCount++;
+
+                if (pressCount >= maxPresses)
+                {
+                    // After the last press, stop the game
+                    isMoving = false;
+                    Debug.Log("Max tries reached. Game over.");
+                }
             }
         }
     }
