@@ -25,7 +25,7 @@ public class QuestManager : MonoBehaviour
         }
         Instance = this;
         playerActionMap = inputActions.FindActionMap("Player");
-        uiActionMap = inputActions.FindActionMap("UI");
+        uiActionMap = inputActions.FindActionMap("Quest");
     }
     void Start(){
         playerStats = PlayerStats.GetInstance();
@@ -42,19 +42,17 @@ public class QuestManager : MonoBehaviour
             QuestSO quest = quests.Find(q => q.questID == questID);
             if (quest != null)
             {
-                quest.isActive = true;
                 QuestData questData = new QuestData(){
                     questID = questID,
                     isActive = true,
+                    isPinned = true,
                     completed = false,
                     currentGoal = 0,
                     goals = new List<GoalData>()
                 };
                 if(quest.isChained) {
-                    quest.currentKnot = "start";
                     questData.currentKnot = "start"; 
                 }else{
-                    quest.currentKnot = "exhaust";
                     questData.currentKnot = "exhaust";
                 }
                 foreach (Goal goal in quest.goals)
@@ -66,8 +64,9 @@ public class QuestManager : MonoBehaviour
                     };
                     questData.goals.Add(goalData);
                 }
-
-                playerStats.AddQuest(questData, quest);
+                QuestSO copiedQuest = quest.CreateCopy();
+                copiedQuest.isActive = true;
+                playerStats.AddQuest(questData, copiedQuest);
                 Debug.Log("Started Quest:" + questID);
 
             }
@@ -315,7 +314,6 @@ public class QuestManager : MonoBehaviour
     }
     public void CompleteGoal(QuestSO quest, int goalID)
     {
-        if(!quest.isActive) return;
         Goal goal = quest.goals.Find(g => g.goalID == goalID);
         if (goal != null)
         {

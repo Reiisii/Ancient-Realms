@@ -34,10 +34,8 @@ public class Goal
     public string inkyRedirect;
     public int characterIndex;
     public string[] targetCharacters;
-
-    public bool isReached(){
-        return (currentAmount >= requiredAmount);
-    }
+    public string missionID;
+    public string questID;
     public void IncrementProgress(int amount)
     {
         currentAmount += amount;
@@ -87,6 +85,7 @@ public enum EquipmentEnum {
     Shield,
     Weapon,
     Foot,
+    Consumable,
     Others
 }
 

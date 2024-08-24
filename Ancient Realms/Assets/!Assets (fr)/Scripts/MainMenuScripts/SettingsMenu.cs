@@ -30,7 +30,7 @@ public class SettingsMenu : MonoBehaviour
 
     public async void SaveSettings()
     {
-        PlayerData playerData = await AccountManager.GetPlayer();
+        PlayerData playerData = await AccountManager.Instance.GetPlayer();
 
         
         playerData.gameData.settings.masterVolume = masterSlider.value;

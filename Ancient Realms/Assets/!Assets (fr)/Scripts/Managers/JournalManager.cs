@@ -58,6 +58,9 @@ public class JournalManager : MonoBehaviour
     private void OnEnable(){
         InitializeJournal();
     }
+    private void Update(){
+        InitializeJournal();
+    }
     private void InitializeJournal()
     {
         // Ensure the quest type is set to Main

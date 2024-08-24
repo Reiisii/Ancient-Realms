@@ -19,7 +19,7 @@ public class QuestPrefab : MonoBehaviour
         questSO = quest;
     }
     public void UpdateQuestDisplay(){
-        if(questSO.currentGoal < questSO.goals.Capacity){
+        if(questSO.currentGoal < questSO.goals.Count){
             Goal questGoal = questSO.goals[questSO.currentGoal];
             questTitle.SetText(questSO.questTitle);
             questTask.SetText("- " + questGoal.goalDescription);
