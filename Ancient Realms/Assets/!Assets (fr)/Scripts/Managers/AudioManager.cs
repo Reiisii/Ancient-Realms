@@ -9,10 +9,17 @@ public class AudioManager : MonoBehaviour
     private static AudioManager Instance;
     
     private void Awake(){
-        if(Instance != null){
-            Debug.LogWarning("Found more than one Player Stats in the scene");
+        if (Instance == null)
+        {
+            // If not, set this as the instance and make it persistent
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
+        else
+        {
+            Debug.LogWarning("Found more than one Audio Manager in the scene");
+            Destroy(gameObject);
+        }
     } 
 
     public static AudioManager GetInstance(){

@@ -15,4 +15,6 @@ public enum GoalTypeEnum
     WalkRight,
     RunLeft,
     RunRight,
+    Mission,
+    Quest,
 }

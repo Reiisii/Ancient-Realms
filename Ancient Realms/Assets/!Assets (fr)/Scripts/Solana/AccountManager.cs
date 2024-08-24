@@ -25,10 +25,18 @@ public class AccountManager : MonoBehaviour
     public string EntityId;
     // Currently logged-in account
     private void Awake(){
-        if(Instance != null){
-            Debug.LogWarning("Found more than one Account Manager in the scene");
+        if (Instance == null)
+        {
+            // If not, set this as the instance and make it persistent
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
+        else
+        {
+            Debug.LogWarning("Found more than one Account Manager in the scene");
+            Destroy(gameObject);
+        }
+
     }
     public void Logout()
     {
@@ -59,7 +67,7 @@ public class AccountManager : MonoBehaviour
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
     }
-    public async static Task<PlayerData> GetPlayer()
+    public async Task<PlayerData> GetPlayer()
     {
         PlayerData player = null;
         await FacetClient.CallFacet((DatabaseService facet) => facet.GetPlayerById(Instance.EntityId))
@@ -72,6 +80,20 @@ public class AccountManager : MonoBehaviour
         {
             Debug.LogError("Failed to fetch player data: " + error);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        });
+        return player;
+    }
+    public async Task<PlayerData> GetPlayerData()
+    {
+        PlayerData player = null;
+        await FacetClient.CallFacet((DatabaseService facet) => facet.GetPlayerById(Instance.EntityId))
+        .Then(response => 
+        {
+            player = response;
+        })
+        .Catch(error => 
+        {
+            Debug.LogError("Failed to fetch player data: " + error);
         });
         return player;
     }

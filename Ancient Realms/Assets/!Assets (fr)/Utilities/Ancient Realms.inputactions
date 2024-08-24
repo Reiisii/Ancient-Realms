@@ -94,6 +94,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Inventory",
+                    "type": "Button",
+                    "id": "1b694e90-9f88-42e4-863a-c9cd445a886c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Pause",
+                    "type": "Button",
+                    "id": "c17d2bbd-ecff-40f2-a11c-ec3a7613dd39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -371,6 +389,28 @@
                     "action": "Toggle Quest",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1f040064-e4c8-4f82-aa15-3cf2aadf66f0",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4807fc0-2624-4ec4-8c3d-02b3226a77ca",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -464,15 +504,6 @@
                     "type": "PassThrough",
                     "id": "9e23eceb-91ff-4775-a922-82d5a8e86b9f",
                     "expectedControlType": "Quaternion",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Toggle Quest",
-                    "type": "Button",
-                    "id": "97034710-95d6-4644-9506-bc3de6da0420",
-                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -896,15 +927,110 @@
                     "action": "TrackedDeviceOrientation",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Inventory",
+            "id": "9a93a4ce-7eab-4048-8474-584453fe9f23",
+            "actions": [
+                {
+                    "name": "Toggle Inventory",
+                    "type": "Button",
+                    "id": "0629fd0a-3a65-46d1-913c-4d72cb13fca4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "701315ca-5d58-4f96-a10b-097d9c5c6914",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "92c3b366-a6b7-4b28-809b-657b0f8787c8",
+                    "id": "f790da3f-48c4-472c-8e75-029bd851b622",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Quest",
+            "id": "4898cecf-8272-430d-802c-d9c7dd631deb",
+            "actions": [
+                {
+                    "name": "Toggle Quest",
+                    "type": "Button",
+                    "id": "7096edf6-7a65-40d5-af48-78717a1384da",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "03727772-4f07-4857-a1f6-dacfccdd2414",
                     "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Toggle Quest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d90f9e59-2b8e-47fc-8d63-7c976d7dfd2b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Quest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Pause",
+            "id": "ac032d9a-fcd7-4ebd-b2e7-303f7525b270",
+            "actions": [
+                {
+                    "name": "Toggle Pause",
+                    "type": "Button",
+                    "id": "04c5d528-023f-4ab9-a808-1b422fea91ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "15ad7de4-09b5-446e-b911-a78edd71e94a",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
