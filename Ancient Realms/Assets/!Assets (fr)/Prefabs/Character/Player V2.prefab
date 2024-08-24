@@ -866,6 +866,7 @@ GameObject:
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 7836553738663465838}
   - component: {fileID: -4221797428664147929}
+  - component: {fileID: 496421970278509919}
   - component: {fileID: -2407419223650497985}
   - component: {fileID: -2701709620502470431}
   m_Layer: 6
@@ -1274,6 +1275,42 @@ MonoBehaviour:
     m_ActionName: Player/Toggle Quest[/Keyboard/j]
   - m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 496421970278509919}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: OpenInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1b694e90-9f88-42e4-863a-c9cd445a886c
+    m_ActionName: Player/Toggle Inventory[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c17d2bbd-ecff-40f2-a11c-ec3a7613dd39
+    m_ActionName: Player/Toggle Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 496421970278509919}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: OpenInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0629fd0a-3a65-46d1-913c-4d72cb13fca4
+    m_ActionName: Inventory/Toggle Inventory[/Keyboard/tab,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: -2407419223650497985}
         m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
         m_MethodName: OpenJournal
@@ -1286,8 +1323,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 97034710-95d6-4644-9506-bc3de6da0420
-    m_ActionName: UI/Toggle Quest[/Keyboard/j]
+    m_ActionId: 7096edf6-7a65-40d5-af48-78717a1384da
+    m_ActionName: Quest/Toggle Quest[/Keyboard/j,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 04c5d528-023f-4ab9-a808-1b422fea91ed
+    m_ActionName: Pause/Toggle Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1329,7 +1370,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1386,6 +1427,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 39.82, y: 77.71}
   m_EdgeRadius: 0
+--- !u!114 &496421970278509919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bb126cc266875438d05e2d00858654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryPanel: {fileID: 0}
+  inputActions: {fileID: -944628639613478452, guid: 3f6716e9ea27bdc469a20e6fd6ecc768, type: 3}
 --- !u!114 &-2407419223650497985
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,18 +11,7 @@ public class Play : MonoBehaviour
     public void PlayPrologue()
     {
         DOTween.Clear(true);
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-        asyncLoad.allowSceneActivation = false;
-
-        // Disable the canvas of the old scene
-        if (oldSceneCanvas != null)
-        {
-            oldSceneCanvas.enabled = false;
-        }
-
-        // Activate the new scene
-        asyncLoad.allowSceneActivation = true;
-
+        SceneManager.LoadSceneAsync(1);
     }
     public void PlayRome()
     {

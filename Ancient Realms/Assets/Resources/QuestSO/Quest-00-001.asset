@@ -38,15 +38,19 @@ MonoBehaviour:
     inkyRedirect: exhaust
     characterIndex: 0
     targetCharacters: []
+    missionID: 
+    questID: 
   - goalID: 1
     goalDescription: Hit Dummy
     goalType: 3
-    requiredAmount: 10
+    requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_0
     characterIndex: 0
     targetCharacters:
     - dummy-00-001
+    missionID: 
+    questID: 
   - goalID: 2
     goalDescription: Talk to the Legate
     goalType: 2
@@ -55,15 +59,19 @@ MonoBehaviour:
     inkyRedirect: exhaust
     characterIndex: 0
     targetCharacters: []
+    missionID: 
+    questID: 
   - goalID: 3
     goalDescription: Hit Dummy with Javelin
     goalType: 4
-    requiredAmount: 10
+    requiredAmount: 5
     currentAmount: 0
     inkyRedirect: goal_1
     characterIndex: 0
     targetCharacters:
     - dummy-00-001
+    missionID: 
+    questID: 
   - goalID: 4
     goalDescription: Talk to Legate
     goalType: 2
@@ -73,6 +81,8 @@ MonoBehaviour:
     characterIndex: 0
     targetCharacters:
     - dummy-00-001
+    missionID: 
+    questID: 
   rewards:
   - rewardType: 0
     value: 10

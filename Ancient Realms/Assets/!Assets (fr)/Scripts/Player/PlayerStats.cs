@@ -68,7 +68,7 @@ public class PlayerStats : MonoBehaviour
     async void Start()
     {
         PlayerController.GetInstance().canWalk = false;
-        localPlayerData = await AccountManager.GetPlayer();
+        localPlayerData = await AccountManager.Instance.GetPlayerData();
         LoadPlayerData(localPlayerData);
         PlayerController.GetInstance().canWalk = true;
         InvokeRepeating("SaveDataToServer", 3f, 3f); // Save data to the server every 10 seconds
@@ -88,26 +88,28 @@ public class PlayerStats : MonoBehaviour
         foreach(QuestData quest in playerGameData.quests){
             if(quest.isActive == true){
                 QuestSO qData = QuestManager.GetInstance().quests.Find(q => q.questID == quest.questID);
-                qData.currentKnot = quest.currentKnot;
-                qData.currentGoal = quest.currentGoal;
+                QuestSO copiedQuest = qData.CreateCopy();
+                copiedQuest.currentKnot = quest.currentKnot;
+                copiedQuest.currentGoal = quest.currentGoal;
                 int i = 0;
                 foreach(GoalData goal in quest.goals){
-                    qData.goals[i].currentAmount = goal.currentAmount;
-                    qData.goals[i].requiredAmount = goal.requiredAmount;
+                    copiedQuest.goals[i].currentAmount = goal.currentAmount;
+                    copiedQuest.goals[i].requiredAmount = goal.requiredAmount;
                     i++;
                 }
-                activeQuests.Add(qData);
+                activeQuests.Add(copiedQuest);
             }else if(quest.completed == true){
                 QuestSO qData = QuestManager.GetInstance().quests.Find(q => q.questID == quest.questID);
-                qData.currentKnot = quest.currentKnot;
-                qData.currentGoal = quest.currentGoal;
+                QuestSO copiedQuest = qData.CreateCopy();
+                copiedQuest.currentKnot = quest.currentKnot;
+                copiedQuest.currentGoal = quest.currentGoal;
                 int i = 0;
                 foreach(GoalData goal in quest.goals){
-                    qData.goals[i].currentAmount = goal.currentAmount;
-                    qData.goals[i].requiredAmount = goal.requiredAmount;
+                    copiedQuest.goals[i].currentAmount = goal.currentAmount;
+                    copiedQuest.goals[i].requiredAmount = goal.requiredAmount;
                     i++;
                 }
-                completedQuests.Add(qData);
+                completedQuests.Add(copiedQuest);
             }
         }
         level = playerGameData.level;
@@ -303,7 +305,7 @@ public class PlayerStats : MonoBehaviour
     }
     private async void RefreshData()
     {
-        localPlayerData = await AccountManager.GetPlayer();
+        localPlayerData = await AccountManager.Instance.GetPlayerData();
         LoadPlayerData(localPlayerData);
     }
     private void OnBalanceChange(double sb)
