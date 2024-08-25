@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using ESDatabase.Classes;
 using UnityEngine;
 [Serializable]
 public class Quest
@@ -108,7 +107,6 @@ public enum MouseEnum {
     Help,
     TextBox
 }
-
 [Serializable]
 public class QuestList
 {
