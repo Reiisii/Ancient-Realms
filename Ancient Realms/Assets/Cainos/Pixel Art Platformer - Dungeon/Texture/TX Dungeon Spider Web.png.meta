@@ -3,7 +3,7 @@ guid: b53d24142ffcb5b4282f723621e5a897
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,6 +64,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -74,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -86,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -98,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -110,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -122,175 +129,407 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 01
+      name: TX Dungeon Spider Web_0
       rect:
         serializedVersion: 2
-        x: 29
-        y: 443
-        width: 35
-        height: 37
-      alignment: 9
-      pivot: {x: 0.4857143, y: 0.4864865}
+        x: 128
+        y: 480
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 850256d4be4fb9247b78bc77f97fa338
-      internalID: -1673610017
+      spriteID: ab91f0095dd65b243b206c8a4642c5ce
+      internalID: -518777908
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 02
+      name: TX Dungeon Spider Web_1
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 480
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf748ac9a0bf61b48ae2552707d239e0
+      internalID: -1847300811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 448
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6658ab61b7893f64aae7175522438937
+      internalID: -1193792867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 448
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e2236d2c47243d44b248dd2c7ec60ea
+      internalID: 1492804709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_4
       rect:
         serializedVersion: 2
         x: 96
-        y: 449
-        width: 67
+        y: 448
+        width: 32
         height: 32
-      alignment: 9
-      pivot: {x: 0.49253732, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 85cda4cdc02474a4ca68137f2f117da1
-      internalID: -1416090790
+      spriteID: cb79c52527469d94fb0f26553a5f4d77
+      internalID: 801856678
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 03
+      name: TX Dungeon Spider Web_5
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 448
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 250e237c45993ae489cef2ded58f2e0c
+      internalID: -1962386757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_6
       rect:
         serializedVersion: 2
         x: 192
         y: 448
-        width: 34
-        height: 23
-      alignment: 9
-      pivot: {x: 0.5, y: 0.47826087}
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 202283da99ed89a4fbc7aa00b0947a98
-      internalID: -1228207949
+      spriteID: 66338944b373ca040b889e553aad4700
+      internalID: -421632114
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 04
+      name: TX Dungeon Spider Web_7
       rect:
         serializedVersion: 2
-        x: 271
+        x: 224
         y: 448
-        width: 17
-        height: 11
-      alignment: 9
-      pivot: {x: 0.47058824, y: 0.45454547}
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4a8b753b7ce35204e9ef7ecfa0049712
-      internalID: 1775678431
+      spriteID: ed287b9cf2f0bfd49b6c874b478a75c1
+      internalID: -958732280
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 05
+      name: TX Dungeon Spider Web_8
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 448
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cee8f7cece6a0404ab29cbbdf48a1016
+      internalID: -689808595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_9
       rect:
         serializedVersion: 2
         x: 320
-        y: 420
+        y: 448
         width: 32
-        height: 60
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc7871307c8811f40a101154ff09fe2b
-      internalID: -533197951
+      spriteID: 293a36452bdd14a4a83aa53b1733930e
+      internalID: -1989886277
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 06
+      name: TX Dungeon Spider Web_10
       rect:
         serializedVersion: 2
         x: 384
-        y: 464
-        width: 40
-        height: 17
-      alignment: 9
-      pivot: {x: 0.5, y: 0.47058824}
+        y: 448
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 958af916b8840ca488e5625313fe4d89
-      internalID: -1882097257
+      spriteID: f9e871a2451187c40ba82beb3e28aeee
+      internalID: -370286772
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 07
+      name: TX Dungeon Spider Web_11
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 448
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e19063e2ed07b248881c446df439c19
+      internalID: -1717378584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_12
       rect:
         serializedVersion: 2
         x: 448
-        y: 432
+        y: 448
         width: 32
-        height: 48
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 44f86483525d2404697c22ab70a7bb41
-      internalID: 267765768
+      spriteID: 6a5d54e8f565cbf488e7c305cdb3ea42
+      internalID: 2083158445
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Dungeon Spider Web - 08
+      name: TX Dungeon Spider Web_13
       rect:
         serializedVersion: 2
         x: 32
-        y: 366
-        width: 64
-        height: 50
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+        y: 416
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42f78b2921d2cc44db6f7ba57edf9f02
-      internalID: -2004987792
+      spriteID: aa4d02248f47c02468d0130ba6fd90ed
+      internalID: -1021023890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_14
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 416
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 486c668178aae434c917ffa25d4924f0
+      internalID: -415065766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_15
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 416
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f0daaf799c23694db7fe2d4dc65f410
+      internalID: 574401213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_16
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 384
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20ad230c39e9f454c9f04986fb38059e
+      internalID: 1167550186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_17
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 384
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 333c9a642a4d8014b9312cf4a6adce06
+      internalID: -1395715000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Dungeon Spider Web_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 352
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4bd9c654e28eb54ab9655d655f43eba
+      internalID: 990521122
       vertices: []
       indices: 
       edges: []
@@ -306,17 +545,27 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TX Dungeon Spider Web - 03: -1228207949
-      TX Dungeon Spider Web - 06: -1882097257
-      TX Dungeon Spider Web - 08: -2004987792
-      TX Dungeon Spider Web - 07: 267765768
-      TX Dungeon Spider Web - 05: -533197951
-      TX Dungeon Spider Web - 02: -1228207949
-      TX Dungeon Spider Web - 04: 1775678431
-      TX Dungeon Spider Web - 01: -1416090790
-  spritePackingTag: 
+      TX Dungeon Spider Web_0: -518777908
+      TX Dungeon Spider Web_1: -1847300811
+      TX Dungeon Spider Web_10: -370286772
+      TX Dungeon Spider Web_11: -1717378584
+      TX Dungeon Spider Web_12: 2083158445
+      TX Dungeon Spider Web_13: -1021023890
+      TX Dungeon Spider Web_14: -415065766
+      TX Dungeon Spider Web_15: 574401213
+      TX Dungeon Spider Web_16: 1167550186
+      TX Dungeon Spider Web_17: -1395715000
+      TX Dungeon Spider Web_18: 990521122
+      TX Dungeon Spider Web_2: -1193792867
+      TX Dungeon Spider Web_3: 1492804709
+      TX Dungeon Spider Web_4: 801856678
+      TX Dungeon Spider Web_5: -1962386757
+      TX Dungeon Spider Web_6: -421632114
+      TX Dungeon Spider Web_7: -958732280
+      TX Dungeon Spider Web_8: -689808595
+      TX Dungeon Spider Web_9: -1989886277
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
