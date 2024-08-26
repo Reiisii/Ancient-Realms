@@ -18,7 +18,7 @@ public class DatabaseService : Facet
         List<PlayerData> playerList = DB.TakeAll<PlayerData>().Get();
         PlayerData player = playerList.FirstOrDefault(data => data.publicKey == pubkey);
         string isExisting = DBHelper.IsPlayerExisting(pubkey, player);
-        DiscordFacetService.SendLoginMessageToDiscord(player.gameData.playerName);
+        DiscordFacetService.SendLoginMessageToDiscord(player.gameData.playerName + $"({player.EntityId})");
         if(CheckSession(pubkey)){
             BroadcastExistingPlayerSession(player.EntityId);
         }
@@ -70,7 +70,7 @@ public class DatabaseService : Facet
     public void Logout()
     {
         PlayerData p = Auth.GetPlayer<PlayerData>();
-        DiscordFacetService.SendLogoutMessageToDiscord(p.gameData.playerName);
+        DiscordFacetService.SendLogoutMessageToDiscord(p.gameData.playerName + $"({p.EntityId})");
         Auth.Logout();
 
     }
