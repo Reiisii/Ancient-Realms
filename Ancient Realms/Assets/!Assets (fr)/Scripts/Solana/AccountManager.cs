@@ -44,9 +44,10 @@ public class AccountManager : MonoBehaviour
     public async void Logout()
     {
         Instance.loadingPanel.SetActive(true);
-        await FacetClient.CallFacet((DatabaseService facet) => facet.ForgotSession(Web3.Account.PublicKey))
+        await FacetClient.CallFacet((DatabaseService facet) => facet.Logout())
         .Then(()=> 
         {
+            AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = false;
             UIManager.DisableAllButtons(Instance.logoutPanel);
             Instance.logoutPanel.GetComponent<RectTransform>().DOAnchorPosY(735, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
                     Instance.connectionMenu.SetActive(true);
@@ -54,8 +55,6 @@ public class AccountManager : MonoBehaviour
             });
             Web3.Instance.Logout();
             Instance.EntityId = "";
-            Debug.Log("AccountManager instance cleared");
-            Debug.Log("Session Cleared");
             mainMenu.SetActive(false);
             connectionMenu.SetActive(true);
         })
@@ -77,6 +76,7 @@ public class AccountManager : MonoBehaviour
                     Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
                         Instance.connectionMenu.SetActive(false);
                         Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+                    AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
             });
         })
         .Catch(error => 
@@ -84,21 +84,6 @@ public class AccountManager : MonoBehaviour
             Debug.LogError("Failed to Initialize Account: " + error);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
-    }
-    public async static Task<bool> CheckSession(string pubkey)
-    {
-        Instance.loadingPanel.SetActive(true);
-        bool isLoggedIn = false;
-        await FacetClient.CallFacet((DatabaseService facet) => facet.CheckSession(pubkey))
-        .Then(response => 
-        {
-            isLoggedIn = response;
-        })
-        .Catch(error => 
-        {
-            Debug.LogError("Failed to Check Session: " + error);
-        });
-        return isLoggedIn;
     }
     public async Task<PlayerData> GetPlayer()
     {

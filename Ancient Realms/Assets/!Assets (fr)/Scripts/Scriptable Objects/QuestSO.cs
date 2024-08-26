@@ -17,6 +17,7 @@ public class QuestSO : ScriptableObject
     public bool isMain;
     public bool isActive;
     public bool isCompleted;
+    public bool isPinned;
     public bool isChained;
     public bool isRewarded;
     public int currentGoal;

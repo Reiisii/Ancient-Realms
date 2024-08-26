@@ -35,23 +35,19 @@ public class AccountStore : MonoBehaviour
         Web3.OnLogout -= OnLogout;
     }
     private async void OnLogin(Account account){
-        bool isLoggedIn = await AccountManager.CheckSession(account.PublicKey.ToString());
         AccountManager.Instance.loadingPanel.SetActive(true);
-        if(!isLoggedIn){
-            await AccountManager.InitializeLogin(account.PublicKey.ToString());
-            PlayerData playerData = AccountManager.playerData;
-            if(playerData != null){
-                masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
-                musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);
-                soundFXSlider.value = Mathf.Clamp(playerData.gameData.settings.soundFXVolume, soundFXSlider.minValue, soundFXSlider.maxValue);
-            }
-        }else{
-            AccountManager.Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
-            UIManager.EnableAllButtons(connectionMenu);
-            Web3.Instance.Logout();
-            AccountManager.Instance.EntityId = "";
-            popPanel.SetActive(true);
+        await AccountManager.InitializeLogin(account.PublicKey.ToString());
+        PlayerData playerData = AccountManager.playerData;
+        if(playerData != null){
+            masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
+            musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);
+            soundFXSlider.value = Mathf.Clamp(playerData.gameData.settings.soundFXVolume, soundFXSlider.minValue, soundFXSlider.maxValue);
         }
+        // AccountManager.Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        // UIManager.EnableAllButtons(connectionMenu);
+        // Web3.Instance.Logout();
+        // AccountManager.Instance.EntityId = "";
+        // popPanel.SetActive(true);
         
         
     }
