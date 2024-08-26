@@ -65,6 +65,26 @@ public class AccountManager : MonoBehaviour
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
     }
+    public async void ForceLogout()
+    {
+        Instance.loadingPanel.SetActive(true);
+        await FacetClient.CallFacet((DatabaseService facet) => facet.Logout())
+        .Then(()=> 
+        {
+            AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = false;
+            Web3.Instance.Logout();
+            Instance.EntityId = "";
+            UIManager.DisableAllButtons(Instance.mainMenu);
+            AccountManager.Instance.gameObject.GetComponent<MainMenuAnimation>().Close();
+            connectionMenu.SetActive(true);
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        })
+        .Catch(error => 
+        {
+            Debug.LogError("Failed to clear session and logout: " + error);
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        });
+    }
     public async static Task InitializeLogin(string pubkey)
     {
         string generatedUID = Utilities.GenerateUuid();
@@ -95,7 +115,7 @@ public class AccountManager : MonoBehaviour
         if(oldPlayer.token.Equals(newPlayer.token)){
             Debug.Log("New login but you are safe");
         }else{
-            Debug.Log("New login but you are gonna get logged out");
+            ForceLogout();
             Debug.Log(message);
         }
     }
