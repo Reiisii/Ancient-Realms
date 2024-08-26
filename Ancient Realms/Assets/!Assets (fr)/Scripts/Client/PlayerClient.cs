@@ -32,7 +32,7 @@ public class PlayerClient : UnisaveBroadcastingClient
     }
     void NewExistingSession(NewExistingSession msg)
     {
-        Debug.Log($"[Reason]: {msg.message}");
+        AccountManager.Instance.CheckSession(msg.message);
     }
     void PlayerJoined(PlayerJoinMessage msg)
     {

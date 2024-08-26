@@ -26,6 +26,7 @@ public class AccountManager : MonoBehaviour
     [SerializeField]
     public GameObject loadingPanel;
     public string EntityId;
+    public string UIDInstance;
     // Currently logged-in account
     private void Awake(){
         if (Instance == null)
@@ -66,16 +67,18 @@ public class AccountManager : MonoBehaviour
     }
     public async static Task InitializeLogin(string pubkey)
     {
-        await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLogin(pubkey))
-        .Then(async response => 
+        string generatedUID = Utilities.GenerateUuid();
+        await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLogin(pubkey, generatedUID))
+        .Then(response => 
         {
-                    PlayerData playerData = await GetPlayerByPublicKey(pubkey);
-                    Instance.EntityId = response;
+                    playerData = response;
+                    Instance.EntityId = response.EntityId;
+                    Instance.UIDInstance = generatedUID;
                     Instance.mainMenu.SetActive(true);
                     UIManager.DisableAllButtons(Instance.connectionMenu);
                     Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
-                        Instance.connectionMenu.SetActive(false);
-                        Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+                    Instance.connectionMenu.SetActive(false);
+                    Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
                     AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
             });
         })
@@ -84,6 +87,17 @@ public class AccountManager : MonoBehaviour
             Debug.LogError("Failed to Initialize Account: " + error);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
+    }
+    public async void CheckSession(string message){
+        PlayerData newPlayer = await GetPlayer();
+        PlayerData oldPlayer = playerData;
+
+        if(oldPlayer.token.Equals(newPlayer.token)){
+            Debug.Log("New login but you are safe");
+        }else{
+            Debug.Log("New login but you are gonna get logged out");
+            Debug.Log(message);
+        }
     }
     public async Task<PlayerData> GetPlayer()
     {
