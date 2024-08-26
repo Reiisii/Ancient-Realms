@@ -86,28 +86,32 @@ public class PlayerStats : MonoBehaviour
     {
         GameData playerGameData = data.gameData;
         foreach(QuestData quest in playerGameData.quests){
-            if(quest.isActive == true){
+            if(quest.isActive && !quest.completed){
                 QuestSO qData = QuestManager.GetInstance().quests.Find(q => q.questID == quest.questID);
                 QuestSO copiedQuest = qData.CreateCopy();
+                copiedQuest.isPinned = quest.isPinned;
+                copiedQuest.isActive = quest.isActive;
+                copiedQuest.isCompleted = quest.completed;
                 copiedQuest.currentKnot = quest.currentKnot;
                 copiedQuest.currentGoal = quest.currentGoal;
-                int i = 0;
-                foreach(GoalData goal in quest.goals){
-                    copiedQuest.goals[i].currentAmount = goal.currentAmount;
-                    copiedQuest.goals[i].requiredAmount = goal.requiredAmount;
-                    i++;
+                copiedQuest.isRewarded = quest.isRewarded;
+                for (int i = 0; i < copiedQuest.goals.Count; i++)
+                {
+                    copiedQuest.goals[i].currentAmount = quest.goals[i].currentAmount;
                 }
                 activeQuests.Add(copiedQuest);
-            }else if(quest.completed == true){
+            }else if(!quest.isActive && quest.completed){
                 QuestSO qData = QuestManager.GetInstance().quests.Find(q => q.questID == quest.questID);
                 QuestSO copiedQuest = qData.CreateCopy();
+                copiedQuest.isPinned = quest.isPinned;
+                copiedQuest.isActive = quest.isActive;
+                copiedQuest.isCompleted = quest.isActive;
                 copiedQuest.currentKnot = quest.currentKnot;
                 copiedQuest.currentGoal = quest.currentGoal;
-                int i = 0;
-                foreach(GoalData goal in quest.goals){
-                    copiedQuest.goals[i].currentAmount = goal.currentAmount;
-                    copiedQuest.goals[i].requiredAmount = goal.requiredAmount;
-                    i++;
+                copiedQuest.isRewarded = quest.isRewarded;
+                for (int i = 0; i < copiedQuest.goals.Count; i++)
+                {
+                    copiedQuest.goals[i].currentAmount = quest.goals[i].currentAmount;
                 }
                 completedQuests.Add(copiedQuest);
             }
@@ -126,6 +130,7 @@ public class PlayerStats : MonoBehaviour
         hpSlider.value = currentHP;
         xpSlider.value = currentXP;
         xpSlider.maxValue = maxXP;
+        staminaSlider.maxValue = maxStamina;
         staminaSlider.value = maxStamina;
     }
     public void SaveQuestToServer()
