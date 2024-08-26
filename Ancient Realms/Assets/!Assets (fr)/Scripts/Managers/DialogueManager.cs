@@ -46,23 +46,17 @@ public class DialogueManager : MonoBehaviour
         if(Utilities.npcHasQuest(npcData)){
             QuestSO questData = QuestManager.GetInstance().quests.Find(quest => quest.questID == npc.giveableQuest[0]);
             QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
-            if(activeQuest){
-                QuestSO aQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id);
-                            Debug.Log("Character Needed:" + aQuest.characters[aQuest.goals[aQuest.currentGoal].characterIndex]);
-                            Debug.Log("Character Needed:" + npcData.id);
-                            Debug.Log("Active Quest:" + activeQuest.isActive);
-            }
-            if(activeQuest && activeQuest.isCompleted && !activeQuest.isActive){
+            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
+            if(completedQuest && completedQuest.isCompleted && !completedQuest.isActive){
                 // If Quest is complete AND is not Active
                 currentStory = new Story(npcData.npcDialogue.text);
                 currentStory.ChoosePathString(npcData.dialogueKnot);
-            }else if(!activeQuest){
-                // If NPC Quest IS NOT existing on active quest list
+            }else if(!activeQuest && !completedQuest){
+                // If NPC Quest's active quest is not active list && NPC Quest's is not on completed list
                 currentStory = new Story(questData.dialogue.text);
                 currentStory.ChoosePathString(questData.currentKnot);
             }else if(activeQuest && activeQuest.isActive && PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
-                // IF NPC's Quest is EXISTING on active quest AND the quest is Active AND is Talking to the NPC that has the talk quest goal
-                currentStory = new Story(questData.dialogue.text);
+                currentStory = new Story(activeQuest.dialogue.text);
                 currentStory.ChoosePathString(activeQuest.currentKnot);
             }else{
                 currentStory = new Story(npc.npcDialogue.text);
@@ -112,7 +106,8 @@ public class DialogueManager : MonoBehaviour
             QuestSO questToGive = QuestManager.GetInstance().quests
                 .FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
             QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
-            if (questToGive != null && activeQuest == null)
+            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
+            if (questToGive != null && activeQuest == null && completedQuest == null)
             {
                 // Start the quest if it's not already active or completed
                 QuestManager.GetInstance().StartQuest(questToGive.questID);

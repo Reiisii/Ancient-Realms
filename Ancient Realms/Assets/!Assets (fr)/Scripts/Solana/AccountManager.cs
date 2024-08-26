@@ -19,9 +19,12 @@ public class AccountManager : MonoBehaviour
     GameObject mainMenu;
     [SerializeField]
     GameObject connectionMenu;
-    public static AccountManager Instance { get; private set;}
     [SerializeField]
-    GameObject loadingPanel;
+    GameObject logoutPanel;
+    public static AccountManager Instance { get; private set;}
+    public static PlayerData playerData;
+    [SerializeField]
+    public GameObject loadingPanel;
     public string EntityId;
     // Currently logged-in account
     private void Awake(){
@@ -38,32 +41,47 @@ public class AccountManager : MonoBehaviour
         }
 
     }
-    public void Logout()
-    {
-        Web3.Instance.Logout();
-        Instance.EntityId = "";
-        Debug.Log("AccountManager instance cleared");
-        mainMenu.SetActive(false);
-        connectionMenu.SetActive(true);
-    }
-    public async static void InitializeLogin(string pubkey)
+    public async void Logout()
     {
         Instance.loadingPanel.SetActive(true);
-        await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLogin(pubkey))
-        .Then(response => 
+        await FacetClient.CallFacet((DatabaseService facet) => facet.Logout())
+        .Then(()=> 
         {
-            Instance.EntityId = response;
-            Instance.mainMenu.SetActive(true);
-            UIManager.DisableAllButtons(Instance.connectionMenu);
-            Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
-                Instance.connectionMenu.SetActive(false);
-                Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = false;
+            UIManager.DisableAllButtons(Instance.logoutPanel);
+            Instance.logoutPanel.GetComponent<RectTransform>().DOAnchorPosY(735, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
+                    Instance.connectionMenu.SetActive(true);
+                    Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
             });
-            
+            Web3.Instance.Logout();
+            Instance.EntityId = "";
+            mainMenu.SetActive(false);
+            connectionMenu.SetActive(true);
         })
         .Catch(error => 
         {
-            Debug.LogError("Failed to create or update account: " + error);
+            Debug.LogError("Failed to clear session and logout: " + error);
+            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        });
+    }
+    public async static Task InitializeLogin(string pubkey)
+    {
+        await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLogin(pubkey))
+        .Then(async response => 
+        {
+                    PlayerData playerData = await GetPlayerByPublicKey(pubkey);
+                    Instance.EntityId = response;
+                    Instance.mainMenu.SetActive(true);
+                    UIManager.DisableAllButtons(Instance.connectionMenu);
+                    Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
+                        Instance.connectionMenu.SetActive(false);
+                        Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+                    AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
+            });
+        })
+        .Catch(error => 
+        {
+            Debug.LogError("Failed to Initialize Account: " + error);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
     }

@@ -17,6 +17,10 @@ public class AccountStore : MonoBehaviour
 
     [SerializeField]
     GameObject connectionMenu;
+    [SerializeField]
+    GameObject popPanel;
+    [SerializeField]
+    GameObject loadingPanel;
     [Header("Slider")]
     [SerializeField] Slider masterSlider;
     [SerializeField] Slider musicSlider;
@@ -31,11 +35,21 @@ public class AccountStore : MonoBehaviour
         Web3.OnLogout -= OnLogout;
     }
     private async void OnLogin(Account account){
-        AccountManager.InitializeLogin(account.PublicKey.ToString());
-        PlayerData playerData = await AccountManager.GetPlayerByPublicKey(account.PublicKey.ToString());
-        masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
-        musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);
-        soundFXSlider.value = Mathf.Clamp(playerData.gameData.settings.soundFXVolume, soundFXSlider.minValue, soundFXSlider.maxValue);
+        AccountManager.Instance.loadingPanel.SetActive(true);
+        await AccountManager.InitializeLogin(account.PublicKey.ToString());
+        PlayerData playerData = AccountManager.playerData;
+        if(playerData != null){
+            masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
+            musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);
+            soundFXSlider.value = Mathf.Clamp(playerData.gameData.settings.soundFXVolume, soundFXSlider.minValue, soundFXSlider.maxValue);
+        }
+        // AccountManager.Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+        // UIManager.EnableAllButtons(connectionMenu);
+        // Web3.Instance.Logout();
+        // AccountManager.Instance.EntityId = "";
+        // popPanel.SetActive(true);
+        
+        
     }
     private void OnLogout(){
         Debug.Log("Logout");
