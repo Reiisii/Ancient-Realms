@@ -73,8 +73,16 @@ public class DialogueTrigger : MonoBehaviour
     }
     public bool hasMainQuest(){
         if(npcData.giveableQuest.Count > 0){
-            QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-            return !quest.isActive && !quest.isCompleted;
+            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+            if(activeQuest == null && completedQuest == null){
+                QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+                return !quest.isActive && !quest.isCompleted;
+            }else{
+                return false;
+            }
+            
+            
         }else{
             return false;
         }
@@ -82,10 +90,9 @@ public class DialogueTrigger : MonoBehaviour
     }
     public bool completion(){
         List<QuestSO> activeQuest = PlayerStats.GetInstance().activeQuests.ToList();
-        bool isInActiveQuest = activeQuest.Any(quest => quest.characters.Contains(npcData.id));
         if(npcData.giveableQuest.Count > 0){    
             if(PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
-                QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+                QuestSO quest = activeQuest.Find(quest => quest.characters.Contains(npcData.id));
                 return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
             }else{
                 return false;

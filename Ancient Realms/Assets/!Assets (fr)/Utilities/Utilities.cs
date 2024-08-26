@@ -29,6 +29,11 @@ public class Utilities {
         public static bool npcHasQuest(NPCData npc){
                 return npc.giveableQuest.Count > 0;
         }
+        public static string GenerateUuid()
+        {
+            Guid uuid = Guid.NewGuid();
+            return uuid.ToString();
+        }
         public static Color GetColorForCulture(CultureEnum culture)
         {
                 switch (culture)

@@ -7,11 +7,14 @@ using UnityEngine.SceneManagement;
 public class Play : MonoBehaviour
 {
     [SerializeField] public Canvas oldSceneCanvas;
-
+    [SerializeField] CanvasGroup canvasGroup;
     public void PlayPrologue()
     {
-        DOTween.Clear(true);
-        SceneManager.LoadSceneAsync(1);
+        canvasGroup.gameObject.SetActive(true);
+        canvasGroup.DOFade(1, 0.8f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{
+            DOTween.Clear(true);
+            SceneManager.LoadSceneAsync(1);
+        });  
     }
     public void PlayRome()
     {

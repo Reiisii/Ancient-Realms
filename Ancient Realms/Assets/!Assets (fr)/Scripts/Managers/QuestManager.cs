@@ -50,11 +50,7 @@ public class QuestManager : MonoBehaviour
                     currentGoal = 0,
                     goals = new List<GoalData>()
                 };
-                if(quest.isChained) {
-                    questData.currentKnot = "start"; 
-                }else{
-                    questData.currentKnot = "exhaust";
-                }
+
                 foreach (Goal goal in quest.goals)
                 {
                     GoalData goalData = new GoalData(){
@@ -66,9 +62,14 @@ public class QuestManager : MonoBehaviour
                 }
                 QuestSO copiedQuest = quest.CreateCopy();
                 copiedQuest.isActive = true;
+                if(quest.isChained) {
+                    questData.currentKnot = "start"; 
+                    copiedQuest.currentKnot = "start";
+                }else{
+                    questData.currentKnot = "exhaust";
+                    copiedQuest.currentKnot = "exhaust";
+                }
                 playerStats.AddQuest(questData, copiedQuest);
-                Debug.Log("Started Quest:" + questID);
-
             }
         }
     }
@@ -132,7 +133,7 @@ public class QuestManager : MonoBehaviour
         
         foreach (var quest in playerStats.activeQuests)
         {
-                if(quest.currentGoal < quest.goals.Capacity){
+            if(quest.currentGoal < quest.goals.Capacity){
                 Goal goal = quest.goals[quest.currentGoal];
                 if (goal.goalType == GoalTypeEnum.WalkRight && deltaX > 0)
                 {
@@ -284,8 +285,7 @@ public class QuestManager : MonoBehaviour
     public void UpdateTalkGoal(QuestSO quest)
     {
         List<QuestSO> questsToRemove = new List<QuestSO>();
-            if (quest.currentGoal < quest.goals.Count)
-            {
+        if (quest.currentGoal < quest.goals.Count){
                 if (quest.isActive)
                 {
                     Goal goal = quest.goals[quest.currentGoal];
@@ -327,7 +327,7 @@ public class QuestManager : MonoBehaviour
                 foreach (Transform child in questPanel)
                 {
                     QuestPrefab questPrefab = child.GetComponent<QuestPrefab>();
-                    if (questPrefab != null && questPrefab.questSO == quest)
+                    if (questPrefab != null && questPrefab.questSO.questID == quest.questID)
                     {
                         questPrefab.UpdateQuestDisplay();
                     }
@@ -349,12 +349,8 @@ public class QuestManager : MonoBehaviour
                 break;
             }
         }
-
         if (allGoalsCompleted)
         {
-            // Remove or Delete Quest
-
-
             quest.isCompleted = true;
             quest.isActive = false;
             foreach (Transform child in questPanel)
@@ -367,10 +363,6 @@ public class QuestManager : MonoBehaviour
                 }
             }
             RewardPlayer(quest);
-            
-            Debug.Log("Quest Completed: " + quest.questID);
-            
-            // Add any additional logic for when a quest is completed, e.g., rewards, notifications
         }
     }
     private void RewardPlayer(QuestSO quest)
@@ -405,8 +397,8 @@ public class QuestManager : MonoBehaviour
                     Instance.StartQuest(reward.value);
                     break;
             }
-            quest.isRewarded = true;
-            playerStats.SaveQuestToServer();
         }
+        quest.isRewarded = true;
+        playerStats.SaveQuestToServer();
     }
 }
