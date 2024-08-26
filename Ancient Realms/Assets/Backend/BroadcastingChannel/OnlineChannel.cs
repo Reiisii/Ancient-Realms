@@ -9,9 +9,9 @@ using ESDatabase.Entities;
 
 public class OnlineChannel : BroadcastingChannel
 {
-    public SpecificChannel WithoutParameters()
+    public SpecificChannel JoinRoom(string entityID)
     {
-        return SpecificChannel.From<OnlineChannel>();
+        return SpecificChannel.From<OnlineChannel>(entityID);
     }
     public SpecificChannel ForPlayer(string entityID)
     {

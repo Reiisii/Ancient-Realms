@@ -13,17 +13,19 @@ using ESDatabase.Messages;
 using ESDatabase.Services;
 public class DatabaseService : Facet
 {
-    public string InitializeLogin(string pubkey)
+    public PlayerData InitializeLogin(string pubkey, string UID)
     {
-        List<PlayerData> playerList = DB.TakeAll<PlayerData>().Get();
-        PlayerData player = playerList.FirstOrDefault(data => data.publicKey == pubkey);
+        PlayerData player = DB.TakeAll<PlayerData>().Get().FirstOrDefault(data => data.publicKey == pubkey);
         string isExisting = DBHelper.IsPlayerExisting(pubkey, player);
-        DiscordFacetService.SendLoginMessageToDiscord(player.gameData.playerName + $"({player.EntityId})");
         if(CheckSession(pubkey)){
             BroadcastExistingPlayerSession(player.EntityId);
-        }
-        Auth.Login(player);
-        return isExisting;
+        }        
+        PlayerData copiedPlayer = DB.TakeAll<PlayerData>().Get().FirstOrDefault(data => data.EntityId == isExisting);
+        copiedPlayer.token = UID;
+        copiedPlayer.Save();
+        Auth.Login(copiedPlayer);
+        DiscordFacetService.SendLoginMessageToDiscord(copiedPlayer);
+        return copiedPlayer;
     }
     public bool CheckSession(string pubkey)
     {
@@ -47,30 +49,30 @@ public class DatabaseService : Facet
         PlayerData p = Auth.GetPlayer<PlayerData>();
         var subscription = Broadcast
             .Channel<OnlineChannel>()
-            .WithoutParameters()
+            .JoinRoom(p.EntityId)
             .CreateSubscription();
         
         // new player in the room broadcast
         Broadcast.Channel<OnlineChannel>()
-            .WithoutParameters()
+            .JoinRoom(p.EntityId)
             .Send(new PlayerJoinMessage {
-                playerName = p.EntityId
+                playerName = p.token
             });
 
         return subscription;
     }
     private void BroadcastExistingPlayerSession(string playerId)
     {
-        var playerChannel = Broadcast.Channel<OnlineChannel>().ForPlayer(playerId);
-        playerChannel.Send(new NewExistingSession
-        {
-            message = "New client logged into your account."
-        });
+        Broadcast.Channel<OnlineChannel>()
+            .ForPlayer(playerId)
+            .Send(new NewExistingSession {
+                message = "New client logged into your account."
+            });
     }
     public void Logout()
     {
         PlayerData p = Auth.GetPlayer<PlayerData>();
-        DiscordFacetService.SendLogoutMessageToDiscord(p.gameData.playerName + $"({p.EntityId})");
+        DiscordFacetService.SendLogoutMessageToDiscord(p);
         Auth.Logout();
 
     }
