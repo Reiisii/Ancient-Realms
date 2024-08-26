@@ -37,6 +37,16 @@ public class SliderMiniGame : MonoBehaviour
     private Animator hammerAnimator; // Animator component for the Hammer
     public string hammerAnimationParam = "isHammering"; // The name of the animation parameter
 
+    // References to the UI circles for each round
+    public Image[] scoreCircles; // Assign these in the Inspector
+
+    // Colors to indicate scores
+    public Color redColor = Color.red;
+    public Color yellowColor = Color.yellow;
+    public Color greenColor = Color.green;
+
+    public Image timerCircleImage; // Reference to the circular timer image
+
     void Start()
     {
         InitializeSlider();
@@ -68,6 +78,7 @@ public class SliderMiniGame : MonoBehaviour
                     {
                         StopSlider();
                         CalculateScore();
+                        UpdateScoreCircle(); // Update the score circle color
                         StopTimer();
                         pressCount++;
                         StartCoroutine(WaitAndStartNextRound(delayBeforeNextRound));
@@ -81,7 +92,7 @@ public class SliderMiniGame : MonoBehaviour
             if (isMoving)
             {
                 MoveSlider();
-                UpdateTimer();
+                UpdateTimer(); // Update timer while the slider is moving
             }
         }
     }
@@ -187,6 +198,40 @@ public class SliderMiniGame : MonoBehaviour
         Debug.Log("Score: " + score);
     }
 
+    void UpdateScoreCircle()
+    {
+        if (pressCount < scoreCircles.Length)
+        {
+            Vector3 handlePosition = slider.handleRect.position;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(leftRed, handlePosition) ||
+                RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
+            {
+                scoreCircles[pressCount].color = redColor;
+                Debug.Log("Setting circle " + pressCount + " to Red.");
+            }
+            else if (RectTransformUtility.RectangleContainsScreenPoint(leftYellow, handlePosition) ||
+                     RectTransformUtility.RectangleContainsScreenPoint(rightYellow, handlePosition))
+            {
+                scoreCircles[pressCount].color = yellowColor;
+                Debug.Log("Setting circle " + pressCount + " to Yellow.");
+            }
+            else if (RectTransformUtility.RectangleContainsScreenPoint(green, handlePosition))
+            {
+                scoreCircles[pressCount].color = greenColor;
+                Debug.Log("Setting circle " + pressCount + " to Green.");
+            }
+            else
+            {
+                Debug.LogWarning("Handle position did not match any color areas.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Press count exceeds the number of circles.");
+        }
+    }
+
     void InitializeTimer()
     {
         timeLeft = roundTime;
@@ -199,6 +244,9 @@ public class SliderMiniGame : MonoBehaviour
         {
             timeLeft -= Time.deltaTime;
             UpdateTimerText();
+
+            // Update the circular timer fill amount
+            timerCircleImage.fillAmount = timeLeft / roundTime;
 
             if (timeLeft <= 0)
             {
@@ -222,15 +270,17 @@ public class SliderMiniGame : MonoBehaviour
         timeRunning = false; // Stop the timer
     }
 
-    void UpdateTimerText()
-    {
-        // Convert timeLeft to seconds and milliseconds (rounded to nearest hundred)
-        int seconds = Mathf.FloorToInt(timeLeft % 60);
-        int milliseconds = Mathf.FloorToInt((timeLeft * 100) % 100);
+void UpdateTimerText()
+{
+    // Convert timeLeft to seconds and milliseconds (rounded to nearest hundred)
+    int seconds = Mathf.FloorToInt(timeLeft % 60);
+    int milliseconds = Mathf.FloorToInt((timeLeft * 100) % 100);
 
-        // Format the time string as SS:MM
-        timerText.text = string.Format("{0:D2}:{1:D2}", seconds, milliseconds);
-    }
+    // Format the time string as S:MM
+    // Use conditional formatting to handle single-digit seconds without a leading zero
+    timerText.text = string.Format("{0}:{1:D2}", seconds, milliseconds);
+}
+
 
     IEnumerator WaitAndStartNextRound(float delay)
     {
@@ -297,7 +347,7 @@ public class SliderMiniGame : MonoBehaviour
             return "Yellow";
         else if (RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
             return "Red";
-        else
-            return "Unknown";
+
+        return "Unknown"; // Fallback in case the position doesn't match any defined area
     }
 }
