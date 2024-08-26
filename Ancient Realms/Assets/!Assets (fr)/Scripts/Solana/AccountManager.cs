@@ -74,8 +74,11 @@ public class AccountManager : MonoBehaviour
             AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = false;
             Web3.Instance.Logout();
             Instance.EntityId = "";
+            Instance.UIDInstance = "";
             UIManager.DisableAllButtons(Instance.mainMenu);
-            AccountManager.Instance.gameObject.GetComponent<MainMenuAnimation>().Close();
+            Instance.mainMenu.GetComponent<MainMenuAnimation>().Close();
+            Instance.mainMenu.GetComponent<UpdatePanelAnimation>().Close();
+            Instance.mainMenu.GetComponent<LogoAnimation>().Close();
             connectionMenu.SetActive(true);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         })
