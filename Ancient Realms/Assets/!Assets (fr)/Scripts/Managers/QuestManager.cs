@@ -62,6 +62,7 @@ public class QuestManager : MonoBehaviour
                 }
                 QuestSO copiedQuest = quest.CreateCopy();
                 copiedQuest.isActive = true;
+                copiedQuest.isPinned = true;
                 if(quest.isChained) {
                     questData.currentKnot = "start"; 
                     copiedQuest.currentKnot = "start";
@@ -92,15 +93,28 @@ public class QuestManager : MonoBehaviour
         // Update or add active quests
         foreach (var quest in playerStats.activeQuests)
         {
-            if (!activeQuestPrefabs.ContainsKey(quest.questID))
+            if (quest.isPinned)
             {
-                AddQuestToBoard(quest);
+                if (!activeQuestPrefabs.ContainsKey(quest.questID))
+                {
+                    AddQuestToBoard(quest);
+                }
+                else
+                {
+                    activeQuestPrefabs[quest.questID].UpdateQuestDisplay();
+                }
             }
             else
             {
-                activeQuestPrefabs[quest.questID].UpdateQuestDisplay();
+                // If the quest is not pinned but is in the board, remove it
+                if (activeQuestPrefabs.ContainsKey(quest.questID))
+                {
+                    Destroy(activeQuestPrefabs[quest.questID].gameObject);
+                    activeQuestPrefabs.Remove(quest.questID);
+                }
             }
         }
+
     }
     private void AddQuestToBoard(QuestSO quest)
     {

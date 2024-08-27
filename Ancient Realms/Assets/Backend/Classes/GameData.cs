@@ -15,6 +15,7 @@ namespace ESDatabase.Classes
                 public string lastDistrict {get;set;}
                 public int currentEnergy {get;set;}
                 public Inventory inventory {get;set;}
+                public EquippedData equippedData {get;set;}
                 public List<QuestData> quests {get; set;}
                 public List<ArtifactsData> artifacts {get;set;}
                 public SettingsData settings {get;set;}
@@ -30,6 +31,7 @@ namespace ESDatabase.Classes
                         this.lastDistrict = "Main";
                         this.rank = "Tiro";
                         this.inventory = new Inventory();
+                        this.equippedData = new EquippedData();
                         this.quests = new List<QuestData>();
                         this.artifacts = new List<ArtifactsData>();
                         this.settings = new SettingsData();
