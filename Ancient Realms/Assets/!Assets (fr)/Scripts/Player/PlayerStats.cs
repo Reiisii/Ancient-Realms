@@ -32,6 +32,7 @@ public class PlayerStats : MonoBehaviour
     public float maxHP = 100f;
     public float maxStamina = 70f;
     public float stamina = 70f;
+    public float armor = 0f;
     [Header("Movement Stats")]
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
@@ -141,14 +142,14 @@ public class PlayerStats : MonoBehaviour
             QuestSO qData = activeQuests.Find(q => q.questID == quest.questID);
             if(quest.isActive == true){
                 quest.isActive = qData.isActive;
+                quest.isPinned = qData.isPinned;
                 quest.isRewarded = qData.isRewarded;
                 quest.completed = qData.isCompleted;
                 quest.currentKnot = qData.currentKnot;
                 quest.currentGoal = qData.currentGoal;
-                int i = 0;
-                foreach(GoalData goal in quest.goals){
+                for(int i = 0; i < quest.goals.Count; i++)
+                {
                     quest.goals[i].currentAmount = qData.goals[i].currentAmount;
-                    quest.goals[i].requiredAmount = qData.goals[i].requiredAmount;
                     i++;
                 }
                 isDataDirty = true;

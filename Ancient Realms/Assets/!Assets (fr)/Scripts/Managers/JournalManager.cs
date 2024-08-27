@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JournalManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class JournalManager : MonoBehaviour
     [Header("Active Quest")]
     [SerializeField] TextMeshProUGUI questTitleText;
     [SerializeField] TextMeshProUGUI descriptionText;
+    [SerializeField] Button pinButton;
+    [SerializeField] TextMeshProUGUI pinTypeText;
     [SerializeField] RectTransform objectiveListPanel;
     public QuestSO displayedQuest;
     public List<QuestSO> mainQuest;
@@ -50,6 +53,16 @@ public class JournalManager : MonoBehaviour
                 questGoalPrefab.setQuestSO(quest, goal);
             }
         }
+        if(quest.isCompleted){
+            pinButton.interactable = false;
+        }else{
+            pinButton.interactable = true;
+        }
+        if(quest.isPinned){
+            pinTypeText.SetText("Unpin Quest");
+        }else{
+            pinTypeText.SetText("Pin Quest");
+        }
     }
     private void Start()
     {
@@ -62,7 +75,6 @@ public class JournalManager : MonoBehaviour
     {
         // Ensure the quest type is set to Main
         currentQuestType = QuestType.Main;
-        
         // Update the lists of quests
         UpdateQuestLists();
 
@@ -139,14 +151,28 @@ public class JournalManager : MonoBehaviour
             _ => QuestType.Main
         };
         ClearQuestDetails();
+        if(displayedQuest == null){
+            pinButton.interactable = false;
+        }else{
+            pinButton.interactable = true;
+        }
         UpdateQuestLists(); // Update the lists based on current state
         UpdateQuestBoard(); // Update the quest board with the new list
     }
+    public void PinUnpin()
+    {
+        displayedQuest.isPinned = !displayedQuest.isPinned;
+        PlayerStats.GetInstance().SaveQuestToServer();
+        pinTypeText.SetText(displayedQuest.isPinned ? "Unpin Quest" : "Pin Quest");
+        // Update the quest board with the new list
+    }
     private void ClearQuestDetails()
     {
+        displayedQuest = null;
         questTitleText.SetText("");
         descriptionText.SetText("");
-        ClearContent(objectiveListPanel);  // Clear the objectives list
+        ClearContent(objectiveListPanel);
+        // Clear the objectives list
     }
     public void DeselectAllQuests()
     {
