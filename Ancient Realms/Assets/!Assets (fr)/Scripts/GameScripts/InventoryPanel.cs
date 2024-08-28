@@ -14,10 +14,9 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI playerName;
     private void Start(){
         playerStats = PlayerStats.GetInstance();
-        playerName.SetText(playerStats.localPlayerData.gameData.playerName);
     }
     private void OnEnable(){
-
+        playerName.SetText(playerStats.localPlayerData.gameData.playerName);
     }
     
 }

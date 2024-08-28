@@ -56,6 +56,7 @@ public class AccountManager : MonoBehaviour
             });
             Web3.Instance.Logout();
             Instance.EntityId = "";
+            Instance.UIDInstance = "";
             mainMenu.SetActive(false);
             connectionMenu.SetActive(true);
         })
