@@ -13,9 +13,9 @@ public class LogoAnimation : MonoBehaviour
     [SerializeField] float newPanelPosY;
     [SerializeField] EaseTypes panelEaseType;
     private void OnEnable(){
-        Logo.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(LogoGO));
+        Logo.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).SetUpdate(true).OnComplete(() => UIManager.EnableAllButtons(LogoGO));
     }
     public void Close(){
-        Logo.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType);
+        Logo.DOAnchorPosY(defaultPanelPosY, panelDuration).SetUpdate(true).SetEase((Ease)panelEaseType);
     }
 }

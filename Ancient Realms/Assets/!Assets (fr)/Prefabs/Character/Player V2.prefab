@@ -866,6 +866,7 @@ GameObject:
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 7836553738663465838}
   - component: {fileID: -4221797428664147929}
+  - component: {fileID: 3159148761232768842}
   - component: {fileID: 496421970278509919}
   - component: {fileID: -2407419223650497985}
   - component: {fileID: -2701709620502470431}
@@ -1011,6 +1012,7 @@ MonoBehaviour:
   maxHP: 100
   maxStamina: 70
   stamina: 70
+  armor: 0
   walkSpeed: 5
   runSpeed: 8
   staminaDepletionRate: 20
@@ -1057,6 +1059,31 @@ MonoBehaviour:
   isHolding: 0
   animator: {fileID: 0}
   panSpeed: 2
+  inputActions: {fileID: -944628639613478452, guid: 3f6716e9ea27bdc469a20e6fd6ecc768, type: 3}
+  playerActionMap:
+    m_Name: Player
+    m_Id: 770452c6-50c0-4a00-b503-1ad76e2f7596
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  questActionMap:
+    m_Name: Quest
+    m_Id: 33114b8d-8b37-4dba-9aa0-7171acaaa5a7
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  inventoryActionMap:
+    m_Name: Inventory
+    m_Id: 54f49168-d161-47c1-971d-12097d7295e6
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  pauseActionmap:
+    m_Name: Pause Actionmap
+    m_Id: e25801df-bb87-441f-9899-93a57678c100
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -1290,7 +1317,19 @@ MonoBehaviour:
     m_ActionId: 1b694e90-9f88-42e4-863a-c9cd445a886c
     m_ActionName: Player/Toggle Inventory[/Keyboard/tab]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3159148761232768842}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+        m_MethodName: OpenPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c17d2bbd-ecff-40f2-a11c-ec3a7613dd39
     m_ActionName: Player/Toggle Pause[/Keyboard/escape]
   - m_PersistentCalls:
@@ -1326,7 +1365,19 @@ MonoBehaviour:
     m_ActionId: 7096edf6-7a65-40d5-af48-78717a1384da
     m_ActionName: Quest/Toggle Quest[/Keyboard/j,/Keyboard/escape]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3159148761232768842}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+        m_MethodName: OpenPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 04c5d528-023f-4ab9-a808-1b422fea91ed
     m_ActionName: Pause/Toggle Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
@@ -1427,6 +1478,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 39.82, y: 77.71}
   m_EdgeRadius: 0
+--- !u!114 &3159148761232768842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4d2dcaef028e14ea1b4febcd935719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pausePanel: {fileID: 0}
 --- !u!114 &496421970278509919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1440,7 +1504,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryPanel: {fileID: 0}
-  inputActions: {fileID: -944628639613478452, guid: 3f6716e9ea27bdc469a20e6fd6ecc768, type: 3}
 --- !u!114 &-2407419223650497985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1457,7 +1520,6 @@ MonoBehaviour:
   questPanel: {fileID: 0}
   journalPanel: {fileID: 0}
   quests: []
-  inputActions: {fileID: -944628639613478452, guid: 3f6716e9ea27bdc469a20e6fd6ecc768, type: 3}
 --- !u!114 &-2701709620502470431
 MonoBehaviour:
   m_ObjectHideFlags: 0

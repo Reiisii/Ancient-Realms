@@ -34,7 +34,11 @@ public class PlayerController : MonoBehaviour
     private static PlayerController Instance;
     public float panSpeed = 2f;
     private float panDistance = 7f;
-
+    public InputActionAsset inputActions;
+    public InputActionMap playerActionMap;
+    public InputActionMap questActionMap;
+    public InputActionMap inventoryActionMap;
+    public InputActionMap pauseActionmap;
     private Vector3 originalCameraOffset;
     private void Awake()
     {
@@ -50,7 +54,10 @@ public class PlayerController : MonoBehaviour
     private void Start(){
         lastPosition = transform.position;
         originalCameraOffset = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset;
-        
+        playerActionMap = inputActions.FindActionMap("Player");
+        questActionMap = inputActions.FindActionMap("Quest");
+        inventoryActionMap = inputActions.FindActionMap("Inventory");
+        pauseActionmap = inputActions.FindActionMap("Pause");
     }
     public static PlayerController GetInstance(){
         return Instance;
