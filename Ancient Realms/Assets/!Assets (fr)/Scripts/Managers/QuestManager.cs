@@ -15,17 +15,12 @@ public class QuestManager : MonoBehaviour
     private static QuestManager Instance;
     private PlayerStats playerStats;
     private Dictionary<string, QuestPrefab> activeQuestPrefabs = new Dictionary<string, QuestPrefab>();
-    public InputActionAsset inputActions;
-    private InputActionMap playerActionMap;
-    private InputActionMap uiActionMap;
 
     private void Awake(){
         if(Instance != null){
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
         }
         Instance = this;
-        playerActionMap = inputActions.FindActionMap("Player");
-        uiActionMap = inputActions.FindActionMap("Quest");
     }
     void Start(){
         playerStats = PlayerStats.GetInstance();
@@ -130,13 +125,13 @@ public class QuestManager : MonoBehaviour
         {
             if(journalPanel.activeSelf == true){
                 Time.timeScale = 1f;
-                playerActionMap.Enable();
-                uiActionMap.Disable();
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().questActionMap.Disable();
                 journalPanel.SetActive(false);
             }else{  
                 Time.timeScale = 0f;
-                playerActionMap.Disable();
-                uiActionMap.Enable();
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().questActionMap.Enable();
                 journalPanel.SetActive(true);
             }
             

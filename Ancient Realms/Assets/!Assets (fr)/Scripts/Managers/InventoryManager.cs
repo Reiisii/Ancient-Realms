@@ -12,17 +12,11 @@ public class InventoryManager : MonoBehaviour
     private static PlayerStats playerStats;
     [Header("Game Object")]
     [SerializeField] GameObject inventoryPanel;
-    [Header("Input System")]
-    public InputActionAsset inputActions;
-    private InputActionMap playerActionMap;
-    private InputActionMap uiActionMap;
     private void Awake(){
         if(Instance != null){
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
         }
         Instance = this;
-        playerActionMap = inputActions.FindActionMap("Player");
-        uiActionMap = inputActions.FindActionMap("Inventory");
     }
     public static InventoryManager GetInstance(){
         return Instance;
@@ -33,13 +27,13 @@ public class InventoryManager : MonoBehaviour
         {
             if(inventoryPanel.activeSelf == true){
                 Time.timeScale = 1f;
-                playerActionMap.Enable();
-                uiActionMap.Disable();
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().inventoryActionMap.Disable();
                 inventoryPanel.SetActive(false);
             }else{  
                 Time.timeScale = 0f;
-                playerActionMap.Disable();
-                uiActionMap.Enable();
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().inventoryActionMap.Enable();
                 inventoryPanel.SetActive(true);
             }
             

@@ -4,95 +4,70 @@ using System.Collections;
 
 public class SliderMiniGame : MonoBehaviour
 {
+    [Header("Slider Settings")]
     public Slider slider;
     public float speed = 1.0f;
+    public float speedIncrement = 0.5f;
     private bool isMoving = false;
     private bool isMovingRight = true;
 
-    private float speedIncrement = 0.5f;
+    [Header("Game Settings")]
+    public int maxPresses = 5;
     private int pressCount = 0;
-    private int maxPresses = 5;
-
-    public RectTransform leftRed, leftYellow, green, rightYellow, rightRed;
     private int score = 0;
 
+    [Header("UI Elements")]
     public Text scoreText;
     public Text timerText;
-    public Text startPromptText; // Text UI element for the start prompt
-    public float roundTime = 5f; // Time for each round in seconds
-    private float timeLeft;
-    private bool timeRunning = false;
+    public Text startPromptText;
+    public float roundTime = 5f;
+    public float delayBeforeNextRound = 1f;
 
-    public float delayBeforeNextRound = 1f; // Customizable delay before the next round starts
+    [Header("Score Areas")]
+    public RectTransform leftRed, leftYellow, green, rightYellow, rightRed;
 
-    // Customizable scores
+    [Header("Score Values")]
     public int redScore = 1;
     public int yellowScore = 2;
     public int greenScore = 3;
 
-    private bool gameOver = false;
-    private bool gameStarted = false;
-
-    public GameObject hammerPrefab; // Reference to the Hammer Prefab
-    private Animator hammerAnimator; // Animator component for the Hammer
-    public string hammerAnimationParam = "isHammering"; // The name of the animation parameter
-
-    // References to the UI circles for each round
-    public Image[] scoreCircles; // Assign these in the Inspector
-
-    // Colors to indicate scores
+    [Header("Score Circle Settings")]
+    public Image[] scoreCircles;
     public Color redColor = Color.red;
     public Color yellowColor = Color.yellow;
     public Color greenColor = Color.green;
 
-    public Image timerCircleImage; // Reference to the circular timer image
+    [Header("Hammer Animation Settings")]
+    public GameObject hammerPrefab;
+    private Animator hammerAnimator;
+    public string hammerAnimationParam = "isHammering";
+
+    [Header("Timer Radial Settings")]
+    public Image timerCircleImage;
+
+    private bool gameOver = false;
+    private bool gameStarted = false;
+    private float timeLeft;
+    private bool timeRunning = false;
 
     void Start()
     {
         InitializeSlider();
         InitializeTimer();
-        startPromptText.text = "Press Spacebar to Start"; // Show the start prompt
+        DisplayStartPrompt(true);
 
-        // Initialize hammer
-        if (hammerPrefab != null)
-        {
-            hammerAnimator = hammerPrefab.GetComponent<Animator>();
-            hammerPrefab.SetActive(true); // Make sure hammer is active
-            SetHammerAnimation("Static"); // Set to Static animation at the start
-        }
+        InitializeHammer();
     }
 
     void Update()
     {
         if (!gameOver)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (!gameStarted)
-                {
-                    StartGame(); // Start the game on the first spacebar press
-                }
-                else if (pressCount < maxPresses)
-                {
-                    if (isMoving)
-                    {
-                        StopSlider();
-                        CalculateScore();
-                        UpdateScoreCircle(); // Update the score circle color
-                        StopTimer();
-                        pressCount++;
-                        StartCoroutine(WaitAndStartNextRound(delayBeforeNextRound));
-
-                        // Play Hammering animation when space is pressed
-                        SetHammerAnimation("Hammering");
-                    }
-                }
-            }
-
+            HandleSpaceBarPress();
             if (isMoving)
             {
                 MoveSlider();
-                UpdateTimer(); // Update timer while the slider is moving
+                UpdateTimer();
             }
         }
     }
@@ -100,51 +75,32 @@ public class SliderMiniGame : MonoBehaviour
     void StartGame()
     {
         gameStarted = true;
-        startPromptText.gameObject.SetActive(false); // Hide the start prompt
-        StartSlider(); // Start moving the slider and timer
-
-        // Ensure hammer is active and play Static animation initially
-        if (hammerPrefab != null && hammerAnimator != null)
-        {
-            hammerPrefab.SetActive(true);
-            SetHammerAnimation("Static");
-        }
-
-        Debug.Log("Round 1 started."); // Log message for the first round
+        DisplayStartPrompt(false);
+        StartSlider();
+        SetHammerAnimation("Static");
+        Debug.Log("Round 1 started.");
     }
 
     void StartSlider()
     {
         isMoving = true;
-        timeRunning = true; // Start the timer
+        timeRunning = true;
         ResetSlider();
         ResetTimer();
     }
 
     void MoveSlider()
     {
-        if (isMovingRight)
-        {
-            slider.value += speed * Time.deltaTime;
-            if (slider.value >= slider.maxValue)
-            {
-                isMovingRight = false;
-            }
-        }
-        else
-        {
-            slider.value -= speed * Time.deltaTime;
-            if (slider.value <= slider.minValue)
-            {
-                isMovingRight = true;
-            }
-        }
+        slider.value += (isMovingRight ? 1 : -1) * speed * Time.deltaTime;
+
+        if (slider.value >= slider.maxValue || slider.value <= slider.minValue)
+            isMovingRight = !isMovingRight;
     }
 
     void StopSlider()
     {
         isMoving = false;
-        string color = DetermineSliderColor(); // Determine the color where the slider stopped
+        string color = DetermineSliderColor();
         Debug.Log("Stopped at color: " + color);
     }
 
@@ -152,84 +108,67 @@ public class SliderMiniGame : MonoBehaviour
     {
         slider.minValue = 0;
         slider.maxValue = 1;
-        slider.value = 0.5f; // Start in the middle or any initial value
+        slider.value = 0.5f;
     }
 
     void ResetSlider()
     {
-        slider.value = 0.5f; // Reset slider to the starting position
-        isMovingRight = true; // Ensure slider starts moving in the correct direction
+        slider.value = 0.5f;
+        isMovingRight = true;
     }
 
     void IncreaseSpeed()
     {
         if (pressCount < maxPresses)
-        {
             speed += speedIncrement;
-        }
     }
 
     void CalculateScore()
     {
         Vector3 handlePosition = slider.handleRect.position;
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(leftRed, handlePosition))
-        {
-            score += redScore; // Red score
-        }
-        else if (RectTransformUtility.RectangleContainsScreenPoint(leftYellow, handlePosition))
-        {
-            score += yellowScore; // Yellow score
-        }
+        if (RectTransformUtility.RectangleContainsScreenPoint(leftRed, handlePosition) || RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
+            score += redScore;
+        else if (RectTransformUtility.RectangleContainsScreenPoint(leftYellow, handlePosition) || RectTransformUtility.RectangleContainsScreenPoint(rightYellow, handlePosition))
+            score += yellowScore;
         else if (RectTransformUtility.RectangleContainsScreenPoint(green, handlePosition))
-        {
-            score += greenScore; // Green score
-        }
-        else if (RectTransformUtility.RectangleContainsScreenPoint(rightYellow, handlePosition))
-        {
-            score += yellowScore; // Yellow score
-        }
-        else if (RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
-        {
-            score += redScore; // Red score
-        }
+            score += greenScore;
 
+        UpdateScoreText();
+    }
+
+    void UpdateScoreText()
+    {
         scoreText.text = "Score: " + score;
-        Debug.Log("Score: " + score);
     }
 
     void UpdateScoreCircle()
     {
         if (pressCount < scoreCircles.Length)
         {
-            Vector3 handlePosition = slider.handleRect.position;
-
-            if (RectTransformUtility.RectangleContainsScreenPoint(leftRed, handlePosition) ||
-                RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
-            {
-                scoreCircles[pressCount].color = redColor;
-                Debug.Log("Setting circle " + pressCount + " to Red.");
-            }
-            else if (RectTransformUtility.RectangleContainsScreenPoint(leftYellow, handlePosition) ||
-                     RectTransformUtility.RectangleContainsScreenPoint(rightYellow, handlePosition))
-            {
-                scoreCircles[pressCount].color = yellowColor;
-                Debug.Log("Setting circle " + pressCount + " to Yellow.");
-            }
-            else if (RectTransformUtility.RectangleContainsScreenPoint(green, handlePosition))
-            {
-                scoreCircles[pressCount].color = greenColor;
-                Debug.Log("Setting circle " + pressCount + " to Green.");
-            }
-            else
-            {
-                Debug.LogWarning("Handle position did not match any color areas.");
-            }
+            Color color = DetermineScoreCircleColor();
+            scoreCircles[pressCount].color = color;
         }
         else
         {
             Debug.LogWarning("Press count exceeds the number of circles.");
         }
+    }
+
+
+    Color DetermineScoreCircleColor()
+    {
+        Vector3 handlePosition = slider.handleRect.position;
+
+        if (RectTransformUtility.RectangleContainsScreenPoint(leftRed, handlePosition) || RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
+            return redColor;
+        else if (RectTransformUtility.RectangleContainsScreenPoint(leftYellow, handlePosition) || RectTransformUtility.RectangleContainsScreenPoint(rightYellow, handlePosition))
+            return yellowColor;
+        else if (RectTransformUtility.RectangleContainsScreenPoint(green, handlePosition))
+            return greenColor;
+
+        Debug.LogWarning("Handle position did not match any color areas.");
+        return Color.clear; // Return a transparent color if no match found
     }
 
     void InitializeTimer()
@@ -244,16 +183,14 @@ public class SliderMiniGame : MonoBehaviour
         {
             timeLeft -= Time.deltaTime;
             UpdateTimerText();
-
-            // Update the circular timer fill amount
             timerCircleImage.fillAmount = timeLeft / roundTime;
 
             if (timeLeft <= 0)
             {
-                timeLeft = 0; // Ensure the timer doesn't go below zero
+                timeLeft = 0;
                 StopSlider();
                 StopTimer();
-                EndGame(); // End the game immediately when time runs out
+                EndGame();
             }
         }
     }
@@ -261,25 +198,28 @@ public class SliderMiniGame : MonoBehaviour
     void ResetTimer()
     {
         timeLeft = roundTime;
-        timeRunning = true; // Reset and start the timer
+        timeRunning = true;
         UpdateTimerText();
     }
 
     void StopTimer()
     {
-        timeRunning = false; // Stop the timer
+        timeRunning = false;
     }
 
-void UpdateTimerText()
-{
-    // Convert timeLeft to seconds and milliseconds (rounded to nearest hundred)
-    int seconds = Mathf.FloorToInt(timeLeft % 60);
-    int milliseconds = Mathf.FloorToInt((timeLeft * 100) % 100);
-
-    // Format the time string as S:MM
-    // Use conditional formatting to handle single-digit seconds without a leading zero
-    timerText.text = string.Format("{0}:{1:D2}", seconds, milliseconds);
-}
+    void UpdateTimerText()
+    {
+        if (timeLeft <= 0)
+        {
+            timerText.text = "0:00";
+        }
+        else
+        {
+            int seconds = Mathf.FloorToInt(timeLeft % 60);
+            int milliseconds = Mathf.FloorToInt((timeLeft * 100) % 100);
+            timerText.text = string.Format("{0}:{1:D2}", seconds, milliseconds);
+        }
+    }
 
 
     IEnumerator WaitAndStartNextRound(float delay)
@@ -287,49 +227,51 @@ void UpdateTimerText()
         Debug.Log("Waiting for " + delay + " seconds before starting the next round...");
         yield return new WaitForSeconds(delay);
 
-        // Check if we still have rounds left
         if (pressCount < maxPresses)
         {
             ResetSlider();
             StartSlider();
             IncreaseSpeed();
-            Debug.Log("Round " + (pressCount + 1) + " started."); // Log message for each round
-
-            // Reset hammer animation to Static after round delay
-            if (hammerPrefab != null && hammerAnimator != null)
-            {
-                SetHammerAnimation("Static");
-            }
+            SetHammerAnimation("Static");
+            Debug.Log("Round " + (pressCount + 1) + " started.");
         }
         else
         {
-            EndGame(); // Ensure game over message is shown after max presses
+            EndGame();
         }
     }
 
     void EndGame()
     {
-        if (!gameOver) // Ensure EndGame is only executed once
+        if (!gameOver)
         {
             isMoving = false;
-            gameOver = true; // Set game over flag
-
-            // Ensure hammer is active and show Static animation
-            if (hammerPrefab != null && hammerAnimator != null)
-            {
-                hammerPrefab.SetActive(true); // Keep hammer active
-                SetHammerAnimation("Static"); // Play Static animation
-            }
-
+            gameOver = true;
+            SetHammerAnimation("Static");
             Debug.Log("Game over.");
         }
     }
 
     void SetHammerAnimation(string animationName)
     {
-        if (hammerPrefab != null && hammerAnimator != null)
-        {
+        if (hammerAnimator != null)
             hammerAnimator.Play(animationName);
+    }
+
+    void DisplayStartPrompt(bool display)
+    {
+        startPromptText.gameObject.SetActive(display);
+        if (display)
+            startPromptText.text = "--- Press Spacebar to Start ---";
+    }
+
+    void InitializeHammer()
+    {
+        if (hammerPrefab != null)
+        {
+            hammerAnimator = hammerPrefab.GetComponent<Animator>();
+            hammerPrefab.SetActive(true);
+            SetHammerAnimation("Static");
         }
     }
 
@@ -337,17 +279,37 @@ void UpdateTimerText()
     {
         Vector3 handlePosition = slider.handleRect.position;
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(leftRed, handlePosition))
+        if (RectTransformUtility.RectangleContainsScreenPoint(leftRed, handlePosition) || RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
             return "Red";
-        else if (RectTransformUtility.RectangleContainsScreenPoint(leftYellow, handlePosition))
+        else if (RectTransformUtility.RectangleContainsScreenPoint(leftYellow, handlePosition) || RectTransformUtility.RectangleContainsScreenPoint(rightYellow, handlePosition))
             return "Yellow";
         else if (RectTransformUtility.RectangleContainsScreenPoint(green, handlePosition))
             return "Green";
-        else if (RectTransformUtility.RectangleContainsScreenPoint(rightYellow, handlePosition))
-            return "Yellow";
-        else if (RectTransformUtility.RectangleContainsScreenPoint(rightRed, handlePosition))
-            return "Red";
 
-        return "Unknown"; // Fallback in case the position doesn't match any defined area
+        return "Unknown";
+    }
+
+    void HandleSpaceBarPress()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!gameStarted)
+            {
+                StartGame();
+            }
+            else if (pressCount < maxPresses)
+            {
+                if (isMoving)
+                {
+                    StopSlider();
+                    CalculateScore();
+                    UpdateScoreCircle();
+                    StopTimer();
+                    pressCount++;
+                    StartCoroutine(WaitAndStartNextRound(delayBeforeNextRound));
+                    SetHammerAnimation("Hammering");
+                }
+            }
+        }
     }
 }
