@@ -85,6 +85,22 @@ public class Play : MonoBehaviour
         SceneManager.LoadSceneAsync(4); 
 
     }
+    public void PlayBlacksmith()
+    {
+        canvasGroup.gameObject.SetActive(true);
+        ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
+
+        canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{
+            if (oldSceneCanvas != null)
+            {
+                oldSceneCanvas.enabled = false; // Disable the old canvas
+            }
+
+            DOTween.Clear(true);
+            SceneManager.LoadSceneAsync(5, LoadSceneMode.Additive).completed += OnSceneLoaded;
+
+        }); 
+    }
     private void OnSceneLoaded(AsyncOperation operation)
     {
         DOTween.Clear(true);
