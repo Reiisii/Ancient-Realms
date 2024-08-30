@@ -162,7 +162,7 @@ public class JournalManager : MonoBehaviour
     public void PinUnpin()
     {
         displayedQuest.isPinned = !displayedQuest.isPinned;
-        PlayerStats.GetInstance().SaveQuestToServer();
+        PlayerStats.GetInstance().isDataDirty = true;
         pinTypeText.SetText(displayedQuest.isPinned ? "Unpin Quest" : "Pin Quest");
         // Update the quest board with the new list
     }
