@@ -327,10 +327,10 @@ public class QuestManager : MonoBehaviour
         if (goal != null)
         {
             goal.currentAmount++;
-            playerStats.SaveQuestToServer();
             if (goal.currentAmount >= goal.requiredAmount)
             {
                 quest.currentGoal++;
+                playerStats.SaveQuestToServer();
                 if(goal.inkyRedirect.Equals("")) return;
                 else quest.currentKnot = goal.inkyRedirect;
                 foreach (Transform child in questPanel)
@@ -342,7 +342,6 @@ public class QuestManager : MonoBehaviour
                     }
                 }
             CheckQuestCompletion(quest);
-            playerStats.SaveQuestToServer();
             }
         }
     }
