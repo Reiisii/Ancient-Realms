@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
         Rigidbody2D rb = pilum.GetComponent<Rigidbody2D>();
         float throwForce = (holdTime / playerStats.maxHoldTime) * playerStats.maxThrowForce;
 
-        float throwAngle = 27.752f; // Lower angle for a flatter trajectory
+        float throwAngle = 22f; // Lower angle for a flatter trajectory
 
         // Adjust the force direction based on whether the player is facing right or left
         Vector2 forceDirection = IsFacingRight ? Vector2.right : Vector2.left;
@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour
 
         // Apply rotation to the pilum for a realistic spinning effect
         float torqueDirection = IsFacingRight ? -1 : 1; // Reverse torque direction based on facing
-        float torqueAmount = 0.1f; // Adjust this value for desired rotation speed
+        float torqueAmount = 0.3f; // Adjust this value for desired rotation speed
         rb.AddTorque(torqueDirection * torqueAmount, ForceMode2D.Impulse); // Use a fixed torque value
 
         // Flip the pilum if throwing to the left
