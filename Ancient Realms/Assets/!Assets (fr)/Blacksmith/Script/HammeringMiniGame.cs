@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class SliderMiniGame : MonoBehaviour
+public class HammeringMiniGame : MonoBehaviour
 {
     [Header("Slider Settings")]
     public Slider slider;
