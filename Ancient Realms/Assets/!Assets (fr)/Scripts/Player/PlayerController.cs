@@ -200,7 +200,9 @@ public class PlayerController : MonoBehaviour
 
         // Apply rotation to the pilum for a realistic spinning effect
         float torqueDirection = IsFacingRight ? -1 : 1; // Reverse torque direction based on facing
-        float torqueAmount = 0.3f; // Adjust this value for desired rotation speed
+        float maxTorque = 0.3f;
+        float torqueAmount = Mathf.Lerp(0, maxTorque, throwForce / playerStats.maxThrowForce);
+
         rb.AddTorque(torqueDirection * torqueAmount, ForceMode2D.Impulse); // Use a fixed torque value
 
         // Flip the pilum if throwing to the left
