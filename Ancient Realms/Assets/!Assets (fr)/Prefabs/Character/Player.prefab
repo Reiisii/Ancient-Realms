@@ -348,18 +348,23 @@ MonoBehaviour:
   maxHP: 100
   maxStamina: 70
   stamina: 70
+  armor: 0
   walkSpeed: 2.5
   runSpeed: 5.5
   staminaDepletionRate: 10
   staminaRegenRate: 5
   attack: 30
+  isCombatMode: 0
   toggleStamina: 0
   isDataDirty: 0
   level: 0
   denarii: 0
   maxXP: 30
   currentXP: 0
+  attackRange: 0.5
   solBalance: 56.25015
+  maxThrowForce: 20
+  maxHoldTime: 1
   activeQuests: []
   completedQuests: []
 --- !u!114 &6193478947497796674
@@ -375,7 +380,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStats: {fileID: 4010303813203675558}
+  attackPoint: {fileID: 0}
+  javelinPrefab: {fileID: 0}
+  javelinPoint: {fileID: 0}
+  virtualCamera: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
   moveInputActive: 0
+  isAttacking: 0
+  canWalk: 0
+  isBlocking: 0
+  holdTime: 0
+  isHolding: 0
+  animator: {fileID: 0}
+  panSpeed: 2
+  inputActions: {fileID: 0}
+  playerActionMap:
+    m_Name: Player
+    m_Id: fa15f6d7-5039-4887-a3ee-784487ade264
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  questActionMap:
+    m_Name: Quest
+    m_Id: 856f89a5-1ff5-4c86-a1b5-cde32b7bc584
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  inventoryActionMap:
+    m_Name: Inventory
+    m_Id: 7ec52180-3786-459a-8bb6-af0332c6c78c
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  pauseActionmap:
+    m_Name: Pause Actionmap
+    m_Id: 34eac52e-3045-4c05-a4a5-dae2f85a8bf5
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -393,6 +437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   qPrefab: {fileID: 5446196464397879909, guid: 314f2b9f2356fe642aa529a428df681b, type: 3}
   questPanel: {fileID: 0}
+  journalPanel: {fileID: 0}
   quests: []
 --- !u!114 &4731954973759446107
 MonoBehaviour:
@@ -410,8 +455,6 @@ MonoBehaviour:
   nameText: {fileID: 0}
   dialogueText: {fileID: 0}
   npcImage: {fileID: 0}
-  playerController: {fileID: 6193478947497796674}
-  questManager: {fileID: 8648515302414181397}
 --- !u!95 &1069500992766602489
 Animator:
   serializedVersion: 5
