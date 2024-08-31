@@ -35057,7 +35057,6 @@ GameObject:
   - component: {fileID: 667978657}
   - component: {fileID: 667978656}
   - component: {fileID: 667978658}
-  - component: {fileID: 667978659}
   - component: {fileID: 667978660}
   m_Layer: 0
   m_Name: Active Settings
@@ -35112,21 +35111,6 @@ MonoBehaviour:
   gObject: {fileID: 1684164078}
   questIDRequirement: quest-00-001
   currentGoalRequirement: 3
---- !u!114 &667978659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 667978655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f8efe92539cbae469b2d7485650a981, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gObject: {fileID: 1496520768}
-  questIDRequirement: quest-00-001
-  currentGoalRequirement: 5
 --- !u!114 &667978660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41052,6 +41036,7 @@ GameObject:
   - component: {fileID: 949145430}
   - component: {fileID: 949145429}
   - component: {fileID: 949145432}
+  - component: {fileID: 949145433}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -41134,6 +41119,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 763043403}
+--- !u!114 &949145433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949145427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 891dc636a309315409f49a0126c54251, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LogoGO: {fileID: 949145427}
+  Logo: {fileID: 949145428}
+  panelDuration: 0.8
+  defaultPanelPosY: 950.09
+  newPanelPosY: 0
+  panelEaseType: 4
 --- !u!1 &967841784
 GameObject:
   m_ObjectHideFlags: 0
@@ -55525,8 +55528,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1496520769}
-  - component: {fileID: 1496520771}
-  - component: {fileID: 1496520770}
   m_Layer: 5
   m_Name: Finished
   m_TagString: Untagged
@@ -55555,40 +55556,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1496520770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1496520768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 891dc636a309315409f49a0126c54251, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LogoGO: {fileID: 949145427}
-  Logo: {fileID: 949145428}
-  panelDuration: 0.8
-  defaultPanelPosY: 950.09
-  newPanelPosY: 0
-  panelEaseType: 4
---- !u!114 &1496520771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1496520768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac62750db4a0ea244ad266afe53bc18c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelGO: {fileID: 2008806511}
-  canvasGroup: {fileID: 2008806515}
-  fadeDuration: 0.8
-  fadeEaseType: 4
 --- !u!1 &1502132170
 GameObject:
   m_ObjectHideFlags: 0
@@ -83194,6 +83161,7 @@ GameObject:
   - component: {fileID: 2008806514}
   - component: {fileID: 2008806513}
   - component: {fileID: 2008806515}
+  - component: {fileID: 2008806516}
   m_Layer: 5
   m_Name: Dark Background
   m_TagString: Untagged
@@ -83270,6 +83238,22 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2008806516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008806511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac62750db4a0ea244ad266afe53bc18c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelGO: {fileID: 2008806511}
+  canvasGroup: {fileID: 2008806515}
+  fadeDuration: 0.8
+  fadeEaseType: 4
 --- !u!1 &2012865959
 GameObject:
   m_ObjectHideFlags: 0

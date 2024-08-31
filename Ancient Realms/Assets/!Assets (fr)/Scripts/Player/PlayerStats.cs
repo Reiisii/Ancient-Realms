@@ -136,11 +136,9 @@ public class PlayerStats : MonoBehaviour
     }
     public void SaveQuestToServer()
     {
-        GameData playerGameData = localPlayerData.gameData;
-        
-        foreach(QuestData quest in playerGameData.quests){
+        foreach(QuestData quest in localPlayerData.gameData.quests){
             QuestSO qData = activeQuests.Find(q => q.questID == quest.questID);
-            if(quest.isActive == true){
+            if(qData != null){
                 quest.isActive = qData.isActive;
                 quest.isPinned = qData.isPinned;
                 quest.isRewarded = qData.isRewarded;
@@ -150,12 +148,10 @@ public class PlayerStats : MonoBehaviour
                 for(int i = 0; i < quest.goals.Count; i++)
                 {
                     quest.goals[i].currentAmount = qData.goals[i].currentAmount;
-                    i++;
                 }
                 isDataDirty = true;
             }
-        }
-        
+        }        
     }
     private async void SaveDataToServer()
     {

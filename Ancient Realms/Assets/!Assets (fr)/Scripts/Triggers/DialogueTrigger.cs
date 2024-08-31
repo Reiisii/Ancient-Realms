@@ -88,22 +88,37 @@ public class DialogueTrigger : MonoBehaviour
         }
         
     }
-    public bool completion(){
+    public bool completion()
+    {
         List<QuestSO> activeQuest = PlayerStats.GetInstance().activeQuests.ToList();
-        if(npcData.giveableQuest.Count > 0){    
-            if(PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
-                QuestSO quest = activeQuest.Find(quest => quest.characters.Contains(npcData.id));
+
+        // Ensure the NPC has quests to give
+        if (npcData.giveableQuest.Count > 0)
+        {
+            QuestSO quest = PlayerStats.GetInstance().activeQuests
+                            .Find(q => q.characters != null && q.goals != null &&
+                                    q.currentGoal < q.goals.Count &&
+                                    q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
+
+            if (quest != null)
+            {
                 return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
-            }else{
-                return false;
             }
-        }else if(PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
-            QuestSO quest = activeQuest.Find(quest => quest.characters.Contains(npcData.id));
-            return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
-        }else{
-            return false;
         }
-        
+        else
+        {
+            QuestSO quest = PlayerStats.GetInstance().activeQuests
+                            .Find(q => q.characters != null && q.goals != null &&
+                                    q.currentGoal < q.goals.Count &&
+                                    q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
+
+            if (quest != null)
+            {
+                return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
+            }
+        }
+
+        return false;
     }
     private void FlipPlayerSprite()
     {
