@@ -6,10 +6,9 @@ public class GrindingMiniGame : MonoBehaviour
 {
     [Header("Slider Settings")]
     public Slider slider;
-    public float speed = 1.0f;
+    public float incrementAmount = 0.1f; // Fixed amount to increase the slider per press
     public float decrementSpeed = 0.5f;
     private bool gameStarted = false;
-    private bool spacebarPressed = false; // To track if spacebar is pressed or not
 
     [Header("UI Elements")]
     public Text timerText;
@@ -69,22 +68,11 @@ public class GrindingMiniGame : MonoBehaviour
 
     void UpdateSlider()
     {
-        if (spacebarPressed)
+        // Always decrease the slider value over time
+        slider.value -= decrementSpeed * Time.deltaTime;
+        if (slider.value <= slider.minValue)
         {
-            slider.value += speed * Time.deltaTime;
-            if (slider.value >= slider.maxValue)
-            {
-                slider.value = slider.maxValue;
-                StopGame(); // Stop the game when the slider is full
-            }
-        }
-        else
-        {
-            slider.value -= decrementSpeed * Time.deltaTime;
-            if (slider.value <= slider.minValue)
-            {
-                slider.value = slider.minValue;
-            }
+            slider.value = slider.minValue;
         }
     }
 
@@ -182,13 +170,14 @@ public class GrindingMiniGame : MonoBehaviour
             }
             else
             {
-                spacebarPressed = true; // Set spacebarPressed to true when spacebar is initially pressed
-            }
-        }
+                slider.value += incrementAmount; // Increase slider by a fixed amount per press
 
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            spacebarPressed = false; // Set spacebarPressed to false when spacebar is released
+                if (slider.value >= slider.maxValue)
+                {
+                    slider.value = slider.maxValue;
+                    StopGame(); // Stop the game when the slider is full
+                }
+            }
         }
     }
 }
