@@ -69,6 +69,11 @@ public class JournalManager : MonoBehaviour
         InitializeJournal();
     }
     private void OnEnable(){
+        if(mainQuestList.Count > 0){
+            pinButton.interactable = true;
+        }else{
+            pinButton.interactable = false;
+        }
         InitializeJournal();
     }
     private void InitializeJournal()
@@ -151,10 +156,10 @@ public class JournalManager : MonoBehaviour
             _ => QuestType.Main
         };
         ClearQuestDetails();
-        if(displayedQuest == null){
-            pinButton.interactable = false;
-        }else{
+        if(mainQuestList.Count > 0){
             pinButton.interactable = true;
+        }else{
+            pinButton.interactable = false;
         }
         UpdateQuestLists(); // Update the lists based on current state
         UpdateQuestBoard(); // Update the quest board with the new list
