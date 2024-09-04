@@ -44,7 +44,9 @@ public class HammeringMiniGame : MonoBehaviour
 
     [Header("Timer Radial Settings")]
     public Image timerCircleImage;
-
+    [Header("Proceed")]
+    [SerializeField] GameObject hammering;
+    [SerializeField] GameObject grinding;
     private bool gameOver = false;
     private bool gameStarted = false;
     private float timeLeft;
@@ -249,6 +251,8 @@ public class HammeringMiniGame : MonoBehaviour
             gameOver = true;
             SetHammerAnimation("Static");
             Debug.Log("Game over.");
+            hammering.SetActive(false);
+            grinding.SetActive(true);
         }
     }
 

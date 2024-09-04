@@ -1196,7 +1196,7 @@ RectTransform:
   m_Father: {fileID: 1732883218}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 10, y: 0}
   m_SizeDelta: {x: 20, y: -38.082253}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1414,7 +1414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &546746916
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2072,7 +2072,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1260372378
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2297,6 +2297,8 @@ MonoBehaviour:
   hammerPrefab: {fileID: 5008005840137408728}
   hammerAnimationParam: isHammering
   timerCircleImage: {fileID: 408473791}
+  hammering: {fileID: 1260372377}
+  grinding: {fileID: 546746915}
 --- !u!114 &1287287001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4707,7 +4709,7 @@ RectTransform:
   m_Father: {fileID: 2073478418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5096,7 +5098,7 @@ RectTransform:
   m_Father: {fileID: 1466097162}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 2.5, y: -2.4}
   m_SizeDelta: {x: 21.849, y: -67.4041}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5238,6 +5240,8 @@ MonoBehaviour:
   staticAnimationName: Static
   spinAnimationName: Spin
   timerCircleImage: {fileID: 457976224}
+  assembly: {fileID: 540582157}
+  grinding: {fileID: 546746915}
 --- !u!114 &1981721598
 MonoBehaviour:
   m_ObjectHideFlags: 0

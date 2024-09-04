@@ -1054,7 +1054,7 @@ AudioSource:
   m_GameObject: {fileID: 3410009770592857480}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1451088132425819699, guid: 8988ec168c994434fbd9b550c54f246d, type: 2}
   m_audioClip: {fileID: 8300000, guid: f3979d76ed93d8f4a84f32e261cceb0e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1347,8 +1347,13 @@ MonoBehaviour:
   isAttacking: 0
   canWalk: 1
   isBlocking: 0
+  isEquipping: 0
   holdTime: 0
   isHolding: 0
+  canAccessInventory: 1
+  canAccessJournal: 1
+  canAccessMap: 1
+  canAccessCombatMode: 1
   animator: {fileID: 0}
   panSpeed: 2
   inputActions: {fileID: -944628639613478452, guid: 3f6716e9ea27bdc469a20e6fd6ecc768, type: 3}
@@ -1713,7 +1718,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1724,7 +1729,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &-4221797428664147929
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2500,7 +2505,7 @@ AudioSource:
   m_GameObject: {fileID: 8462026761864285158}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1451088132425819699, guid: 8988ec168c994434fbd9b550c54f246d, type: 2}
   m_audioClip: {fileID: 8300000, guid: c45e36c17d742d34ca149d03094aa2b9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1

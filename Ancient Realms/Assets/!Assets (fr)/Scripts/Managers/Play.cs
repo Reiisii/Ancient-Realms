@@ -54,7 +54,7 @@ public class Play : MonoBehaviour
     {
         DOTween.Clear(true);
         SceneManager.UnloadSceneAsync(1).completed += (operation) => {
-            SceneManager.LoadScene(3);
+            SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive).completed += OnSceneLoaded;
         };
     }
     public void PlayRome()
