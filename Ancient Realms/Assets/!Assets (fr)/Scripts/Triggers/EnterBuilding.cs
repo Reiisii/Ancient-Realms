@@ -30,9 +30,11 @@ public class EnterBuilding : MonoBehaviour
                 if(!interiorGrid.activeSelf){
                     interiorGrid.SetActive(true);
                     exteriorGrid.SetActive(false);
+                    text.SetText(districtName);
                 }else{
                     interiorGrid.SetActive(false);
                     exteriorGrid.SetActive(true);
+                    text.SetText(buildingName);
                 }
                 
                 await Close();

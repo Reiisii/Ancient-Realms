@@ -29,6 +29,7 @@ public class EnterDistrict : MonoBehaviour
                 PlayerStats.GetInstance().gameObject.transform.position = new Vector3(x, currentPosition.y, currentPosition.z);
                 await Close();
             }
+            text.SetText(locationName);
         }
     }
     private async Task Open(){
@@ -43,7 +44,7 @@ public class EnterDistrict : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = true;
-            text.SetText(locationName);
+            
             districtPanel.SetActive(true);
         }
     }
@@ -51,7 +52,7 @@ public class EnterDistrict : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = false;
-            text.SetText(locationName);
+            
             districtPanel.GetComponent<LogoutAnimation>().Close();
         }
     }
