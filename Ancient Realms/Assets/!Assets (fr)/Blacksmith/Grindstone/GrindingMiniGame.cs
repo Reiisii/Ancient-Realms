@@ -24,7 +24,9 @@ public class GrindingMiniGame : MonoBehaviour
 
     [Header("Timer Radial Settings")]
     public Image timerCircleImage; // Radial timer image
-
+    [Header("Proceed")]
+    [SerializeField] GameObject assembly;
+    [SerializeField] GameObject grinding;
     private bool gameOver = false;
     private float timeLeft;
     private bool timeRunning = false;
@@ -151,6 +153,8 @@ public class GrindingMiniGame : MonoBehaviour
         timeRunning = false;
         SetGrindstoneAnimation(staticAnimationName); // Set to Static animation before ending
         Debug.Log("Game over.");
+        grinding.SetActive(false);
+        assembly.SetActive(true);
     }
 
     void DisplayStartPrompt(bool display)
