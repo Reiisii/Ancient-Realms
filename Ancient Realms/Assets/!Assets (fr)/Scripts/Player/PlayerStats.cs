@@ -72,7 +72,7 @@ public class PlayerStats : MonoBehaviour
         localPlayerData = await AccountManager.Instance.GetPlayerData();
         LoadPlayerData(localPlayerData);
         PlayerController.GetInstance().canWalk = true;
-        InvokeRepeating("SaveDataToServer", 3f, 3f); // Save data to the server every 10 seconds
+        InvokeRepeating("SaveDataToServer", 1f, 1f); // Save data to the server every 10 seconds
     }
     private void OnEnable()
     {
@@ -132,7 +132,7 @@ public class PlayerStats : MonoBehaviour
         xpSlider.value = currentXP;
         xpSlider.maxValue = maxXP;
         staminaSlider.maxValue = maxStamina;
-        staminaSlider.value = maxStamina;
+        staminaSlider.value = staminaSlider.maxValue;
     }
     public void SaveQuestToServer()
     {

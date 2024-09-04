@@ -8,6 +8,7 @@ public class IdleBehavior : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerController.GetInstance().canWalk = true;
+        PlayerController.GetInstance().isEquipping = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

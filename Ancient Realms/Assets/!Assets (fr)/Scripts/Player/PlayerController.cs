@@ -27,8 +27,14 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking = false;
     public bool canWalk;
     public bool isBlocking;
+    public bool isEquipping = false;
     public float holdTime = 0f;
     public bool isHolding = false;
+    [Header("Restriction")]
+    public bool canAccessInventory = true;
+    public bool canAccessJournal = true;
+    public bool canAccessMap = true;
+    public bool canAccessCombatMode = true;
     Rigidbody2D rb;
     public Animator animator;
     private static PlayerController Instance;
@@ -71,13 +77,14 @@ public class PlayerController : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (DialogueManager.GetInstance().dialogueIsPlaying || interactPressed)
+        if (DialogueManager.GetInstance().dialogueIsPlaying || interactPressed && !isEquipping)
         {
             // Stop player movement during dialogue or interaction
             rb.velocity = Vector2.zero;
             IsRunning = false;
             IsMoving = false;
             animator.SetBool("isCombatMode", false);
+            isEquipping = !isEquipping;
             playerStats.isCombatMode = false;
             return;
         }
@@ -271,7 +278,7 @@ public class PlayerController : MonoBehaviour
         Vector2 newPosition = cP + moveDirection * moveDistance;
 
         // Define the duration for the smooth movement (adjust as needed)
-        float moveDuration = 0.1f;
+        float moveDuration = 0.2f;
 
         // Use DOTween to smoothly move the character to the new position
         PlayerStats.GetInstance().gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
@@ -314,8 +321,13 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            animator.SetBool("isCombatMode", !playerStats.isCombatMode);
-            playerStats.isCombatMode = !playerStats.isCombatMode;
+            if(!isEquipping && !isAttacking && !isBlocking){
+                animator.SetBool("isCombatMode", !playerStats.isCombatMode);
+                playerStats.isCombatMode = !playerStats.isCombatMode;
+                isEquipping = !isEquipping;
+            }
+   
+            
         }
     }
     public void SubmitPressed(InputAction.CallbackContext context)
