@@ -54,10 +54,10 @@ public class DialogueManager : MonoBehaviour
             }else if(!activeQuest && !completedQuest){
                 // If NPC Quest's active quest is not active list && NPC Quest's is not on completed list
                 currentStory = new Story(questData.dialogue.text);
-                currentStory.ChoosePathString(questData.currentKnot);
+                currentStory.ChoosePathString("start");
             }else if(activeQuest && activeQuest.isActive && PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
                 currentStory = new Story(activeQuest.dialogue.text);
-                currentStory.ChoosePathString(activeQuest.currentKnot);
+                currentStory.ChoosePathString(activeQuest.goals[activeQuest.currentGoal].inkyRedirect);
             }else{
                 currentStory = new Story(npc.npcDialogue.text);
                 currentStory.ChoosePathString(npc.dialogueKnot);
@@ -73,7 +73,7 @@ public class DialogueManager : MonoBehaviour
             foreach(QuestSO quest in activeQuest){
                 if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
                     currentStory = new Story(quest.dialogue.text);
-                    currentStory.ChoosePathString(quest.currentKnot);
+                    currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
                     nameText.SetText(npc.name);
                     npcImage.sprite = npc.portrait;
                     dialogueIsPlaying = true;
