@@ -11,4 +11,5 @@ public class NFTSO : ScriptableObject
     public RarityEnum rarity;
     public CultureEnum culture;
     public Sprite image;
+    public List<string> buffList;
 }
