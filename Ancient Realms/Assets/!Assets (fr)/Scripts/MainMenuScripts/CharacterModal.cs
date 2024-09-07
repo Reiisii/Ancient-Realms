@@ -72,11 +72,13 @@ public class CharacterModal : MonoBehaviour
         locationArray = Resources.LoadAll<LocationSO>("LocationSO").OrderBy(location => location.culture).ToArray();
         foreach(LocationSO locationSO in locationArray)
         {
-                Locations locationPrefab = Instantiate(locPrefab, Vector3.zero, Quaternion.identity);
-                locationPrefab.transform.SetParent(locationsPanel);
-                locationPrefab.transform.localScale = Vector3.one;
-                locationPrefab.setGameObject(EncycPanel);
-                locationPrefab.setData(locationSO);
+                if(locationSO.visibleEncyc){
+                    Locations locationPrefab = Instantiate(locPrefab, Vector3.zero, Quaternion.identity);
+                    locationPrefab.transform.SetParent(locationsPanel);
+                    locationPrefab.transform.localScale = Vector3.one;
+                    locationPrefab.setGameObject(EncycPanel);
+                    locationPrefab.setData(locationSO);
+                }
         }
     }
     // Equipment Initialize
@@ -98,11 +100,11 @@ public class CharacterModal : MonoBehaviour
         artifactArray = Resources.LoadAll<ArtifactsSO>("ArtifactSO").OrderBy(events => events.name).ToArray();
         foreach(ArtifactsSO artifactSO in artifactArray)
         {
-                Artifacts artifactPrefab = Instantiate(artPrefab, Vector3.zero, Quaternion.identity);
-                artifactPrefab.transform.SetParent(artifactsPanel);
-                artifactPrefab.transform.localScale = Vector3.one;
-                artifactPrefab.setGameObject(EncycPanel);
-                artifactPrefab.setData(artifactSO);
+            Artifacts artifactPrefab = Instantiate(artPrefab, Vector3.zero, Quaternion.identity);
+            artifactPrefab.transform.SetParent(artifactsPanel);
+            artifactPrefab.transform.localScale = Vector3.one;
+            artifactPrefab.setGameObject(EncycPanel);
+            artifactPrefab.setData(artifactSO);
         }
     }
     // Trivia Initialize

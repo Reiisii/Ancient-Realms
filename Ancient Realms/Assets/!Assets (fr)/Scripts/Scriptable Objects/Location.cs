@@ -15,4 +15,5 @@ public class LocationSO : ScriptableObject
     public bool canAccessMap = true;
     public bool canAccessCombatMode = true;
     public bool toggleStamina = true;
+    public bool visibleEncyc = true;
 }
