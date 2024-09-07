@@ -2810,8 +2810,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1069748729}
-  zoomStep: 40
-  minCamSize: 200
+  zoomStep: 25
+  minCamSize: 270
   maxCamSize: 539
   mapRenderer: {fileID: 355981076}
   player: {fileID: 166052773}
@@ -2928,7 +2928,7 @@ Transform:
   m_GameObject: {fileID: 1069748725}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1371, y: 316, z: -10}
+  m_LocalPosition: {x: 1390, y: 316, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3335,7 +3335,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.85
+  m_fontSize: 29.95
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6548,10 +6548,10 @@ RectTransform:
   - {fileID: 1166942773}
   m_Father: {fileID: 1814513261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.051000003, y: 0.8585187}
-  m_AnchorMax: {x: 0.16456251, y: 0.9397778}
-  m_AnchoredPosition: {x: 1, y: -1}
-  m_SizeDelta: {x: -3, y: -8}
+  m_AnchorMin: {x: 0.051520836, y: 0.874}
+  m_AnchorMax: {x: 0.15400001, y: 0.93500006}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1856699099
 MonoBehaviour:
