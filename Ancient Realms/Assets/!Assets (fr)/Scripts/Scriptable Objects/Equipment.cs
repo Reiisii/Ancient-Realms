@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ESDatabase.Classes;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New Equipment", menuName = "SO/Equipment")]
 public class EquipmentSO : ScriptableObject
@@ -11,13 +12,16 @@ public class EquipmentSO : ScriptableObject
     [Header("Item Stats")]
     public float baseArmor;
     public float baseDamage;
-    public float isStackable;
+    public float attackRange;
+    public bool isStackable;
     public int stackCount;
     public int tier;
     public int level;
     public CultureEnum culture;
     public EquipmentEnum equipmentType;
+    public ArmorType armorType;
     public WeaponType weaponType;
+    
     public Sprite image;
     public EquipmentSO CreateCopy()
     {
@@ -34,9 +38,55 @@ public class EquipmentSO : ScriptableObject
         newEquipment.level = this.level;
         newEquipment.culture = this.culture;
         newEquipment.equipmentType = this.equipmentType;
+        newEquipment.armorType = this.armorType;
         newEquipment.weaponType = this.weaponType;
         newEquipment.image = this.image;
 
         return newEquipment;
+    }
+    public EquipmentSO CreateCopy(ItemData itemData)
+    {
+        // Create a new instance of QuestSO
+        EquipmentSO newEquipment = ScriptableObject.CreateInstance<EquipmentSO>();
+        newEquipment.equipmentId = this.equipmentId;
+        newEquipment.itemName = this.itemName;
+        newEquipment.description = this.description;
+        if(this.equipmentType == EquipmentEnum.Armor){
+            newEquipment.baseArmor = CalculateArmor(itemData.tier, itemData.level, this.baseArmor);
+        }else newEquipment.baseArmor = 0f;
+        if(this.equipmentType == EquipmentEnum.Weapon){
+            newEquipment.baseDamage = CalculateDamage(itemData.tier, itemData.level, this.baseDamage);
+        }else newEquipment.baseDamage = 0f;
+        newEquipment.isStackable = this.isStackable;
+        newEquipment.stackCount = itemData.stackAmount;
+        newEquipment.tier = itemData.tier;
+        newEquipment.level = itemData.level;
+        newEquipment.culture = this.culture;
+        newEquipment.equipmentType = this.equipmentType;
+        newEquipment.armorType = this.armorType;
+        newEquipment.weaponType = this.weaponType;
+        newEquipment.image = this.image;
+
+        return newEquipment;
+    }
+    public float CalculateDamage(int tier, int level, float baseDamage)
+    {
+        float bd = baseDamage + (tier * 3f); // Base damage depends on tier, tier 0 has a base damage of 5
+        float additionalDamage = level * 1.5f; // Each level adds 1.5 to damage
+        
+        // Ensure level is within bounds
+        level = Mathf.Clamp(level, 0, 6);
+
+        return bd + additionalDamage;
+    }
+    public float CalculateArmor(int tier, int level, float baseArmor)
+    {
+        float ba = baseArmor + (tier * 3f); // Base damage depends on tier, tier 0 has a base damage of 5
+        float additionalDamage = level * 1.5f; // Each level adds 1.5 to damage
+        
+        // Ensure level is within bounds
+        level = Mathf.Clamp(level, 0, 6);
+
+        return ba + additionalDamage;
     }
 }
