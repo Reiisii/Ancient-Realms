@@ -5,5 +5,7 @@ using UnityEngine;
 public class EquipSO : ScriptableObject
 {
     public int id;
-    public Sprite image;
+    public Sprite icon;
+    public Sprite front;
+    public Sprite back;
 }

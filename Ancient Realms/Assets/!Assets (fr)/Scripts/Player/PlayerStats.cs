@@ -8,6 +8,7 @@ using ESDatabase.Entities;
 using Solana.Unity.SDK;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,10 +54,12 @@ public class PlayerStats : MonoBehaviour
     private double previousSolBalance = 0;
     public float maxThrowForce = 20f; // Maximum force applied to the throw
     public float maxHoldTime = 1f;
+    public List<EquipmentSO> equippedItems;
+    public List<EquipmentSO> inventory;
     public List<QuestSO> activeQuests;
     public List<QuestSO> completedQuests;
     private static PlayerStats Instance;
-
+    private List<EquipmentSO> equipmentLibrary;
     private void Awake()
     {
         if (Instance != null)
@@ -66,10 +69,11 @@ public class PlayerStats : MonoBehaviour
         Instance = this;
     }
 
-    async void Start()
+    void Start()
     {
         PlayerController.GetInstance().canWalk = false;
-        localPlayerData = await AccountManager.Instance.GetPlayerData();
+        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
+        localPlayerData = AccountManager.playerData;
         LoadPlayerData(localPlayerData);
         PlayerController.GetInstance().canWalk = true;
         InvokeRepeating("SaveDataToServer", 1f, 1f); // Save data to the server every 10 seconds
@@ -115,6 +119,67 @@ public class PlayerStats : MonoBehaviour
                     copiedQuest.goals[i].currentAmount = quest.goals[i].currentAmount;
                 }
                 completedQuests.Add(copiedQuest);
+            }
+        }
+        if(playerGameData.equippedData.helmSlot != null) {
+            ItemData item = playerGameData.equippedData.helmSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+        
+        if(playerGameData.equippedData.chestSlot != null) {
+            ItemData item = playerGameData.equippedData.chestSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+
+        if(playerGameData.equippedData.waistSlot != null) {
+            ItemData item = playerGameData.equippedData.waistSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+
+        if(playerGameData.equippedData.footSlot != null) {
+            ItemData item = playerGameData.equippedData.footSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+
+        if(playerGameData.equippedData.mainSlot != null) {
+            ItemData item = playerGameData.equippedData.mainSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+
+        if(playerGameData.equippedData.shieldSlot != null) {
+            ItemData item = playerGameData.equippedData.shieldSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+
+        if(playerGameData.equippedData.javelinSlot != null) {
+            ItemData item = playerGameData.equippedData.javelinSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+
+        if(playerGameData.equippedData.bandageSlot != null) {
+            ItemData item = playerGameData.equippedData.bandageSlot;
+            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
+            equippedItems.Add(copiedhelm);
+        }else equippedItems.Add(null);
+        foreach(EquipmentSO equipment in equippedItems){
+            if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
+                armor += equipment.baseArmor;
+                Debug.Log(equipment.itemName + ": " + equipment.baseArmor);
             }
         }
         level = playerGameData.level;
@@ -302,7 +367,7 @@ public class PlayerStats : MonoBehaviour
         maxHP = 100f * Mathf.Pow(1.05f, level - 1); // Assuming initial maxHP is 100
         currentHP = maxHP;
         maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
-        attack = 30f * Mathf.Pow(1.04f, level - 1); // Assuming initial attack is 30
+        // attack = 30f * Mathf.Pow(1.04f, level - 1); // Assuming initial attack is 30
         staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
     }
     private async void RefreshData()

@@ -79,17 +79,22 @@ public enum RarityEnum {
     Legendary
 }
 public enum EquipmentEnum {
-    Helmet,
-    Chest,
+    Armor,
     Shield,
     Weapon,
-    Foot,
     Consumable,
-    Others
+    Item,
+    QuestItem
 }
-
+public enum ArmorType{
+    NotArmor,
+    Helmet,
+    Chest,
+    Waist,
+    Foot
+}
 public enum WeaponType{
-    NotAWeapon,
+    NotWeapon,
     Sword,
     Spear,
     Javelin,
