@@ -16,14 +16,15 @@ public class DevBlog : MonoBehaviour
     [SerializeField] GameObject loadingText;
     [SerializeField] TextMeshProUGUI dateText;
     string link;
-    private void OnEnable()
+    private void Start()
     {
         GetRSSFeed();
     }
 
     async void GetRSSFeed()
     {
-        ProcessRSS(await GetBlog());
+        string blog = await GetBlog();
+        ProcessRSS(blog);
     }
 
     // Custom certificate handler to bypass SSL certificate validation (for local testing only)
