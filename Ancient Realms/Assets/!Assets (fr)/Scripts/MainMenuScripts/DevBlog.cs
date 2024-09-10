@@ -16,7 +16,7 @@ public class DevBlog : MonoBehaviour
     [SerializeField] GameObject loadingText;
     [SerializeField] TextMeshProUGUI dateText;
     string link;
-    void Awake()
+    private void OnEnable()
     {
         GetRSSFeed();
     }
