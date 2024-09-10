@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 public class DevBlog : MonoBehaviour
 {
-    private string itchRSSUrl = "https://sureiyaaa.itch.io/eagles-shadow/devlog.rss";
+    private string itchRSSUrl = "http://23.88.54.33:26900/proxy";
     private string devlogURL = "https://sureiyaaa.itch.io/eagles-shadow/devlog";
     [SerializeField] TextMeshProUGUI titleText;
     [SerializeField] TextMeshProUGUI descriptionText;
@@ -42,6 +42,7 @@ public class DevBlog : MonoBehaviour
     }
     void ProcessRSS(string rssContent)
     {
+        Debug.Log(rssContent);
         XmlDocument rssDoc = new XmlDocument();
         rssDoc.LoadXml(rssContent);
 
