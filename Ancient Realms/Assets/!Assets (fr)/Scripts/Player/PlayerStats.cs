@@ -179,7 +179,6 @@ public class PlayerStats : MonoBehaviour
         foreach(EquipmentSO equipment in equippedItems){
             if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
                 armor += equipment.baseArmor;
-                Debug.Log(equipment.itemName + ": " + equipment.baseArmor);
             }
         }
         level = playerGameData.level;
