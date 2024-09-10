@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
 using TMPro;
+using Unisave.Facets;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class DevBlog : MonoBehaviour
 {
-    private string rssURL = "https://23.88.54.33:3443/rss";
     private string devlogURL = "https://sureiyaaa.itch.io/eagles-shadow/devlog";
     [SerializeField] TextMeshProUGUI titleText;
     [SerializeField] TextMeshProUGUI descriptionText;
@@ -17,29 +18,14 @@ public class DevBlog : MonoBehaviour
     string link;
     void Awake()
     {
-        StartCoroutine(GetRSSFeed());
+        GetRSSFeed();
     }
 
-    IEnumerator GetRSSFeed()
+    async void GetRSSFeed()
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(rssURL))
-        {
-            // Add certificate handler to accept self-signed certificates (for local testing)
-            request.certificateHandler = new BypassCertificateHandler();
-            loadingText.SetActive(true);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + request.error);
-            }
-            else
-            {
-                loadingText.SetActive(false);
-                string responseText = request.downloadHandler.text;
-                ProcessRSS(responseText);
-            }
-        }
+       
+            ProcessRSS(await GetBlog());
+    
     }
 
     // Custom certificate handler to bypass SSL certificate validation (for local testing only)
@@ -74,8 +60,21 @@ public class DevBlog : MonoBehaviour
 
         // Set the formatted and cleaned description
         descriptionText.SetText(formattedDescription);
-
-        
     }
-
+    public async Task<string> GetBlog()
+    {
+        string devBlog = null;
+        loadingText.SetActive(true);
+        await FacetClient.CallFacet((DatabaseService facet) => facet.GetDevBlog())
+        .Then(response => 
+        {
+            devBlog = response;
+            loadingText.SetActive(false);
+        })
+        .Catch(error => 
+        {
+            Debug.LogError("Failed to fetch player data: " + error);
+        });
+        return devBlog;
+    }
 }

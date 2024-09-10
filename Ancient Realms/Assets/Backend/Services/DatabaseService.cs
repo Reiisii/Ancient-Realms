@@ -76,6 +76,9 @@ public class DatabaseService : Facet
         Auth.Logout();
 
     }
+    public string GetDevBlog(){
+       return DiscordFacetService.GetDevBlog();
+    }
     public PlayerData GetPlayerById(string entityID)
     {
         PlayerData player = DB.Find<PlayerData>(entityID);
