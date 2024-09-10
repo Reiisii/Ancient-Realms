@@ -24,6 +24,7 @@ public class AccountManager : MonoBehaviour
     public static AccountManager Instance { get; private set;}
     public static PlayerData playerData;
     [SerializeField] public GameObject loadingPanel;
+    [SerializeField] public GameObject updateGO;
     public string EntityId;
     public string UIDInstance;
     // Currently logged-in account
@@ -88,7 +89,7 @@ public class AccountManager : MonoBehaviour
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
     }
-    public async static Task InitializeLogin(string pubkey)
+    public async Task InitializeLogin(string pubkey)
     {
         string generatedUID = Utilities.GenerateUuid();
         await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLogin(pubkey, generatedUID))
@@ -97,12 +98,21 @@ public class AccountManager : MonoBehaviour
                     playerData = response;
                     Instance.EntityId = response.EntityId;
                     Instance.UIDInstance = generatedUID;
+                    Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
                     Instance.mainMenu.SetActive(true);
                     UIManager.DisableAllButtons(Instance.connectionMenu);
                     Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
                     Instance.connectionMenu.SetActive(false);
                     Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
-                    AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
+                    FacetClient.CallFacet((DatabaseService facet) => facet.GetDevBlog())
+                    .Then(response => 
+                    {
+                        Instance.updateGO.GetComponent<DevBlog>().ProcessRSS(response);
+                    })
+                    .Catch(error => 
+                    {
+                        Debug.LogError("Failed to fetch Dev Blog: " + error);
+                    });
             });
         })
         .Catch(error => 
@@ -110,6 +120,7 @@ public class AccountManager : MonoBehaviour
             Debug.LogError("Failed to Initialize Account: " + error);
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
+        
     }
     public async void CheckSession(string message){
         PlayerData newPlayer = await GetPlayer();

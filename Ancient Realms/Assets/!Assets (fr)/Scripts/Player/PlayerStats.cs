@@ -7,8 +7,6 @@ using ESDatabase.Classes;
 using ESDatabase.Entities;
 using Solana.Unity.SDK;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,14 +65,23 @@ public class PlayerStats : MonoBehaviour
             Debug.LogWarning("Found more than one Player Stats in the scene");
         }
         Instance = this;
+        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
+        
     }
 
-    void Start()
+    public async void Start()
     {
         PlayerController.GetInstance().canWalk = false;
-        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
-        localPlayerData = AccountManager.playerData;
-        LoadPlayerData(localPlayerData);
+        // equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
+        localPlayerData = await AccountManager.Instance.GetPlayer();
+        if (localPlayerData != null)
+        {
+            LoadPlayerData(localPlayerData);
+        }
+        else
+        {
+            Debug.LogError("Failed to load player data.");
+        }
         PlayerController.GetInstance().canWalk = true;
         InvokeRepeating("SaveDataToServer", 1f, 1f); // Save data to the server every 10 seconds
     }

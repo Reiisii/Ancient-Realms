@@ -16,22 +16,7 @@ public class DevBlog : MonoBehaviour
     [SerializeField] GameObject loadingText;
     [SerializeField] TextMeshProUGUI dateText;
     string link;
-    private void Start()
-    {
-        GetRSSFeed();
-    }
-
-    async void GetRSSFeed()
-    {
-        string blog = await GetBlog();
-        ProcessRSS(blog);
-    }
-
     // Custom certificate handler to bypass SSL certificate validation (for local testing only)
-    private class BypassCertificateHandler : CertificateHandler
-    {
-        protected override bool ValidateCertificate(byte[] certificateData) { return true; }
-    }
 
     public void OpenURL(){
         Application.OpenURL(link);
@@ -39,7 +24,7 @@ public class DevBlog : MonoBehaviour
     public void OpenDevURL(){
         Application.OpenURL(devlogURL);
     }
-    void ProcessRSS(string rssContent)
+    public void ProcessRSS(string rssContent)
     {
         XmlDocument rssDoc = new XmlDocument();
         rssDoc.LoadXml(rssContent);
@@ -56,24 +41,8 @@ public class DevBlog : MonoBehaviour
 
         // Replace "- " with new lines for proper formatting
         string formattedDescription = noHtmlDescription.Replace("- ", "\n- ");
-
+        loadingText.SetActive(false);
         // Set the formatted and cleaned description
         descriptionText.SetText(formattedDescription);
-    }
-    public async Task<string> GetBlog()
-    {
-        string devBlog = null;
-        loadingText.SetActive(true);
-        await FacetClient.CallFacet((DatabaseService facet) => facet.GetDevBlog())
-        .Then(response => 
-        {
-            devBlog = response;
-            loadingText.SetActive(false);
-        })
-        .Catch(error => 
-        {
-            Debug.LogError("Failed to fetch player data: " + error);
-        });
-        return devBlog;
     }
 }
