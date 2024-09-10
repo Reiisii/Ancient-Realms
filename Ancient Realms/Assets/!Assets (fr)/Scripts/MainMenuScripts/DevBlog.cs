@@ -23,9 +23,7 @@ public class DevBlog : MonoBehaviour
 
     async void GetRSSFeed()
     {
-       
-            ProcessRSS(await GetBlog());
-    
+        ProcessRSS(await GetBlog());
     }
 
     // Custom certificate handler to bypass SSL certificate validation (for local testing only)

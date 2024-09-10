@@ -23,8 +23,7 @@ public class AccountManager : MonoBehaviour
     GameObject logoutPanel;
     public static AccountManager Instance { get; private set;}
     public static PlayerData playerData;
-    [SerializeField]
-    public GameObject loadingPanel;
+    [SerializeField] public GameObject loadingPanel;
     public string EntityId;
     public string UIDInstance;
     // Currently logged-in account
