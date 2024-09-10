@@ -25,7 +25,7 @@ public class JournalQuestGoal : MonoBehaviour
             titleText.SetText("<s>" + goal.goalDescription + "</s>");
         }else{
             Goal questGoal = quest.goals[quest.currentGoal];
-            titleText.SetText(questGoal.goalType == GoalTypeEnum.Talk ? questGoal.goalDescription : questGoal.goalDescription + " [" + questGoal.currentAmount + "/" + questGoal.requiredAmount + "]");
+            titleText.SetText(questGoal.goalType == GoalTypeEnum.Talk || questGoal.goalType == GoalTypeEnum.Prompt ? questGoal.goalDescription : questGoal.goalDescription + " [" + questGoal.currentAmount + "/" + questGoal.requiredAmount + "]");
         }
     }
 }

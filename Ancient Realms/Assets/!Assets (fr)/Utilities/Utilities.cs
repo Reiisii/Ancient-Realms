@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -33,6 +34,29 @@ public class Utilities {
         {
             Guid uuid = Guid.NewGuid();
             return uuid.ToString();
+        }
+        public static string ValidateName(string name)
+        {
+                // Step 1: Trim spaces from start and end
+                name = name.Trim();
+
+                // Step 2: Check if the string is empty or only contains spaces
+                if (string.IsNullOrEmpty(name))
+                {
+                return "Name cannot be empty!";
+                }
+
+                // Step 3: Check if the name exceeds 27 characters
+                if (name.Length > 27)
+                {
+                return "Name cannot be longer than 27 characters!";
+                }
+
+                // Step 4: Remove multiple spaces between words
+                name = Regex.Replace(name, @"\s{2,}", " ");
+
+                // Return the cleaned name if all checks pass
+                return name;
         }
         public static Color GetColorForCulture(CultureEnum culture)
         {

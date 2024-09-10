@@ -257,7 +257,11 @@ public class PlayerStats : MonoBehaviour
     {
         return Instance;
     }
-
+    public void SetName(string name)
+    {
+        localPlayerData.gameData.playerName = name;
+        isDataDirty = true; // Mark data as dirty
+    }
     public void AddGold(int amount)
     {
         denarii += amount;

@@ -23,7 +23,7 @@ public class QuestPrefab : MonoBehaviour
             Goal questGoal = questSO.goals[questSO.currentGoal];
             questTitle.SetText(questSO.questTitle);
             questTask.SetText("- " + questGoal.goalDescription);
-            questProgress.SetText(questGoal.goalType == GoalTypeEnum.Talk ? "" : "[" + questGoal.currentAmount + "/" + questGoal.requiredAmount + "]");
+            questProgress.SetText(questGoal.goalType == GoalTypeEnum.Talk || questGoal.goalType == GoalTypeEnum.Prompt ? "" : "[" + questGoal.currentAmount + "/" + questGoal.requiredAmount + "]");
         }
     }
 }
