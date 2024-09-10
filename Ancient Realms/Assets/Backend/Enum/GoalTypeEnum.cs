@@ -17,4 +17,5 @@ public enum GoalTypeEnum
     RunRight,
     Mission,
     Quest,
+    Prompt
 }

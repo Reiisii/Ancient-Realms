@@ -215,6 +215,22 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+    public void UpdatePromptGoals(QuestSO quest)
+    {
+        if(quest.currentGoal < quest.goals.Capacity){
+            Goal goal = quest.goals[quest.currentGoal];
+            if (goal.goalType == GoalTypeEnum.Prompt)
+            {
+                goal.IncrementProgress(1);
+                playerStats.SaveQuestToServer();
+                if (goal.currentAmount >= goal.requiredAmount)
+                {
+                        // COMPLETE TRIGGER CODE
+                    CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                }
+            }
+        }
+    }
     public void UpdateHitJavelinGoal()
     {
         foreach (var quest in playerStats.activeQuests)

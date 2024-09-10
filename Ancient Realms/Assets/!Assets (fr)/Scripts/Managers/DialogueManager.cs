@@ -132,9 +132,20 @@ public class DialogueManager : MonoBehaviour
     }
     private void ContinueStory(){
         if(currentStory.canContinue){
-            dialogueText.text = currentStory.Continue();
+            string nextLine = currentStory.Continue();
+            nextLine = ReplacePlayerName(nextLine);
+            dialogueText.text = nextLine;
         }else{
             ExitDialogueMode();
         }
     }
+    private string ReplacePlayerName(string text)
+    {
+        // Retrieve the player name from PlayerStats
+        string playerName = PlayerStats.GetInstance().localPlayerData.gameData.playerName;
+
+        // Replace the placeholder in the text
+        return text.Replace("[player]", playerName);
+    }
+
 }
