@@ -103,7 +103,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1199955273
-  m_SortingLayer: 4
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1aeaf9dd87ff1ac468ef9f5216b43cfa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -349,7 +349,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 23
   m_Sprite: {fileID: 21300000, guid: 0b116d621097cbf46aee6d35157a6330, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -359,7 +359,7 @@ SpriteRenderer:
   m_Size: {x: 11.875, y: 7.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1225942327735162993
@@ -434,7 +434,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 19
   m_Sprite: {fileID: 21300000, guid: 1c89c368b2dfbea4f9289ec5dd3a1607, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -549,7 +549,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 686945dce79728e45b85a669e99208f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -762,7 +762,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1199955273
-  m_SortingLayer: 4
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1aeaf9dd87ff1ac468ef9f5216b43cfa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -846,7 +846,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1199955273
-  m_SortingLayer: 4
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1aeaf9dd87ff1ac468ef9f5216b43cfa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -931,7 +931,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 23
   m_Time: 0.2
   m_PreviewTimeScale: 1
@@ -1229,7 +1229,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: 82cbc050739f087439c5eff3c1f8529f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1321,6 +1321,8 @@ MonoBehaviour:
   solBalance: 0
   maxThrowForce: 20
   maxHoldTime: 1
+  equippedItems: []
+  inventory: []
   activeQuests: []
   completedQuests: []
 --- !u!114 &-6049172724251349994
@@ -1375,9 +1377,21 @@ MonoBehaviour:
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
-  pauseActionmap:
-    m_Name: Pause Actionmap
-    m_Id: e25801df-bb87-441f-9899-93a57678c100
+  pauseActionMap:
+    m_Name: Pause
+    m_Id: b78b57f3-db03-447e-ab0f-0280498394a1
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  dialogueActionMap:
+    m_Name: Dialogue
+    m_Id: 36e4360b-a7c5-4d8c-9c24-ca4a764eeb85
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  promptActionMap:
+    m_Name: 
+    m_Id: 
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
@@ -1677,6 +1691,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 04c5d528-023f-4ab9-a808-1b422fea91ed
     m_ActionName: Pause/Toggle Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SubmitPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cae46212-4eeb-4de9-8fda-3cf55123d071
+    m_ActionName: Dialogue/Proceed[/Keyboard/e,/Keyboard/enter,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PromptManager, Assembly-CSharp
+        m_MethodName: Submit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3f7c0ebb-adf0-4199-9cc2-bf1869c98e05
+    m_ActionName: Prompt/Submit[/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1904,7 +1950,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 21
   m_Sprite: {fileID: 21300000, guid: ce2bbfcc51de5c94c969a7bd6c643fbd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2053,7 +2099,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 22
   m_Sprite: {fileID: 21300000, guid: 0e9b143add2449340b396e2d9a514b86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2267,7 +2313,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 21
   m_Sprite: {fileID: 21300000, guid: 546984e9b0982c44d819e6ba18e6a929, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2451,7 +2497,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 22
   m_Sprite: {fileID: 21300000, guid: ce2bbfcc51de5c94c969a7bd6c643fbd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

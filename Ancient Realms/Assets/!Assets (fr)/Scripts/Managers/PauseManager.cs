@@ -24,12 +24,12 @@ public class PauseManager : MonoBehaviour
             if(pausePanel.activeSelf == true){
                 Time.timeScale = 1f;
                 PlayerController.GetInstance().playerActionMap.Enable();
-                PlayerController.GetInstance().pauseActionmap.Disable();
+                PlayerController.GetInstance().pauseActionMap.Disable();
                 pausePanel.SetActive(false);
             }else{  
                 Time.timeScale = 0f;
                 PlayerController.GetInstance().playerActionMap.Disable();
-                PlayerController.GetInstance().pauseActionmap.Enable();
+                PlayerController.GetInstance().pauseActionMap.Enable();
                 pausePanel.SetActive(true);
             }
             
@@ -40,12 +40,12 @@ public class PauseManager : MonoBehaviour
         if(pausePanel.activeSelf == true){
             Time.timeScale = 1f;
             PlayerController.GetInstance().playerActionMap.Enable();
-            PlayerController.GetInstance().pauseActionmap.Disable();
+            PlayerController.GetInstance().pauseActionMap.Disable();
             pausePanel.SetActive(false);
         }else{  
             Time.timeScale = 0f;
             PlayerController.GetInstance().playerActionMap.Disable();
-            PlayerController.GetInstance().pauseActionmap.Enable();
+            PlayerController.GetInstance().pauseActionMap.Enable();
             pausePanel.SetActive(true);
         }
     }

@@ -44,7 +44,9 @@ public class PlayerController : MonoBehaviour
     public InputActionMap playerActionMap;
     public InputActionMap questActionMap;
     public InputActionMap inventoryActionMap;
-    public InputActionMap pauseActionmap;
+    public InputActionMap pauseActionMap;
+    public InputActionMap dialogueActionMap;
+    public InputActionMap promptActionMap;
     private Vector3 originalCameraOffset;
     private void Awake()
     {
@@ -63,7 +65,9 @@ public class PlayerController : MonoBehaviour
         playerActionMap = inputActions.FindActionMap("Player");
         questActionMap = inputActions.FindActionMap("Quest");
         inventoryActionMap = inputActions.FindActionMap("Inventory");
-        pauseActionmap = inputActions.FindActionMap("Pause");
+        pauseActionMap = inputActions.FindActionMap("Pause");
+        dialogueActionMap = inputActions.FindActionMap("Dialogue");
+        promptActionMap = inputActions.FindActionMap("Prompt");
     }
     public static PlayerController GetInstance(){
         return Instance;

@@ -26,5 +26,15 @@ namespace ESDatabase.Services
                 ["content"] ="> 📤 **[" + player.gameData.playerName + "]:** Bro just logged off the game server 💀\n> **[TOKEN]:** " + player.token
             });
         }
+        public static string GetDevBlog()
+        {
+            var response = Http.Get("https://sureiyaaa.itch.io/eagles-shadow/devlog.rss");
+            if(response.IsOk){
+                string rssContent = response.Body();
+                return rssContent;
+            }else{
+                throw new Exception("Failed to fetch Itch.io RSS feed."); 
+            }
+        }
     }
 }
