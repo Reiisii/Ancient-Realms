@@ -26,6 +26,7 @@ public class EnterBuilding : MonoBehaviour
         Vector3 currentPosition = PlayerStats.GetInstance().gameObject.transform.position;
         if(playerInRange){
             if(PlayerController.GetInstance().GetInteractPressed()){
+                PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();
                 if(!interiorGrid.activeSelf){
                     interiorGrid.SetActive(true);
@@ -49,6 +50,7 @@ public class EnterBuilding : MonoBehaviour
         await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
             panelGO.SetActive(false);
         }).AsyncWaitForCompletion();
+        PlayerController.GetInstance().playerActionMap.Enable();
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){

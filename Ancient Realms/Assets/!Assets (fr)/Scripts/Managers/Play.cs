@@ -34,19 +34,28 @@ public class Play : MonoBehaviour
         canvasGroup.gameObject.SetActive(true);
         ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
         canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{        
-            SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive).completed += OnSceneLoaded;
+            SceneManager.LoadSceneAsync("Training Grounds", LoadSceneMode.Additive).completed += OnSceneLoaded;
+        });  
+    }
+    public void PlayUILoader()
+    {
+        canvasGroup.gameObject.SetActive(true);
+        ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
+        canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{        
+            SceneManager.LoadSceneAsync("Player UI Loader", LoadSceneMode.Additive).completed += OnSceneLoaded;
         });  
     }
     public void PlayMainMenu()
     {       
         DOTween.Clear(true);
-        SceneManager.UnloadSceneAsync(1).completed += (operation) => {
-            oldSceneCanvas.enabled = true; // Re-enable the old canvas
-            canvasGroup.DOFade(0, 0.8f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(() => {
+        SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += (operation) => {
+            SceneManager.UnloadSceneAsync("Player UI Loader").completed += (operation) => {
+                oldSceneCanvas.enabled = true; // Re-enable the old canvas
+                canvasGroup.DOFade(0, 0.8f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(() => {
                 canvasGroup.gameObject.SetActive(false); // Ensure the canvas group is inactive to prevent blocking
                 mainMenu.SetActive(true);
-
             });
+            };
         };
  
     }
@@ -121,7 +130,7 @@ public class Play : MonoBehaviour
     }
     private void OnSceneLoaded(AsyncOperation operation)
     {
-        DOTween.Clear(true);
+        // DOTween.Clear(true);
         oldSceneCanvas.enabled = false;
     }
 }

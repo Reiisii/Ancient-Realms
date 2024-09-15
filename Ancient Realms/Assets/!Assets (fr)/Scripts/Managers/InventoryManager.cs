@@ -21,22 +21,18 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager GetInstance(){
         return Instance;
     }
-    public void OpenInventory(InputAction.CallbackContext context)
+    public void OpenInventory()
     {
-        if (context.started)
-        {
-            if(inventoryPanel.activeSelf == true){
-                Time.timeScale = 1f;
-                PlayerController.GetInstance().playerActionMap.Enable();
-                PlayerController.GetInstance().inventoryActionMap.Disable();
-                inventoryPanel.SetActive(false);
-            }else{  
-                Time.timeScale = 0f;
-                PlayerController.GetInstance().playerActionMap.Disable();
-                PlayerController.GetInstance().inventoryActionMap.Enable();
-                inventoryPanel.SetActive(true);
-            }
-            
+        if(inventoryPanel.activeSelf == true){
+            Time.timeScale = 1f;
+            PlayerController.GetInstance().playerActionMap.Enable();
+            PlayerController.GetInstance().inventoryActionMap.Disable();
+            inventoryPanel.SetActive(false);
+        }else{  
+            Time.timeScale = 0f;
+            PlayerController.GetInstance().playerActionMap.Disable();
+            PlayerController.GetInstance().inventoryActionMap.Enable();
+            inventoryPanel.SetActive(true);
         }
     }
 }
