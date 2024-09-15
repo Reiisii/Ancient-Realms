@@ -65,15 +65,14 @@ public class PlayerStats : MonoBehaviour
             Debug.LogWarning("Found more than one Player Stats in the scene");
         }
         Instance = this;
-        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
+        // equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
         
     }
-
-    public async void Start()
+    public void Start()
     {
-        PlayerController.GetInstance().canWalk = false;
-        // equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
-        localPlayerData = await AccountManager.Instance.GetPlayer();
+        // PlayerController.GetInstance().canWalk = false;
+        // PlayerController.GetInstance().canWalk = true;
+        localPlayerData = AccountManager.Instance.playerData;
         if (localPlayerData != null)
         {
             LoadPlayerData(localPlayerData);
@@ -82,12 +81,12 @@ public class PlayerStats : MonoBehaviour
         {
             Debug.LogError("Failed to load player data.");
         }
-        PlayerController.GetInstance().canWalk = true;
         InvokeRepeating("SaveDataToServer", 1f, 1f); // Save data to the server every 10 seconds
     }
     private void OnEnable()
-    {
+    {        
         Web3.OnBalanceChange += OnBalanceChange;
+        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
     }
 
     private void OnDisable()
@@ -236,27 +235,6 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         updateValues();
-        PlayerController playerController = PlayerController.GetInstance();
-        if (!playerController.moveInputActive && playerController.IsRunning || !playerController.IsRunning && playerController.canWalk)
-        {
-            if(isCombatMode) {
-                walkSpeed = Mathf.Max(walkSpeed, walkSpeed - (walkSpeed * 0.25f) * Time.deltaTime);
-                staminaRegenRate = Mathf.Max(staminaRegenRate, staminaRegenRate - (staminaRegenRate * 0.25f) * Time.deltaTime);
-            }
-            if (isCombatMode && playerController.IsMoving && playerController.isBlocking){
-                // Walking and blocking - deplete stamina at 50% of the current depletion rate
-                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.5f) * Time.deltaTime);
-            }else if (isCombatMode && !playerController.IsMoving && playerController.isBlocking)
-            {
-                // Standing and blocking - regenerate stamina at 25% of the current regeneration rate
-                stamina = Mathf.Min(maxStamina, stamina + (staminaRegenRate * 0.25f) * Time.deltaTime);
-            }else if(isCombatMode && playerController.IsMoving){
-                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.25f) * Time.deltaTime);
-            }else{
-                stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
-            }
-            
-        }
     }
 
     public static PlayerStats GetInstance()
@@ -368,7 +346,6 @@ public class PlayerStats : MonoBehaviour
         // Optionally save data immediately on level up
         await AccountManager.SaveData(localPlayerData);
         isDataDirty = false;
-        updateValues();
     }
     private void CalculateStatsForCurrentLevel()
     {

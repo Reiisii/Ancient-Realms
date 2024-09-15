@@ -12,7 +12,9 @@ namespace ESDatabase.Classes
                 public int currentXP {get; set;}
                 public int maxEnergy {get;set;}
                 public string lastLocationVisited {get;set;}
-                public string lastDistrict {get;set;}
+                public float lastX {get;set;}
+                public float lastY {get;set;}
+                public bool isInterior {get;set;}
                 public int currentEnergy {get;set;}
                 public Inventory inventory {get;set;}
                 public EquippedData equippedData {get;set;}
@@ -27,8 +29,10 @@ namespace ESDatabase.Classes
                         this.currentXP = 0;
                         this.maxEnergy = 90;
                         this.currentEnergy = 90;
-                        this.lastLocationVisited = "";
-                        this.lastDistrict = "Main";
+                        this.lastLocationVisited = "Training Grounds";
+                        this.lastX = 1.46f;
+                        this.lastY = -2.96f;
+                        this.isInterior = false;
                         this.rank = "Tiro";
                         this.inventory = new Inventory();
                         this.equippedData = new EquippedData();
