@@ -21,10 +21,10 @@ public class QuestManager : MonoBehaviour
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
         }
         Instance = this;
+        quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
     }
     void Start(){
         playerStats = PlayerStats.GetInstance();
-        quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
     }
     public static QuestManager GetInstance(){
         return Instance;
