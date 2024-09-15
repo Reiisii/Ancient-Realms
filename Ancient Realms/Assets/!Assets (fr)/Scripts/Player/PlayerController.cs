@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public JavelinPrefab javelinPrefab;
     [SerializeField] public Transform javelinPoint;
     [SerializeField] public CinemachineVirtualCamera virtualCamera;
+    [SerializeField] public GameObject cm;
     private CinemachineFramingTransposer framingTransposer;
     public LayerMask enemyLayer;
     private Vector2 lastPosition;
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
     public InputActionMap pauseActionMap;
     public InputActionMap dialogueActionMap;
     public InputActionMap promptActionMap;
+    public InputActionMap mapActionMap;
     private Vector3 originalCameraOffset;
     private void Awake()
     {
@@ -69,6 +71,7 @@ public class PlayerController : MonoBehaviour
         pauseActionMap = inputActions.FindActionMap("Pause");
         dialogueActionMap = inputActions.FindActionMap("Dialogue");
         promptActionMap = inputActions.FindActionMap("Prompt");
+        mapActionMap = inputActions.FindActionMap("Map");
     }
     public static PlayerController GetInstance(){
         return Instance;
@@ -404,6 +407,14 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             PauseManager.GetInstance().OpenPause();
+        }
+    }
+    public void MapPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            cm.SetActive(!cm.activeSelf);
+            MapManager.GetInstance().OpenMap();
         }
     }
     public void OnRun(InputAction.CallbackContext context)

@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapTrigger : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MapTrigger : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject Panel;
     [SerializeField] private TextMeshProUGUI locationName;
+    [SerializeField] private string locationScene;
     [SerializeField] private SpriteRenderer locationImage;
     private bool playerInRange;
 
@@ -20,6 +22,7 @@ public class MapTrigger : MonoBehaviour
     {
         locationName.SetText(location.locationName);
         locationImage.sprite = location.image;
+        locationScene = location.SceneName;
     }
 
     private void Awake(){
@@ -34,6 +37,19 @@ public class MapTrigger : MonoBehaviour
         }else{
             Panel.SetActive(false);
         }
+    }
+    public async void ChangeScene(){
+        PlayerUIManager.GetInstance().TransitionMapUI();
+        await PlayerUIManager.GetInstance().OpenDarkenUI();
+        await PlayerUIManager.GetInstance().CloseDarkenUI();
+        await PlayerUIManager.GetInstance().OpenLoadingUI();
+        SceneManager.UnloadSceneAsync(PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited).completed += (operation) => {
+            PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
+            SceneManager.LoadSceneAsync(locationScene, LoadSceneMode.Additive).completed += async (operation) => {
+                await PlayerUIManager.GetInstance().CloseLoadingUI();
+                await PlayerUIManager.GetInstance().OpenPlayerUI();
+            };
+        };
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){

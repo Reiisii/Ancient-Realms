@@ -67,6 +67,10 @@ public class PlayerUIManager : MonoBehaviour
         await playerCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         playerCanvasGroup.interactable = true;
     }
+    public void TogglePlayerUI(){
+        playerUI.SetActive(!playerUI.activeSelf);
+        playerCanvasGroup.interactable = !playerCanvasGroup.interactable;
+    }
     public async Task ClosePlayerUI(){
         playerCanvasGroup.interactable = false;
         await playerCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
@@ -88,24 +92,36 @@ public class PlayerUIManager : MonoBehaviour
         await fade.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         fadeGO.SetActive(false);
     }
-    public async Task OpenBackgroundUI(){
+    public void OpenBackgroundUI(){
         backgroundGO.SetActive(true);
-        await backgroundCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        backgroundCanvasGroup.alpha = 1f;
     }
     public async Task CloseBackgroundUI(){
         await backgroundCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         backgroundGO.SetActive(false);
     }
-    public async Task OpenMapUI(){
+    public void OpenMapUI(){
+        TogglePlayerUI();
         mapGO.SetActive(true);
         mapCanvasGroup.interactable = false;
+        mapCanvasGroup.alpha = 1f;
         worldMap.SetActive(true);
-        await mapCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        // await mapCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapCanvasGroup.interactable = true;
     }
     public async Task CloseMapUI(){
         mapCanvasGroup.interactable = false;
-        await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        mapCanvasGroup.alpha = 0f;
+        // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        mapGO.SetActive(false);
+        worldMap.SetActive(false);
+        await OpenPlayerUI();
+    }
+    public void TransitionMapUI(){
+        OpenBackgroundUI();
+        mapCanvasGroup.interactable = false;
+        mapCanvasGroup.alpha = 0f;
+        // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapGO.SetActive(false);
         worldMap.SetActive(false);
     }

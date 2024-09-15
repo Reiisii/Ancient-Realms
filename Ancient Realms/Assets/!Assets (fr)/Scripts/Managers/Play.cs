@@ -34,7 +34,7 @@ public class Play : MonoBehaviour
         canvasGroup.gameObject.SetActive(true);
         ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
         canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{        
-            SceneManager.LoadSceneAsync("Training Grounds", LoadSceneMode.Additive).completed += OnSceneLoaded;
+            SceneManager.LoadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited, LoadSceneMode.Additive).completed += OnSceneLoaded;
         });  
     }
     public void PlayUILoader()

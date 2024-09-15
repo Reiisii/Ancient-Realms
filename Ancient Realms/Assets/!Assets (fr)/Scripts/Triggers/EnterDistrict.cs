@@ -19,7 +19,7 @@ public class EnterDistrict : MonoBehaviour
             if(PlayerController.GetInstance().GetInteractPressed()){
                 PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();    
-                PlayerStats.GetInstance().gameObject.transform.position = new Vector3(x, currentPosition.y, currentPosition.z);
+                PlayerController.GetInstance().gameObject.transform.position = new Vector3(x, currentPosition.y, currentPosition.z);
                 await Close();
             }
             PlayerUIManager.GetInstance().locationText.SetText(locationName);
