@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Transform javelinPoint;
     [SerializeField] public CinemachineVirtualCamera virtualCamera;
     [SerializeField] public GameObject cm;
+    [SerializeField] public Slider forceSlider;
+    [SerializeField] public GameObject forceGO;
     private CinemachineFramingTransposer framingTransposer;
     public LayerMask enemyLayer;
     private Vector2 lastPosition;
@@ -58,7 +60,7 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        
+           
     }
     
     private void Start(){
