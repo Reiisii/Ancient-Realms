@@ -17,24 +17,6 @@ public class PauseManager : MonoBehaviour
     public static PauseManager GetInstance(){
         return Instance;
     }
-    public void OpenPause(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            if(pausePanel.activeSelf == true){
-                Time.timeScale = 1f;
-                PlayerController.GetInstance().playerActionMap.Enable();
-                PlayerController.GetInstance().pauseActionMap.Disable();
-                pausePanel.SetActive(false);
-            }else{  
-                Time.timeScale = 0f;
-                PlayerController.GetInstance().playerActionMap.Disable();
-                PlayerController.GetInstance().pauseActionMap.Enable();
-                pausePanel.SetActive(true);
-            }
-            
-        }
-    }
     public void OpenPause()
     {
         if(pausePanel.activeSelf == true){

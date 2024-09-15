@@ -1152,16 +1152,11 @@ GameObject:
   - component: {fileID: 942858895063747022}
   - component: {fileID: 8143464205618705029}
   - component: {fileID: 3575490194625955687}
-  - component: {fileID: 1584943556720721348}
   - component: {fileID: -6049172724251349994}
   - component: {fileID: -7447427150435233297}
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 7836553738663465838}
   - component: {fileID: -4221797428664147929}
-  - component: {fileID: 3159148761232768842}
-  - component: {fileID: 496421970278509919}
-  - component: {fileID: -2407419223650497985}
-  - component: {fileID: -2701709620502470431}
   m_Layer: 6
   m_Name: Player V2
   m_TagString: Player
@@ -1278,53 +1273,6 @@ MonoBehaviour:
     m_Extent: {x: 64.1875, y: 40.749817, z: 0}
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
---- !u!114 &1584943556720721348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369763902341509201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2611790ccb491b6449bc9850ca227a9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UI: {fileID: 0}
-  QuestPanel: {fileID: 0}
-  hpSlider: {fileID: 0}
-  hpText: {fileID: 0}
-  staminaSlider: {fileID: 0}
-  staminaText: {fileID: 0}
-  xpSlider: {fileID: 0}
-  levelText: {fileID: 0}
-  denariiText: {fileID: 0}
-  sol: {fileID: 0}
-  currentHP: 100
-  maxHP: 100
-  maxStamina: 70
-  stamina: 70
-  armor: 0
-  walkSpeed: 5
-  runSpeed: 8
-  staminaDepletionRate: 20
-  staminaRegenRate: 10
-  attack: 30
-  isCombatMode: 0
-  toggleStamina: 1
-  isDataDirty: 0
-  level: 0
-  denarii: 0
-  maxXP: 30
-  currentXP: 0
-  attackRange: 0.5
-  solBalance: 0
-  maxThrowForce: 20
-  maxHoldTime: 1
-  equippedItems: []
-  inventory: []
-  activeQuests: []
-  completedQuests: []
 --- !u!114 &-6049172724251349994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1337,7 +1285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a1feee9d8d4e4a499907650a37082fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 1584943556720721348}
+  playerStats: {fileID: 0}
   attackPoint: {fileID: 8282441540707377666}
   javelinPrefab: {fileID: 6826781879228552694, guid: f113a5f50e69bd44c9cca769c7076b35, type: 3}
   javelinPoint: {fileID: 1778159934347875474}
@@ -1390,8 +1338,8 @@ MonoBehaviour:
     m_Actions: []
     m_Bindings: []
   promptActionMap:
-    m_Name: 
-    m_Id: 
+    m_Name: Prompt
+    m_Id: 39bf74d6-438c-4332-ab30-5673b8c88e9a
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
@@ -1597,9 +1545,9 @@ MonoBehaviour:
     m_ActionName: Player/Throw[/Keyboard/w]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -2407419223650497985}
-        m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
-        m_MethodName: OpenJournal
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: JournalPressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1613,9 +1561,9 @@ MonoBehaviour:
     m_ActionName: Player/Toggle Quest[/Keyboard/j]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 496421970278509919}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
-        m_MethodName: OpenInventory
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: InventoryPressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1629,9 +1577,9 @@ MonoBehaviour:
     m_ActionName: Player/Toggle Inventory[/Keyboard/tab]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3159148761232768842}
-        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: OpenPause
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: PausePressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1645,9 +1593,9 @@ MonoBehaviour:
     m_ActionName: Player/Toggle Pause[/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 496421970278509919}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
-        m_MethodName: OpenInventory
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: InventoryPressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1661,9 +1609,9 @@ MonoBehaviour:
     m_ActionName: Inventory/Toggle Inventory[/Keyboard/tab,/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -2407419223650497985}
-        m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
-        m_MethodName: OpenJournal
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: JournalPressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1677,9 +1625,9 @@ MonoBehaviour:
     m_ActionName: Quest/Toggle Quest[/Keyboard/j,/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3159148761232768842}
-        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: OpenPause
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: PausePressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1709,10 +1657,10 @@ MonoBehaviour:
     m_ActionName: Dialogue/Proceed[/Keyboard/e,/Keyboard/enter,/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PromptManager, Assembly-CSharp
-        m_MethodName: Submit
-        m_Mode: 1
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SubmitPressed
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1821,64 +1769,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 39.82, y: 77.71}
   m_EdgeRadius: 0
---- !u!114 &3159148761232768842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369763902341509201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd4d2dcaef028e14ea1b4febcd935719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pausePanel: {fileID: 0}
---- !u!114 &496421970278509919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369763902341509201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0bb126cc266875438d05e2d00858654, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 0}
---- !u!114 &-2407419223650497985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369763902341509201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa56ef00fc1b1b43ba901eb4ba902e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qPrefab: {fileID: 5446196464397879909, guid: 314f2b9f2356fe642aa529a428df681b, type: 3}
-  questPanel: {fileID: 0}
-  journalPanel: {fileID: 0}
-  quests: []
---- !u!114 &-2701709620502470431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369763902341509201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a7a60a025b8fea43b66d9ec0bfb7106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialoguePanel: {fileID: 0}
-  nameText: {fileID: 0}
-  dialogueText: {fileID: 0}
-  npcImage: {fileID: 0}
 --- !u!1 &4983771561900626366
 GameObject:
   m_ObjectHideFlags: 0

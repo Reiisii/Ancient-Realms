@@ -37,7 +37,7 @@ public class AccountStore : MonoBehaviour
     private async void OnLogin(Account account){
         AccountManager.Instance.loadingPanel.SetActive(true);
         await AccountManager.Instance.InitializeLogin(account.PublicKey.ToString());
-        PlayerData playerData = AccountManager.playerData;
+        PlayerData playerData = AccountManager.Instance.playerData;
         if(playerData != null){
             masterSlider.value = Mathf.Clamp(playerData.gameData.settings.masterVolume, masterSlider.minValue, masterSlider.maxValue);
             musicSlider.value = Mathf.Clamp(playerData.gameData.settings.musicVolume, musicSlider.minValue, musicSlider.maxValue);

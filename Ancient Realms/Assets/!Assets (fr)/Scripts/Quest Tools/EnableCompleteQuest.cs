@@ -10,7 +10,7 @@ public class EnableQuestManager : MonoBehaviour
 {
     public string questIDRequirement;
     private void Start(){
-        PlayerData playerData = AccountManager.playerData;
+        PlayerData playerData = AccountManager.Instance.playerData;
         QuestData questData = playerData.gameData.quests.Find(quest => quest.questID == questIDRequirement);
         if(questData == null){
             gameObject.GetComponent<Button>().interactable = false;
@@ -21,7 +21,7 @@ public class EnableQuestManager : MonoBehaviour
         }
     }
     private void Update(){
-        PlayerData playerData = AccountManager.playerData;
+        PlayerData playerData = AccountManager.Instance.playerData;
         QuestData questData = playerData.gameData.quests.Find(quest => quest.questID == questIDRequirement);
         if(questData == null){
             gameObject.GetComponent<Button>().interactable = false;
