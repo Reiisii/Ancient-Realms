@@ -306,7 +306,7 @@ public class PlayerController : MonoBehaviour
         float moveDuration = 0.2f;
 
         // Use DOTween to smoothly move the character to the new position
-        PlayerStats.GetInstance().gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
         
     }
     public void OnMove(InputAction.CallbackContext context) 
