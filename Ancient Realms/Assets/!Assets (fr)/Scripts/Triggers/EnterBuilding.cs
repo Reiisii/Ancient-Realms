@@ -20,8 +20,6 @@ public class EnterBuilding : MonoBehaviour
     private bool playerInRange;
     async void Update()
     {
-        // Get the current position of the object
-        Vector3 currentPosition = PlayerStats.GetInstance().gameObject.transform.position;
         if(playerInRange){
             if(PlayerController.GetInstance().GetInteractPressed()){
                 PlayerController.GetInstance().playerActionMap.Disable();
