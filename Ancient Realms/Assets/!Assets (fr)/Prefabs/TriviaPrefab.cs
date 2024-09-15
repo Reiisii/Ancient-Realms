@@ -11,9 +11,14 @@ public class TriviaPrefab : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI triviaTitle;
     [SerializeField] TextMeshProUGUI triviaDescription;
-    
+    public TriviaSO trivia;
     public void setData(TriviaSO trivData){
+        trivia = trivData;
         triviaTitle.SetText(trivData.triviaTitle);
         triviaDescription.SetText(trivData.triviaDescription);
+    }
+    public void OnItemClick()
+    {
+        Application.OpenURL(trivia.link);
     }
 }
