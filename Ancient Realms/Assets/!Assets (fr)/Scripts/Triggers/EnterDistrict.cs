@@ -24,7 +24,7 @@ public class EnterDistrict : MonoBehaviour
         Vector3 currentPosition = PlayerStats.GetInstance().gameObject.transform.position;
         if(playerInRange){
             if(PlayerController.GetInstance().GetInteractPressed()){
-                    // Set the new position with the desired x value and retain y and z
+                PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();    
                 PlayerStats.GetInstance().gameObject.transform.position = new Vector3(x, currentPosition.y, currentPosition.z);
                 await Close();
@@ -40,6 +40,7 @@ public class EnterDistrict : MonoBehaviour
         await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
             panelGO.SetActive(false);
         }).AsyncWaitForCompletion();
+        PlayerController.GetInstance().playerActionMap.Enable();
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
