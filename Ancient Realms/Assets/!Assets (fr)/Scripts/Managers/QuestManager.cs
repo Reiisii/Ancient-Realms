@@ -411,7 +411,10 @@ public class QuestManager : MonoBehaviour
                     // playerStats.AddItem(reward.value);
                     break;
                 case RewardsEnum.Artifact:
-                    if(!quest.isRewarded) playerStats.AddArtifact(reward.value);
+                    if(!quest.isRewarded){
+                        playerStats.AddArtifact(reward.value);
+                        PlayerUIManager.GetInstance().achievementPlaque.SetActive(true);
+                    }
                     break;
                 case RewardsEnum.Quest:
                     Instance.StartQuest(reward.value);

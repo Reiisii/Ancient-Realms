@@ -27,7 +27,7 @@ public class NextFloorInterior : MonoBehaviour
             if(PlayerController.GetInstance().GetInteractPressed()){
                 PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();
-                PlayerStats.GetInstance().gameObject.transform.position = new Vector3(x, y, currentPosition.z);
+                PlayerController.GetInstance().gameObject.transform.position = new Vector3(x, y, currentPosition.z);
                 if(isInterior){
                     interiorGrid.SetActive(true);
                     exteriorGrid.SetActive(false);

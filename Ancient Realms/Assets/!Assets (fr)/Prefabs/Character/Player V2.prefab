@@ -1671,6 +1671,12 @@ MonoBehaviour:
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
+  mapActionMap:
+    m_Name: Map
+    m_Id: a3606197-6e54-41fc-872d-28c76cb275b9
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -1999,6 +2005,42 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3f7c0ebb-adf0-4199-9cc2-bf1869c98e05
     m_ActionName: Prompt/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: MapPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 224e19b2-04bd-45e2-afc9-dc29b1845bf9
+    m_ActionName: Map/Toggle Map[/Keyboard/m,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b9fd03a9-14c5-4b43-990c-d7b3f3521bfe
+    m_ActionName: Map/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: MapPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9ff547b8-76e4-449b-b79f-687e1fa620eb
+    m_ActionName: Player/Toggle Map[/Keyboard/m]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
