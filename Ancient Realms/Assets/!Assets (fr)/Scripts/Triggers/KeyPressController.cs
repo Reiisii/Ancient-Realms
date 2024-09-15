@@ -14,8 +14,18 @@ public class KeyPressHandler : MonoBehaviour
     [SerializeField] public GameObject keySpacebar;
     [SerializeField] public GameObject keyPressR;
     [SerializeField] public GameObject keyR;
+    [SerializeField] public GameObject keyPressW;
+    [SerializeField] public GameObject keyW;
+    [SerializeField] public GameObject keyPressS;
+    [SerializeField] public GameObject keyS;
+    [SerializeField] public GameObject CombatGO;
     void Update()
     {
+        if(PlayerStats.GetInstance().isCombatMode){
+            CombatGO.SetActive(true);
+        }else{
+            CombatGO.SetActive(false);
+        }
         // Handle "A" key press
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -79,6 +89,26 @@ public class KeyPressHandler : MonoBehaviour
         {
             keyR.SetActive(true);
             keyPressR.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            keyW.SetActive(false);
+            keyPressW.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            keyW.SetActive(true);
+            keyPressW.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            keyS.SetActive(false);
+            keyPressS.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            keyS.SetActive(true);
+            keyPressS.SetActive(false);
         }
     }
 }
