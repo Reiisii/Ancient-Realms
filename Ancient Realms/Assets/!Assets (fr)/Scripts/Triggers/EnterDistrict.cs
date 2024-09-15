@@ -11,7 +11,9 @@ public class EnterDistrict : MonoBehaviour
     [SerializeField] private string locationName;
     [SerializeField] private GameObject districtPanel;
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private TextMeshProUGUI text;
     [Header("Animation")]
+    [SerializeField] GameObject panelGO;
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;
     
@@ -27,16 +29,16 @@ public class EnterDistrict : MonoBehaviour
                 PlayerStats.GetInstance().gameObject.transform.position = new Vector3(x, currentPosition.y, currentPosition.z);
                 await Close();
             }
-            PlayerUIManager.GetInstance().locationText.SetText(locationName);
+            text.SetText(locationName);
         }
     }
     private async Task Open(){
-        PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
+        panelGO.SetActive(true);
         await canvasGroup.DOFade(1, 0.5f).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
     }
     public async Task Close(){
         await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
-            PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
+            panelGO.SetActive(false);
         }).AsyncWaitForCompletion();
         PlayerController.GetInstance().playerActionMap.Enable();
     }
