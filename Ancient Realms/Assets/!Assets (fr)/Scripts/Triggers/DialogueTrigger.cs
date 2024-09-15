@@ -124,7 +124,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (playerInRange)
         {
-            if (PlayerStats.GetInstance().gameObject.transform.position.x < transform.position.x)
+            if (PlayerController.GetInstance().gameObject.transform.position.x < transform.position.x)
             {
                 npcSpriteRenderer.flipX = true; // Player is on the left side of the NPC
             }
