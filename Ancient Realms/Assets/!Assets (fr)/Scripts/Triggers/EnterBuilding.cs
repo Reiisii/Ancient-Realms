@@ -12,9 +12,7 @@ public class EnterBuilding : MonoBehaviour
     [SerializeField] private GameObject districtPanel;
     [SerializeField] private GameObject interiorGrid;
     [SerializeField] private GameObject exteriorGrid;
-    [SerializeField] private TextMeshProUGUI text;
     [Header("Loading")]
-    [SerializeField] GameObject panelGO;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;
@@ -31,11 +29,11 @@ public class EnterBuilding : MonoBehaviour
                 if(!interiorGrid.activeSelf){
                     interiorGrid.SetActive(true);
                     exteriorGrid.SetActive(false);
-                    text.SetText(districtName);
+                    PlayerUIManager.GetInstance().locationText.SetText(districtName);
                 }else{
                     interiorGrid.SetActive(false);
                     exteriorGrid.SetActive(true);
-                    text.SetText(buildingName);
+                    PlayerUIManager.GetInstance().locationText.SetText(buildingName);
                 }
                 
                 await Close();
@@ -43,12 +41,12 @@ public class EnterBuilding : MonoBehaviour
         }
     }
     private async Task Open(){
-        panelGO.SetActive(true);
+        PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
         await canvasGroup.DOFade(1, 0.5f).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
     }
     public async Task Close(){
         await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
-            panelGO.SetActive(false);
+            PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
         }).AsyncWaitForCompletion();
         PlayerController.GetInstance().playerActionMap.Enable();
     }
@@ -56,10 +54,10 @@ public class EnterBuilding : MonoBehaviour
         if(collider.gameObject.tag == "Player"){
             playerInRange = true;
             if(interiorGrid.activeSelf){
-                text.SetText(districtName);
+                PlayerUIManager.GetInstance().locationText.SetText(districtName);
                 districtPanel.SetActive(true);
             }else{
-                text.SetText(buildingName);
+                PlayerUIManager.GetInstance().locationText.SetText(buildingName);
                 districtPanel.SetActive(true);
             }
         }
@@ -69,10 +67,10 @@ public class EnterBuilding : MonoBehaviour
         if(collider.gameObject.tag == "Player"){
             playerInRange = false;
             if(interiorGrid.activeSelf){
-                text.SetText(districtName);
+                PlayerUIManager.GetInstance().locationText.SetText(districtName);
                 districtPanel.GetComponent<LogoutAnimation>().Close();
             }else{
-                text.SetText(buildingName);
+                PlayerUIManager.GetInstance().locationText.SetText(buildingName);
                 districtPanel.GetComponent<LogoutAnimation>().Close();
             }
         }
