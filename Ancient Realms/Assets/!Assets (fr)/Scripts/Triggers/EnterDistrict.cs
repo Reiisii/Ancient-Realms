@@ -19,7 +19,7 @@ public class EnterDistrict : MonoBehaviour
     async void Update()
     {
         // Get the current position of the object
-        Vector3 currentPosition = PlayerStats.GetInstance().gameObject.transform.position;
+        Vector3 currentPosition = PlayerController.GetInstance().gameObject.transform.position;
         if(playerInRange){
             if(PlayerController.GetInstance().GetInteractPressed()){
                 PlayerController.GetInstance().playerActionMap.Disable();

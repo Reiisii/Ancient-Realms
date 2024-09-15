@@ -29,7 +29,7 @@ public class NextFloorInterior : MonoBehaviour
     async void Update()
     {
         // Get the current position of the object
-        Vector3 currentPosition = PlayerStats.GetInstance().gameObject.transform.position;
+        Vector3 currentPosition = PlayerController.GetInstance().gameObject.transform.position;
         if(playerInRange){
             if(PlayerController.GetInstance().GetInteractPressed()){
                 PlayerController.GetInstance().playerActionMap.Disable();
@@ -38,11 +38,11 @@ public class NextFloorInterior : MonoBehaviour
                 if(isInterior){
                     interiorGrid.SetActive(true);
                     exteriorGrid.SetActive(false);
-                    text.SetText(districtName);
+                    PlayerUIManager.GetInstance().locationText.SetText(districtName);
                 }else{
                     interiorGrid.SetActive(false);
                     exteriorGrid.SetActive(true);
-                    text.SetText(floorName);
+                    PlayerUIManager.GetInstance().locationText.SetText(floorName);
                 }
                 
                 await Close();
@@ -50,13 +50,13 @@ public class NextFloorInterior : MonoBehaviour
         }
     }
     private async Task Open(){
-        panelGO.SetActive(true);
+        PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
         await canvasGroup.DOFade(1, 0.5f).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         
     }
     public async Task Close(){
         await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
-            panelGO.SetActive(false);
+            PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
         }).AsyncWaitForCompletion();
         PlayerController.GetInstance().playerActionMap.Enable();
     }
@@ -64,10 +64,10 @@ public class NextFloorInterior : MonoBehaviour
         if(collider.gameObject.tag == "Player"){
             playerInRange = true;
             if(interiorGrid.activeSelf){
-                text.SetText(floorName);
+                PlayerUIManager.GetInstance().locationText.SetText(floorName);
                 districtPanel.SetActive(true);
             }else{
-                text.SetText(floorName);
+                PlayerUIManager.GetInstance().locationText.SetText(floorName);
                 districtPanel.SetActive(true);
             }
         }
