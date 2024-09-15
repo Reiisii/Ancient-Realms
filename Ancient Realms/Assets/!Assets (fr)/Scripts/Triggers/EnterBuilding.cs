@@ -9,14 +9,8 @@ public class EnterBuilding : MonoBehaviour
     [Header("Building Data")]
     [SerializeField] private string buildingName;
     [SerializeField] private string districtName;
-    [SerializeField] private GameObject districtPanel;
     [SerializeField] private GameObject interiorGrid;
     [SerializeField] private GameObject exteriorGrid;
-    [Header("Loading")]
-    [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] float fadeDuration;    
-    [SerializeField] EaseTypes fadeEaseType;
-    
     private bool playerInRange;
     async void Update()
     {
@@ -40,12 +34,11 @@ public class EnterBuilding : MonoBehaviour
     }
     private async Task Open(){
         PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
-        await canvasGroup.DOFade(1, 0.5f).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        await PlayerUIManager.GetInstance().OpenDarkenUI();
     }
     public async Task Close(){
-        await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
-            PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
-        }).AsyncWaitForCompletion();
+        await PlayerUIManager.GetInstance().CloseDarkenUI();
+        PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
         PlayerController.GetInstance().playerActionMap.Enable();
     }
     private void OnTriggerEnter2D(Collider2D collider){
@@ -53,10 +46,10 @@ public class EnterBuilding : MonoBehaviour
             playerInRange = true;
             if(interiorGrid.activeSelf){
                 PlayerUIManager.GetInstance().locationText.SetText(districtName);
-                districtPanel.SetActive(true);
+                PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
             }else{
                 PlayerUIManager.GetInstance().locationText.SetText(buildingName);
-                districtPanel.SetActive(true);
+                PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
             }
         }
     }
@@ -66,10 +59,10 @@ public class EnterBuilding : MonoBehaviour
             playerInRange = false;
             if(interiorGrid.activeSelf){
                 PlayerUIManager.GetInstance().locationText.SetText(districtName);
-                districtPanel.GetComponent<LogoutAnimation>().Close();
+                PlayerUIManager.GetInstance().locationPlaque.GetComponent<LogoutAnimation>().Close();
             }else{
                 PlayerUIManager.GetInstance().locationText.SetText(buildingName);
-                districtPanel.GetComponent<LogoutAnimation>().Close();
+                PlayerUIManager.GetInstance().locationPlaque.GetComponent<LogoutAnimation>().Close();
             }
         }
     }

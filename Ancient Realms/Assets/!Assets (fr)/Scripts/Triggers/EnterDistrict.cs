@@ -9,11 +9,6 @@ public class EnterDistrict : MonoBehaviour
     [Header("Location TP")]
     [SerializeField] private float x;
     [SerializeField] private string locationName;
-    [SerializeField] private GameObject districtPanel;
-    [SerializeField] private CanvasGroup canvasGroup;
-    [Header("Animation")]
-    [SerializeField] float fadeDuration;    
-    [SerializeField] EaseTypes fadeEaseType;
     
     private bool playerInRange;
     async void Update()
@@ -32,19 +27,18 @@ public class EnterDistrict : MonoBehaviour
     }
     private async Task Open(){
         PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
-        await canvasGroup.DOFade(1, 0.5f).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        await PlayerUIManager.GetInstance().OpenDarkenUI();
     }
     public async Task Close(){
-        await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
-            PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
-        }).AsyncWaitForCompletion();
+        await PlayerUIManager.GetInstance().CloseDarkenUI();
+        PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
         PlayerController.GetInstance().playerActionMap.Enable();
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = true;
             
-            districtPanel.SetActive(true);
+            PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
         }
     }
 
@@ -52,7 +46,7 @@ public class EnterDistrict : MonoBehaviour
         if(collider.gameObject.tag == "Player"){
             playerInRange = false;
             
-            districtPanel.GetComponent<LogoutAnimation>().Close();
+            PlayerUIManager.GetInstance().locationPlaque.GetComponent<LogoutAnimation>().Close();
         }
     }
 }
