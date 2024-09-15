@@ -8,6 +8,7 @@ public class FurnaceMiniGame : MonoBehaviour
     public Slider slider;
     public float fillSpeed = 1.0f;
     private bool isFilling = false;
+    private bool isProcessingRound = false; // Flag to handle input rejection
 
     [Header("Game Settings")]
     public int currentRound = 1;
@@ -28,7 +29,6 @@ public class FurnaceMiniGame : MonoBehaviour
     public float delayBeforeNextRound = 3f;  // Public delay variable
 
     private int lastGreenIndex = -1; // Track the last shown green area index
-    private bool isOverfilled = false; // Flag to track overfill status
 
     void Start()
     {
@@ -39,7 +39,7 @@ public class FurnaceMiniGame : MonoBehaviour
 
     void Update()
     {
-        if (!gameOver && !isOverfilled) // Reject input if overfilled
+        if (!gameOver && !isProcessingRound) // Reject input if processing a round
         {
             HandleSpaceBarInput();
         }
@@ -67,8 +67,9 @@ public class FurnaceMiniGame : MonoBehaviour
             if (isFilling)
             {
                 isFilling = false;
-                if (!gameOver && !isOverfilled) // Ensure coroutine is not started if the game is over or already overfilled
+                if (!gameOver && !isProcessingRound) // Ensure coroutine is not started if the game is over or processing a round
                 {
+                    isProcessingRound = true; // Set processing flag
                     StartCoroutine(EndRoundWithDelay());
                 }
             }
@@ -83,9 +84,9 @@ public class FurnaceMiniGame : MonoBehaviour
         }
         else
         {
-            if (!gameOver && !isOverfilled) // Ensure coroutine is not started if the game is over or already overfilled
+            if (!gameOver && !isProcessingRound) // Ensure coroutine is not started if the game is over or processing a round
             {
-                isOverfilled = true; // Set overfill flag
+                isProcessingRound = true; // Set processing flag
                 StartCoroutine(EndRoundWithDelay(true));  // End round if overfilled
             }
         }
@@ -120,8 +121,8 @@ public class FurnaceMiniGame : MonoBehaviour
             Debug.Log("Game Over! Total Rounds Played: " + currentRound);
         }
 
-        // Reset overfill flag after transitioning to the next round
-        isOverfilled = false;
+        // Reset processing flag after transitioning to the next round
+        isProcessingRound = false;
     }
 
     void ResetSlider()
