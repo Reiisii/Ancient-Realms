@@ -41,6 +41,8 @@ public class MapTrigger : MonoBehaviour
     }
     public async void ChangeScene(){
         PlayerUIManager.GetInstance().TransitionMapUI();
+        PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = locationScene;
+        PlayerStats.GetInstance().isDataDirty = true;
         await PlayerUIManager.GetInstance().OpenDarkenUI();
         await PlayerUIManager.GetInstance().CloseDarkenUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
