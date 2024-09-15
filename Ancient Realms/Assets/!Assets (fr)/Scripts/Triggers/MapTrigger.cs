@@ -41,14 +41,14 @@ public class MapTrigger : MonoBehaviour
     }
     public async void ChangeScene(){
         PlayerUIManager.GetInstance().TransitionMapUI();
-        PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = locationScene;
-        PlayerStats.GetInstance().isDataDirty = true;
         await PlayerUIManager.GetInstance().OpenDarkenUI();
         await PlayerUIManager.GetInstance().CloseDarkenUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
         SceneManager.UnloadSceneAsync(PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited).completed += (operation) => {
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
             SceneManager.LoadSceneAsync(locationScene, LoadSceneMode.Additive).completed += async (operation) => {
+                PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = locationScene;
+                PlayerStats.GetInstance().isDataDirty = true;
                 await PlayerUIManager.GetInstance().CloseLoadingUI();
                 await PlayerUIManager.GetInstance().OpenPlayerUI();
             };
