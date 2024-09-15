@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MapTrigger : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class MapTrigger : MonoBehaviour
     [SerializeField] private GameObject Panel;
     [SerializeField] private TextMeshProUGUI locationName;
     [SerializeField] private string locationScene;
-    [SerializeField] private SpriteRenderer locationImage;
+    [SerializeField] private Image locationImage;
     private bool playerInRange;
 
     void Start()
