@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using ESDatabase.Entities;
@@ -33,6 +35,12 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;
+    [Header("Trivia")]
+    [SerializeField] TextMeshProUGUI triviaTitle;
+    [SerializeField] TextMeshProUGUI triviaDescription;
+
+    public List<TriviaSO> triviaList;
+    TriviaSO trivia;
     private static PlayerUIManager Instance;
     
     private void Awake(){
@@ -46,8 +54,8 @@ public class PlayerUIManager : MonoBehaviour
             Debug.LogWarning("Found more than one Player UI Manager in the scene");
             Destroy(gameObject);
         }
+        triviaList = Resources.LoadAll<TriviaSO>("TriviaSO").ToList();;
     }
-    
     private async void Start(){
         await CloseDarkenUI();
         await OpenLoadingUI();
@@ -77,6 +85,9 @@ public class PlayerUIManager : MonoBehaviour
         playerUI.SetActive(false);
     }
     public async Task OpenLoadingUI(){
+        trivia = Utilities.GetRandomNumberFromList(triviaList);
+        triviaTitle.SetText(trivia.triviaTitle);
+        triviaDescription.SetText(trivia.triviaDescription);
         loadingScreen.SetActive(true);
         await loadingCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
     }
@@ -124,6 +135,9 @@ public class PlayerUIManager : MonoBehaviour
         // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapGO.SetActive(false);
         worldMap.SetActive(false);
+    }
+    public void TriviaLink(){
+        Application.OpenURL(trivia.link);
     }
     private async void OnSceneLoaded(AsyncOperation operation)
     {

@@ -23,7 +23,7 @@ public class QuestManager : MonoBehaviour
         }
         Instance = this;
         quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
-        achievements = Resources.LoadAll<ArtifactsSO>("ArtifactsSO").ToList();
+        achievements = Resources.LoadAll<ArtifactsSO>("ArtifactSO").ToList();
     }
     void Start(){
         playerStats = PlayerStats.GetInstance();
@@ -416,6 +416,7 @@ public class QuestManager : MonoBehaviour
                     if(!quest.isRewarded){
                         playerStats.AddArtifact(reward.value);
                         ArtifactsSO achievement = achievements.Where(a => a.id == Convert.ToInt32(reward.value)).FirstOrDefault();
+                        PlayerUIManager.GetInstance().achievementPlaque.GetComponent<AchievementTrigger>().ShowAchievement(achievement);
                         PlayerUIManager.GetInstance().achievementPlaque.SetActive(true);
                         
                     }
