@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public PlayerStats playerStats;
+    [Header("Player Settings")]
     [SerializeField] public Transform attackPoint;
     [SerializeField] public JavelinPrefab javelinPrefab;
     [SerializeField] public Transform javelinPoint;
@@ -18,12 +19,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject cm;
     [SerializeField] public Slider forceSlider;
     [SerializeField] public GameObject forceGO;
+    [Header("Weapons")]
+    [SerializeField] public Image mainWeapon;
+    [SerializeField] public Image javelin;
+    [SerializeField] public Image shield;
     private CinemachineFramingTransposer framingTransposer;
     public LayerMask enemyLayer;
     private Vector2 lastPosition;
     private float distanceMoved;
     private const float moveThreshold = 2f;
     Vector2 moveInput;
+    [Header("Player Actions")]
     public bool moveInputActive = false;
     private bool interactPressed = false;
     private bool submitPressed = false;
@@ -60,7 +66,6 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-           
     }
     
     private void Start(){
@@ -77,6 +82,13 @@ public class PlayerController : MonoBehaviour
     }
     public static PlayerController GetInstance(){
         return Instance;
+    }
+    private void OnEnable(){
+        canAccessCombatMode = LocationSettingsManager.GetInstance().locationSettings.canAccessCombatMode;
+        canAccessInventory = LocationSettingsManager.GetInstance().locationSettings.canAccessInventory;
+        canAccessMap = LocationSettingsManager.GetInstance().locationSettings.canAccessMap;
+        canAccessJournal = LocationSettingsManager.GetInstance().locationSettings.canAccessJournal;
+        PlayerStats.GetInstance().toggleStamina = LocationSettingsManager.GetInstance().locationSettings.toggleStamina;
     }
     public bool GetInteractPressed() 
     {
@@ -131,7 +143,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        if(canWalk){
+        if(canWalk && isEquipping == false){
             if (moveInputActive)
             {
                 IsMoving = true;
@@ -349,6 +361,7 @@ public class PlayerController : MonoBehaviour
     }
     public void CombatMode(InputAction.CallbackContext context)
     {
+        if(!canAccessCombatMode) return;
         if (context.performed)
         {
             if(!isEquipping && !isAttacking && !isBlocking){
@@ -392,6 +405,7 @@ public class PlayerController : MonoBehaviour
     }
     public void JournalPressed(InputAction.CallbackContext context)
     {
+        if(!canAccessJournal) return;
         if (context.performed)
         {
             QuestManager.GetInstance().OpenJournal();
@@ -399,6 +413,7 @@ public class PlayerController : MonoBehaviour
     }
     public void InventoryPressed(InputAction.CallbackContext context)
     {
+        if(!canAccessInventory) return;
         if (context.performed)
         {
             InventoryManager.GetInstance().OpenInventory();
@@ -413,9 +428,9 @@ public class PlayerController : MonoBehaviour
     }
     public void MapPressed(InputAction.CallbackContext context)
     {
+        if(!canAccessMap) return;
         if (context.performed)
         {
-            cm.SetActive(!cm.activeSelf);
             MapManager.GetInstance().OpenMap();
         }
     }

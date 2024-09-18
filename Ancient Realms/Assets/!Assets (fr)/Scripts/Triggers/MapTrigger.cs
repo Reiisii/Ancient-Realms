@@ -32,7 +32,6 @@ public class MapTrigger : MonoBehaviour
     }
     private void Update(){
         if(playerInRange){
-            Debug.Log("Player in Range");
             Panel.SetActive(true);
             
         }else{
@@ -41,9 +40,11 @@ public class MapTrigger : MonoBehaviour
     }
     public async void ChangeScene(){
         PlayerUIManager.GetInstance().TransitionMapUI();
+        PlayerController.GetInstance().mapActionMap.Disable();
         await PlayerUIManager.GetInstance().OpenDarkenUI();
         await PlayerUIManager.GetInstance().CloseDarkenUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
+        LocationSettingsManager.GetInstance().LoadSettings(locationScene);
         SceneManager.UnloadSceneAsync(PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited).completed += (operation) => {
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
             SceneManager.LoadSceneAsync(locationScene, LoadSceneMode.Additive).completed += async (operation) => {
@@ -51,6 +52,7 @@ public class MapTrigger : MonoBehaviour
                 PlayerStats.GetInstance().isDataDirty = true;
                 await PlayerUIManager.GetInstance().CloseLoadingUI();
                 await PlayerUIManager.GetInstance().OpenPlayerUI();
+                
             };
         };
     }

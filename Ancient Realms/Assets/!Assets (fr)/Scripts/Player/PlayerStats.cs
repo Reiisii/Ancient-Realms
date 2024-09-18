@@ -60,13 +60,12 @@ public class PlayerStats : MonoBehaviour
     private List<EquipmentSO> equipmentLibrary;
     private void Awake()
     {
+        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
         if (Instance != null)
         {
             Debug.LogWarning("Found more than one Player Stats in the scene");
         }
         Instance = this;
-        // equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
-        
     }
     public void Start()
     {
@@ -86,7 +85,6 @@ public class PlayerStats : MonoBehaviour
     private void OnEnable()
     {        
         Web3.OnBalanceChange += OnBalanceChange;
-        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
     }
 
     private void OnDisable()
