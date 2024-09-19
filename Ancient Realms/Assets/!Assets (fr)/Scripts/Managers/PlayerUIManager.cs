@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using ESDatabase.Entities;
@@ -33,6 +35,12 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;
+    [Header("Trivia")]
+    [SerializeField] TextMeshProUGUI triviaTitle;
+    [SerializeField] TextMeshProUGUI triviaDescription;
+
+    public List<TriviaSO> triviaList;
+    TriviaSO trivia;
     private static PlayerUIManager Instance;
     
     private void Awake(){
@@ -46,8 +54,8 @@ public class PlayerUIManager : MonoBehaviour
             Debug.LogWarning("Found more than one Player UI Manager in the scene");
             Destroy(gameObject);
         }
+        triviaList = Resources.LoadAll<TriviaSO>("TriviaSO").ToList();;
     }
-    
     private async void Start(){
         await CloseDarkenUI();
         await OpenLoadingUI();
@@ -67,12 +75,19 @@ public class PlayerUIManager : MonoBehaviour
         await playerCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         playerCanvasGroup.interactable = true;
     }
+    public void TogglePlayerUI(){
+        playerUI.SetActive(!playerUI.activeSelf);
+        playerCanvasGroup.interactable = !playerCanvasGroup.interactable;
+    }
     public async Task ClosePlayerUI(){
         playerCanvasGroup.interactable = false;
         await playerCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         playerUI.SetActive(false);
     }
     public async Task OpenLoadingUI(){
+        trivia = Utilities.GetRandomNumberFromList(triviaList);
+        triviaTitle.SetText(trivia.triviaTitle);
+        triviaDescription.SetText(trivia.triviaDescription);
         loadingScreen.SetActive(true);
         await loadingCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
     }
@@ -88,26 +103,41 @@ public class PlayerUIManager : MonoBehaviour
         await fade.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         fadeGO.SetActive(false);
     }
-    public async Task OpenBackgroundUI(){
+    public void OpenBackgroundUI(){
         backgroundGO.SetActive(true);
-        await backgroundCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        backgroundCanvasGroup.alpha = 1f;
     }
     public async Task CloseBackgroundUI(){
         await backgroundCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         backgroundGO.SetActive(false);
     }
-    public async Task OpenMapUI(){
+    public void OpenMapUI(){
+        TogglePlayerUI();
         mapGO.SetActive(true);
         mapCanvasGroup.interactable = false;
+        mapCanvasGroup.alpha = 1f;
         worldMap.SetActive(true);
-        await mapCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        // await mapCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapCanvasGroup.interactable = true;
     }
     public async Task CloseMapUI(){
         mapCanvasGroup.interactable = false;
-        await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        mapCanvasGroup.alpha = 0f;
+        // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapGO.SetActive(false);
         worldMap.SetActive(false);
+        await OpenPlayerUI();
+    }
+    public void TransitionMapUI(){
+        OpenBackgroundUI();
+        mapCanvasGroup.interactable = false;
+        mapCanvasGroup.alpha = 0f;
+        // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        mapGO.SetActive(false);
+        worldMap.SetActive(false);
+    }
+    public void TriviaLink(){
+        Application.OpenURL(trivia.link);
     }
     private async void OnSceneLoaded(AsyncOperation operation)
     {

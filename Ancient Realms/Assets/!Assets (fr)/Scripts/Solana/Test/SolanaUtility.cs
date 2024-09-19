@@ -1,8 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Orca;
 using Org.BouncyCastle.Asn1.Cms;
+using Solana.Unity.Dex;
+using Solana.Unity.Dex.Jupiter;
+using Solana.Unity.Dex.Math;
+using Solana.Unity.Dex.Models;
 using Solana.Unity.Dex.Orca.Math;
+using Solana.Unity.Dex.Orca.TxApi;
+using Solana.Unity.Dex.Quotes;
 using Solana.Unity.Metaplex.NFT.Library;
 using Solana.Unity.Metaplex.Utilities;
 using Solana.Unity.Programs;
@@ -14,10 +24,13 @@ using Solana.Unity.Rpc.Models;
 using Solana.Unity.Rpc.Types;
 using Solana.Unity.SDK;
 using Solana.Unity.Wallet;
+using TMPro;
+using Unisave.Facets;
 using UnityEngine;
 
 public class SolanaUtility : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI exchangeText;
     public PublicKey bank = new PublicKey("DuMTi4y6t9p3Zoa4HgZB9WBTzQYas2B2hVSQbZ8veppi");    
     public static ulong ConvertSolToLamports(decimal sol){
         decimal lamportsPerSol = 1_000_000_000m;
@@ -47,6 +60,59 @@ public class SolanaUtility : MonoBehaviour
                 Debug.Log("Signature: " + result.Result);
         }
     }
+    public async void ExchangeRate(){
+        await FacetClient.CallFacet((SolanaExchangeService facet) => facet.ConvertPHPtoSOL(50))
+                    .Then(response => 
+                    {
+                        exchangeText.SetText("50 PHP = " + Utilities.FormatSolana((double)response).ToString() + " SOL");
+                    })
+                    .Catch(error => 
+                    {
+                        Debug.LogError("Failed to fetch Price: " + error);
+                    });
+    }
+    public async void BurnToken(){
+            try
+            {
+                var blockHash = await Web3.Rpc.GetLatestBlockHashAsync();
+                // Create the burn instruction
+                var associatedTokenAccount = AssociatedTokenAccountProgram
+                .DeriveAssociatedTokenAccount(Web3.Account, new PublicKey("3aQ5hGHTCpoVEPD55iUKEyzCUJm1Jcq44QXNb1LAk89M"));
+
+                var burnInstruction = TokenProgram.Burn(
+                    associatedTokenAccount,     // Source: Token account holding the NFT
+                    new PublicKey("3aQ5hGHTCpoVEPD55iUKEyzCUJm1Jcq44QXNb1LAk89M"),             // Mint: NFT mint address
+                    1,                           // Amount to burn (1 for NFTs)
+                    Web3.Account                // Authority: Wallet with permission to burn
+                );
+
+                // Create the transaction and add the burn instruction
+                var transactionBuilder = new TransactionBuilder().AddInstruction(burnInstruction);
+                // Build the transaction with the block hash and sign it with the wallet's account
+                byte[] transaction = transactionBuilder.SetRecentBlockHash(blockHash.Result.Value.Blockhash)
+                                                    .SetFeePayer(Web3.Account)
+                                                    .Build(Web3.Account);
+
+                // Send the transaction to the network
+                var sendResult = await Web3.Rpc.SendTransactionAsync(Convert.ToBase64String(transaction));
+                
+                if (!sendResult.WasSuccessful)
+                {
+                    Debug.LogError($"Failed to burn NFT: {sendResult.Reason}");
+                }
+                else
+                {
+                    Debug.Log("Burn NFT successful! Transaction ID: https://explorer.solana.com/tx/" 
+                      + sendResult.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower());
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error burning NFT: {ex.Message}");
+            }
+            //var sendResult = await Web3.Rpc.SendTransactionAsync(Convert.ToBase64String(transaction.Serialize()));
+    }
+    
     public async void MintNFT()
     {
         var mint = new Account();

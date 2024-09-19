@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Utilities {
+        private static System.Random random = new System.Random();
         public static Sprite Texture2dToSprite(Texture2D texture){
                 Sprite image = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
                 
@@ -58,6 +61,20 @@ public class Utilities {
                 // Return the cleaned name if all checks pass
                 return name;
         }
+        public static TriviaSO GetRandomNumberFromList(List<TriviaSO> numbers)
+        {
+                if (numbers == null || numbers.Count == 0)
+                {
+                throw new ArgumentException("The list is either null or empty.");
+                }
+
+                // Get a random index from the list
+                int randomIndex = random.Next(numbers.Count);
+
+                // Return the element at that random index
+                return numbers[randomIndex];
+        }
+
         public static Color GetColorForCulture(CultureEnum culture)
         {
                 switch (culture)

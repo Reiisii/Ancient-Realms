@@ -73,14 +73,25 @@ public class EncycHandler : MonoBehaviour
         dataPanel.SetActive(true);
     }
 
-    public void ShowItemDetails(ArtifactsSO artifact)
+    public void ShowItemDetails(ArtifactsSO artifact, bool visible)
     {
-        dataNameText.SetText(artifact.artifactName);
-        panelName.SetText("Equipment");
-        descriptionText.SetText(artifact.description);
-        cultureText.SetText(Utilities.FormatCultureName(artifact.culture));
-        dataImage.sprite = artifact.image;
-        dataPanel.SetActive(true);
+        if(visible){
+            dataNameText.SetText(artifact.artifactName);
+            panelName.SetText("Equipment");
+            descriptionText.SetText(artifact.description);
+            cultureText.SetText(Utilities.FormatCultureName(artifact.culture));
+            dataImage.sprite = artifact.image;
+            dataImage.color = Color.white;
+            dataPanel.SetActive(true);
+        }else{
+            dataNameText.SetText("???");
+            panelName.SetText("Equipment");
+            descriptionText.SetText(artifact.description);
+            cultureText.SetText(Utilities.FormatCultureName(artifact.culture));
+            dataImage.sprite = artifact.image;
+            dataImage.color = Color.black;
+            dataPanel.SetActive(true);
+        }
     }
     public void ShowItemDetails(NFTSO nft)
     {

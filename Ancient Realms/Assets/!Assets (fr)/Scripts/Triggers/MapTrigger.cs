@@ -5,6 +5,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MapTrigger : MonoBehaviour
 {
@@ -13,13 +15,15 @@ public class MapTrigger : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject Panel;
     [SerializeField] private TextMeshProUGUI locationName;
-    [SerializeField] private SpriteRenderer locationImage;
+    [SerializeField] private string locationScene;
+    [SerializeField] private Image locationImage;
     private bool playerInRange;
 
     void Start()
     {
         locationName.SetText(location.locationName);
         locationImage.sprite = location.image;
+        locationScene = location.SceneName;
     }
 
     private void Awake(){
@@ -28,12 +32,29 @@ public class MapTrigger : MonoBehaviour
     }
     private void Update(){
         if(playerInRange){
-            Debug.Log("Player in Range");
             Panel.SetActive(true);
             
         }else{
             Panel.SetActive(false);
         }
+    }
+    public async void ChangeScene(){
+        PlayerUIManager.GetInstance().TransitionMapUI();
+        PlayerController.GetInstance().mapActionMap.Disable();
+        await PlayerUIManager.GetInstance().OpenDarkenUI();
+        await PlayerUIManager.GetInstance().CloseDarkenUI();
+        await PlayerUIManager.GetInstance().OpenLoadingUI();
+        LocationSettingsManager.GetInstance().LoadSettings(locationScene);
+        SceneManager.UnloadSceneAsync(PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited).completed += (operation) => {
+            PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
+            SceneManager.LoadSceneAsync(locationScene, LoadSceneMode.Additive).completed += async (operation) => {
+                PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = locationScene;
+                PlayerStats.GetInstance().isDataDirty = true;
+                await PlayerUIManager.GetInstance().CloseLoadingUI();
+                await PlayerUIManager.GetInstance().OpenPlayerUI();
+                
+            };
+        };
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){

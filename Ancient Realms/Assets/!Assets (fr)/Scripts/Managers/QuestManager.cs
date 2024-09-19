@@ -12,6 +12,7 @@ public class QuestManager : MonoBehaviour
     [SerializeField] public RectTransform questPanel;
     [SerializeField] public GameObject journalPanel;
     public List<QuestSO> quests;
+    public List<ArtifactsSO> achievements;
     private static QuestManager Instance;
     private PlayerStats playerStats;
     private Dictionary<string, QuestPrefab> activeQuestPrefabs = new Dictionary<string, QuestPrefab>();
@@ -22,6 +23,7 @@ public class QuestManager : MonoBehaviour
         }
         Instance = this;
         quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
+        achievements = Resources.LoadAll<ArtifactsSO>("ArtifactSO").ToList();
     }
     void Start(){
         playerStats = PlayerStats.GetInstance();
@@ -411,7 +413,13 @@ public class QuestManager : MonoBehaviour
                     // playerStats.AddItem(reward.value);
                     break;
                 case RewardsEnum.Artifact:
-                    if(!quest.isRewarded) playerStats.AddArtifact(reward.value);
+                    if(!quest.isRewarded){
+                        playerStats.AddArtifact(reward.value);
+                        ArtifactsSO achievement = achievements.Where(a => a.id == Convert.ToInt32(reward.value)).FirstOrDefault();
+                        PlayerUIManager.GetInstance().achievementPlaque.GetComponent<AchievementTrigger>().ShowAchievement(achievement);
+                        PlayerUIManager.GetInstance().achievementPlaque.SetActive(true);
+                        
+                    }
                     break;
                 case RewardsEnum.Quest:
                     Instance.StartQuest(reward.value);
