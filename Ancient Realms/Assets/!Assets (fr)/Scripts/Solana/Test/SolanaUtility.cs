@@ -61,9 +61,10 @@ public class SolanaUtility : MonoBehaviour
         }
     }
     public async void ExchangeRate(){
-        await FacetClient.CallFacet((SolanaExchangeService facet) => facet.ConvertPHPtoSOL(50))
+        await FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
                     .Then(response => 
                     {
+                        Debug.Log(response);
                         exchangeText.SetText("50 PHP = " + Utilities.FormatSolana((double)response).ToString() + " SOL");
                     })
                     .Catch(error => 
