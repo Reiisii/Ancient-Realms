@@ -39,4 +39,10 @@ public class SolanaExchangeService : Facet
         decimal solPriceInUSD = decimal.Parse(Http.Get(usdToSolUrl)["solana"]["usd"].AsString);
         return solPriceInUSD;
     }
+    public decimal GetPrice()
+    {
+        string usdToSolUrl = "http://23.88.54.33:3443/nft-price"; // Use a crypto price API
+        decimal solPriceInUSD = decimal.Parse(Http.Get(usdToSolUrl)["data"].AsString);
+        return solPriceInUSD;
+    }
 }
