@@ -10,7 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] public PlayerStats playerStats;
+    public PlayerStats playerStats;
     [SerializeField] public Transform attackPoint;
     [SerializeField] public JavelinPrefab javelinPrefab;
     [SerializeField] public Transform javelinPoint;
@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
     }
     
     private void Start(){
+        playerStats = PlayerStats.GetInstance();
         lastPosition = transform.position;
         originalCameraOffset = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset;
         playerActionMap = inputActions.FindActionMap("Player");
@@ -81,6 +82,26 @@ public class PlayerController : MonoBehaviour
 
     public void FixedUpdate()
     {
+        if (!moveInputActive && IsRunning || !IsRunning && canWalk)
+            {
+                if(playerStats.isCombatMode) {
+                    playerStats.walkSpeed = Mathf.Max(playerStats.walkSpeed, playerStats.walkSpeed - (playerStats.walkSpeed * 0.25f) * Time.deltaTime);
+                    playerStats.staminaRegenRate = Mathf.Max(playerStats.staminaRegenRate, playerStats.staminaRegenRate - (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
+                }
+                if (playerStats.isCombatMode && IsMoving && isBlocking){
+                    // Walking and blocking - deplete stamina at 50% of the current depletion rate
+                    playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.5f) * Time.deltaTime);
+                }else if (playerStats.isCombatMode && !IsMoving && isBlocking)
+                {
+                    // Standing and blocking - regenerate stamina at 25% of the current regeneration rate
+                    playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
+                }else if(playerStats.isCombatMode && IsMoving){
+                    playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.25f) * Time.deltaTime);
+                }else{
+                    playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + playerStats.staminaRegenRate * Time.deltaTime);
+                }
+                
+            }
         if (DialogueManager.GetInstance().dialogueIsPlaying || interactPressed && !isEquipping)
         {
             // Stop player movement during dialogue or interaction
@@ -271,7 +292,7 @@ public class PlayerController : MonoBehaviour
     void MoveCharacterAfterDelay()
     {
         // Get the character's current position
-        Vector2 cP = PlayerStats.GetInstance().gameObject.transform.position;
+        Vector2 cP = gameObject.transform.position;
 
         // Define the movement distance (adjust as needed)
         float moveDistance = 0.6f;
@@ -285,7 +306,7 @@ public class PlayerController : MonoBehaviour
         float moveDuration = 0.2f;
 
         // Use DOTween to smoothly move the character to the new position
-        PlayerStats.GetInstance().gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
         
     }
     public void OnMove(InputAction.CallbackContext context) 
@@ -364,7 +385,27 @@ public class PlayerController : MonoBehaviour
             IsFacingRight = false;
         }
     }
-
+    public void JournalPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            QuestManager.GetInstance().OpenJournal();
+        }
+    }
+    public void InventoryPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            InventoryManager.GetInstance().OpenInventory();
+        }
+    }
+    public void PausePressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            PauseManager.GetInstance().OpenPause();
+        }
+    }
     public void OnRun(InputAction.CallbackContext context)
     {
         if (context.started)

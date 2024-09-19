@@ -273,7 +273,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 60680613f43a2bf4e9a2ae90cac7379d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -365,6 +365,8 @@ MonoBehaviour:
   solBalance: 56.25015
   maxThrowForce: 20
   maxHoldTime: 1
+  equippedItems: []
+  inventory: []
   activeQuests: []
   completedQuests: []
 --- !u!114 &6193478947497796674
@@ -391,8 +393,13 @@ MonoBehaviour:
   isAttacking: 0
   canWalk: 0
   isBlocking: 0
+  isEquipping: 0
   holdTime: 0
   isHolding: 0
+  canAccessInventory: 1
+  canAccessJournal: 1
+  canAccessMap: 1
+  canAccessCombatMode: 1
   animator: {fileID: 0}
   panSpeed: 2
   inputActions: {fileID: 0}
@@ -414,9 +421,21 @@ MonoBehaviour:
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
-  pauseActionmap:
-    m_Name: Pause Actionmap
-    m_Id: 34eac52e-3045-4c05-a4a5-dae2f85a8bf5
+  pauseActionMap:
+    m_Name: Pause
+    m_Id: d3cf5365-3593-41b1-937e-1e9a3a7b71d5
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  dialogueActionMap:
+    m_Name: Dialogue
+    m_Id: bf89cccd-a49b-4b67-8fa7-1ec7153b29ff
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  promptActionMap:
+    m_Name: Prompt
+    m_Id: b8c7ac5c-79fc-453c-8885-a4ac61ed3f07
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
@@ -685,6 +704,50 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8989f45c-3ed7-430a-9a1d-2cfdeae585f6
     m_ActionName: Player/Submit[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 981dbf1e-ab95-480c-a883-10e5120fec2c
+    m_ActionName: Player/CombatMode[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 11c0967f-ff2f-455f-83fc-340af3b6ef95
+    m_ActionName: Player/Block[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0dc964cd-6c95-4c2e-a227-83ce17e5b250
+    m_ActionName: Player/Throw[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: caaddc51-8a67-4b55-8072-ba4d059d74a5
+    m_ActionName: Player/Toggle Quest[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1b694e90-9f88-42e4-863a-c9cd445a886c
+    m_ActionName: Player/Toggle Inventory[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c17d2bbd-ecff-40f2-a11c-ec3a7613dd39
+    m_ActionName: Player/Toggle Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0629fd0a-3a65-46d1-913c-4d72cb13fca4
+    m_ActionName: Inventory/Toggle Inventory[/Keyboard/tab,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7096edf6-7a65-40d5-af48-78717a1384da
+    m_ActionName: Quest/Toggle Quest[/Keyboard/j,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 04c5d528-023f-4ab9-a808-1b422fea91ed
+    m_ActionName: Pause/Toggle Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cae46212-4eeb-4de9-8fda-3cf55123d071
+    m_ActionName: Dialogue/Proceed[/Keyboard/e,/Keyboard/enter,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3f7c0ebb-adf0-4199-9cc2-bf1869c98e05
+    m_ActionName: Prompt/Submit[/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

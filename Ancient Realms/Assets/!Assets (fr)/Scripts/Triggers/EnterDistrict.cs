@@ -11,9 +11,7 @@ public class EnterDistrict : MonoBehaviour
     [SerializeField] private string locationName;
     [SerializeField] private GameObject districtPanel;
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private TextMeshProUGUI text;
     [Header("Animation")]
-    [SerializeField] GameObject panelGO;
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;
     
@@ -21,25 +19,26 @@ public class EnterDistrict : MonoBehaviour
     async void Update()
     {
         // Get the current position of the object
-        Vector3 currentPosition = PlayerStats.GetInstance().gameObject.transform.position;
+        Vector3 currentPosition = PlayerController.GetInstance().gameObject.transform.position;
         if(playerInRange){
             if(PlayerController.GetInstance().GetInteractPressed()){
-                    // Set the new position with the desired x value and retain y and z
+                PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();    
                 PlayerStats.GetInstance().gameObject.transform.position = new Vector3(x, currentPosition.y, currentPosition.z);
                 await Close();
             }
-            text.SetText(locationName);
+            PlayerUIManager.GetInstance().locationText.SetText(locationName);
         }
     }
     private async Task Open(){
-        panelGO.SetActive(true);
+        PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
         await canvasGroup.DOFade(1, 0.5f).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
     }
     public async Task Close(){
         await canvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).OnComplete(() =>{
-            panelGO.SetActive(false);
+            PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
         }).AsyncWaitForCompletion();
+        PlayerController.GetInstance().playerActionMap.Enable();
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){

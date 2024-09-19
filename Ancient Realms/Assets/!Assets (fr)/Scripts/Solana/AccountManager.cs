@@ -22,7 +22,7 @@ public class AccountManager : MonoBehaviour
     [SerializeField]
     GameObject logoutPanel;
     public static AccountManager Instance { get; private set;}
-    public static PlayerData playerData;
+    public PlayerData playerData;
     [SerializeField] public GameObject loadingPanel;
     [SerializeField] public GameObject updateGO;
     public string EntityId;

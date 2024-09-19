@@ -21,10 +21,10 @@ public class QuestManager : MonoBehaviour
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
         }
         Instance = this;
+        quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
     }
     void Start(){
         playerStats = PlayerStats.GetInstance();
-        quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
     }
     public static QuestManager GetInstance(){
         return Instance;
@@ -119,22 +119,18 @@ public class QuestManager : MonoBehaviour
         questPrefab.setQuestSO(quest);
         activeQuestPrefabs.Add(quest.questID, questPrefab);
     }
-    public void OpenJournal(InputAction.CallbackContext context)
+    public void OpenJournal()
     {
-        if (context.started)
-        {
-            if(journalPanel.activeSelf == true){
-                Time.timeScale = 1f;
-                PlayerController.GetInstance().playerActionMap.Enable();
-                PlayerController.GetInstance().questActionMap.Disable();
-                journalPanel.SetActive(false);
-            }else{  
-                Time.timeScale = 0f;
-                PlayerController.GetInstance().playerActionMap.Disable();
-                PlayerController.GetInstance().questActionMap.Enable();
-                journalPanel.SetActive(true);
-            }
-            
+        if(journalPanel.activeSelf == true){
+            Time.timeScale = 1f;
+            PlayerController.GetInstance().playerActionMap.Enable();
+            PlayerController.GetInstance().questActionMap.Disable();
+            journalPanel.SetActive(false);
+        }else{  
+            Time.timeScale = 0f;
+            PlayerController.GetInstance().playerActionMap.Disable();
+            PlayerController.GetInstance().questActionMap.Enable();
+            journalPanel.SetActive(true);
         }
     }
     public void UpdateWalkGoals(float deltaX)
