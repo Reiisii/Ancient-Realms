@@ -282,6 +282,7 @@ MonoBehaviour:
   BurnGO: {fileID: 7593516}
   BurnConfirmGO: {fileID: 1780892065}
   receiptGO: {fileID: 1750807801}
+  burnErrorGO: {fileID: 613942408}
   burningErrorPanel: {fileID: 613942410}
   receipt: {fileID: 1750807804}
   itemNameText: {fileID: 1064993128}
@@ -9396,8 +9397,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popDuration: 0.3
-  waitDuration: 2
-  finalScale: 1
+  waitDuration: 1.2
+  finalScale: 0.73
 --- !u!114 &613942411
 MonoBehaviour:
   m_ObjectHideFlags: 0

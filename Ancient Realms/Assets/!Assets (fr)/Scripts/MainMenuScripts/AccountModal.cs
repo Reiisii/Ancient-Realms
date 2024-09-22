@@ -56,7 +56,6 @@ public class AccountModal : MonoBehaviour
     }
     public void InitializeNFT(){
         ClearContent(contentPanel);
-        UIManager.DisableAllButtons(gameObject);
         if (accountNft == null) return;
         if (accountNft.Count < 1) return;
         for(int i = 0; i < nftTotal; i++){
@@ -73,7 +72,6 @@ public class AccountModal : MonoBehaviour
                 
             }
         }
-        UIManager.EnableAllButtons(gameObject);
     }
 
     private void OnLogin(Account account)
