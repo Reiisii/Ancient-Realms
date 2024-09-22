@@ -11,6 +11,7 @@ public static NFTPanel Instance;
     [SerializeField] GameObject BurnGO;
     [SerializeField] GameObject BurnConfirmGO;
     [SerializeField] GameObject receiptGO;
+    [SerializeField] GameObject burnErrorGO;
     [SerializeField] PopAnimation burningErrorPanel;
     [SerializeField] PopAnimation receipt;
     public TextMeshProUGUI itemNameText;
@@ -55,7 +56,7 @@ public static NFTPanel Instance;
         string burnResponse = await SolanaUtility.BurnToken(selectedNFT);
         if(burnResponse.Equals("failed") || burnResponse.Equals("error")){
             AccountManager.Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
-            burningErrorPanel.PopAnim();
+            burnErrorGO.SetActive(true);
             BurnConfirmGO.GetComponent<LogoutAnimation>().Close();
             BurnGO.GetComponent<FadeAnimation>().Close();
             itemDetailPanel.SetActive(true);
