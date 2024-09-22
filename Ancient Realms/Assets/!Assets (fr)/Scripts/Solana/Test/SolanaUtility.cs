@@ -23,6 +23,7 @@ using Solana.Unity.Rpc.Messages;
 using Solana.Unity.Rpc.Models;
 using Solana.Unity.Rpc.Types;
 using Solana.Unity.SDK;
+using Solana.Unity.SDK.Nft;
 using Solana.Unity.Wallet;
 using TMPro;
 using Unisave.Facets;
@@ -72,17 +73,17 @@ public class SolanaUtility : MonoBehaviour
                         Debug.LogError("Failed to fetch Price: " + error);
                     });
     }
-    public async void BurnToken(){
+    public static async Task<string> BurnToken(Nft nft){
             try
             {
                 var blockHash = await Web3.Rpc.GetLatestBlockHashAsync();
                 // Create the burn instruction
                 var associatedTokenAccount = AssociatedTokenAccountProgram
-                .DeriveAssociatedTokenAccount(Web3.Account, new PublicKey("3aQ5hGHTCpoVEPD55iUKEyzCUJm1Jcq44QXNb1LAk89M"));
+                .DeriveAssociatedTokenAccount(Web3.Account, new PublicKey(nft.metaplexData.data.mint));
 
                 var burnInstruction = TokenProgram.Burn(
                     associatedTokenAccount,     // Source: Token account holding the NFT
-                    new PublicKey("3aQ5hGHTCpoVEPD55iUKEyzCUJm1Jcq44QXNb1LAk89M"),             // Mint: NFT mint address
+                    new PublicKey(nft.metaplexData.data.mint),             // Mint: NFT mint address
                     1,                           // Amount to burn (1 for NFTs)
                     Web3.Account                // Authority: Wallet with permission to burn
                 );
@@ -100,16 +101,17 @@ public class SolanaUtility : MonoBehaviour
                 if (!sendResult.WasSuccessful)
                 {
                     Debug.LogError($"Failed to burn NFT: {sendResult.Reason}");
+                    return "failed";
                 }
                 else
                 {
-                    Debug.Log("Burn NFT successful! Transaction ID: https://explorer.solana.com/tx/" 
-                      + sendResult.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower());
+                    return "https://explorer.solana.com/tx/" + sendResult.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower();
                 }
             }
             catch (Exception ex)
             {
                 Debug.LogError($"Error burning NFT: {ex.Message}");
+                return "error";
             }
             //var sendResult = await Web3.Rpc.SendTransactionAsync(Convert.ToBase64String(transaction.Serialize()));
     }

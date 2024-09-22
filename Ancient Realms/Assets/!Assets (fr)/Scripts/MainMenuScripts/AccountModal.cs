@@ -56,16 +56,24 @@ public class AccountModal : MonoBehaviour
     }
     public void InitializeNFT(){
         ClearContent(contentPanel);
+        UIManager.DisableAllButtons(gameObject);
         if (accountNft == null) return;
+        if (accountNft.Count < 1) return;
         for(int i = 0; i < nftTotal; i++){
-            NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-            nftArray = Resources.LoadAll<NFTSO>("NFTSO").Where(nft => nft.id == Convert.ToInt32(accountNft[i].metaplexData.data.offchainData.attributes[2].value)).ToArray();
-            NFTSO nftData = nftArray[0];
-            nft.transform.SetParent(contentPanel);
-            nft.transform.localScale = new Vector3(1, 1, 1);
-            nft.setGameObject(accountPanel);
-            nft.setNFT(accountNft[i], nftData);
+            if(accountNft[i].metaplexData.data.offchainData.attributes.Count > 3){
+                if(accountNft[i].metaplexData.data.offchainData.attributes[3].value.Equals("Ancient Realms")){
+                    NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+                    nftArray = Resources.LoadAll<NFTSO>("NFTSO").Where(nft => nft.id == Convert.ToInt32(accountNft[i].metaplexData.data.offchainData.attributes[2].value)).ToArray();
+                    NFTSO nftData = nftArray[0];
+                    nft.transform.SetParent(contentPanel);
+                    nft.transform.localScale = new Vector3(1, 1, 1);
+                    nft.setGameObject(accountPanel);
+                    nft.setNFT(accountNft[i], nftData);
+                }
+                
+            }
         }
+        UIManager.EnableAllButtons(gameObject);
     }
 
     private void OnLogin(Account account)
