@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour
             IsRunning = false;
             IsMoving = false;
             animator.SetBool("isCombatMode", false);
-            isEquipping = !isEquipping;
+            // isEquipping = !isEquipping;
             playerStats.isCombatMode = false;
             return;
         }
