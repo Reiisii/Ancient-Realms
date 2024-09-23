@@ -23,6 +23,7 @@ using Solana.Unity.Rpc.Messages;
 using Solana.Unity.Rpc.Models;
 using Solana.Unity.Rpc.Types;
 using Solana.Unity.SDK;
+using Solana.Unity.SDK.Nft;
 using Solana.Unity.Wallet;
 using TMPro;
 using Unisave.Facets;
@@ -51,8 +52,8 @@ public class SolanaUtility : MonoBehaviour
                     bank,
                     lamports),
             },
-                Signatures = new List<SignaturePubKeyPair>()
-            };
+            Signatures = new List<SignaturePubKeyPair>()
+        };
 
             var result = await Web3.Instance.WalletBase.SignAndSendTransaction(transaction);
             if(result.WasSuccessful){
@@ -72,44 +73,44 @@ public class SolanaUtility : MonoBehaviour
                         Debug.LogError("Failed to fetch Price: " + error);
                     });
     }
-    public async void BurnToken(){
+    public static async Task<string> BurnToken(Nft nft){
             try
             {
                 var blockHash = await Web3.Rpc.GetLatestBlockHashAsync();
                 // Create the burn instruction
                 var associatedTokenAccount = AssociatedTokenAccountProgram
-                .DeriveAssociatedTokenAccount(Web3.Account, new PublicKey("3aQ5hGHTCpoVEPD55iUKEyzCUJm1Jcq44QXNb1LAk89M"));
-
-                var burnInstruction = TokenProgram.Burn(
-                    associatedTokenAccount,     // Source: Token account holding the NFT
-                    new PublicKey("3aQ5hGHTCpoVEPD55iUKEyzCUJm1Jcq44QXNb1LAk89M"),             // Mint: NFT mint address
-                    1,                           // Amount to burn (1 for NFTs)
-                    Web3.Account                // Authority: Wallet with permission to burn
-                );
-
-                // Create the transaction and add the burn instruction
-                var transactionBuilder = new TransactionBuilder().AddInstruction(burnInstruction);
-                // Build the transaction with the block hash and sign it with the wallet's account
-                byte[] transaction = transactionBuilder.SetRecentBlockHash(blockHash.Result.Value.Blockhash)
-                                                    .SetFeePayer(Web3.Account)
-                                                    .Build(Web3.Account);
-
-                // Send the transaction to the network
-                var sendResult = await Web3.Rpc.SendTransactionAsync(Convert.ToBase64String(transaction));
-                
-                if (!sendResult.WasSuccessful)
+                .DeriveAssociatedTokenAccount(Web3.Account, new PublicKey(nft.metaplexData.data.mint));
+                var transaction = new Transaction
                 {
-                    Debug.LogError($"Failed to burn NFT: {sendResult.Reason}");
+                    RecentBlockHash = await Web3.Instance.WalletBase.GetBlockHash(),
+                    FeePayer = Web3.Instance.WalletBase.Account.PublicKey,
+                    Instructions = new List<TransactionInstruction>
+                    {
+
+                        TokenProgram.Burn(
+                            associatedTokenAccount,
+                            new PublicKey(nft.metaplexData.data.mint),
+                            1,
+                            Web3.Account),
+                    },
+                    Signatures = new List<SignaturePubKeyPair>()
+                };
+                var result = await Web3.Instance.WalletBase.SignAndSendTransaction(transaction);
+
+                if (!result.WasSuccessful)
+                {
+                    Debug.LogError($"Failed to burn NFT: {result.Reason}");
+                    return "failed";
                 }
                 else
                 {
-                    Debug.Log("Burn NFT successful! Transaction ID: https://explorer.solana.com/tx/" 
-                      + sendResult.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower());
+                    return "https://explorer.solana.com/tx/" + result.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower();
                 }
             }
             catch (Exception ex)
             {
                 Debug.LogError($"Error burning NFT: {ex.Message}");
+                return "error";
             }
             //var sendResult = await Web3.Rpc.SendTransactionAsync(Convert.ToBase64String(transaction.Serialize()));
     }
