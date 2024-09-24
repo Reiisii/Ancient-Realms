@@ -17,7 +17,7 @@ public class MintingManager : MonoBehaviour
     public List<NFTSO> nftList;
     public List<NFTSO> filteredNFTList;
     [Header("Price Information")]
-    PriceData priceData = AccountManager.Instance.priceData;
+    PriceData priceData;
     [SerializeField] TextMeshProUGUI priceUpdateDate;
     [SerializeField] TextMeshProUGUI solPrice;
     [SerializeField] TextMeshProUGUI culture;
@@ -56,7 +56,9 @@ public class MintingManager : MonoBehaviour
         nftList = Resources.LoadAll<NFTSO>("NFTSO").ToList();
         GetNFTsByCulture(currentCulture);
     }
+    
     private void OnEnable(){
+        priceData = AccountManager.Instance.priceData;
         Web3.OnBalanceChange += OnBalanceChange;
         filteredNFTList = GetNFTsByCulture(currentCulture);
         foreach(NFTSO nft in filteredNFTList)
