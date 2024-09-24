@@ -114,7 +114,7 @@ public class PlayerStats : MonoBehaviour
                 QuestSO copiedQuest = qData.CreateCopy();
                 copiedQuest.isPinned = quest.isPinned;
                 copiedQuest.isActive = quest.isActive;
-                copiedQuest.isCompleted = quest.isActive;
+                copiedQuest.isCompleted = quest.completed;
                 copiedQuest.currentKnot = quest.currentKnot;
                 copiedQuest.currentGoal = quest.currentGoal;
                 copiedQuest.isRewarded = quest.isRewarded;

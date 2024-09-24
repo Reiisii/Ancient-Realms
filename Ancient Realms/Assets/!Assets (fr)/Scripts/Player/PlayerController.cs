@@ -442,8 +442,6 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             PlayerUIManager.GetInstance().ToggleMintingUI();
-            playerActionMap.Enable();
-            mintingActionMap.Disable();
         }
     }
     public void OnRun(InputAction.CallbackContext context)

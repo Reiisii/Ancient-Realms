@@ -86,6 +86,15 @@ public class PlayerUIManager : MonoBehaviour
     }
     public void ToggleMintingUI(){
         mintingUI.SetActive(!mintingUI.activeSelf);
+        if(PlayerController.GetInstance() != null){
+            if(mintingUI.activeSelf){
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().mintingActionMap.Enable();
+            }else{
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().mintingActionMap.Disable();
+            }
+        }
     }
     public async Task ClosePlayerUI(){
         playerCanvasGroup.interactable = false;
