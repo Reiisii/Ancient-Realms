@@ -39,9 +39,8 @@ public class MapTrigger : MonoBehaviour
         }
     }
     public async void ChangeScene(){
-        PlayerUIManager.GetInstance().TransitionMapUI();
+        await PlayerUIManager.GetInstance().TransitionMapUI();
         PlayerController.GetInstance().mapActionMap.Disable();
-        await PlayerUIManager.GetInstance().OpenDarkenUI();
         await PlayerUIManager.GetInstance().CloseDarkenUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
         LocationSettingsManager.GetInstance().LoadSettings(locationScene);

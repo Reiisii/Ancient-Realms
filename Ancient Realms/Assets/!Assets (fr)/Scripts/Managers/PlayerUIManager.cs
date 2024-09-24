@@ -17,6 +17,10 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Player UI")]
     [SerializeField] public GameObject playerUI;
     [SerializeField] public CanvasGroup playerCanvasGroup;
+
+    [Header("Minting UI")]
+    [SerializeField] public GameObject mintingUI;
+
     [Header("Loading Screen")]
     [SerializeField] public GameObject loadingScreen;
     [SerializeField] public CanvasGroup loadingCanvasGroup;
@@ -32,6 +36,7 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI locationText;
     [Header("Achievement Plaque")]
     [SerializeField] public GameObject achievementPlaque;
+
     [Header("Settings")]
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;
@@ -78,6 +83,9 @@ public class PlayerUIManager : MonoBehaviour
     public void TogglePlayerUI(){
         playerUI.SetActive(!playerUI.activeSelf);
         playerCanvasGroup.interactable = !playerCanvasGroup.interactable;
+    }
+    public void ToggleMintingUI(){
+        mintingUI.SetActive(!mintingUI.activeSelf);
     }
     public async Task ClosePlayerUI(){
         playerCanvasGroup.interactable = false;
@@ -128,7 +136,8 @@ public class PlayerUIManager : MonoBehaviour
         worldMap.SetActive(false);
         await OpenPlayerUI();
     }
-    public void TransitionMapUI(){
+    public async Task TransitionMapUI(){
+        await OpenDarkenUI();
         OpenBackgroundUI();
         mapCanvasGroup.interactable = false;
         mapCanvasGroup.alpha = 0f;

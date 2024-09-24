@@ -7,6 +7,7 @@ using Unisave.Facades;
 using Unisave.Authentication.Middleware;
 using System.Threading.Tasks;
 using LightJson;
+using ESDatabase.Classes;
 
 public class SolanaExchangeService : Facet
 {
@@ -39,10 +40,15 @@ public class SolanaExchangeService : Facet
         decimal solPriceInUSD = decimal.Parse(Http.Get(usdToSolUrl)["solana"]["usd"].AsString);
         return solPriceInUSD;
     }
-    public decimal GetPrice()
+    public PriceData GetPrice()
     {
         string usdToSolUrl = "http://23.88.54.33:3443/nft-price"; // Use a crypto price API
         decimal solPriceInUSD = decimal.Parse(Http.Get(usdToSolUrl)["data"].AsString);
-        return solPriceInUSD;
+        DateTime fetchedDate = DateTime.Parse(Http.Get(usdToSolUrl)["lastUpdate"].AsString);
+        PriceData priceData = new PriceData(){
+            price = solPriceInUSD,
+            date = fetchedDate
+        };
+        return priceData;
     }
 }
