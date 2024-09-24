@@ -120,7 +120,7 @@ public class MintingManager : MonoBehaviour
     public static MintingManager GetInstance(){
         return Instance;
     }
-    public void Mint(){
+    public async void Mint(){
         attempts++;
         RarityEnum randomRarity = GetRandomRarity();
         List<NFTSO> filteredNFTs = GetNFTsByRarityAndCulture(randomRarity);
@@ -129,13 +129,10 @@ public class MintingManager : MonoBehaviour
             if(randomRarity == RarityEnum.Legendary){
                 Debug.Log($"Attained Legendary at: {attempts} pulls");
             }
-            foreach (var nft in filteredNFTs)
-            {
-                Debug.Log($"ID: {nft.id}");
-                Debug.Log($"Rarity: {nft.rarity}");
-                Debug.Log($"Culture: {nft.culture}");
-                Debug.Log($"NFT: {nft.nftName}");
-            }
+            NFTSO nft = filteredNFTs[0];
+            button.interactable = false;
+            await SolanaUtility.MintNFT(nft, priceData.price);
+            button.interactable = true;
         }
         else
         {

@@ -42,7 +42,7 @@ public static NFTPanel Instance;
         itemNameText.SetText(nftSO.nftName);
         descriptionText.SetText(nftSO.description);
         rarityText.SetText(nftSO.rarity.ToString());
-        acquiredDate.SetText(nft.metaplexData.data.offchainData.attributes[1].value);
+        acquiredDate.SetText(nft.metaplexData.data.offchainData.attributes[2].value);
         itemImage.sprite = nftSO.image;
     }
     public void ClearSelected()

@@ -14,6 +14,5 @@ public class AccountNFT : MonoBehaviour
     }
     public void OnNFTsUpdate(List<Nft> nfts, int total)
     {
-        // DO SOMETHING
     }
 }
