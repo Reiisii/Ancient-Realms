@@ -1,5 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR // => Ignore from here to next endif if not in editor
 using UnityEditor;
+#endif
 using System.Collections;
 
 [CustomEditor(typeof(MeshRenderer))]
