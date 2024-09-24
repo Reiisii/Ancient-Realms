@@ -374,6 +374,7 @@ public class QuestManager : MonoBehaviour
         if (allGoalsCompleted)
         {
             quest.isCompleted = true;
+            quest.isPinned = false;
             quest.isActive = false;
             foreach (Transform child in questPanel)
             {

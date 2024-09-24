@@ -58,44 +58,10 @@ public class MintingManager : MonoBehaviour
     }
     
     private void OnEnable(){
+        
         priceData = AccountManager.Instance.priceData;
         Web3.OnBalanceChange += OnBalanceChange;
-        filteredNFTList = GetNFTsByCulture(currentCulture);
-        foreach(NFTSO nft in filteredNFTList)
-        {
-            switch(nft.rarity){
-                case RarityEnum.Common:
-                    NFTDisplay common = Instantiate(commonNFT, Vector3.zero, Quaternion.identity);
-                    common.transform.SetParent(NFTPanel);
-                    common.transform.localScale = Vector3.one;
-                    common.SetData(nft);
-                break;
-                case RarityEnum.Uncommon:
-                    NFTDisplay uncommon = Instantiate(uncommonNFT, Vector3.zero, Quaternion.identity);
-                    uncommon.transform.SetParent(NFTPanel);
-                    uncommon.transform.localScale = Vector3.one;
-                    uncommon.SetData(nft);
-                break;
-                case RarityEnum.Rare:
-                    NFTDisplay rare = Instantiate(rareNFT, Vector3.zero, Quaternion.identity);
-                    rare.transform.SetParent(NFTPanel);
-                    rare.transform.localScale = Vector3.one;
-                    rare.SetData(nft);
-                break;
-                case RarityEnum.Epic:
-                    NFTDisplay epic = Instantiate(epicNFT, Vector3.zero, Quaternion.identity);
-                    epic.transform.SetParent(NFTPanel);
-                    epic.transform.localScale = Vector3.one;
-                    epic.SetData(nft);
-                break;
-                case RarityEnum.Legendary:
-                    NFTDisplay legendary = Instantiate(legendaryNFT, Vector3.zero, Quaternion.identity);
-                    legendary.transform.SetParent(NFTPanel);
-                    legendary.transform.localScale = Vector3.one;
-                    legendary.SetData(nft);
-                break;
-            }
-        }
+        PopulateNFT();
     }
     private void OnDisable()
     {
@@ -209,5 +175,51 @@ public class MintingManager : MonoBehaviour
             previousSolBalance = sb;
 
             AnimateSolChange(oldBalance, sb);
+    }
+    public void PopulateNFT(){
+        ClearContent(NFTPanel);
+        filteredNFTList = GetNFTsByCulture(currentCulture);
+        foreach(NFTSO nft in filteredNFTList)
+        {
+            switch(nft.rarity){
+                case RarityEnum.Common:
+                    NFTDisplay common = Instantiate(commonNFT, Vector3.zero, Quaternion.identity);
+                    common.transform.SetParent(NFTPanel);
+                    common.transform.localScale = Vector3.one;
+                    common.SetData(nft);
+                break;
+                case RarityEnum.Uncommon:
+                    NFTDisplay uncommon = Instantiate(uncommonNFT, Vector3.zero, Quaternion.identity);
+                    uncommon.transform.SetParent(NFTPanel);
+                    uncommon.transform.localScale = Vector3.one;
+                    uncommon.SetData(nft);
+                break;
+                case RarityEnum.Rare:
+                    NFTDisplay rare = Instantiate(rareNFT, Vector3.zero, Quaternion.identity);
+                    rare.transform.SetParent(NFTPanel);
+                    rare.transform.localScale = Vector3.one;
+                    rare.SetData(nft);
+                break;
+                case RarityEnum.Epic:
+                    NFTDisplay epic = Instantiate(epicNFT, Vector3.zero, Quaternion.identity);
+                    epic.transform.SetParent(NFTPanel);
+                    epic.transform.localScale = Vector3.one;
+                    epic.SetData(nft);
+                break;
+                case RarityEnum.Legendary:
+                    NFTDisplay legendary = Instantiate(legendaryNFT, Vector3.zero, Quaternion.identity);
+                    legendary.transform.SetParent(NFTPanel);
+                    legendary.transform.localScale = Vector3.one;
+                    legendary.SetData(nft);
+                break;
+            }
+        }
+    }
+    public void ClearContent(RectTransform cPanel)
+    {
+        foreach (Transform child in cPanel)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

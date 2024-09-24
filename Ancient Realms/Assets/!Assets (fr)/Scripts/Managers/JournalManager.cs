@@ -156,11 +156,8 @@ public class JournalManager : MonoBehaviour
             _ => QuestType.Main
         };
         ClearQuestDetails();
-        if(mainQuestList.Count > 0){
-            pinButton.interactable = true;
-        }else{
-            pinButton.interactable = false;
-        }
+        
+        pinButton.interactable = false;
         UpdateQuestLists(); // Update the lists based on current state
         UpdateQuestBoard(); // Update the quest board with the new list
     }
