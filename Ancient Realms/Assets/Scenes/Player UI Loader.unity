@@ -13713,7 +13713,7 @@ Transform:
   m_GameObject: {fileID: 746395572}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -777.08093, y: -141.47, z: -1.8708916}
+  m_LocalPosition: {x: -778.58, y: -138.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14635,6 +14635,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6149477569131970817, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 34eadd7aa1a44504f8c00181c2d23f11, type: 3}
     - target: {fileID: 8494332951418333384, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
       propertyPath: Panel
       value: 
@@ -18590,6 +18594,26 @@ PrefabInstance:
     - target: {fileID: 1918167476226821754, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
       propertyPath: m_Name
       value: Rome
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149477569131970817, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3b33a340d170a78489bcb97fe84e6409, type: 3}
+    - target: {fileID: 6646480682229150453, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6646480682229150453, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6646480682229150453, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 7.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6646480682229150453, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8494332951418333384, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
       propertyPath: Panel
@@ -30232,9 +30256,9 @@ Transform:
   m_GameObject: {fileID: 1706663410}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -776.68695, y: -141.35, z: 8.129108}
-  m_LocalScale: {x: 0.045000006, y: 0.04347022, z: 0.05483125}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: -778.58, y: -138.62, z: 6}
+  m_LocalScale: {x: 0.026692962, y: 0.030272143, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1676255105}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30250,8 +30274,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d53638754d2d5141962ca05b9dd591d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 50
+  _moveSpeed: 60
   _rb: {fileID: 1706663414}
+  playerIco: {fileID: 21300000, guid: c93c43c14aeb58d4995e1bf245ba8dd4, type: 3}
+  boatIco: {fileID: 21300000, guid: b24416116d289564299aaf6b9ce0faa7, type: 3}
+  mapActionMap:
+    m_Name: Map
+    m_Id: 1133759a-61a5-4e7f-beb4-9c549581dd99
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  inWater: 0
+  isFacingRight: 1
 --- !u!61 &1706663413
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -30284,18 +30318,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0688386, y: 0.16548538}
+  m_Offset: {x: 0.5861654, y: -4.816451}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 12.3125, y: 12.375}
+    oldSize: {x: 31.25, y: 31.25}
     newSize: {x: 43.75, y: 33.125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 8.801431, y: 7.2063713}
+  m_Size: {x: 5.165204, y: 3.0529022}
   m_EdgeRadius: 0
 --- !u!50 &1706663414
 Rigidbody2D:
@@ -30311,7 +30345,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -30365,7 +30399,7 @@ SpriteRenderer:
   m_SortingLayerID: -1199955273
   m_SortingLayer: 8
   m_SortingOrder: 12
-  m_Sprite: {fileID: 21300000, guid: 5844f85a2c68db9478b1dc97d96c8616, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c93c43c14aeb58d4995e1bf245ba8dd4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -38518,6 +38552,14 @@ PrefabInstance:
     - target: {fileID: 5991463777882255115, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149477569131970817, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 67d287572d3fb3142b5db684c5effef2, type: 3}
+    - target: {fileID: 6646480682229150453, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8494332951418333384, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
       propertyPath: Panel
