@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     public InputActionMap dialogueActionMap;
     public InputActionMap promptActionMap;
     public InputActionMap mapActionMap;
+    public InputActionMap mintingActionMap;
     private Vector3 originalCameraOffset;
     private void Awake()
     {
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour
         dialogueActionMap = inputActions.FindActionMap("Dialogue");
         promptActionMap = inputActions.FindActionMap("Prompt");
         mapActionMap = inputActions.FindActionMap("Map");
+        mintingActionMap = inputActions.FindActionMap("Minting");
     }
     public static PlayerController GetInstance(){
         return Instance;
@@ -432,6 +434,16 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             MapManager.GetInstance().OpenMap();
+        }
+    }
+    public void ToggleMintingUI(InputAction.CallbackContext context)
+    {
+        if(!canAccessMap) return;
+        if (context.performed)
+        {
+            PlayerUIManager.GetInstance().ToggleMintingUI();
+            playerActionMap.Enable();
+            mintingActionMap.Disable();
         }
     }
     public void OnRun(InputAction.CallbackContext context)

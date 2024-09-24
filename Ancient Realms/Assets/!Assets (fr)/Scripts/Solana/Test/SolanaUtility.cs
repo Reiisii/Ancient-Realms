@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ESDatabase.Classes;
 using Newtonsoft.Json.Linq;
 using Orca;
 using Org.BouncyCastle.Asn1.Cms;
@@ -60,18 +61,6 @@ public class SolanaUtility : MonoBehaviour
                 Debug.Log("Transaction Success!");
                 Debug.Log("Signature: " + result.Result);
         }
-    }
-    public async void ExchangeRate(){
-        await FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
-                    .Then(response => 
-                    {
-                        Debug.Log(response);
-                        exchangeText.SetText("50 PHP = " + Utilities.FormatSolana((double)response).ToString() + " SOL");
-                    })
-                    .Catch(error => 
-                    {
-                        Debug.LogError("Failed to fetch Price: " + error);
-                    });
     }
     public static async Task<string> BurnToken(Nft nft){
             try
