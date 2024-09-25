@@ -11,13 +11,15 @@ using UnityEngine.SceneManagement;
 
 public class PlayerUIManager : MonoBehaviour
 {
+    [Header("")]
+    [SerializeField] public Canvas canvas;
     [Header("Background")]
     [SerializeField] public GameObject backgroundGO;
     [SerializeField] public CanvasGroup backgroundCanvasGroup;
     [Header("Player UI")]
     [SerializeField] public GameObject playerUI;
     [SerializeField] public CanvasGroup playerCanvasGroup;
-
+    [SerializeField] public GameObject questPointer;
     [Header("Minting UI")]
     [SerializeField] public GameObject mintingUI;
 
@@ -62,7 +64,6 @@ public class PlayerUIManager : MonoBehaviour
         triviaList = Resources.LoadAll<TriviaSO>("TriviaSO").ToList();;
     }
     private async void Start(){
-        await CloseDarkenUI();
         await OpenLoadingUI();
         PlayerData playerData = AccountManager.Instance.playerData;
 
@@ -105,12 +106,14 @@ public class PlayerUIManager : MonoBehaviour
         trivia = Utilities.GetRandomNumberFromList(triviaList);
         triviaTitle.SetText(trivia.triviaTitle);
         triviaDescription.SetText(trivia.triviaDescription);
+        await OpenDarkenUI();
         loadingScreen.SetActive(true);
-        await loadingCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        await CloseDarkenUI();
     }
     public async Task CloseLoadingUI(){
-        await loadingCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        await OpenDarkenUI();
         loadingScreen.SetActive(false);
+        await CloseDarkenUI();
     }
     public async Task OpenDarkenUI(){
         fadeGO.SetActive(true);
@@ -145,8 +148,7 @@ public class PlayerUIManager : MonoBehaviour
         worldMap.SetActive(false);
         await OpenPlayerUI();
     }
-    public async Task TransitionMapUI(){
-        await OpenDarkenUI();
+    public void TransitionMapUI(){
         OpenBackgroundUI();
         mapCanvasGroup.interactable = false;
         mapCanvasGroup.alpha = 0f;
