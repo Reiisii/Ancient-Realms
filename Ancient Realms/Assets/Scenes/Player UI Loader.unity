@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 26578137}
   - component: {fileID: 26578136}
   - component: {fileID: 26578135}
+  - component: {fileID: 26578138}
   m_Layer: 0
   m_Name: Global Light
   m_TagString: Untagged
@@ -748,6 +749,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &26578138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26578134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b060389f8cc513c4faed85aeaa5c5124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ppv: {fileID: 26578135}
+  tick: 50
+  seconds: 0
+  mins: 0
+  hours: 8
+  days: 1
+  activateLights: 0
+  lights: []
+  stars: []
 --- !u!1 &30248907
 GameObject:
   m_ObjectHideFlags: 0
@@ -39300,7 +39322,6 @@ GameObject:
   - component: {fileID: 2088565884}
   - component: {fileID: 2088565883}
   - component: {fileID: 2088565887}
-  - component: {fileID: 2088565888}
   m_Layer: 0
   m_Name: ActiveManager
   m_TagString: Untagged
@@ -39548,22 +39569,6 @@ MonoBehaviour:
   gObject: {fileID: 626864456}
   requiredQuest:
   - quest-00-001
---- !u!114 &2088565888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088565870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec54ced6c12e4fb4693f2bba4a01c4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gObject: {fileID: 0}
-  questIDRequirement: quest-00-001
-  currentGoalRequirement: 6
-  quest: {fileID: 0}
 --- !u!1 &2095386928
 GameObject:
   m_ObjectHideFlags: 0
