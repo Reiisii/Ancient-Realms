@@ -11,12 +11,18 @@ using UnityEngine.SceneManagement;
 
 public class PlayerUIManager : MonoBehaviour
 {
+    [Header("")]
+    [SerializeField] public Canvas canvas;
     [Header("Background")]
     [SerializeField] public GameObject backgroundGO;
     [SerializeField] public CanvasGroup backgroundCanvasGroup;
     [Header("Player UI")]
     [SerializeField] public GameObject playerUI;
     [SerializeField] public CanvasGroup playerCanvasGroup;
+    [SerializeField] public GameObject questPointer;
+    [Header("Minting UI")]
+    [SerializeField] public GameObject mintingUI;
+
     [Header("Loading Screen")]
     [SerializeField] public GameObject loadingScreen;
     [SerializeField] public CanvasGroup loadingCanvasGroup;
@@ -32,6 +38,7 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI locationText;
     [Header("Achievement Plaque")]
     [SerializeField] public GameObject achievementPlaque;
+
     [Header("Settings")]
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;
@@ -57,7 +64,6 @@ public class PlayerUIManager : MonoBehaviour
         triviaList = Resources.LoadAll<TriviaSO>("TriviaSO").ToList();;
     }
     private async void Start(){
-        await CloseDarkenUI();
         await OpenLoadingUI();
         PlayerData playerData = AccountManager.Instance.playerData;
 
@@ -79,6 +85,18 @@ public class PlayerUIManager : MonoBehaviour
         playerUI.SetActive(!playerUI.activeSelf);
         playerCanvasGroup.interactable = !playerCanvasGroup.interactable;
     }
+    public void ToggleMintingUI(){
+        mintingUI.SetActive(!mintingUI.activeSelf);
+        if(PlayerController.GetInstance() != null){
+            if(mintingUI.activeSelf){
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().mintingActionMap.Enable();
+            }else{
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().mintingActionMap.Disable();
+            }
+        }
+    }
     public async Task ClosePlayerUI(){
         playerCanvasGroup.interactable = false;
         await playerCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
@@ -88,12 +106,14 @@ public class PlayerUIManager : MonoBehaviour
         trivia = Utilities.GetRandomNumberFromList(triviaList);
         triviaTitle.SetText(trivia.triviaTitle);
         triviaDescription.SetText(trivia.triviaDescription);
+        await OpenDarkenUI();
         loadingScreen.SetActive(true);
-        await loadingCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        await CloseDarkenUI();
     }
     public async Task CloseLoadingUI(){
-        await loadingCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        await OpenDarkenUI();
         loadingScreen.SetActive(false);
+        await CloseDarkenUI();
     }
     public async Task OpenDarkenUI(){
         fadeGO.SetActive(true);

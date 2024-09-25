@@ -14,9 +14,17 @@ public class NftItems : MonoBehaviour
     [SerializeField] GameObject accountPanel;
     public Nft nft;
     public NFTSO nftSO;
-    void Start(){
-        nftName.SetText(nftSO.nftName);
-        image.sprite = nftSO.image;
+    public void InitializeNFTDisplay()
+    {
+        if (nftSO != null)
+        {
+            nftName.SetText(nftSO.nftName);
+            image.sprite = nftSO.image;
+        }
+        else
+        {
+            Debug.LogError("NFTSO is null, cannot display NFT data.");
+        }
     }
     public void OnItemClick()
     {
@@ -32,6 +40,7 @@ public class NftItems : MonoBehaviour
     public void setNFT(Nft nftData, NFTSO nftd){
         nft = nftData;
         nftSO = nftd;
+        InitializeNFTDisplay();
     }
 
 }

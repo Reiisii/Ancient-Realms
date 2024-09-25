@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ESDatabase.Classes;
 using Newtonsoft.Json.Linq;
 using Orca;
 using Org.BouncyCastle.Asn1.Cms;
@@ -32,7 +33,7 @@ using UnityEngine;
 public class SolanaUtility : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI exchangeText;
-    public PublicKey bank = new PublicKey("DuMTi4y6t9p3Zoa4HgZB9WBTzQYas2B2hVSQbZ8veppi");    
+    public static PublicKey bank = new PublicKey("DuMTi4y6t9p3Zoa4HgZB9WBTzQYas2B2hVSQbZ8veppi");    
     public static ulong ConvertSolToLamports(decimal sol){
         decimal lamportsPerSol = 1_000_000_000m;
         return (ulong)(sol * lamportsPerSol);
@@ -60,18 +61,6 @@ public class SolanaUtility : MonoBehaviour
                 Debug.Log("Transaction Success!");
                 Debug.Log("Signature: " + result.Result);
         }
-    }
-    public async void ExchangeRate(){
-        await FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
-                    .Then(response => 
-                    {
-                        Debug.Log(response);
-                        exchangeText.SetText("50 PHP = " + Utilities.FormatSolana((double)response).ToString() + " SOL");
-                    })
-                    .Catch(error => 
-                    {
-                        Debug.LogError("Failed to fetch Price: " + error);
-                    });
     }
     public static async Task<string> BurnToken(Nft nft){
             try
@@ -115,7 +104,7 @@ public class SolanaUtility : MonoBehaviour
             //var sendResult = await Web3.Rpc.SendTransactionAsync(Convert.ToBase64String(transaction.Serialize()));
     }
     
-    public async void MintNFT()
+    public static async Task MintNFT(NFTSO nft, decimal price)
     {
         var mint = new Account();
         var associatedTokenAccount = AssociatedTokenAccountProgram
@@ -124,13 +113,14 @@ public class SolanaUtility : MonoBehaviour
 
         var metadata = new Metadata()
         {
-            name = "Marcus Antonius",
-            symbol = "AR",
-            uri = "https://7e5vdeyk2xiqps6ypfkbcn4lk6avnnsaslaa4vco6mxhsbrv3f4a.arweave.net/-TtRkwrV0QfL2HlUETeLV4FWtkCSwA5UTvMueQY12Xg",
+            name = "Eagle's Shadow",
+            symbol = "ESS",
+            uri = nft.artWeaveLink,
             sellerFeeBasisPoints = 0,
             creators = new List<Creator> { new(Web3.Account.PublicKey, 100, true) }
         };
         // Prepare the transaction
+        ulong lamports = ConvertSolToLamports(price);
         var blockHash = await Web3.Rpc.GetLatestBlockHashAsync();
         var minimumRent = await Web3.Rpc.GetMinimumBalanceForRentExemptionAsync(TokenProgram.MintAccountDataSize);
         var transaction = new TransactionBuilder()
@@ -160,6 +150,11 @@ public class SolanaUtility : MonoBehaviour
                     associatedTokenAccount,
                     1,
                     Web3.Account))
+            .AddInstruction(SystemProgram.Transfer(
+                    Web3.Instance.WalletBase.Account.PublicKey,
+                    bank,
+                    lamports)
+            )
             .AddInstruction(MetadataProgram.CreateMetadataAccount(
                 PDALookup.FindMetadataPDA(mint), 
                 mint.PublicKey, 
@@ -194,8 +189,6 @@ public class SolanaUtility : MonoBehaviour
             Debug.Log("Minting succeeded, see transaction at https://explorer.solana.com/tx/" 
                       + res.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower());
         }
-
-
     }
 
 }

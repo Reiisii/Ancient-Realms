@@ -74,7 +74,41 @@ public class Utilities {
                 // Return the element at that random index
                 return numbers[randomIndex];
         }
+        public static string FormatTimeRemaining(TimeSpan timeRemaining)
+        {
+                 if (timeRemaining.TotalMinutes >= 1 && timeRemaining.TotalMinutes <= 10)
+                {
+                        int minutesRemaining = Mathf.FloorToInt((float)timeRemaining.TotalMinutes);
+                        return $"{minutesRemaining} minute{(minutesRemaining > 1 ? "s" : "")}";
+                }
+                // If less than 1 minute remains, show it in seconds
+                else if (timeRemaining.TotalSeconds < 60)
+                {
+                        int secondsRemaining = Mathf.FloorToInt((float)timeRemaining.TotalSeconds);
+                        return $"{secondsRemaining} second{(secondsRemaining > 1 ? "s" : "")}";
+                }
+                return "Fetching...";
+        }
+        public static bool CheckIfLateBy10Minutes(DateTime dateTime)
+        {
+                // Convert scheduled time to local time zone
+                DateTime localScheduledTime = dateTime.ToLocalTime();
+                
+                // Get current local time
+                DateTime currentLocalTime = DateTime.Now;
+                // Calculate the difference in minutes
+                double minutesLate = (currentLocalTime - localScheduledTime).TotalMinutes;
 
+                // Check if it is late by 10 minutes
+                if (minutesLate > 10)
+                {
+                        return true;
+                }
+                else
+                {
+                        return false;
+                }
+        }
         public static Color GetColorForCulture(CultureEnum culture)
         {
                 switch (culture)

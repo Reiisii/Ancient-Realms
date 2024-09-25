@@ -24,14 +24,15 @@ public class AccountModal : MonoBehaviour
     int nftTotal;
     private NFTSO[] nftArray;
     // private IEnumerator coroutine;
+    void Awake(){
+        nftArray = Resources.LoadAll<NFTSO>("NFTSO").OrderBy(nft => nft.id).ToArray();
+    }
     void Start()
     {
-        InitializeAccount();
+        // InitializeAccount();
     }
     private void OnEnable()
     {
-        // Register event listeners
-        Web3.OnLogin += OnLogin;
         Web3.OnBalanceChange += OnBalanceChange;
         Web3.OnNFTsUpdate += OnNFTsUpdate;
 
@@ -43,7 +44,6 @@ public class AccountModal : MonoBehaviour
     private void OnDisable()
     {
         // Unregister event listeners
-        Web3.OnLogin -= OnLogin;
         Web3.OnBalanceChange -= OnBalanceChange;
         Web3.OnNFTsUpdate -= OnNFTsUpdate;
         ClearContent();
@@ -60,10 +60,14 @@ public class AccountModal : MonoBehaviour
         if (accountNft.Count < 1) return;
         for(int i = 0; i < nftTotal; i++){
             if(accountNft[i].metaplexData.data.offchainData.attributes.Count > 3){
-                if(accountNft[i].metaplexData.data.offchainData.attributes[3].value.Equals("Ancient Realms")){
+                if(accountNft[i].metaplexData.data.offchainData.attributes[4].value.Equals("Eagle's Shadow")){
                     NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                    nftArray = Resources.LoadAll<NFTSO>("NFTSO").Where(nft => nft.id == Convert.ToInt32(accountNft[i].metaplexData.data.offchainData.attributes[2].value)).ToArray();
-                    NFTSO nftData = nftArray[0];
+                    NFTSO nftData = nftArray.FirstOrDefault(nft => nft.id == int.Parse(accountNft[i].metaplexData.data.offchainData.attributes[3].value));
+                    if (nftData != null) {
+                        Debug.Log(nftData.nftName);
+                    } else {
+                        Debug.LogWarning($"No matching NFT found for ID: {accountNft[i].metaplexData.data.offchainData.attributes[3].value}");
+                    }
                     nft.transform.SetParent(contentPanel);
                     nft.transform.localScale = new Vector3(1, 1, 1);
                     nft.setGameObject(accountPanel);
@@ -72,12 +76,6 @@ public class AccountModal : MonoBehaviour
                 
             }
         }
-    }
-
-    private void OnLogin(Account account)
-    {
-        InitializeAccount();
-        InitializeNFT();
     }
     private void OnBalanceChange(double solBalance)
     {

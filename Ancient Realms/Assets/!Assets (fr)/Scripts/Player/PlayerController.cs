@@ -20,9 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Slider forceSlider;
     [SerializeField] public GameObject forceGO;
     [Header("Weapons")]
-    [SerializeField] public Image mainWeapon;
-    [SerializeField] public Image javelin;
-    [SerializeField] public Image shield;
+    [SerializeField] public Sprite mainWeapon;
+    [SerializeField] public Sprite javelin;
+    [SerializeField] public Sprite shield;
     private CinemachineFramingTransposer framingTransposer;
     public LayerMask enemyLayer;
     private Vector2 lastPosition;
@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     public InputActionMap dialogueActionMap;
     public InputActionMap promptActionMap;
     public InputActionMap mapActionMap;
+    public InputActionMap mintingActionMap;
     private Vector3 originalCameraOffset;
     private void Awake()
     {
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour
         dialogueActionMap = inputActions.FindActionMap("Dialogue");
         promptActionMap = inputActions.FindActionMap("Prompt");
         mapActionMap = inputActions.FindActionMap("Map");
+        mintingActionMap = inputActions.FindActionMap("Minting");
     }
     public static PlayerController GetInstance(){
         return Instance;
@@ -432,6 +434,14 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             MapManager.GetInstance().OpenMap();
+        }
+    }
+    public void ToggleMintingUI(InputAction.CallbackContext context)
+    {
+        if(!canAccessMap) return;
+        if (context.performed)
+        {
+            PlayerUIManager.GetInstance().ToggleMintingUI();
         }
     }
     public void OnRun(InputAction.CallbackContext context)

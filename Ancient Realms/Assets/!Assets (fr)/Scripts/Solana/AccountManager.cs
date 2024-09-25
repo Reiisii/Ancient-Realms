@@ -11,6 +11,7 @@ using DG.Tweening;
 using ESDatabase.Entities;
 using System.Threading.Tasks;
 using System;
+using ESDatabase.Classes;
 
 public class AccountManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class AccountManager : MonoBehaviour
     [SerializeField] public GameObject updateGO;
     public string EntityId;
     public string UIDInstance;
+    public PriceData priceData; 
     // Currently logged-in account
     private void Awake(){
         if (Instance == null)
@@ -108,11 +110,31 @@ public class AccountManager : MonoBehaviour
                     .Then(response => 
                     {
                         Instance.updateGO.GetComponent<DevBlog>().ProcessRSS(response);
-                    })
-                    .Catch(error => 
-                    {
-                        Debug.LogError("Failed to fetch Dev Blog: " + error);
                     });
+                    if(priceData.date != null && Utilities.CheckIfLateBy10Minutes(priceData.date)){
+                        FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
+                        .Then(response => 
+                        {
+                            priceData.price = response.price;
+                            priceData.date = response.date;
+                            Utilities.CheckIfLateBy10Minutes(priceData.date);
+                        })
+                        .Catch(error => 
+                        {
+                            Debug.LogError("Failed to fetch Price: " + error);
+                        });
+                    }else if(priceData.date == null){
+                        FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
+                        .Then(response => 
+                        {
+                            priceData = response;
+                        })
+                        .Catch(error => 
+                        {
+                            Debug.LogError("Failed to fetch Price: " + error);
+                        });
+                    }
+                    
             });
         })
         .Catch(error => 
@@ -121,6 +143,18 @@ public class AccountManager : MonoBehaviour
             Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
         });
         
+    }
+    public void GetPrice(){
+        FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
+                        .Then(response => 
+                        {
+                            priceData.price = response.price;
+                            priceData.date = response.date;
+                        })
+                        .Catch(error => 
+                        {
+                            Debug.LogError("Failed to fetch Price: " + error);
+                        });
     }
     public async void CheckSession(string message){
         PlayerData newPlayer = await GetPlayer();
