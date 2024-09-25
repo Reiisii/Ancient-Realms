@@ -150,6 +150,7 @@ public class AccountManager : MonoBehaviour
                         {
                             priceData.price = response.price;
                             priceData.date = response.date;
+                            MintingManager.GetInstance().isFetching = false;
                         })
                         .Catch(error => 
                         {
