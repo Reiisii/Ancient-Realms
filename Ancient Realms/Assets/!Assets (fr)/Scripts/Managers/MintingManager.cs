@@ -34,6 +34,7 @@ public class MintingManager : MonoBehaviour
     public int attempts = 0;
     private double previousSolBalance = 0;
     private static MintingManager Instance;
+    public bool isFetching = false;
     private void Awake(){
         if (Instance == null)
         {
@@ -68,11 +69,16 @@ public class MintingManager : MonoBehaviour
         Web3.OnBalanceChange -= OnBalanceChange;
     }
     private void Update(){
-        if(Utilities.CheckIfLateBy10Minutes(AccountManager.Instance.priceData.date)){
+        if(Utilities.CheckIfLateBy10Minutes(AccountManager.Instance.priceData.date) && !isFetching){
             solPrice.SetText("Fetching...");
             priceUpdateDate.SetText("Fetching...");
             button.interactable = false;
+            isFetching = true;
             AccountManager.Instance.GetPrice();
+        }else if(isFetching){
+            solPrice.SetText("Fetching...");
+            priceUpdateDate.SetText("Fetching...");
+            button.interactable = false;
         }else{
             solPrice.SetText(Utilities.FormatSolana((double) priceData.price));
             TimeSpan timeRemaining = priceData.date.ToLocalTime().AddMinutes(10) - DateTime.Now;

@@ -19,7 +19,8 @@ public class TimeController : MonoBehaviour
     public int days = 1;
  
     public bool activateLights; // checks if lights are on
-    public GameObject lights; // all the lights we want on when its dark
+    public GameObject exteriorLights; // all the lights we want on when its dark
+    public GameObject interiorLights;
     public SpriteRenderer[] stars; // star sprites 
     // Start is called before the first frame update
     void Awake(){
@@ -40,7 +41,8 @@ public class TimeController : MonoBehaviour
         CalcTime();
         DisplayTime();
         if(PlayerController.GetInstance() != null){
-            lights = GameObject.Find("Torch Lights");
+            exteriorLights = GameObject.Find("TL Exterior");
+            interiorLights = GameObject.Find("TL Interior");
         }
     }
  
@@ -83,7 +85,8 @@ public class TimeController : MonoBehaviour
             {
                 if (mins > 45) // wait until pretty dark
                 {
-                    lights.SetActive(true);
+                    exteriorLights.SetActive(true);
+                    interiorLights.SetActive(true);
                     activateLights = true;
                 }
             }
@@ -101,7 +104,8 @@ public class TimeController : MonoBehaviour
             {
                 if (mins > 45) // wait until pretty bright
                 {
-                    lights.SetActive(false);
+                    exteriorLights.SetActive(false);
+                    interiorLights.SetActive(false);
                     activateLights = false;
                 }
             }
@@ -110,7 +114,6 @@ public class TimeController : MonoBehaviour
  
     public void DisplayTime() // Shows time and day in ui
     {
-        Debug.Log(string.Format("{0:00}:{1:00}", hours, mins));
         //timeDisplay.text = string.Format("{0:00}:{1:00}", hours, mins); // The formatting ensures that there will always be 0's in empty spaces
         // dayDisplay.text = "Day: " + days; // display day counter
     }
