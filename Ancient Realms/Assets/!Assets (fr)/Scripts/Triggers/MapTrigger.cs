@@ -39,10 +39,9 @@ public class MapTrigger : MonoBehaviour
         }
     }
     public async void ChangeScene(){
-        await PlayerUIManager.GetInstance().TransitionMapUI();
-        PlayerController.GetInstance().mapActionMap.Disable();
-        await PlayerUIManager.GetInstance().CloseDarkenUI();
+        PlayerUIManager.GetInstance().TransitionMapUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
+        PlayerController.GetInstance().mapActionMap.Disable();
         LocationSettingsManager.GetInstance().LoadSettings(locationScene);
         SceneManager.UnloadSceneAsync(PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited).completed += (operation) => {
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);

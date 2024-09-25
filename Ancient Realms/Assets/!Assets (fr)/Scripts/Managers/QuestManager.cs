@@ -11,6 +11,7 @@ public class QuestManager : MonoBehaviour
     [SerializeField] QuestPrefab qPrefab;
     [SerializeField] public RectTransform questPanel;
     [SerializeField] public GameObject journalPanel;
+    [SerializeField] public QuestPointer questPointer;
     public List<QuestSO> quests;
     public List<ArtifactsSO> achievements;
     private static QuestManager Instance;
@@ -120,6 +121,11 @@ public class QuestManager : MonoBehaviour
         questPrefab.transform.localScale = Vector3.one;
         questPrefab.setQuestSO(quest);
         activeQuestPrefabs.Add(quest.questID, questPrefab);
+        GameObject pointerList = PlayerUIManager.GetInstance().questPointer;
+        QuestPointer pointerPrefab = Instantiate(questPointer, Vector3.zero, Quaternion.identity);
+        pointerPrefab.transform.SetParent(pointerList.transform);
+        pointerPrefab.transform.localScale = Vector3.one;
+        pointerPrefab.SetData(quest);
     }
     public void OpenJournal()
     {

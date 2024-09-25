@@ -386,6 +386,12 @@ MonoBehaviour:
   javelinPrefab: {fileID: 0}
   javelinPoint: {fileID: 0}
   virtualCamera: {fileID: 0}
+  cm: {fileID: 0}
+  forceSlider: {fileID: 0}
+  forceGO: {fileID: 0}
+  mainWeapon: {fileID: 0}
+  javelin: {fileID: 0}
+  shield: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -439,6 +445,18 @@ MonoBehaviour:
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
+  mapActionMap:
+    m_Name: Map
+    m_Id: acd5f8cc-a41f-4c98-9c22-40230c38913b
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  mintingActionMap:
+    m_Name: Minting
+    m_Id: 2ae7e23a-9b43-42a2-af37-04f56b1bfe56
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -458,6 +476,7 @@ MonoBehaviour:
   questPanel: {fileID: 0}
   journalPanel: {fileID: 0}
   quests: []
+  achievements: []
 --- !u!114 &4731954973759446107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,6 +767,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 3f7c0ebb-adf0-4199-9cc2-bf1869c98e05
     m_ActionName: Prompt/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9ff547b8-76e4-449b-b79f-687e1fa620eb
+    m_ActionName: Player/Toggle Map[/Keyboard/m]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 224e19b2-04bd-45e2-afc9-dc29b1845bf9
+    m_ActionName: Map/Toggle Map[/Keyboard/m,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b9fd03a9-14c5-4b43-990c-d7b3f3521bfe
+    m_ActionName: Map/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/s,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ff3215ef-1293-434f-8e0b-f711fabfdb72
+    m_ActionName: Minting/Toggle[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

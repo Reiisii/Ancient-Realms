@@ -20,9 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Slider forceSlider;
     [SerializeField] public GameObject forceGO;
     [Header("Weapons")]
-    [SerializeField] public Image mainWeapon;
-    [SerializeField] public Image javelin;
-    [SerializeField] public Image shield;
+    [SerializeField] public Sprite mainWeapon;
+    [SerializeField] public Sprite javelin;
+    [SerializeField] public Sprite shield;
     private CinemachineFramingTransposer framingTransposer;
     public LayerMask enemyLayer;
     private Vector2 lastPosition;
