@@ -19,7 +19,7 @@ public class TimeController : MonoBehaviour
     public int days = 1;
  
     public bool activateLights; // checks if lights are on
-    public GameObject[] lights; // all the lights we want on when its dark
+    public GameObject lights; // all the lights we want on when its dark
     public SpriteRenderer[] stars; // star sprites 
     // Start is called before the first frame update
     void Awake(){
@@ -39,7 +39,9 @@ public class TimeController : MonoBehaviour
     {
         CalcTime();
         DisplayTime();
-     
+        if(PlayerController.GetInstance() != null){
+            lights = GameObject.Find("Torch Lights");
+        }
     }
  
     public void CalcTime() // Used to calculate sec, min and hours
@@ -81,10 +83,7 @@ public class TimeController : MonoBehaviour
             {
                 if (mins > 45) // wait until pretty dark
                 {
-                    for (int i = 0; i < lights.Length; i++)
-                    {
-                        lights[i].SetActive(true); // turn them all on
-                    }
+                    lights.SetActive(true);
                     activateLights = true;
                 }
             }
@@ -102,10 +101,7 @@ public class TimeController : MonoBehaviour
             {
                 if (mins > 45) // wait until pretty bright
                 {
-                    for (int i = 0; i < lights.Length; i++)
-                    {
-                        lights[i].SetActive(false); // shut them off
-                    }
+                    lights.SetActive(false);
                     activateLights = false;
                 }
             }
