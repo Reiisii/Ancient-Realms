@@ -31,7 +31,7 @@ public class TimeController : MonoBehaviour
     }
     void Start(){
         if(hours >= 19) {
-            light2D.intensity = 0.2f;
+            light2D.intensity = 0.05f;
             activateLights = true;
         }else if(hours >= 7){ 
             light2D.intensity = 1f;
