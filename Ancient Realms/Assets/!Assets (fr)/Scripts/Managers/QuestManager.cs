@@ -68,7 +68,10 @@ public class QuestManager : MonoBehaviour
                     questData.currentKnot = "exhaust";
                     copiedQuest.currentKnot = "exhaust";
                 }
+                PlayerUIManager.GetInstance().questStartedPlaque.GetComponent<StartedTrigger>().ShowAchievement(copiedQuest);
+                PlayerUIManager.GetInstance().questStartedPlaque.SetActive(true);
                 playerStats.AddQuest(questData, copiedQuest);
+
             }
         }
     }
@@ -382,6 +385,8 @@ public class QuestManager : MonoBehaviour
             quest.isCompleted = true;
             quest.isPinned = false;
             quest.isActive = false;
+            PlayerUIManager.GetInstance().questCompletePlaque.GetComponent<CompleteTrigger>().ShowAchievement(quest);
+            PlayerUIManager.GetInstance().questCompletePlaque.SetActive(true);
             foreach (Transform child in questPanel)
             {
                 QuestPrefab questPrefab = child.GetComponent<QuestPrefab>();
