@@ -10,7 +10,7 @@ public class TimeController : MonoBehaviour
 {
     // public TextMeshProUGUI timeDisplay; // Display Time
     // public TextMeshProUGUI dayDisplay; // Display Day
-    [SerializeField] public Volume ppv; // this is the post processing volume
+    [SerializeField] public Light2D light2D; // this is the post processing volume
  
     public float tick; // Increasing the tick, increases second rate
     public float seconds; 
@@ -28,22 +28,31 @@ public class TimeController : MonoBehaviour
         seconds = date.Second;
         mins = date.Minute;
         hours = date.Hour;
-
     }
-    void Start()
-    {
-        ppv = gameObject.GetComponent<Volume>();
+    void Start(){
+        if(hours >= 19) {
+            light2D.intensity = 0.2f;
+            activateLights = true;
+        }else if(hours >= 7){ 
+            light2D.intensity = 1f;
+            activateLights = false;
+        }
     }
- 
     // Update is called once per frame
+    private void Update(){
+        if(LightsManager.GetInstance() != null){
+            exteriorLights = LightsManager.GetInstance().exteriorLights;
+            interiorLights = LightsManager.GetInstance().interiorLights;
+            if(activateLights){
+                if(exteriorLights != null) exteriorLights.SetActive(true);
+                if(interiorLights != null) interiorLights.SetActive(true);
+            }
+        }
+    }
     void FixedUpdate() // we used fixed update, since update is frame dependant. 
     {
         CalcTime();
-        DisplayTime();
-        if(PlayerController.GetInstance() != null){
-            exteriorLights = GameObject.Find("TL Exterior");
-            interiorLights = GameObject.Find("TL Interior");
-        }
+        DisplayTime();  
     }
  
     public void CalcTime() // Used to calculate sec, min and hours
@@ -72,42 +81,31 @@ public class TimeController : MonoBehaviour
  
     public void ControlPPV() // used to adjust the post processing slider.
     {
-        //ppv.weight = 0;
-        if(hours>=18 && hours<19) // dusk at 21:00 / 9pm    -   until 22:00 / 10pm
+        if(hours >= 18 && hours < 19) // dusk at 6:00 PM - 7:00 PM
         {
-            ppv.weight =  (float)mins / 60; // since dusk is 1 hr, we just divide the mins by 60 which will slowly increase from 0 - 1 
+            light2D.intensity = Mathf.Clamp(1 - (float)mins / 60, 0.05f, 1f); // Adjust intensity, capped at 0.2
             for (int i = 0; i < stars.Length; i++)
             {
-                stars[i].color = new Color(stars[i].color.r, stars[i].color.g, stars[i].color.b, (float)mins / 60); // change the alpha value of the stars so they become visible
+                stars[i].color = new Color(stars[i].color.r, stars[i].color.g, stars[i].color.b, (float)mins / 60); // change the alpha value of the stars
             }
- 
-            if (activateLights == false) // if lights havent been turned on
+
+            if (!activateLights && mins > 45) // if lights haven't been turned on and it's pretty dark
             {
-                if (mins > 45) // wait until pretty dark
-                {
-                    exteriorLights.SetActive(true);
-                    interiorLights.SetActive(true);
-                    activateLights = true;
-                }
+                activateLights = true;
             }
         }
-     
- 
-        if(hours>=6 && hours<7) // Dawn at 6:00 / 6am    -   until 7:00 / 7am
+
+        if(hours >= 6 && hours < 7) // Dawn from 6:00 AM - 7:00 AM
         {
-            ppv.weight = 1 - (float)mins / 60; // we minus 1 because we want it to go from 1 - 0
+            light2D.intensity = Mathf.Clamp((float)mins / 60, 0.05f, 1f); // Adjust intensity, capped at 1
             for (int i = 0; i < stars.Length; i++)
             {
-                stars[i].color = new Color(stars[i].color.r, stars[i].color.g, stars[i].color.b, 1 -(float)mins / 60); // make stars invisible
+                stars[i].color = new Color(stars[i].color.r, stars[i].color.g, stars[i].color.b, 1 - (float)mins / 60); // make stars invisible
             }
-            if (activateLights == true) // if lights are on
+
+            if (activateLights && mins > 10) // if lights are on and it's pretty bright
             {
-                if (mins > 45) // wait until pretty bright
-                {
-                    exteriorLights.SetActive(false);
-                    interiorLights.SetActive(false);
-                    activateLights = false;
-                }
+                activateLights = false;
             }
         }
     }

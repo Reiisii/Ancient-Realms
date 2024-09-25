@@ -658,7 +658,6 @@ GameObject:
   m_Component:
   - component: {fileID: 26578137}
   - component: {fileID: 26578136}
-  - component: {fileID: 26578135}
   - component: {fileID: 26578138}
   m_Layer: 0
   m_Name: Global Light
@@ -667,23 +666,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &26578135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26578134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 0
-  sharedProfile: {fileID: 11400000, guid: 53dccd2ced222f54198f73ad879f7776, type: 2}
 --- !u!114 &26578136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,14 +743,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b060389f8cc513c4faed85aeaa5c5124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ppv: {fileID: 26578135}
+  light2D: {fileID: 26578136}
   tick: 50
   seconds: 0
   mins: 0
-  hours: 8
+  hours: 0
   days: 1
   activateLights: 0
-  lights: []
+  exteriorLights: {fileID: 0}
+  interiorLights: {fileID: 0}
   stars: []
 --- !u!1 &30248907
 GameObject:
@@ -33687,6 +33670,7 @@ MonoBehaviour:
   epicNFT: {fileID: 5226976400215438513, guid: 832f2dc9625f427409889cdd753e52f1, type: 3}
   legendaryNFT: {fileID: 7182404078303700350, guid: 3fef9d2a515edcb408205cee9b5ca56f, type: 3}
   attempts: 0
+  isFetching: 0
 --- !u!1 &1814560745
 GameObject:
   m_ObjectHideFlags: 0
