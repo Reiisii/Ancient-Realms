@@ -28,14 +28,12 @@ public class TimeController : MonoBehaviour
         seconds = date.Second;
         mins = date.Minute;
         hours = date.Hour;
-    }
-    void Start(){
-        if(hours >= 19) {
-            light2D.intensity = 0.05f;
-            activateLights = true;
+        if(hours >= 19 || hours <= 6) {
+                light2D.intensity = 0.05f;
+                activateLights = true;
         }else if(hours >= 7){ 
-            light2D.intensity = 1f;
-            activateLights = false;
+                light2D.intensity = 1f;
+                activateLights = false;
         }
     }
     // Update is called once per frame
@@ -46,6 +44,9 @@ public class TimeController : MonoBehaviour
             if(activateLights){
                 if(exteriorLights != null) exteriorLights.SetActive(true);
                 if(interiorLights != null) interiorLights.SetActive(true);
+            }else{
+                if(exteriorLights != null) exteriorLights.SetActive(false);
+                if(interiorLights != null) interiorLights.SetActive(false);
             }
         }
     }

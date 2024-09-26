@@ -49,8 +49,8 @@ public class QuestPointer : MonoBehaviour
             icon.sprite = targetMarker;
         }
 
-        if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange && quest.isPinned){
-            if(isNPCFound){
+        if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
+            if(isNPCFound && quest.isPinned){
                 pointer.SetActive(true);
                 float bobbingOffset = Mathf.Sin(Time.time * bobbingSpeed) * bobbingAmplitude;
 
@@ -77,6 +77,8 @@ public class QuestPointer : MonoBehaviour
 
                 // Set the pointer's position in UI space
                 gameObject.GetComponent<RectTransform>().anchoredPosition = pointerPos;
+            }else{
+                pointer.SetActive(false);
             }
         }else{
             pointer.SetActive(false);
