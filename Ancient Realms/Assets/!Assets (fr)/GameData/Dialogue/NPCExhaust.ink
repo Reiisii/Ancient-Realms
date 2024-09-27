@@ -10,3 +10,7 @@ I'm still going to train other Legionnaires move along now.
 == default ==
 ...
 -> DONE
+
+== exhaust ==
+Good day citizen!
+-> DONE

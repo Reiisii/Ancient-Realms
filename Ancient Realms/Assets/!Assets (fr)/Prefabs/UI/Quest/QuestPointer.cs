@@ -87,6 +87,7 @@ public class QuestPointer : MonoBehaviour
     void FindNPC()
     {
         npcParent = GameObject.Find("NPCS");
+        if(npcParent == null) isNPCFound = false;
         if(npcParent == null) return;
         // Get all child objects with DialogueTrigger component under the NPCs parent
         DialogueTrigger[] allNPCs = npcParent.GetComponentsInChildren<DialogueTrigger>();
@@ -103,6 +104,8 @@ public class QuestPointer : MonoBehaviour
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
+                    }else{
+                        isNPCFound = false;
                     }
                 }
             }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.HitMelee){
@@ -116,6 +119,8 @@ public class QuestPointer : MonoBehaviour
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
+                    }else{
+                        isNPCFound = false;
                     }
                 }
         }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.HitAny){
@@ -129,6 +134,8 @@ public class QuestPointer : MonoBehaviour
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
+                    }else{
+                        isNPCFound = false;
                     }
                 }
         }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.HitJavelin){
@@ -142,6 +149,8 @@ public class QuestPointer : MonoBehaviour
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
+                    }else{
+                        isNPCFound = false;
                     }
                 }
         }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.Kill){
@@ -155,6 +164,8 @@ public class QuestPointer : MonoBehaviour
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
+                    }else{
+                        isNPCFound = false;
                     }
                 }
         }
