@@ -121,15 +121,16 @@ public class PlayerController : MonoBehaviour
                 }
                 
             }
-        if (DialogueManager.GetInstance().dialogueIsPlaying || interactPressed && !isEquipping)
+        if (DialogueManager.GetInstance().dialogueIsPlaying)
         {
             // Stop player movement during dialogue or interaction
             rb.velocity = Vector2.zero;
             IsRunning = false;
             IsMoving = false;
             animator.SetBool("isCombatMode", false);
-            // isEquipping = !isEquipping;
             playerStats.isCombatMode = false;
+            playerActionMap.Disable();
+            dialogueActionMap.Enable();
             return;
         }
         if(IsMoving){
@@ -344,21 +345,21 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             interactPressed = true;
-            IsMoving = false;
-            IsRunning = false;
-            isAttacking = false;
-            isBlocking = false;
-            isHolding = false;
+            // IsMoving = false;
+            // IsRunning = false;
+            // isAttacking = false;
+            // isBlocking = false;
+            // isHolding = false;
         }
         else if (context.canceled)
         {
             interactPressed = false;
             // Resume movement if moveInput is still active
-            if (moveInputActive)
-            {
-                IsMoving = true;
-                SetFacingDirection(moveInput);
-            }
+            // if (moveInputActive)
+            // {
+            //     IsMoving = true;
+            //     SetFacingDirection(moveInput);
+            // }
         }
     }
     public void CombatMode(InputAction.CallbackContext context)
