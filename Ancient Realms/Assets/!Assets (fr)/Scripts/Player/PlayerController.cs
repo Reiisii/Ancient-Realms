@@ -127,8 +127,11 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector2.zero;
             IsRunning = false;
             IsMoving = false;
-            animator.SetBool("isCombatMode", false);
-            playerStats.isCombatMode = false;
+            if(playerStats.isCombatMode){
+                animator.SetBool("isCombatMode", false);
+                playerStats.isCombatMode = false;
+                isEquipping = true;
+            }
             playerActionMap.Disable();
             dialogueActionMap.Enable();
             return;

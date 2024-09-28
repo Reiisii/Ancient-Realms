@@ -33,7 +33,9 @@ public class MapTrigger : MonoBehaviour
     private void Update(){
         if(playerInRange){
             Panel.SetActive(true);
-            
+            if(PlayerController.GetInstance().GetInteractPressed()){
+                ChangeScene();
+            }
         }else{
             Panel.SetActive(false);
         }

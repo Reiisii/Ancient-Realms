@@ -8,6 +8,7 @@ public class IdleBehavior : StateMachineBehaviour
    private string[] talkAnimations = { "Talk_1", "Talk_2", "Talk_3", "Talk_4" };
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {   
+        PlayerController.GetInstance().isEquipping = false;
         PlayerController.GetInstance().canWalk = true;
     }
 

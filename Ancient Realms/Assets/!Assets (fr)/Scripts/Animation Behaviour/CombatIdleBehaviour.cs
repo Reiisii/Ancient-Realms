@@ -8,7 +8,7 @@ public class CombatIdleBehaviour : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerController.GetInstance().canWalk = true;
-        PlayerController.GetInstance().isEquipping = false;
+        // PlayerController.GetInstance().isEquipping = false;
         PlayerController.GetInstance().isBlocking = false;
         PlayerController.GetInstance().isAttacking = false;
     }
