@@ -33,12 +33,15 @@ public class MapTrigger : MonoBehaviour
     private void Update(){
         if(playerInRange){
             Panel.SetActive(true);
-            
+            if(PlayerController.GetInstance().GetInteractPressed()){
+                ChangeScene();
+            }
         }else{
             Panel.SetActive(false);
         }
     }
     public async void ChangeScene(){
+        PlayerStats.GetInstance().isCombatMode = false;
         PlayerUIManager.GetInstance().TransitionMapUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
         PlayerController.GetInstance().mapActionMap.Disable();

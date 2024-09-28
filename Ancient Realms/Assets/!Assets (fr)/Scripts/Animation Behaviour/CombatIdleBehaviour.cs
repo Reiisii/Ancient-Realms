@@ -8,7 +8,7 @@ public class CombatIdleBehaviour : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerController.GetInstance().canWalk = true;
-        PlayerController.GetInstance().isEquipping = false;
+        // PlayerController.GetInstance().isEquipping = false;
         PlayerController.GetInstance().isBlocking = false;
         PlayerController.GetInstance().isAttacking = false;
     }
@@ -16,10 +16,11 @@ public class CombatIdleBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(!PlayerStats.GetInstance().isCombatMode){
-            animator.SetBool("isCombatMode", false);
+        if(!PlayerStats.GetInstance().isCombatMode && !animator.GetBool("isCombatMode") && PlayerController.GetInstance().isEquipping){
+            PlayerController.GetInstance().canWalk = false;
+            PlayerController.GetInstance().IsRunning = false;
+            PlayerController.GetInstance().IsMoving = false;
             animator.Play("Unequip");
-            
         }
         if(PlayerController.GetInstance().isAttacking && !PlayerController.GetInstance().isHolding){
             animator.Play("Roman Normal Attack 1");

@@ -5,10 +5,11 @@ using UnityEngine;
 public class IdleBehavior : StateMachineBehaviour
 {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+   private string[] talkAnimations = { "Talk_1", "Talk_2", "Talk_3", "Talk_4" };
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        PlayerController.GetInstance().canWalk = true;
+    {   
         PlayerController.GetInstance().isEquipping = false;
+        PlayerController.GetInstance().canWalk = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -19,6 +20,14 @@ public class IdleBehavior : StateMachineBehaviour
             PlayerController.GetInstance().IsRunning = false;
             PlayerController.GetInstance().IsMoving = false;
             animator.Play("Equip");
+        }
+        if(DialogueManager.GetInstance().dialogueIsPlaying){
+            int randomIndex = Random.Range(0, talkAnimations.Length);  // Choose a random index from 0 to 3
+            string randomAnimation = talkAnimations[randomIndex];  // Get the corresponding animation name
+            animator.SetBool("isDialogue", true);
+            animator.Play(randomAnimation);
+        }else{
+            animator.SetBool("isDialogue", false);
         }
     }
 

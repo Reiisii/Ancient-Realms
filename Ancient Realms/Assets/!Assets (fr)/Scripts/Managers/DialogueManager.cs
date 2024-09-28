@@ -94,6 +94,8 @@ public class DialogueManager : MonoBehaviour
     }
     public void ExitDialogueMode(){
         dialogueIsPlaying = false;
+        PlayerController.GetInstance().playerActionMap.Enable();
+        PlayerController.GetInstance().dialogueActionMap.Disable();
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
         var relevantQuests = PlayerStats.GetInstance().activeQuests
