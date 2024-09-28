@@ -41,6 +41,7 @@ public class MapTrigger : MonoBehaviour
         }
     }
     public async void ChangeScene(){
+        PlayerStats.GetInstance().isCombatMode = false;
         PlayerUIManager.GetInstance().TransitionMapUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
         PlayerController.GetInstance().mapActionMap.Disable();
