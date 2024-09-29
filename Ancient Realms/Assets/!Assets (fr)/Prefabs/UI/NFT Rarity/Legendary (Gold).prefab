@@ -444,8 +444,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1000
-      minScalar: 500
+      scalar: 50
+      minScalar: 100
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -829,7 +829,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 11, y: 19, z: 1}
+    m_Scale: {x: 4, y: 8, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -1027,7 +1027,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 15
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1137,28 +1137,28 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 5
+      scalar: 10
       minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 1
-          inSlope: 12.253808
-          outSlope: 12.253808
+          value: 0
+          inSlope: 2.670415
+          outSlope: 2.670415
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0.040286407
+          outWeight: 0.038548753
         - serializedVersion: 3
           time: 1
           value: 0
-          inSlope: -8.971411
-          outSlope: -8.971411
+          inSlope: -2
+          outSlope: -2
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.042078797
+          inWeight: 0
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -5018,7 +5018,7 @@ MonoBehaviour:
   m_IsTrail: 0
   m_IgnoreCanvasScaler: 0
   m_AbsoluteMode: 0
-  m_Scale3D: {x: 1.11, y: 1.11, z: 1.11}
+  m_Scale3D: {x: 3, y: 3, z: 3}
   m_AnimatableProperties:
   - m_Name: _MainTex
     m_Type: 4
