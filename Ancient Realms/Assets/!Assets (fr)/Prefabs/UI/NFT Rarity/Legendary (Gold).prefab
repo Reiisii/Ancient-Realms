@@ -206,7 +206,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -274,7 +274,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.0001
-      minScalar: 3
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -444,8 +444,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
-      minScalar: 80
+      scalar: 1000
+      minScalar: 500
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -829,7 +829,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 14, y: 23, z: 1}
+    m_Scale: {x: 11, y: 19, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -1027,7 +1027,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 40
+      scalar: 20
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1137,28 +1137,28 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 1
+      scalar: 5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
-          inSlope: 2
-          outSlope: 2
+          value: 1
+          inSlope: 12.253808
+          outSlope: 12.253808
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0
+          outWeight: 0.040286407
         - serializedVersion: 3
-          time: 0.52441406
+          time: 1
           value: 0
-          inSlope: -4.42331
-          outSlope: -4.42331
+          inSlope: -8.971411
+          outSlope: -8.971411
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.08096808
+          inWeight: 0.042078797
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
