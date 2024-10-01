@@ -94,6 +94,9 @@ public class PlayerController : MonoBehaviour
     }
     public bool GetInteractPressed() 
     {
+        Debug.Log("Player Action Map: " + playerActionMap.enabled);
+        Debug.Log("Map Action Map: " + mapActionMap.enabled);
+        Debug.Log(interactPressed);
         bool result = interactPressed;
         interactPressed = false;
         return result;
