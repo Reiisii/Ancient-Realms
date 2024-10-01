@@ -17,7 +17,7 @@ public class MintingTrigger : MonoBehaviour
     }
  void Update()
     {
-        if(playerInRange){
+        if(playerInRange && PlayerController.GetInstance().playerActionMap.enabled){
             if(PlayerController.GetInstance().GetInteractPressed()){
                 Open();
                 if(PlayerUIManager.GetInstance().locationPlaque.activeSelf){

@@ -52,6 +52,14 @@ public class Reward
     public RewardsEnum rewardType;
     public string value;
 }
+[Serializable]
+public class Notification
+{
+    public string title;
+    public string description;
+    public Sprite image;
+    public NotifType notifType;
+}
 public enum CultureEnum {
     Roman,
     Gallic,
@@ -59,6 +67,11 @@ public enum CultureEnum {
     Greek,
     Germanic,
     HellenisticEgyptian
+}
+public enum NotifType {
+    QuestStart,
+    QuestComplete,
+    Achievement
 }
 public enum ChapterEnum {
     Prologue,

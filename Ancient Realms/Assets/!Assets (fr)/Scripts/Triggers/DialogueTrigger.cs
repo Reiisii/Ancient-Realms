@@ -47,7 +47,7 @@ public class DialogueTrigger : MonoBehaviour
         initialFlipX = npcSpriteRenderer.flipX;;
     }
     private void Update(){
-        if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying){
+        if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying && PlayerController.GetInstance().playerActionMap.enabled){
             VisualCue.SetActive(true);
             VisualCueKey.SetActive(true);
             setVisualCue();

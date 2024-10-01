@@ -68,8 +68,11 @@ public class QuestManager : MonoBehaviour
                     questData.currentKnot = "exhaust";
                     copiedQuest.currentKnot = "exhaust";
                 }
-                PlayerUIManager.GetInstance().questStartedPlaque.GetComponent<StartedTrigger>().ShowAchievement(copiedQuest);
-                PlayerUIManager.GetInstance().questStartedPlaque.SetActive(true);
+                Notification notification = new Notification(){
+                            title = quest.questTitle,
+                            notifType = NotifType.QuestStart
+                        };
+                PlayerUIManager.GetInstance().notification.AddQueue(notification);
                 playerStats.AddQuest(questData, copiedQuest);
 
             }
@@ -385,8 +388,11 @@ public class QuestManager : MonoBehaviour
             quest.isCompleted = true;
             quest.isPinned = false;
             quest.isActive = false;
-            PlayerUIManager.GetInstance().questCompletePlaque.GetComponent<CompleteTrigger>().ShowAchievement(quest);
-            PlayerUIManager.GetInstance().questCompletePlaque.SetActive(true);
+            Notification notification = new Notification(){
+                            title = quest.questTitle,
+                            notifType = NotifType.QuestComplete
+                        };
+            PlayerUIManager.GetInstance().notification.AddQueue(notification);
             foreach (Transform child in questPanel)
             {
                 QuestPrefab questPrefab = child.GetComponent<QuestPrefab>();
@@ -428,8 +434,13 @@ public class QuestManager : MonoBehaviour
                     if(!quest.isRewarded){
                         playerStats.AddArtifact(reward.value);
                         ArtifactsSO achievement = achievements.Where(a => a.id == Convert.ToInt32(reward.value)).FirstOrDefault();
-                        PlayerUIManager.GetInstance().achievementPlaque.GetComponent<AchievementTrigger>().ShowAchievement(achievement);
-                        PlayerUIManager.GetInstance().achievementPlaque.SetActive(true);
+                        Notification notification = new Notification(){
+                            title = achievement.artifactName,
+                            description = achievement.description,
+                            notifType = NotifType.Achievement,
+                            image = achievement.image
+                        };
+                        PlayerUIManager.GetInstance().notification.AddQueue(notification);
                         
                     }
                     break;

@@ -36,11 +36,8 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Location Plaque")]
     [SerializeField] public GameObject locationPlaque;
     [SerializeField] public TextMeshProUGUI locationText;
-    [Header("Achievement Plaque")]
-    [SerializeField] public GameObject achievementPlaque;
-    [Header("Quest Plaque")]
-    [SerializeField] public GameObject questCompletePlaque;
-    [SerializeField] public GameObject questStartedPlaque;
+    [Header("Notification Manager")]
+    [SerializeField] public NotificationQueue notification;
     [Header("Settings")]
     [SerializeField] float fadeDuration;    
     [SerializeField] EaseTypes fadeEaseType;

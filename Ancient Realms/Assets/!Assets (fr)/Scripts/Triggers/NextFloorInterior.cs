@@ -24,7 +24,7 @@ public class NextFloorInterior : MonoBehaviour
         // Get the current position of the object
         Vector3 currentPosition = PlayerController.GetInstance().gameObject.transform.position;
         if(playerInRange){
-            if(PlayerController.GetInstance().GetInteractPressed()){
+            if(PlayerController.GetInstance().GetInteractPressed() && PlayerController.GetInstance().playerActionMap.enabled){
                 PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();
                 PlayerController.GetInstance().gameObject.transform.position = new Vector3(x, y, currentPosition.z);

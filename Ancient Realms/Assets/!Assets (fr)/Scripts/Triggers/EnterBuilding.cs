@@ -14,7 +14,7 @@ public class EnterBuilding : MonoBehaviour
     private bool playerInRange;
     async void Update()
     {
-        if(playerInRange){
+        if(playerInRange && PlayerController.GetInstance().playerActionMap.enabled){
             if(PlayerController.GetInstance().GetInteractPressed()){
                 PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();
@@ -44,7 +44,7 @@ public class EnterBuilding : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = true;
-            if(interiorGrid.activeSelf){
+            if(interiorGrid != null && interiorGrid.activeSelf){
                 PlayerUIManager.GetInstance().locationText.SetText(districtName);
                 PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
             }else{
@@ -57,7 +57,7 @@ public class EnterBuilding : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = false;
-            if(interiorGrid.activeSelf){
+            if(interiorGrid != null && interiorGrid.activeSelf){
                 PlayerUIManager.GetInstance().locationText.SetText(districtName);
                 PlayerUIManager.GetInstance().locationPlaque.GetComponent<LogoutAnimation>().Close();
             }else{
