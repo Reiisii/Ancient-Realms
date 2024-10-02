@@ -44,7 +44,7 @@ public class DialogueManager : MonoBehaviour
     public void EnterDialogueMode(NPCData npc){
         npcData = npc;
         if(Utilities.npcHasQuest(npcData)){
-            QuestSO questData = QuestManager.GetInstance().quests.Find(quest => quest.questID == npc.giveableQuest[0]);
+            QuestSO questData = AccountManager.Instance.quests.Find(quest => quest.questID == npc.giveableQuest[0]);
             QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
             QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
             if(completedQuest && completedQuest.isCompleted && !completedQuest.isActive){
@@ -105,7 +105,7 @@ public class DialogueManager : MonoBehaviour
 
         if (Utilities.npcHasQuest(npcData))
         {
-            QuestSO questToGive = QuestManager.GetInstance().quests
+            QuestSO questToGive = AccountManager.Instance.quests
                 .FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
             QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
             QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());

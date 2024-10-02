@@ -76,7 +76,7 @@ public class DialogueTrigger : MonoBehaviour
             QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
             QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
             if(activeQuest == null && completedQuest == null){
-                QuestSO quest = QuestManager.GetInstance().quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
+                QuestSO quest = AccountManager.Instance.quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
                 return !quest.isActive && !quest.isCompleted;
             }else{
                 return false;

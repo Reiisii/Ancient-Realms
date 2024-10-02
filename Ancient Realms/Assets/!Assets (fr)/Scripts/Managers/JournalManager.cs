@@ -22,6 +22,9 @@ public class JournalManager : MonoBehaviour
     [SerializeField] List<QuestSO> mainQuestList = new List<QuestSO>();
     [SerializeField] List<QuestSO> subQuestList = new List<QuestSO>();
     [SerializeField] List<QuestSO> completedQuestList = new List<QuestSO>();
+    [SerializeField] Button mainButton;
+    [SerializeField] Button subButton;
+    [SerializeField] Button completeButton;
     private static JournalManager Instance;
     public QuestType currentQuestType = QuestType.Main;
     public enum QuestType
@@ -36,6 +39,7 @@ public class JournalManager : MonoBehaviour
             Debug.LogWarning("Found more than one Journal Manager in the scene");
         }
         Instance = this;
+        currentQuestType = QuestType.Main;
     }
     public static JournalManager GetInstance(){
         return Instance;
@@ -69,40 +73,73 @@ public class JournalManager : MonoBehaviour
         InitializeJournal();
     }
     private void OnEnable(){
-        if(mainQuestList.Count > 0){
-            pinButton.interactable = true;
-        }else{
-            pinButton.interactable = false;
-        }
+        // if(mainQuestList.Count > 0){
+        //     pinButton.interactable = true;
+        // }else{
+        //     pinButton.interactable = false;
+        // }
         InitializeJournal();
     }
     private void InitializeJournal()
     {
         // Ensure the quest type is set to Main
-        currentQuestType = QuestType.Main;
+        
         // Update the lists of quests
         UpdateQuestLists();
 
-        // Display the main quests on the board
+        ClearContent(questListPanel);
         UpdateQuestBoard();
-
-        // If there's at least one main quest, display its details
-        if (mainQuestList.Count > 0)
-        {
-            displayedQuest = mainQuestList[0];  // Set the first main quest as the displayed quest
-            ShowQuestDetails(displayedQuest);  // Display the details of the selected quest
-            foreach (Transform child in questListPanel)
-            {
-                if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
-                    child.GetComponent<JournalListTitle>().isSelected = true;
+        DisableButton(currentQuestType);
+        switch(currentQuestType){
+            case QuestType.Main:
+                if(mainQuestList.Count > 0){
+                    pinButton.interactable = true;
+                    displayedQuest = mainQuestList[0];  // Set the first main quest as the displayed quest
+                    ShowQuestDetails(displayedQuest);  // Display the details of the selected quest
+                    foreach (Transform child in questListPanel)
+                    {
+                        if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                            child.GetComponent<JournalListTitle>().isSelected = true;
+                        }else{
+                            return;
+                        }
+                    }
                 }else{
-                    return;
+                    pinButton.interactable = false;
                 }
-            }
-        }
-        else
-        {
-            ClearQuestDetails();  // Clear any previous quest details if there are no main quests
+            break;
+            case QuestType.Sub:
+                if(subQuestList.Count > 0){
+                    pinButton.interactable = true;
+                    ShowQuestDetails(subQuestList[0]);  // Display the details of the selected quest
+                    foreach (Transform child in questListPanel)
+                    {
+                        if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                            child.GetComponent<JournalListTitle>().isSelected = true;
+                        }else{
+                            return;
+                        }
+                    }
+                }else{
+                    pinButton.interactable = false;
+                }
+            break;
+            case QuestType.Completed:
+                if(subQuestList.Count > 0){
+                    pinButton.interactable = false;
+                    ShowQuestDetails(completedQuestList[0]);  // Display the details of the selected quest
+                    foreach (Transform child in questListPanel)
+                    {
+                        if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                            child.GetComponent<JournalListTitle>().isSelected = true;
+                        }else{
+                            return;
+                        }
+                    }
+                }else{
+                    pinButton.interactable = false;
+                }
+            break;
         }
     }
     private void UpdateQuestLists()
@@ -116,8 +153,6 @@ public class JournalManager : MonoBehaviour
 
     private void UpdateQuestBoard()
     {
-        ClearContent(questListPanel);
-
         List<QuestSO> questsToDisplay = currentQuestType switch
         {
             QuestType.Main => mainQuestList,
@@ -130,11 +165,26 @@ public class JournalManager : MonoBehaviour
         {
             AddQuestToBoard(quest);
         }
-
         // Optionally show the details of the first quest
         if (questsToDisplay.Count > 0)
         {
-            displayedQuest = questsToDisplay[0];
+            ShowQuestDetails(questsToDisplay[0]);
+            foreach (Transform child in questListPanel)
+            {
+                if(child.GetComponent<JournalListTitle>().questData.questID == questsToDisplay[0].questID){
+                    child.GetComponent<JournalListTitle>().isSelected = true;
+                    break;
+                }else{
+                    child.GetComponent<JournalListTitle>().isSelected = false;
+                }
+            }
+            if(currentQuestType != QuestType.Completed){
+                pinButton.interactable = true;
+            }
+            
+        }else{
+            displayedQuest = null;
+            pinButton.interactable = false;
         }
     }
 
@@ -155,8 +205,9 @@ public class JournalManager : MonoBehaviour
             "completed" => QuestType.Completed,
             _ => QuestType.Main
         };
+        DisableButton(currentQuestType);
         ClearQuestDetails();
-        
+        ClearContent(questListPanel);
         pinButton.interactable = false;
         UpdateQuestLists(); // Update the lists based on current state
         UpdateQuestBoard(); // Update the quest board with the new list
@@ -187,7 +238,25 @@ public class JournalManager : MonoBehaviour
             }
         }
     }
-
+    public void DisableButton(QuestType type){
+        switch(type){
+            case QuestType.Main:
+                mainButton.interactable = false;
+                subButton.interactable = true;
+                completeButton.interactable = true;
+            break;
+            case QuestType.Sub:
+                mainButton.interactable = true;
+                subButton.interactable = false;
+                completeButton.interactable = true;
+            break;
+            case QuestType.Completed:
+                mainButton.interactable = true;
+                subButton.interactable = true;
+                completeButton.interactable = false;
+            break;
+        }
+    }
     public void ClearContent(RectTransform cPanel)
     {
         foreach (Transform child in cPanel)

@@ -12,6 +12,7 @@ using ESDatabase.Entities;
 using System.Threading.Tasks;
 using System;
 using ESDatabase.Classes;
+using System.Linq;
 
 public class AccountManager : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class AccountManager : MonoBehaviour
     public PlayerData playerData;
     [SerializeField] public GameObject loadingPanel;
     [SerializeField] public GameObject updateGO;
+    [Header("Assets")]
+    public List<QuestSO> quests;
+    public List<ArtifactsSO> achievements;
+    public List<EquipmentSO> equipments;
     public string EntityId;
     public string UIDInstance;
     public PriceData priceData; 
@@ -33,7 +38,9 @@ public class AccountManager : MonoBehaviour
     private void Awake(){
         if (Instance == null)
         {
-            // If not, set this as the instance and make it persistent
+            quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
+            achievements = Resources.LoadAll<ArtifactsSO>("ArtifactSO").ToList();
+            equipments = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
