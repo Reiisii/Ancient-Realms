@@ -46,7 +46,7 @@ public class NotificationPopup : MonoBehaviour
         DOVirtual.DelayedCall(popDuration + waitDuration, async () => 
         {
             await FadeOutAndDestroy();
-        });
+        }).SetUpdate(true);
         yield return new WaitForSeconds(4); 
     }
 
