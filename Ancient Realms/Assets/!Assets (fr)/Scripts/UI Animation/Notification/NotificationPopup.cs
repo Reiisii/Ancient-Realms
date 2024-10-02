@@ -43,23 +43,21 @@ public class NotificationPopup : MonoBehaviour
         transform.DOScale(finalScale, popDuration).SetEase(Ease.OutBack);
 
         // Wait for the pop and then disappear
-        DOVirtual.DelayedCall(popDuration + waitDuration, () => 
+        DOVirtual.DelayedCall(popDuration + waitDuration, async () => 
         {
-            FadeOutAndDestroy();
+            await FadeOutAndDestroy();
         });
         yield return new WaitForSeconds(4); 
     }
 
-    private void FadeOutAndDestroy()
+    private async Task FadeOutAndDestroy()
     {
         // Scale down and destroy the object
-        transform.DOScale(0, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
-        {
+        await transform.DOScale(0, 0.5f).SetEase(Ease.InBack).AsyncWaitForCompletion();
             transform.localScale = originalScale;
             gameObject.SetActive(false);
-            title.SetText("");
-            description.SetText("");
-            image.sprite = null;
-        });
+            if(title != null)title.SetText("");
+            if(description != null) description.SetText("");
+            if(image != null) image.sprite = null;
     }
 }
