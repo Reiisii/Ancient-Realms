@@ -586,7 +586,7 @@ SpriteRenderer:
   m_SortingLayerID: -1414125273
   m_SortingLayer: 4
   m_SortingOrder: 19
-  m_Sprite: {fileID: 21300000, guid: 1c89c368b2dfbea4f9289ec5dd3a1607, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -594,7 +594,7 @@ SpriteRenderer:
   m_Size: {x: 31.25, y: 31.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1566028121752837661
@@ -1621,9 +1621,13 @@ MonoBehaviour:
   cm: {fileID: 0}
   forceSlider: {fileID: 7252777907602248057}
   forceGO: {fileID: 7075604442698543763}
-  mainWeapon: {fileID: 0}
-  javelin: {fileID: 0}
-  shield: {fileID: 0}
+  mainWeapon: {fileID: 7595901142171396208}
+  javelin: {fileID: 4848604207709859119}
+  shieldFront: {fileID: 7575978298467297677}
+  shieldBack: {fileID: 6830464748243067463}
+  mainWeaponBelt: {fileID: 4221008154859955264}
+  shieldBackStrap: {fileID: 0}
+  pilumAttach: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -1689,6 +1693,7 @@ MonoBehaviour:
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
+  equipmentList: []
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -2199,7 +2204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2673118483993665551
 Transform:
   m_ObjectHideFlags: 0
@@ -2256,7 +2261,7 @@ SpriteRenderer:
   m_SortingLayerID: -1414125273
   m_SortingLayer: 4
   m_SortingOrder: 21
-  m_Sprite: {fileID: 21300000, guid: ce2bbfcc51de5c94c969a7bd6c643fbd, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2264,7 +2269,7 @@ SpriteRenderer:
   m_Size: {x: 31.25, y: 31.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5047345316725026253
@@ -2405,7 +2410,7 @@ SpriteRenderer:
   m_SortingLayerID: -1414125273
   m_SortingLayer: 4
   m_SortingOrder: 22
-  m_Sprite: {fileID: 21300000, guid: 0e9b143add2449340b396e2d9a514b86, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2413,7 +2418,7 @@ SpriteRenderer:
   m_Size: {x: 62.5, y: 62.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5518670047348739681
@@ -2655,7 +2660,7 @@ SpriteRenderer:
   m_SortingLayerID: -1414125273
   m_SortingLayer: 4
   m_SortingOrder: 21
-  m_Sprite: {fileID: 21300000, guid: 546984e9b0982c44d819e6ba18e6a929, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2663,7 +2668,7 @@ SpriteRenderer:
   m_Size: {x: 31.25, y: 31.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7075604442698543763
@@ -2965,7 +2970,7 @@ SpriteRenderer:
   m_SortingLayerID: -1414125273
   m_SortingLayer: 4
   m_SortingOrder: 22
-  m_Sprite: {fileID: 21300000, guid: ce2bbfcc51de5c94c969a7bd6c643fbd, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2973,7 +2978,7 @@ SpriteRenderer:
   m_Size: {x: 31.25, y: 31.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &8462026761864285158
