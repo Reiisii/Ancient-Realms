@@ -114,7 +114,7 @@ public class JournalManager : MonoBehaviour
                         break;
                     }
                 }
-                if(currentQuestType != QuestType.Completed){
+                if(!displayedQuest.isCompleted && displayedQuest.isActive){
                     pinButton.interactable = true;
                 }
             }else{
@@ -126,7 +126,7 @@ public class JournalManager : MonoBehaviour
                         break;
                     }
                 }
-                if(currentQuestType != QuestType.Completed){
+                if(!questsToDisplay[0].isCompleted && questsToDisplay[0].isActive){
                     pinButton.interactable = true;
                 }
             }
