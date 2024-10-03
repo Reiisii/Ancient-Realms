@@ -6,10 +6,10 @@ using UnityEngine.Rendering.Universal;
 public class FlickerLights : MonoBehaviour
 {
     [SerializeField] private float flickerSpeed = 0.1f; // Speed of the flicker effect
-    [SerializeField] private float minInnerRadius = 2.7f; // Minimum inner radius
-    [SerializeField] private float maxInnerRadius = 3f; // Maximum inner radius
-    [SerializeField] private float minOuterRadius = 10f; // Minimum outer radius
-    [SerializeField] private float maxOuterRadius = 11f; // Maximum outer radius
+    [SerializeField] private float minInnerRadius = 0.98f; // Minimum inner radius
+    [SerializeField] private float maxInnerRadius = 1.2f; // Maximum inner radius
+    [SerializeField] private float minOuterRadius = 2.4f; // Minimum outer radius
+    [SerializeField] private float maxOuterRadius = 2.6f; // Maximum outer radius
 
     private Light2D lightObject;
     private float baseInnerRadius; // Store the initial inner radius
