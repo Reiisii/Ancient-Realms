@@ -18,7 +18,6 @@ public class JournalManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI pinTypeText;
     [SerializeField] RectTransform objectiveListPanel;
     public QuestSO displayedQuest;
-    public List<QuestSO> mainQuest;
     [SerializeField] List<QuestSO> mainQuestList = new List<QuestSO>();
     [SerializeField] List<QuestSO> subQuestList = new List<QuestSO>();
     [SerializeField] List<QuestSO> completedQuestList = new List<QuestSO>();
@@ -68,9 +67,14 @@ public class JournalManager : MonoBehaviour
             pinTypeText.SetText("Pin Quest");
         }
     }
-    private void Start()
+    private void OnEnable()
     {
         InitializeJournal();
+    }
+    private void OnDisable()
+    {
+        ClearQuestDetails();
+        ClearContent(questListPanel);
     }
     private void InitializeJournal()
     {
@@ -84,7 +88,6 @@ public class JournalManager : MonoBehaviour
         subQuestList = activeQuests.Where(q => !q.isMain && q.isActive && !q.isCompleted).ToList();
         completedQuestList = completedQuests.ToList();
     }
-
     private void UpdateQuestBoard()
     {
         List<QuestSO> questsToDisplay = currentQuestType switch
@@ -102,18 +105,30 @@ public class JournalManager : MonoBehaviour
         // Optionally show the details of the first quest
         if (questsToDisplay.Count > 0)
         {
-            foreach (Transform child in questListPanel)
-            {
-                if(child.GetComponent<JournalListTitle>().questData.questID == questsToDisplay[0].questID){
-                    child.GetComponent<JournalListTitle>().isSelected = true;
-                    break;
-                }else{
-                    child.GetComponent<JournalListTitle>().isSelected = false;
+            if(displayedQuest != null){
+                ShowQuestDetails(displayedQuest);
+                foreach (Transform child in questListPanel)
+                {
+                    if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                        child.GetComponent<JournalListTitle>().isSelected = true;
+                        break;
+                    }
                 }
-            }
-            ShowQuestDetails(questsToDisplay[0]);
-            if(currentQuestType != QuestType.Completed){
-                pinButton.interactable = true;
+                if(currentQuestType != QuestType.Completed){
+                    pinButton.interactable = true;
+                }
+            }else{
+                ShowQuestDetails(questsToDisplay[0]);
+                foreach (Transform child in questListPanel)
+                {
+                    if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                        child.GetComponent<JournalListTitle>().isSelected = true;
+                        break;
+                    }
+                }
+                if(currentQuestType != QuestType.Completed){
+                    pinButton.interactable = true;
+                }
             }
             
         }else{
@@ -171,7 +186,6 @@ public class JournalManager : MonoBehaviour
     }
     private void ClearQuestDetails()
     {
-        displayedQuest = null;
         questTitleText.SetText("");
         descriptionText.SetText("");
         ClearContent(objectiveListPanel);

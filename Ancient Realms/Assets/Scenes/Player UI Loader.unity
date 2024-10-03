@@ -2558,67 +2558,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129999317}
   m_CullTransparentMesh: 1
---- !u!1 &134451363
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 134451364}
-  - component: {fileID: 134451365}
-  m_Layer: 0
-  m_Name: Journal Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &134451364
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134451363}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -153.41748, y: 18.837341, z: -2.3974738}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1569787910}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &134451365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134451363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6db2de4935ce684e9d8856b5f0a3516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questListPanel: {fileID: 778951932}
-  journalListTitle: {fileID: 4850593129809139166, guid: 3a6cebe32de2883438cc94fad40664d5, type: 3}
-  journalQuestGoal: {fileID: 6376302018300375998, guid: fae30c1836ee06f45b587ced3d2ec682, type: 3}
-  questTitleText: {fileID: 484774386}
-  descriptionText: {fileID: 1400461387}
-  pinButton: {fileID: 2040969608}
-  pinTypeText: {fileID: 1583447720}
-  objectiveListPanel: {fileID: 1914736001}
-  displayedQuest: {fileID: 0}
-  mainQuest: []
-  mainQuestList: []
-  subQuestList: []
-  completedQuestList: []
-  mainButton: {fileID: 850001958}
-  subButton: {fileID: 215858213}
-  completeButton: {fileID: 1324329790}
-  currentQuestType: 0
 --- !u!1 &137108751
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,7 +4185,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0, g: 0, b: 0, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4265,7 +4204,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 134451365}
+      - m_Target: {fileID: 1569787914}
         m_TargetAssemblyTypeName: JournalManager, Assembly-CSharp
         m_MethodName: ChangeType
         m_Mode: 5
@@ -15802,7 +15741,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0, g: 0, b: 0, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -15821,7 +15760,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 134451365}
+      - m_Target: {fileID: 1569787914}
         m_TargetAssemblyTypeName: JournalManager, Assembly-CSharp
         m_MethodName: ChangeType
         m_Mode: 5
@@ -25347,7 +25286,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0, g: 0, b: 0, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -25366,7 +25305,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 134451365}
+      - m_Target: {fileID: 1569787914}
         m_TargetAssemblyTypeName: JournalManager, Assembly-CSharp
         m_MethodName: ChangeType
         m_Mode: 5
@@ -29835,6 +29774,7 @@ GameObject:
   - component: {fileID: 1569787910}
   - component: {fileID: 1569787912}
   - component: {fileID: 1569787911}
+  - component: {fileID: 1569787914}
   - component: {fileID: 1569787913}
   m_Layer: 5
   m_Name: Quest UI
@@ -29858,7 +29798,6 @@ RectTransform:
   - {fileID: 1071160571}
   - {fileID: 1519086238}
   - {fileID: 2017946881}
-  - {fileID: 134451364}
   m_Father: {fileID: 481606161}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -30000,6 +29939,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1569787914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569787909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6db2de4935ce684e9d8856b5f0a3516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questListPanel: {fileID: 778951932}
+  journalListTitle: {fileID: 4850593129809139166, guid: 3a6cebe32de2883438cc94fad40664d5, type: 3}
+  journalQuestGoal: {fileID: 6376302018300375998, guid: fae30c1836ee06f45b587ced3d2ec682, type: 3}
+  questTitleText: {fileID: 484774386}
+  descriptionText: {fileID: 1400461387}
+  pinButton: {fileID: 2040969608}
+  pinTypeText: {fileID: 1583447720}
+  objectiveListPanel: {fileID: 1914736001}
+  displayedQuest: {fileID: 0}
+  mainQuestList: []
+  subQuestList: []
+  completedQuestList: []
+  mainButton: {fileID: 850001958}
+  subButton: {fileID: 215858213}
+  completeButton: {fileID: 1324329790}
+  currentQuestType: 0
 --- !u!1 &1575659150
 GameObject:
   m_ObjectHideFlags: 0
@@ -39797,7 +39764,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 134451365}
+      - m_Target: {fileID: 1569787914}
         m_TargetAssemblyTypeName: JournalManager, Assembly-CSharp
         m_MethodName: PinUnpin
         m_Mode: 1

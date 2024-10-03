@@ -7,6 +7,12 @@ I'm still going to train other Legionnaires move along now.
 == Exhaust_Idle_Legionnaire ==
 ...
 -> DONE
+
+== JanJan_Exhaust ==
+Can't you see I'm doing something?
+-> DONE
+
+
 == default ==
 ...
 -> DONE
@@ -14,3 +20,4 @@ I'm still going to train other Legionnaires move along now.
 == exhaust ==
 Good day citizen!
 -> DONE
+

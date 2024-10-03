@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,11 +100,15 @@ public class QuestPointer : MonoBehaviour
                 // Loop through each NPC and check if the npcID matches the target ID
                 foreach (DialogueTrigger npc in allNPCs)
                 {
+                    try{
                     if (npc.npcData.id.Equals(npcID) && npc.gameObject.activeSelf)
                     {
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
+                    }
+                    }catch(Exception err){
+                        return;
                     }
                 }
             }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.HitMelee){
