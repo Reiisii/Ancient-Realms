@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Solana.Unity.SDK.Nft;
 using TMPro;
+using ESDatabase.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,8 +17,23 @@ public class Equipments : MonoBehaviour
     [SerializeField] Image bgImageColor;
     public EquipmentSO equipment;
     void Start(){
-        image.sprite = equipment.image;
-        eqName.SetText(equipment.itemName);
+        image.color = Color.black;
+        eqName.SetText("???");
+        Color color = Utilities.GetColorForCulture(equipment.culture);
+        bgImageColor.color = color;
+    }
+    void Update(){
+        PlayerData playerData = AccountManager.Instance.playerData;
+        if(playerData != null){
+            if(playerData.gameData.equipments.Contains(equipment.equipmentId)){
+                image.color = Color.white;
+                image.sprite = equipment.image;
+                eqName.SetText(equipment.itemName);
+            }else{
+                image.color = Color.black;
+                eqName.SetText("???");
+            }
+        }
         Color color = Utilities.GetColorForCulture(equipment.culture);
         bgImageColor.color = color;
     }
