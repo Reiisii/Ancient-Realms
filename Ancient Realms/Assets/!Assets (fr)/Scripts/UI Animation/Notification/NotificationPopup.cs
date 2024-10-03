@@ -40,20 +40,20 @@ public class NotificationPopup : MonoBehaviour
         transform.localScale = Vector3.zero;
 
         // Pop animation: Scale from zero to finalScale
-        transform.DOScale(finalScale, popDuration).SetEase(Ease.OutBack);
+        transform.DOScale(finalScale, popDuration).SetEase(Ease.OutBack).SetUpdate(true);
 
         // Wait for the pop and then disappear
         DOVirtual.DelayedCall(popDuration + waitDuration, async () => 
         {
             await FadeOutAndDestroy();
         }).SetUpdate(true);
-        yield return new WaitForSeconds(4); 
+        yield return new WaitForSecondsRealtime(4); 
     }
 
     private async Task FadeOutAndDestroy()
     {
         // Scale down and destroy the object
-        await transform.DOScale(0, 0.5f).SetEase(Ease.InBack).AsyncWaitForCompletion();
+        await transform.DOScale(0, 0.5f).SetEase(Ease.InBack).SetUpdate(true).AsyncWaitForCompletion();
             transform.localScale = originalScale;
             gameObject.SetActive(false);
             if(title != null)title.SetText("");
