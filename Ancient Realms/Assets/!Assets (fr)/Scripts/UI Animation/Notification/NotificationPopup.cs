@@ -20,7 +20,7 @@ public class NotificationPopup : MonoBehaviour
     }
     public IEnumerator PopAnim(Notification notifData)
     {
-        
+        PlayerUIManager.GetInstance().notification.isActive = true;
         switch(notifData.notifType){
             case NotifType.QuestStart:
                 title.SetText(notifData.title);
@@ -59,5 +59,6 @@ public class NotificationPopup : MonoBehaviour
             if(title != null)title.SetText("");
             if(description != null) description.SetText("");
             if(image != null) image.sprite = null;
+            PlayerUIManager.GetInstance().notification.isActive = false;
     }
 }

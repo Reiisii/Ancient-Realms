@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class NotificationQueue : MonoBehaviour
 {
-    private bool isActive = false;
+    public bool isActive = false;
     [SerializeField] GameObject questStartGO;
     [SerializeField] GameObject questCompleteGO;
     [SerializeField] GameObject achievementGO;
@@ -22,7 +22,6 @@ public class NotificationQueue : MonoBehaviour
     }
     private IEnumerator ProcessQueue()
     {
-        isActive = true;
 
         while (queue.Count > 0)
         {
@@ -42,7 +41,5 @@ public class NotificationQueue : MonoBehaviour
                     break;
             }
         }
-
-        isActive = false;
     }
 }
