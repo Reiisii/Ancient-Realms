@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Solana.Unity.SDK.Nft;
+using ESDatabase.Entities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,8 +18,23 @@ public class CharacterPortrait : MonoBehaviour
     public CharacterSO character {get;set;}
 
     void Start(){
-        image.sprite = character.image;
-        charName.SetText(character.lastName.Equals("") ? character.firstName : character.firstName + " " + character.lastName);
+        image.color = Color.black;
+        charName.SetText("???");
+        Color color = Utilities.GetColorForCulture(character.culture);
+        bgImageColor.color = color;
+    }
+    void Update(){
+        PlayerData playerData = AccountManager.Instance.playerData;
+        if(playerData != null){
+            if(playerData.gameData.characters.Contains(character.id)){
+                image.color = Color.white;
+                image.sprite = character.image;
+                charName.SetText(character.lastName.Equals("") ? character.firstName : character.firstName + " " + character.lastName);
+            }else{
+                image.color = Color.black;
+                charName.SetText("???");
+            }
+        }
         Color color = Utilities.GetColorForCulture(character.culture);
         bgImageColor.color = color;
     }
@@ -32,5 +48,8 @@ public class CharacterPortrait : MonoBehaviour
     }
     public void setGameObject(GameObject pnl){
         panel = pnl;
+    }
+    public void setData(CharacterSO charr){
+        character = charr;
     }
 }

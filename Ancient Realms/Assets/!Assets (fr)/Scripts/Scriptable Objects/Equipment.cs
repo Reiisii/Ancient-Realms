@@ -44,7 +44,6 @@ public class EquipmentSO : ScriptableObject
         newEquipment.armorType = this.armorType;
         newEquipment.weaponType = this.weaponType;
         newEquipment.image = this.image;
-        newEquipment.image = this.image;
         newEquipment.front = this.front;  // Copy front sprite
         newEquipment.back = this.back;
         return newEquipment;
@@ -75,7 +74,6 @@ public class EquipmentSO : ScriptableObject
         newEquipment.equipmentType = this.equipmentType;
         newEquipment.armorType = this.armorType;
         newEquipment.weaponType = this.weaponType;
-        newEquipment.image = this.image;
         newEquipment.image = this.image;
         newEquipment.front = this.front;  // Copy front sprite
         newEquipment.back = this.back;

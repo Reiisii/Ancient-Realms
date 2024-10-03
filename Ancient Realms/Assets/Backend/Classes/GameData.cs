@@ -41,8 +41,16 @@ namespace ESDatabase.Classes
                         this.equippedData = new EquippedData();
                         this.quests = new List<QuestData>();
                         this.artifacts = new List<ArtifactsData>();
+                        List<int> equip = new List<int>();
+                        equip.Add(0);
+                        equip.Add(5);
+                        equip.Add(23);
+                        equip.Add(18);
+                        equip.Add(11);
+                        equip.Add(8);
+                        equip.Add(12);
                         this.characters = new List<int>();
-                        this.equipments = new List<int>();
+                        this.equipments = equip;
                         this.uiSettings = new List<string>();
                         this.settings = new SettingsData();
                 }

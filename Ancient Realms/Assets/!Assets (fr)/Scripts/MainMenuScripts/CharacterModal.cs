@@ -51,7 +51,7 @@ public class CharacterModal : MonoBehaviour
                 characterPrefab.transform.SetParent(characterPanel);
                 characterPrefab.transform.localScale = Vector3.one;
                 characterPrefab.setGameObject(EncycPanel);
-                characterPrefab.character = character;
+                characterPrefab.setData(character);
         }
 
     }
