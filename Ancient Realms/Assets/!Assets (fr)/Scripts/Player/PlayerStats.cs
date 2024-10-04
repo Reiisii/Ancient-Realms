@@ -21,8 +21,6 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] public TextMeshProUGUI staminaText;
     [SerializeField] public Slider xpSlider;
     [SerializeField] public TextMeshProUGUI levelText;
-    [SerializeField] public TextMeshProUGUI denariiText;
-    [SerializeField] public TextMeshProUGUI sol;
     [Header("Scripts")]
     public PlayerData localPlayerData;
 
@@ -75,13 +73,8 @@ public class PlayerStats : MonoBehaviour
     private void OnEnable()
     {
         LoadPlayerData(localPlayerData);
-        Web3.OnBalanceChange += OnBalanceChange;
     }
 
-    private void OnDisable()
-    {
-        Web3.OnBalanceChange -= OnBalanceChange;
-    }
     private void LoadPlayerData(PlayerData data)
     {
         GameData playerGameData = data.gameData;
@@ -188,7 +181,6 @@ public class PlayerStats : MonoBehaviour
 
         // Update UI elements
         levelText.SetText(Utilities.FormatNumber(level));
-        denariiText.SetText(Utilities.FormatNumber(denarii));
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
         xpSlider.value = currentXP;
@@ -241,8 +233,6 @@ public class PlayerStats : MonoBehaviour
     public void AddGold(int amount)
     {
         denarii += amount;
-        AnimateGoldChange(denarii - amount, denarii);
-        
         localPlayerData.gameData.denarii += amount;
         isDataDirty = true; // Mark data as dirty
     }
@@ -276,7 +266,6 @@ public class PlayerStats : MonoBehaviour
     }
     public void updateValues()
     {
-        denariiText.SetText(Utilities.FormatNumber(denarii));
         levelText.SetText(Utilities.FormatNumber(level));
         staminaSlider.value = stamina;
         staminaSlider.maxValue = maxStamina;
@@ -291,24 +280,6 @@ public class PlayerStats : MonoBehaviour
         hpText.SetText("[" + currentHPInt + "/" + maxHPInt + "]");
         staminaText.SetText("[" + staminaInt + "/" + maxStaminaInt + "]");
     }
-
-    private void AnimateGoldChange(int startValue, int endValue)
-    {
-        DOTween.To(() => startValue, x =>
-        {
-            startValue = x;
-            denariiText.SetText(Utilities.FormatNumber(startValue));
-        }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
-    }
-    private void AnimateSolChange(double startValue, double endValue)
-    {
-        DOTween.To(() => startValue, x =>
-        {
-            startValue = x;
-            sol.SetText(Utilities.FormatSolana(startValue));
-        }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
-    }
-
     private void AnimateXPChange(int startValue, int endValue)
     {
         DOTween.To(() => startValue, x =>
@@ -348,13 +319,6 @@ public class PlayerStats : MonoBehaviour
         maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
         // attack = 30f * Mathf.Pow(1.04f, level - 1); // Assuming initial attack is 30
         staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
-    }
-    private void OnBalanceChange(double sb)
-    {
-        double oldBalance = previousSolBalance;
-        previousSolBalance = sb;
-
-        AnimateSolChange(oldBalance, sb);
     }
     private int CalculateXPToNextLevel(int level)
     {
