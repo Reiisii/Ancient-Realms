@@ -480,6 +480,8 @@ public class PlayerController : MonoBehaviour
             PlayerUIManager.GetInstance().ToggleMintingUI();
         }
     }
+
+    // Quest Pressed Right
     public void OnRun(InputAction.CallbackContext context)
     {
         if (context.started)

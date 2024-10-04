@@ -401,17 +401,6 @@
                 },
                 {
                     "name": "",
-                    "id": "1f040064-e4c8-4f82-aa15-3cf2aadf66f0",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Toggle Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4d3a79ae-cec0-4158-b797-406b8c38678c",
                     "path": "<Keyboard>/b",
                     "interactions": "",
@@ -435,7 +424,7 @@
                 {
                     "name": "",
                     "id": "e4807fc0-2624-4ec4-8c3d-02b3226a77ca",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -989,19 +978,8 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "701315ca-5d58-4f96-a10b-097d9c5c6914",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Toggle Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f790da3f-48c4-472c-8e75-029bd851b622",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1045,6 +1023,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Right",
+                    "type": "Value",
+                    "id": "9aad61be-2c9b-4da6-8c91-bb62a969e910",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Left",
+                    "type": "Value",
+                    "id": "a69d98e1-3379-47ba-ba2c-7903945d4cfe",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Up",
+                    "type": "Value",
+                    "id": "dfd6e951-a5dd-4395-8d46-e17096913a58",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Down",
+                    "type": "Value",
+                    "id": "e7c3339b-1604-4b9f-855f-1d989220d12c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1062,11 +1076,55 @@
                 {
                     "name": "",
                     "id": "d90f9e59-2b8e-47fc-8d63-7c976d7dfd2b",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Toggle Quest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5eb2d1a-6c4b-4912-872c-1c185a0099b7",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed50b974-d6a3-4f89-b90c-9fe00c567a24",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "017246eb-5929-4712-8290-7da2d36076b9",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03dde99f-69fc-4f29-9c20-2f3fd46054e9",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1090,7 +1148,7 @@
                 {
                     "name": "",
                     "id": "15ad7de4-09b5-446e-b911-a78edd71e94a",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1108,6 +1166,15 @@
                     "name": "Proceed",
                     "type": "Button",
                     "id": "cae46212-4eeb-4de9-8fda-3cf55123d071",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Navigation",
+                    "type": "Button",
+                    "id": "07c22b98-883a-4401-b3ed-afaadddfb06d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -1145,6 +1212,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Proceed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53d5ee6f-4871-4f2d-a119-c5f27f23da61",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5934aa57-2667-4b3b-885d-4df54ce3d1e1",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1225,7 +1314,7 @@
                 {
                     "name": "",
                     "id": "1d951586-4612-4542-b623-0f65e6df220d",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1396,7 +1485,7 @@
                 {
                     "name": "",
                     "id": "8acbfd89-498a-4517-99c2-cb41a0826415",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
