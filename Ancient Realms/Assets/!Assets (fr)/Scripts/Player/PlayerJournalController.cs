@@ -24,14 +24,14 @@ public class PlayerJournalController : MonoBehaviour
     {
         if (context.performed)
         {
-            PlayerUIManager.GetInstance().ToggleMintingUI();
+            JournalManager.GetInstance().CycleListDown();
         }
     }
     public void QuestUp(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            PlayerUIManager.GetInstance().ToggleMintingUI();
+            JournalManager.GetInstance().CycleListUp();
         }
     }
 }

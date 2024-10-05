@@ -14021,17 +14021,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2034286375}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 944952047}
+        m_TargetAssemblyTypeName: Play, Assembly-CSharp
+        m_MethodName: PlayUILoader
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 284307866}
         m_TargetAssemblyTypeName: MainMenuAnimation, Assembly-CSharp
@@ -28871,6 +28871,9 @@ MonoBehaviour:
   logoutPanel: {fileID: 1348031982}
   loadingPanel: {fileID: 1787140226}
   updateGO: {fileID: 1595511242}
+  quests: []
+  achievements: []
+  equipments: []
   EntityId: 
   UIDInstance: 
 --- !u!114 &1856155607

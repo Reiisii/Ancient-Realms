@@ -1864,6 +1864,12 @@ MonoBehaviour:
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
+  shopActionMap:
+    m_Name: Shop
+    m_Id: 9b86ae68-c9a9-4cc2-bfda-2c4d928668b9
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
   equipmentList: []
   _isMoving: 0
   _isRunning: 0
@@ -2341,6 +2347,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e7c3339b-1604-4b9f-855f-1d989220d12c
     m_ActionName: Quest/Down[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: TogglePremiumShop
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 497a20c7-936f-4b77-a43a-dbd03ce9472d
+    m_ActionName: Player/Toggle Premium Shop[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: TogglePremiumShop
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 77077ac1-7cc5-45b4-87fb-aca0039a73d9
+    m_ActionName: Shop/Toggle[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
