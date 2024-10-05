@@ -46,8 +46,6 @@ public class PlayerStats : MonoBehaviour
     public int maxXP = 30;
     public int currentXP = 0;
     public float attackRange = 0f;
-    public double solBalance = 0;
-    private double previousSolBalance = 0;
     public float maxThrowForce = 20f; // Maximum force applied to the throw
     public float maxHoldTime = 1f;
     public List<EquipmentSO> equippedItems;
@@ -169,6 +167,9 @@ public class PlayerStats : MonoBehaviour
                 armor += equipment.baseArmor;
             }
             if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && equipment.weaponType == WeaponType.Sword){
+                attackRange = equipment.attackRange;
+            }
+            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && equipment.weaponType == WeaponType.SpearJavelin){
                 attackRange = equipment.attackRange;
             }
         }

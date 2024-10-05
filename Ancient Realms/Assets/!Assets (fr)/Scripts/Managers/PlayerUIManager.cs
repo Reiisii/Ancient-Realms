@@ -22,7 +22,8 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] public GameObject questPointer;
     [Header("Minting UI")]
     [SerializeField] public GameObject mintingUI;
-
+    [Header("Premium UI")]
+    [SerializeField] public GameObject premiumUI;
     [Header("Loading Screen")]
     [SerializeField] public GameObject loadingScreen;
     [SerializeField] public CanvasGroup loadingCanvasGroup;
@@ -93,6 +94,18 @@ public class PlayerUIManager : MonoBehaviour
             }else{
                 PlayerController.GetInstance().playerActionMap.Enable();
                 PlayerController.GetInstance().mintingActionMap.Disable();
+            }
+        }
+    }
+    public void TogglePremiumShop(){
+        premiumUI.SetActive(!premiumUI.activeSelf);
+        if(PlayerController.GetInstance() != null){
+            if(premiumUI.activeSelf){
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().shopActionMap.Enable();
+            }else{
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().shopActionMap.Disable();
             }
         }
     }

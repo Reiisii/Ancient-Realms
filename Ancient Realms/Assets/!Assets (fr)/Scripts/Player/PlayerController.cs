@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     public InputActionMap promptActionMap;
     public InputActionMap mapActionMap;
     public InputActionMap mintingActionMap;
+    public InputActionMap shopActionMap;
     private Vector3 originalCameraOffset;
     public List<EquipSO> equipmentList;
 
@@ -91,6 +92,7 @@ public class PlayerController : MonoBehaviour
         promptActionMap = inputActions.FindActionMap("Prompt");
         mapActionMap = inputActions.FindActionMap("Map");
         mintingActionMap = inputActions.FindActionMap("Minting");
+        shopActionMap = inputActions.FindActionMap("Shop");
     }
     public static PlayerController GetInstance(){
         return Instance;
@@ -478,6 +480,14 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             PlayerUIManager.GetInstance().ToggleMintingUI();
+        }
+    }
+    public void TogglePremiumShop(InputAction.CallbackContext context)
+    {
+        if(!canAccessMap) return;
+        if (context.performed)
+        {
+            PlayerUIManager.GetInstance().TogglePremiumShop();
         }
     }
 
