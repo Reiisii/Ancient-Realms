@@ -598,6 +598,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1277568361156419942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6677944120409441088}
+  - component: {fileID: 1277091376926403095}
+  m_Layer: 0
+  m_Name: Right Hand Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6677944120409441088
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277568361156419942}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.65656364, w: -0.75427055}
+  m_LocalPosition: {x: 1.5679665, y: -0.022525584, z: 0}
+  m_LocalScale: {x: 1.283479, y: 1.0796067, z: 1.0001532}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3132587481712873219}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -11.846}
+--- !u!212 &1277091376926403095
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277568361156419942}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -1199955273
+  m_SortingLayer: 8
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 1aeaf9dd87ff1ac468ef9f5216b43cfa, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.75, y: 5}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1566028121752837661
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,6 +994,7 @@ Transform:
   - {fileID: 8640375021010636712}
   - {fileID: 2631039016314458058}
   - {fileID: 9182948696396168381}
+  - {fileID: 6677944120409441088}
   m_Father: {fileID: 2178126227165790211}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2237543559107929990
@@ -1481,6 +1566,7 @@ GameObject:
   - component: {fileID: 8143464205618705029}
   - component: {fileID: 3575490194625955687}
   - component: {fileID: -6049172724251349994}
+  - component: {fileID: 6803588018265507997}
   - component: {fileID: -7447427150435233297}
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 7836553738663465838}
@@ -1698,6 +1784,18 @@ MonoBehaviour:
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
+--- !u!114 &6803588018265507997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e50a020ea023184eb764eeb99ef6bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-7447427150435233297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2091,6 +2189,74 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5f45ed0d-a0f4-4805-8263-bf109b00479e
     m_ActionName: Map/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestCycleRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9aad61be-2c9b-4da6-8c91-bb62a969e910
+    m_ActionName: Quest/Navigation[/Keyboard/a,/Keyboard/d,/Keyboard/w,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 07c22b98-883a-4401-b3ed-afaadddfb06d
+    m_ActionName: Dialogue/Navigation[/Keyboard/w,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestCycleLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a69d98e1-3379-47ba-ba2c-7903945d4cfe
+    m_ActionName: Quest/Left[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: dfd6e951-a5dd-4395-8d46-e17096913a58
+    m_ActionName: Quest/Up[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e7c3339b-1604-4b9f-855f-1d989220d12c
+    m_ActionName: Quest/Down[/Keyboard/s]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
