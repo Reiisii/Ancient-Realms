@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using DG.Tweening;
+using ESDatabase.Classes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -19,10 +20,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject cm;
     [SerializeField] public Slider forceSlider;
     [SerializeField] public GameObject forceGO;
-    [Header("Weapons")]
-    [SerializeField] public Sprite mainWeapon;
-    [SerializeField] public Sprite javelin;
-    [SerializeField] public Sprite shield;
+    [Header("Weapons Unsheath")]
+    [SerializeField] public SpriteRenderer mainWeapon;
+    [SerializeField] public SpriteRenderer javelin;
+    [SerializeField] public SpriteRenderer shieldFront;
+    [SerializeField] public SpriteRenderer shieldBack;
+    [Header("Weapons Sheath")]
+    [SerializeField] public SpriteRenderer mainWeaponBelt;
+    [SerializeField] public SpriteRenderer shieldBackStrap;
+    [SerializeField] public SpriteRenderer pilumAttach;
     private CinemachineFramingTransposer framingTransposer;
     public LayerMask enemyLayer;
     private Vector2 lastPosition;
@@ -59,6 +65,8 @@ public class PlayerController : MonoBehaviour
     public InputActionMap mapActionMap;
     public InputActionMap mintingActionMap;
     private Vector3 originalCameraOffset;
+    public List<EquipSO> equipmentList;
+
     private void Awake()
     {
         if(Instance != null){
@@ -67,6 +75,8 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        equipmentList = Resources.LoadAll<EquipSO>("EquipSO").ToList();
+        LoadPlayerData(PlayerStats.GetInstance());
     }
     
     private void Start(){
@@ -94,9 +104,6 @@ public class PlayerController : MonoBehaviour
     }
     public bool GetInteractPressed() 
     {
-        Debug.Log("Player Action Map: " + playerActionMap.enabled);
-        Debug.Log("Map Action Map: " + mapActionMap.enabled);
-        Debug.Log(interactPressed);
         bool result = interactPressed;
         interactPressed = false;
         return result;
@@ -197,6 +204,28 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = Vector2.zero;
             }
         }
+        //<-- Equipping -->
+        LoadPlayerData(PlayerStats.GetInstance());
+    }
+
+    private void LoadPlayerData(PlayerStats player){
+        List<EquipmentSO> equippedItems = player.equippedItems;
+
+        EquipmentSO main = PlayerStats.GetInstance().equippedItems[4];
+        EquipmentSO shield = PlayerStats.GetInstance().equippedItems[5];
+        EquipmentSO jav = PlayerStats.GetInstance().equippedItems[6];
+        if(main != null){
+            mainWeapon.sprite = equippedItems[4].front;
+            mainWeaponBelt.sprite = equippedItems[4].front;
+        }
+        if(shield != null){
+            shieldFront.sprite = equippedItems[5].front;
+            shieldBack.sprite = equippedItems[5].back;
+        }
+        if(jav != null){
+            javelin.sprite = equippedItems[6].front;
+        }
+        
     }
     public void Attack(InputAction.CallbackContext context){
         if(context.performed){

@@ -21,8 +21,10 @@ public class EquipmentSO : ScriptableObject
     public EquipmentEnum equipmentType;
     public ArmorType armorType;
     public WeaponType weaponType;
-    
+    [Header("Asset")]
     public Sprite image;
+    public Sprite front;
+    public Sprite back;
     public EquipmentSO CreateCopy()
     {
         // Create a new instance of QuestSO
@@ -32,6 +34,7 @@ public class EquipmentSO : ScriptableObject
         newEquipment.description = this.description;
         newEquipment.baseArmor = this.baseArmor;
         newEquipment.baseDamage = this.baseDamage;
+        newEquipment.attackRange = this.attackRange;
         newEquipment.isStackable = this.isStackable;
         newEquipment.stackCount = this.stackCount;
         newEquipment.tier = this.tier;
@@ -41,11 +44,16 @@ public class EquipmentSO : ScriptableObject
         newEquipment.armorType = this.armorType;
         newEquipment.weaponType = this.weaponType;
         newEquipment.image = this.image;
-
+        newEquipment.front = this.front;  // Copy front sprite
+        newEquipment.back = this.back;
         return newEquipment;
     }
     public EquipmentSO CreateCopy(ItemData itemData)
     {
+        if (itemData == null) {
+            Debug.LogError("ItemData is null, cannot create copy.");
+            return null;
+        }
         // Create a new instance of QuestSO
         EquipmentSO newEquipment = ScriptableObject.CreateInstance<EquipmentSO>();
         newEquipment.equipmentId = this.equipmentId;
@@ -57,6 +65,7 @@ public class EquipmentSO : ScriptableObject
         if(this.equipmentType == EquipmentEnum.Weapon){
             newEquipment.baseDamage = CalculateDamage(itemData.tier, itemData.level, this.baseDamage);
         }else newEquipment.baseDamage = 0f;
+        newEquipment.attackRange = this.attackRange;
         newEquipment.isStackable = this.isStackable;
         newEquipment.stackCount = itemData.stackAmount;
         newEquipment.tier = itemData.tier;
@@ -66,7 +75,8 @@ public class EquipmentSO : ScriptableObject
         newEquipment.armorType = this.armorType;
         newEquipment.weaponType = this.weaponType;
         newEquipment.image = this.image;
-
+        newEquipment.front = this.front;  // Copy front sprite
+        newEquipment.back = this.back;
         return newEquipment;
     }
     public float CalculateDamage(int tier, int level, float baseDamage)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ public class QuestPointer : MonoBehaviour
         List<QuestSO> activeQuest = PlayerStats.GetInstance().activeQuests;
         List<QuestSO> completedQuest = PlayerStats.GetInstance().completedQuests;
 
-        if(activeQuest.FirstOrDefault(q=> q.questID == quest.questID) == null && completedQuest.FirstOrDefault(q => q.questID == quest.questID) != null){
+        if(activeQuest.Any(q=> q.questID == quest.questID) && PlayerStats.GetInstance().completedQuests.Any(q => q.questID == quest.questID)){
             Destroy(gameObject);
             return;
         }
@@ -42,70 +43,72 @@ public class QuestPointer : MonoBehaviour
     {
         if(PlayerController.GetInstance().cm == null) return;
         worldCamera = PlayerController.GetInstance().cm.GetComponent<Camera>();
-        GoalTypeEnum goal = quest.goals[quest.currentGoal].goalType;
-        if(goal == GoalTypeEnum.Talk){
-            icon.sprite = questMarker;
-        }else if (goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
-            icon.sprite = targetMarker;
-        }
+        if(quest.currentGoal < quest.goals.Count) {
+            GoalTypeEnum goal = quest.goals[quest.currentGoal].goalType;
+            if(goal == GoalTypeEnum.Talk){
+                icon.sprite = questMarker;
+            }else if (goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
+                icon.sprite = targetMarker;
+            }
+            if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
+                if(isNPCFound && quest.isPinned){
+                    pointer.SetActive(true);
+                    float bobbingOffset = Mathf.Sin(Time.time * bobbingSpeed) * bobbingAmplitude;
 
-        if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
-            if(isNPCFound && quest.isPinned){
-                pointer.SetActive(true);
-                float bobbingOffset = Mathf.Sin(Time.time * bobbingSpeed) * bobbingAmplitude;
+                    // Apply Y-offset to the quest target position and include the bobbing effect
+                    Vector3 targetPositionWithOffset = npcPosition + new Vector3(0, yOffset + bobbingOffset, 0);
 
-                // Apply Y-offset to the quest target position and include the bobbing effect
-                Vector3 targetPositionWithOffset = npcPosition + new Vector3(0, yOffset + bobbingOffset, 0);
+                    // Convert the world position to screen space
+                    Vector3 screenPosition = PlayerController.GetInstance().cm.GetComponent<Camera>().WorldToScreenPoint(targetPositionWithOffset);
 
-                // Convert the world position to screen space
-                Vector3 screenPosition = PlayerController.GetInstance().cm.GetComponent<Camera>().WorldToScreenPoint(targetPositionWithOffset);
+                    // Check if the target is behind the camera
+                    if (screenPosition.z < 0)
+                    {
+                        // Flip the position to the front if it's behind
+                        screenPosition *= -1;
+                    }
 
-                // Check if the target is behind the camera
-                if (screenPosition.z < 0)
-                {
-                    // Flip the position to the front if it's behind
-                    screenPosition *= -1;
+                    // Convert the screen position to UI space (Canvas Space)
+                    Vector2 pointerPos;
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas, screenPosition, null, out pointerPos);
+
+                    // Clamp the pointer to the screen edges
+                    pointerPos.x = Mathf.Clamp(pointerPos.x, -uiCanvas.rect.width / 2 + screenEdgeBuffer, uiCanvas.rect.width / 2 - screenEdgeBuffer);
+                    pointerPos.y = Mathf.Clamp(pointerPos.y, -uiCanvas.rect.height / 2 + screenEdgeBuffer, uiCanvas.rect.height / 2 - screenEdgeBuffer);
+
+                    // Set the pointer's position in UI space
+                    gameObject.GetComponent<RectTransform>().anchoredPosition = pointerPos;
+                }else{
+                    pointer.SetActive(false);
                 }
-
-                // Convert the screen position to UI space (Canvas Space)
-                Vector2 pointerPos;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas, screenPosition, null, out pointerPos);
-
-                // Clamp the pointer to the screen edges
-                pointerPos.x = Mathf.Clamp(pointerPos.x, -uiCanvas.rect.width / 2 + screenEdgeBuffer, uiCanvas.rect.width / 2 - screenEdgeBuffer);
-                pointerPos.y = Mathf.Clamp(pointerPos.y, -uiCanvas.rect.height / 2 + screenEdgeBuffer, uiCanvas.rect.height / 2 - screenEdgeBuffer);
-
-                // Set the pointer's position in UI space
-                gameObject.GetComponent<RectTransform>().anchoredPosition = pointerPos;
             }else{
                 pointer.SetActive(false);
             }
-        }else{
-            pointer.SetActive(false);
         }
     }
     void FindNPC()
     {
         npcParent = GameObject.Find("NPCS");
-        if(npcParent == null) isNPCFound = false;
+        isNPCFound = false;
         if(npcParent == null) return;
         // Get all child objects with DialogueTrigger component under the NPCs parent
         DialogueTrigger[] allNPCs = npcParent.GetComponentsInChildren<DialogueTrigger>();
         Enemy[] enemyNPC = npcParent.GetComponentsInChildren<Enemy>();
-        if(quest.currentGoal <= quest.goals.Count) {
+        if(quest.currentGoal < quest.goals.Count) {
             if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.Talk){
                 string npcID = quest.characters[quest.goals[quest.currentGoal].characterIndex];
                 // Loop through each NPC and check if the npcID matches the target ID
                 foreach (DialogueTrigger npc in allNPCs)
                 {
-                    
-                    if (npc.npcData.id == npcID)
+                    try{
+                    if (npc.npcData.id.Equals(npcID) && npc.gameObject.activeSelf)
                     {
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
-                    }else{
-                        isNPCFound = false;
+                    }
+                    }catch(Exception err){
+                        return;
                     }
                 }
             }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.HitMelee){
@@ -114,13 +117,11 @@ public class QuestPointer : MonoBehaviour
                 foreach (Enemy npc in enemyNPC)
                 {
                     
-                    if (npc.id == npcID)
+                    if (npc.id.Equals(npcID) && npc.gameObject.activeSelf)
                     {
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
-                    }else{
-                        isNPCFound = false;
                     }
                 }
         }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.HitAny){
@@ -129,13 +130,11 @@ public class QuestPointer : MonoBehaviour
                 foreach (Enemy npc in enemyNPC)
                 {
                     
-                    if (npc.id == npcID)
+                    if (npc.id.Equals(npcID) && npc.gameObject.activeSelf)
                     {
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
-                    }else{
-                        isNPCFound = false;
                     }
                 }
         }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.HitJavelin){
@@ -144,13 +143,11 @@ public class QuestPointer : MonoBehaviour
                 foreach (Enemy npc in enemyNPC)
                 {
                     
-                    if (npc.id == npcID)
+                    if (npc.id.Equals(npcID) && npc.gameObject.activeSelf)
                     {
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
-                    }else{
-                        isNPCFound = false;
                     }
                 }
         }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.Kill){
@@ -159,16 +156,16 @@ public class QuestPointer : MonoBehaviour
                 foreach (Enemy npc in enemyNPC)
                 {
                     
-                    if (npc.id == npcID)
+                    if (npc.id.Equals(npcID) && npc.gameObject.activeSelf)
                     {
                         npcPosition = npc.gameObject.transform.position;
                         isNPCFound = true;
                         break;
-                    }else{
-                        isNPCFound = false;
                     }
                 }
         }
+        }else{
+            Destroy(gameObject);
         }
     }
     public void SetData(QuestSO questSO){

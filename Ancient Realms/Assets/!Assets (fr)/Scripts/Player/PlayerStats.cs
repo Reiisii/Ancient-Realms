@@ -47,7 +47,7 @@ public class PlayerStats : MonoBehaviour
     public int denarii = 0;
     public int maxXP = 30;
     public int currentXP = 0;
-    public float attackRange = 0.5f;
+    public float attackRange = 0f;
     public double solBalance = 0;
     private double previousSolBalance = 0;
     public float maxThrowForce = 20f; // Maximum force applied to the throw
@@ -60,30 +60,21 @@ public class PlayerStats : MonoBehaviour
     private List<EquipmentSO> equipmentLibrary;
     private void Awake()
     {
-        equipmentLibrary = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
+        equipmentLibrary = AccountManager.Instance.equipments;
         if (Instance != null)
         {
             Debug.LogWarning("Found more than one Player Stats in the scene");
         }
+        localPlayerData = AccountManager.Instance.playerData;
         Instance = this;
     }
     public void Start()
     {
-        // PlayerController.GetInstance().canWalk = false;
-        // PlayerController.GetInstance().canWalk = true;
-        localPlayerData = AccountManager.Instance.playerData;
-        if (localPlayerData != null)
-        {
-            LoadPlayerData(localPlayerData);
-        }
-        else
-        {
-            Debug.LogError("Failed to load player data.");
-        }
         InvokeRepeating("SaveDataToServer", 1f, 1f); // Save data to the server every 10 seconds
     }
     private void OnEnable()
-    {        
+    {
+        LoadPlayerData(localPlayerData);
         Web3.OnBalanceChange += OnBalanceChange;
     }
 
@@ -96,7 +87,7 @@ public class PlayerStats : MonoBehaviour
         GameData playerGameData = data.gameData;
         foreach(QuestData quest in playerGameData.quests){
             if(quest.isActive && !quest.completed){
-                QuestSO qData = QuestManager.GetInstance().quests.Find(q => q.questID == quest.questID);
+                QuestSO qData = AccountManager.Instance.quests.Where(q => q.questID == quest.questID).FirstOrDefault();
                 QuestSO copiedQuest = qData.CreateCopy();
                 copiedQuest.isPinned = quest.isPinned;
                 copiedQuest.isActive = quest.isActive;
@@ -110,7 +101,7 @@ public class PlayerStats : MonoBehaviour
                 }
                 activeQuests.Add(copiedQuest);
             }else if(!quest.isActive && quest.completed){
-                QuestSO qData = QuestManager.GetInstance().quests.Find(q => q.questID == quest.questID);
+                QuestSO qData = AccountManager.Instance.quests.Where(q => q.questID == quest.questID).FirstOrDefault();
                 QuestSO copiedQuest = qData.CreateCopy();
                 copiedQuest.isPinned = quest.isPinned;
                 copiedQuest.isActive = quest.isActive;
@@ -127,62 +118,65 @@ public class PlayerStats : MonoBehaviour
         }
         if(playerGameData.equippedData.helmSlot != null) {
             ItemData item = playerGameData.equippedData.helmSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
         
         if(playerGameData.equippedData.chestSlot != null) {
             ItemData item = playerGameData.equippedData.chestSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
 
         if(playerGameData.equippedData.waistSlot != null) {
             ItemData item = playerGameData.equippedData.waistSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
 
         if(playerGameData.equippedData.footSlot != null) {
             ItemData item = playerGameData.equippedData.footSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
 
         if(playerGameData.equippedData.mainSlot != null) {
             ItemData item = playerGameData.equippedData.mainSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
 
         if(playerGameData.equippedData.shieldSlot != null) {
             ItemData item = playerGameData.equippedData.shieldSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
 
         if(playerGameData.equippedData.javelinSlot != null) {
             ItemData item = playerGameData.equippedData.javelinSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
 
         if(playerGameData.equippedData.bandageSlot != null) {
             ItemData item = playerGameData.equippedData.bandageSlot;
-            EquipmentSO helmSO = equipmentLibrary.Find(equipment => equipment.equipmentId == item.equipmentId);
+            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
         foreach(EquipmentSO equipment in equippedItems){
             if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
                 armor += equipment.baseArmor;
+            }
+            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && equipment.weaponType == WeaponType.Sword){
+                attackRange = equipment.attackRange;
             }
         }
         level = playerGameData.level;
@@ -205,7 +199,7 @@ public class PlayerStats : MonoBehaviour
     public void SaveQuestToServer()
     {
         foreach(QuestData quest in localPlayerData.gameData.quests){
-            QuestSO qData = activeQuests.Find(q => q.questID == quest.questID);
+            QuestSO qData = activeQuests.Where(q => q.questID == quest.questID).FirstOrDefault();
             if(qData != null){
                 quest.isActive = qData.isActive;
                 quest.isPinned = qData.isPinned;
@@ -354,11 +348,6 @@ public class PlayerStats : MonoBehaviour
         maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
         // attack = 30f * Mathf.Pow(1.04f, level - 1); // Assuming initial attack is 30
         staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
-    }
-    private async void RefreshData()
-    {
-        localPlayerData = await AccountManager.Instance.GetPlayerData();
-        LoadPlayerData(localPlayerData);
     }
     private void OnBalanceChange(double sb)
     {

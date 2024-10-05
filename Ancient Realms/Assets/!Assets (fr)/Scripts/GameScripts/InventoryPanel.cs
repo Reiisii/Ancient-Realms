@@ -24,7 +24,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI armorText;
     [SerializeField] TextMeshProUGUI damageText;
 
-    private void Start(){
+    private void OnEnable(){
         LoadPlayerData(PlayerStats.GetInstance());
     }
 

@@ -7,7 +7,12 @@ using UnityEngine.Tilemaps;
 
 public class JavelinPrefab : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer image;
     float damage = 0;
+
+    private void Awake(){
+        image.sprite = PlayerStats.GetInstance().equippedItems[6].front;
+    }
     void OnTriggerEnter2D(Collider2D hitInfo){
         Enemy enemy = hitInfo.GetComponent<Enemy>();
         CompositeCollider2D ground = hitInfo.GetComponent<CompositeCollider2D>();
