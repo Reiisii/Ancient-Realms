@@ -105,6 +105,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Toggle Premium Shop",
+                    "type": "Button",
+                    "id": "497a20c7-936f-4b77-a43a-dbd03ce9472d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Toggle Pause",
                     "type": "Button",
                     "id": "c17d2bbd-ecff-40f2-a11c-ec3a7613dd39",
@@ -440,6 +449,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Toggle Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7eeee8e1-409f-415e-95e3-dc53885dcf41",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Premium Shop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1486,6 +1506,45 @@
                     "name": "",
                     "id": "8acbfd89-498a-4517-99c2-cb41a0826415",
                     "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Shop",
+            "id": "a9056bf9-bd94-4bd6-be80-4746358aa331",
+            "actions": [
+                {
+                    "name": "Toggle",
+                    "type": "Button",
+                    "id": "77077ac1-7cc5-45b4-87fb-aca0039a73d9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e248eed7-cc8b-4434-becd-9ec88bb0838f",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "01260306-9d82-4d7a-b1f9-93546e887729",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

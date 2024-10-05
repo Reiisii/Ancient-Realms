@@ -27,6 +27,7 @@ public class JournalManager : MonoBehaviour
     private static JournalManager Instance;
     public QuestType currentQuestType = QuestType.Main;
     private int questTypeCycle = 0;
+    private int questListCycle = 0;
     public enum QuestType
     {
         Main,
@@ -108,18 +109,23 @@ public class JournalManager : MonoBehaviour
         {
             if(displayedQuest != null){
                 ShowQuestDetails(displayedQuest);
+                int i = 0;
                 foreach (Transform child in questListPanel)
                 {
                     if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
                         child.GetComponent<JournalListTitle>().isSelected = true;
+                        questListCycle = GetSelectedIndex(displayedQuest.questID);
                         break;
                     }
+                    i++;
                 }
+                
                 if(!displayedQuest.isCompleted && displayedQuest.isActive){
                     pinButton.interactable = true;
                 }
             }else{
                 ShowQuestDetails(questsToDisplay[0]);
+                questListCycle = 0;
                 foreach (Transform child in questListPanel)
                 {
                     if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
@@ -147,8 +153,8 @@ public class JournalManager : MonoBehaviour
     }
     public void CycleQuestRight()
     {
+        if(questTypeCycle > 1) return;
         questTypeCycle++;
-        if(questTypeCycle < 3) return;
         switch(questTypeCycle){
             case 0:
                 ChangeType("main");
@@ -163,8 +169,8 @@ public class JournalManager : MonoBehaviour
     }
     public void CycleQuestLeft()
     {
+        if(questTypeCycle < 1) return;
         questTypeCycle--;
-        if(questTypeCycle > 0) return;
         switch(questTypeCycle){
             case 0:
                 ChangeType("main");
@@ -177,7 +183,78 @@ public class JournalManager : MonoBehaviour
             break;
         }
     }
+    public void CycleListUp()
+    {
+        List<QuestSO> questsToDisplay = currentQuestType switch
+        {
+            QuestType.Main => mainQuestList,
+            QuestType.Sub => subQuestList,
+            QuestType.Completed => completedQuestList,
+            _ => new List<QuestSO>()
+        };
+        if(!IsSelected() && questsToDisplay.Count > 0){
+            if(questListCycle < questsToDisplay.Count){
+                ShowQuestDetails(questsToDisplay[0]);
+                foreach (Transform child in questListPanel)
+                {
+                    if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                        child.GetComponent<JournalListTitle>().isSelected = true;
+                        break;
+                    }
+                }
+            }
+        }else if(questsToDisplay.Count > 0 && IsSelected()){
+            if(questListCycle >= 1){
+                questListCycle--;
+                DeselectAllQuests();
+                ShowQuestDetails(questsToDisplay[questListCycle]);
+                foreach (Transform child in questListPanel)
+                {
+                    if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                        child.GetComponent<JournalListTitle>().isSelected = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    public void CycleListDown()
+    {
+        List<QuestSO> questsToDisplay = currentQuestType switch
+        {
+            QuestType.Main => mainQuestList,
+            QuestType.Sub => subQuestList,
+            QuestType.Completed => completedQuestList,
+            _ => new List<QuestSO>()
+        };
+        if(!IsSelected() && questsToDisplay.Count > 0){
+            if(questListCycle < questsToDisplay.Count){
+                ShowQuestDetails(questsToDisplay[0]);
+                foreach (Transform child in questListPanel)
+                {
 
+                    if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                        child.GetComponent<JournalListTitle>().isSelected = true;
+                        break;
+                    }
+                }
+            }
+        }else if(questsToDisplay.Count > 0 && IsSelected()){
+            if(questListCycle < (questsToDisplay.Count - 1)){
+                questListCycle++;
+                DeselectAllQuests();
+                ShowQuestDetails(questsToDisplay[questListCycle]);
+                foreach (Transform child in questListPanel)
+                {
+
+                    if(child.GetComponent<JournalListTitle>().questData.questID == displayedQuest.questID){
+                        child.GetComponent<JournalListTitle>().isSelected = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
     public void ChangeType(string val)
     {
         currentQuestType = val switch
@@ -186,6 +263,17 @@ public class JournalManager : MonoBehaviour
             "sub" => QuestType.Sub,
             "completed" => QuestType.Completed,
             _ => QuestType.Main
+        };
+        switch(val){
+            case "main":
+                questTypeCycle = 0;
+            break;
+            case "sub":
+                questTypeCycle = 1;
+            break;
+            case "completed":
+                questTypeCycle = 2;
+            break;
         };
         DisableButton(currentQuestType);
         ClearQuestDetails();
@@ -202,6 +290,17 @@ public class JournalManager : MonoBehaviour
             QuestType.Sub => QuestType.Sub,
             QuestType.Completed => QuestType.Completed,
             _ => QuestType.Main
+        };
+        switch(questType){
+            case QuestType.Main:
+                questTypeCycle = 0;
+            break;
+            case QuestType.Sub:
+                questTypeCycle = 1;
+            break;
+            case QuestType.Completed:
+                questTypeCycle = 2;
+            break;
         };
         DisableButton(currentQuestType);
         ClearQuestDetails();
@@ -234,6 +333,37 @@ public class JournalManager : MonoBehaviour
                 questTitle.Deselect();  
             }
         }
+    }
+    public int GetSelectedIndex(string questID)
+    {
+        int i = 0;
+        List<QuestSO> questsToDisplay = currentQuestType switch
+        {
+            QuestType.Main => mainQuestList,
+            QuestType.Sub => subQuestList,
+            QuestType.Completed => completedQuestList,
+            _ => new List<QuestSO>()
+        };
+        foreach (QuestSO child in questsToDisplay)
+        {
+            if (child.questID.Equals(questID))
+            {
+                return i;  
+            }
+            i++;
+        }
+        return 0;
+    }
+    public bool IsSelected()
+    {
+        foreach (Transform child in questListPanel)
+        {
+            if (child.GetComponent<JournalListTitle>().isSelected)
+            {
+                return true;  
+            }
+        }
+        return false;
     }
     public void DisableButton(QuestType type){
         switch(type){

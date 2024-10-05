@@ -29,14 +29,6 @@ public class Play : MonoBehaviour
     public static Play GetInstance(){
         return Instance;
     }
-    public void PlayPrologue()
-    {
-        canvasGroup.gameObject.SetActive(true);
-        ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
-        canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{        
-            SceneManager.LoadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited, LoadSceneMode.Additive).completed += OnSceneLoaded;
-        });  
-    }
     public void PlayUILoader()
     {
         canvasGroup.gameObject.SetActive(true);
@@ -58,75 +50,6 @@ public class Play : MonoBehaviour
             };
         };
  
-    }
-    public void Chapter1()
-    {
-        DOTween.Clear(true);
-        SceneManager.UnloadSceneAsync(1).completed += (operation) => {
-            SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive).completed += OnSceneLoaded;
-        };
-    }
-    public void PlayRome()
-    {
-        canvasGroup.gameObject.SetActive(true);
-        ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
-
-        canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{
-            if (oldSceneCanvas != null)
-            {
-                oldSceneCanvas.enabled = false; // Disable the old canvas
-            }
-
-            DOTween.Clear(true);
-            SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive).completed += OnSceneLoaded;
-
-        }); 
-    }
-    public void PlayTransaction()
-    {
-        canvasGroup.gameObject.SetActive(true);
-        ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
-
-        canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{
-            if (oldSceneCanvas != null)
-            {
-                oldSceneCanvas.enabled = false; // Disable the old canvas
-            }
-
-        SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive).completed += OnSceneLoaded;
-        });
-
-    }
-    public void PlayMap()
-    {
-        canvasGroup.gameObject.SetActive(true);
-        ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
-
-        canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{
-            if (oldSceneCanvas != null)
-            {
-                oldSceneCanvas.enabled = false; // Disable the old canvas
-            }
-
-            DOTween.Clear(true);
-            SceneManager.LoadSceneAsync(4, LoadSceneMode.Additive).completed += OnSceneLoaded;
-        });
-    }
-    public void PlayBlacksmith()
-    {
-        canvasGroup.gameObject.SetActive(true);
-        ChapterSelect.GetComponent<ChapterSelectAnimation>().Close();
-
-        canvasGroup.DOFade(1, 1f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(()=>{
-            if (oldSceneCanvas != null)
-            {
-                oldSceneCanvas.enabled = false; // Disable the old canvas
-            }
-
-            DOTween.Clear(true);
-            SceneManager.LoadSceneAsync(5, LoadSceneMode.Additive).completed += OnSceneLoaded;
-
-        }); 
     }
     private void OnSceneLoaded(AsyncOperation operation)
     {
