@@ -1481,6 +1481,7 @@ GameObject:
   - component: {fileID: 8143464205618705029}
   - component: {fileID: 3575490194625955687}
   - component: {fileID: -6049172724251349994}
+  - component: {fileID: 6803588018265507997}
   - component: {fileID: -7447427150435233297}
   - component: {fileID: 1069500992766602489}
   - component: {fileID: 7836553738663465838}
@@ -1698,6 +1699,18 @@ MonoBehaviour:
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
+--- !u!114 &6803588018265507997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e50a020ea023184eb764eeb99ef6bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-7447427150435233297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2091,6 +2104,74 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5f45ed0d-a0f4-4805-8263-bf109b00479e
     m_ActionName: Map/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestCycleRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9aad61be-2c9b-4da6-8c91-bb62a969e910
+    m_ActionName: Quest/Navigation[/Keyboard/a,/Keyboard/d,/Keyboard/w,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 07c22b98-883a-4401-b3ed-afaadddfb06d
+    m_ActionName: Dialogue/Navigation[/Keyboard/w,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestCycleLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a69d98e1-3379-47ba-ba2c-7903945d4cfe
+    m_ActionName: Quest/Left[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: dfd6e951-a5dd-4395-8d46-e17096913a58
+    m_ActionName: Quest/Up[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6803588018265507997}
+        m_TargetAssemblyTypeName: PlayerJournalController, Assembly-CSharp
+        m_MethodName: QuestDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e7c3339b-1604-4b9f-855f-1d989220d12c
+    m_ActionName: Quest/Down[/Keyboard/s]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

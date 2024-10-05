@@ -26,6 +26,7 @@ public class JournalManager : MonoBehaviour
     [SerializeField] Button completeButton;
     private static JournalManager Instance;
     public QuestType currentQuestType = QuestType.Main;
+    private int questTypeCycle = 0;
     public enum QuestType
     {
         Main,
@@ -143,6 +144,38 @@ public class JournalManager : MonoBehaviour
         titlePrefab.transform.SetParent(questListPanel);
         titlePrefab.transform.localScale = Vector3.one;
         titlePrefab.SetData(quest);
+    }
+    public void CycleQuestRight()
+    {
+        questTypeCycle++;
+        if(questTypeCycle < 3) return;
+        switch(questTypeCycle){
+            case 0:
+                ChangeType("main");
+            break;
+            case 1:
+                ChangeType("sub");
+            break;
+            case 2:
+                ChangeType("completed");
+            break;
+        }
+    }
+    public void CycleQuestLeft()
+    {
+        questTypeCycle--;
+        if(questTypeCycle > 0) return;
+        switch(questTypeCycle){
+            case 0:
+                ChangeType("main");
+            break;
+            case 1:
+                ChangeType("sub");
+            break;
+            case 2:
+                ChangeType("completed");
+            break;
+        }
     }
 
     public void ChangeType(string val)
