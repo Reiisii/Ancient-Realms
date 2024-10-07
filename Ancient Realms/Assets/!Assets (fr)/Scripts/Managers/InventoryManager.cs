@@ -23,16 +23,22 @@ public class InventoryManager : MonoBehaviour
     }
     public void OpenInventory()
     {
-        if(inventoryPanel.activeSelf == true){
-            Time.timeScale = 1f;
-            PlayerController.GetInstance().playerActionMap.Enable();
-            PlayerController.GetInstance().inventoryActionMap.Disable();
-            inventoryPanel.SetActive(false);
-        }else{  
-            Time.timeScale = 0f;
-            PlayerController.GetInstance().playerActionMap.Disable();
-            PlayerController.GetInstance().inventoryActionMap.Enable();
-            inventoryPanel.SetActive(true);
+        if(PlayerController.GetInstance() != null){
+            if(!PlayerController.GetInstance().canAccessInventory) {
+                    PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access inventory in a combat location.");
+                    return;
+            }
+            if(inventoryPanel.activeSelf == true){
+                Time.timeScale = 1f;
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().inventoryActionMap.Disable();
+                inventoryPanel.SetActive(false);
+            }else{  
+                Time.timeScale = 0f;
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().inventoryActionMap.Enable();
+                inventoryPanel.SetActive(true);
+            }
         }
     }
 }

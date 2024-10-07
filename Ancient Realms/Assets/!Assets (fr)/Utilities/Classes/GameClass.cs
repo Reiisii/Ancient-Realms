@@ -125,6 +125,12 @@ public enum MouseEnum {
     Help,
     TextBox
 }
+public enum MType {
+    Error,
+    Warning,
+    Success,
+    Info
+}
 [Serializable]
 public class QuestList
 {

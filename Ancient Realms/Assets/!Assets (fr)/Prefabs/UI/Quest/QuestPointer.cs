@@ -41,7 +41,9 @@ public class QuestPointer : MonoBehaviour
 
     void UpdatePointerPosition()
     {
-        if(PlayerController.GetInstance().cm == null) return;
+        if(PlayerController.GetInstance() != null){
+            if(PlayerController.GetInstance().cm == null) return;
+        }
         worldCamera = PlayerController.GetInstance().cm.GetComponent<Camera>();
         if(quest.currentGoal < quest.goals.Count) {
             GoalTypeEnum goal = quest.goals[quest.currentGoal].goalType;

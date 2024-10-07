@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerUIManager : MonoBehaviour
 {
-    [Header("")]
+    [Header("Canvas")]
     [SerializeField] public Canvas canvas;
     [Header("Background")]
     [SerializeField] public GameObject backgroundGO;
@@ -45,6 +45,10 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Trivia")]
     [SerializeField] TextMeshProUGUI triviaTitle;
     [SerializeField] TextMeshProUGUI triviaDescription;
+    [Header("Popup Message")]
+    [SerializeField] GameObject popupParent;
+    [Header("Prefabs")]
+    [SerializeField] PopupMessageManager popupPrefab;
 
     public List<TriviaSO> triviaList;
     TriviaSO trivia;
@@ -98,8 +102,12 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
     public void TogglePremiumShop(){
-        premiumUI.SetActive(!premiumUI.activeSelf);
         if(PlayerController.GetInstance() != null){
+            if(!PlayerController.GetInstance().canAccessInventory) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access premium shop in a combat location.");
+                return;
+            }
+            premiumUI.SetActive(!premiumUI.activeSelf);
             if(premiumUI.activeSelf){
                 PlayerController.GetInstance().playerActionMap.Disable();
                 PlayerController.GetInstance().shopActionMap.Enable();
@@ -167,6 +175,9 @@ public class PlayerUIManager : MonoBehaviour
         // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapGO.SetActive(false);
         worldMap.SetActive(false);
+    }
+    public void SpawnMessage(MType mType, string message){
+        PopupMessageManager.CreatePopup(popupPrefab, popupParent.transform, mType, message);
     }
     public void TriviaLink(){
         Application.OpenURL(trivia.link);

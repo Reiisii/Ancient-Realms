@@ -135,16 +135,22 @@ public class QuestManager : MonoBehaviour
     }
     public void OpenJournal()
     {
-        if(journalPanel.activeSelf == true){
-            Time.timeScale = 1f;
-            PlayerController.GetInstance().playerActionMap.Enable();
-            PlayerController.GetInstance().questActionMap.Disable();
-            journalPanel.SetActive(false);
-        }else{  
-            Time.timeScale = 0f;
-            PlayerController.GetInstance().playerActionMap.Disable();
-            PlayerController.GetInstance().questActionMap.Enable();
-            journalPanel.SetActive(true);
+        if(PlayerController.GetInstance() != null){
+            if(!PlayerController.GetInstance().canAccessJournal){
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access journal in a combat location.");
+                return;
+            };
+            if(journalPanel.activeSelf == true){
+                Time.timeScale = 1f;
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().questActionMap.Disable();
+                journalPanel.SetActive(false);
+            }else{  
+                Time.timeScale = 0f;
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().questActionMap.Enable();
+                journalPanel.SetActive(true);
+            }
         }
     }
     public void UpdateWalkGoals(float deltaX)
