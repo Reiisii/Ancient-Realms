@@ -162,16 +162,18 @@ public class PlayerStats : MonoBehaviour
             EquipmentSO copiedhelm = helmSO.CreateCopy(item);
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
+        int j = 0;
         foreach(EquipmentSO equipment in equippedItems){
             if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
                 armor += equipment.baseArmor;
             }
-            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && equipment.weaponType == WeaponType.Sword){
+            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && equipment.weaponType == WeaponType.Sword && j == 4){
                 attackRange = equipment.attackRange;
             }
-            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && equipment.weaponType == WeaponType.SpearJavelin){
+            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && equipment.weaponType == WeaponType.SpearJavelin && j == 4){
                 attackRange = equipment.attackRange;
             }
+            j++;
         }
         level = playerGameData.level;
         currentXP = playerGameData.currentXP;
