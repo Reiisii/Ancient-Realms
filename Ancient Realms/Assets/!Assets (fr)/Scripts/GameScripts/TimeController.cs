@@ -24,10 +24,9 @@ public class TimeController : MonoBehaviour
     public SpriteRenderer[] stars; // star sprites 
     // Start is called before the first frame update
     void Awake(){
-        DateTime date = DateTime.Now.ToLocalTime();
-        seconds = date.Second;
-        mins = date.Minute;
-        hours = date.Hour;
+        seconds = 0;
+        mins = 0;
+        hours = UnityEngine.Random.Range(1, 24);
         if(hours >= 19 || hours <= 6) {
                 light2D.intensity = 0.05f;
                 activateLights = true;
@@ -37,29 +36,38 @@ public class TimeController : MonoBehaviour
         }
     }
     // Update is called once per frame
-    private void Update(){
-        if(LightsManager.GetInstance() != null){
+    private void Update()
+    {
+        if (LightsManager.GetInstance() != null)
+        {
             exteriorLights = LightsManager.GetInstance().exteriorLights;
             interiorLights = LightsManager.GetInstance().interiorLights;
-            if(activateLights){
-                if(exteriorLights != null) exteriorLights.SetActive(true);
-                if(interiorLights != null) interiorLights.SetActive(true);
-            }else{
-                if(exteriorLights != null) exteriorLights.SetActive(false);
-                if(interiorLights != null) interiorLights.SetActive(false);
+
+            // Manage exterior and interior lights based on time
+            if (activateLights)
+            {
+                if (exteriorLights != null) exteriorLights.SetActive(true);
+                if (interiorLights != null) interiorLights.SetActive(true);
+            }
+            else
+            {
+                if (exteriorLights != null) exteriorLights.SetActive(false);
+                if (interiorLights != null) interiorLights.SetActive(false);
             }
         }
     }
-    void FixedUpdate() // we used fixed update, since update is frame dependant. 
+
+    // FixedUpdate is called at a consistent rate, independent of frame rate
+    void FixedUpdate()
     {
-        CalcTime();
-        DisplayTime();  
+        CalcTime(); // Calculate time progression
+        DisplayTime(); // Optional: display the time
     }
  
     public void CalcTime() // Used to calculate sec, min and hours
     {
-        seconds += Time.fixedDeltaTime * tick; // multiply time between fixed update by tick
- 
+        seconds += Time.fixedDeltaTime * tick * Time.timeScale;
+         
         if (seconds >= 60) // 60 sec = 1 min
         {
             seconds = 0;

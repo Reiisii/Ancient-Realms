@@ -25,20 +25,26 @@ public class MapManager : MonoBehaviour
     }
 
     public async void OpenMap(){
-        if(PlayerUIManager.GetInstance().mapGO.activeSelf == true){
+        if(PlayerController.GetInstance() != null){
+            if(!PlayerController.GetInstance().canAccessMap) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access the map at this time.");
+                return;
+            }
+            if(PlayerUIManager.GetInstance().mapGO.activeSelf == true){
             if(PlayerController.GetInstance() != null){
                 PlayerController.GetInstance().cm.SetActive(true);
             }
-            PlayerController.GetInstance().playerActionMap.Enable();
-            PlayerController.GetInstance().mapActionMap.Disable();
-            await PlayerUIManager.GetInstance().CloseMapUI();
-        }else{
-            if(PlayerController.GetInstance() != null){
-                PlayerController.GetInstance().cm.SetActive(false);
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().mapActionMap.Disable();
+                await PlayerUIManager.GetInstance().CloseMapUI();
+            }else{
+                if(PlayerController.GetInstance() != null){
+                    PlayerController.GetInstance().cm.SetActive(false);
+                }
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().mapActionMap.Enable();
+                PlayerUIManager.GetInstance().OpenMapUI();
             }
-            PlayerController.GetInstance().playerActionMap.Disable();
-            PlayerController.GetInstance().mapActionMap.Enable();
-            PlayerUIManager.GetInstance().OpenMapUI();
-        }
+            }
     }
 }

@@ -451,10 +451,6 @@ public class PlayerController : MonoBehaviour
        
         if (context.performed)
         {
-            if(!canAccessJournal){
-                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access journal in a combat location.");
-                return;
-            };
             QuestManager.GetInstance().OpenJournal();
         }
     }
@@ -462,10 +458,6 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            if(!canAccessInventory) {
-                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access inventory in a combat location.");
-                return;
-            }
             InventoryManager.GetInstance().OpenInventory();
         }
     }
@@ -480,10 +472,6 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            if(!canAccessMap) {
-                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access the map at this time.");
-                return;
-            }
             MapManager.GetInstance().OpenMap();
         }
     }
@@ -500,10 +488,6 @@ public class PlayerController : MonoBehaviour
         
         if (context.performed)
         {
-            if(!canAccessInventory) {
-                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access premium shop in a combat location.");
-                return;
-            }
             PlayerUIManager.GetInstance().TogglePremiumShop();
         }
     }
