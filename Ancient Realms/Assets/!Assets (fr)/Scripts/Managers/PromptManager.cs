@@ -8,7 +8,6 @@ public class PromptManager : MonoBehaviour
 {
     [SerializeField] TMP_InputField nameField;
     [SerializeField] GameObject nameGameObject;
-    [SerializeField] GameObject errorGameObject;
     [SerializeField] TextMeshProUGUI errorMessage;
     [SerializeField] string activeFor;
     // Update is called once per frame
@@ -17,9 +16,6 @@ public class PromptManager : MonoBehaviour
         PlayerController.GetInstance().promptActionMap.Enable();
     }
     private void Update(){
-        if(PlayerController.GetInstance().GetInteractPressed()){
-            Debug.Log("Submitted");
-        }
         if(PlayerController.GetInstance().GetInteractPressed() && PlayerController.GetInstance().promptActionMap.enabled){
                 Submit();
         }
@@ -29,9 +25,7 @@ public class PromptManager : MonoBehaviour
 
         if (result == "Name cannot be empty!" || result == "Name cannot be longer than 27 characters!")
         {
-            nameField.text = "";
-            errorGameObject.SetActive(true);
-            errorMessage.SetText(result);
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Error, result);
         }
         else
         {
