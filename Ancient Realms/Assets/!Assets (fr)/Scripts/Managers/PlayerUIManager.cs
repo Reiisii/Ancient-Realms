@@ -48,7 +48,7 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Popup Message")]
     [SerializeField] GameObject popupParent;
     [Header("Prefabs")]
-    [SerializeField] PopupMessage popupPrefab;
+    [SerializeField] PopupMessageManager popupPrefab;
 
     public List<TriviaSO> triviaList;
     TriviaSO trivia;
@@ -102,8 +102,12 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
     public void TogglePremiumShop(){
-        premiumUI.SetActive(!premiumUI.activeSelf);
         if(PlayerController.GetInstance() != null){
+            if(!PlayerController.GetInstance().canAccessInventory) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access premium shop in a combat location.");
+                return;
+            }
+            premiumUI.SetActive(!premiumUI.activeSelf);
             if(premiumUI.activeSelf){
                 PlayerController.GetInstance().playerActionMap.Disable();
                 PlayerController.GetInstance().shopActionMap.Enable();
@@ -173,11 +177,7 @@ public class PlayerUIManager : MonoBehaviour
         worldMap.SetActive(false);
     }
     public void SpawnMessage(MType mType, string message){
-        PopupMessage nftPrefab = Instantiate(popupPrefab, Vector3.zero, Quaternion.identity);
-        nftPrefab.transform.SetParent(popupParent.transform, false);
-        nftPrefab.transform.localScale = Vector3.one;
-        nftPrefab.transform.localPosition = new Vector3(0f, 340f);
-        nftPrefab.SetMessage(mType, message);
+        PopupMessageManager.CreatePopup(popupPrefab, popupParent.transform, mType, message);
     }
     public void TriviaLink(){
         Application.OpenURL(trivia.link);

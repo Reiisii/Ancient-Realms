@@ -3446,7 +3446,7 @@ MonoBehaviour:
   triviaTitle: {fileID: 1794101200}
   triviaDescription: {fileID: 1241587893}
   popupParent: {fileID: 1703248338}
-  popupPrefab: {fileID: 7254466752489614906, guid: cf973365e5339984dbf711db338e767d, type: 3}
+  popupPrefab: {fileID: 3719489370025623175, guid: cf973365e5339984dbf711db338e767d, type: 3}
   triviaList: []
 --- !u!1001 &142503833
 PrefabInstance:
@@ -22583,7 +22583,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 940134105}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 141511074}
+        m_TargetAssemblyTypeName: PlayerUIManager, Assembly-CSharp
+        m_MethodName: TogglePremiumShop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &940134105
 MonoBehaviour:
   m_ObjectHideFlags: 0
