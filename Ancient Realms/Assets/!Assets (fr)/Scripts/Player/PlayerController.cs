@@ -401,9 +401,12 @@ public class PlayerController : MonoBehaviour
     }
     public void CombatMode(InputAction.CallbackContext context)
     {
-        if(!canAccessCombatMode) return;
         if (context.performed)
         {
+            if(!canAccessCombatMode) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't use combat mode inside the city.");
+                return;
+            }
             if(!isEquipping && !isAttacking && !isBlocking){
                 animator.SetBool("isCombatMode", !playerStats.isCombatMode);
                 playerStats.isCombatMode = !playerStats.isCombatMode;
@@ -445,17 +448,24 @@ public class PlayerController : MonoBehaviour
     }
     public void JournalPressed(InputAction.CallbackContext context)
     {
-        if(!canAccessJournal) return;
+       
         if (context.performed)
         {
+            if(!canAccessJournal){
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access journal in a combat location.");
+                return;
+            };
             QuestManager.GetInstance().OpenJournal();
         }
     }
     public void InventoryPressed(InputAction.CallbackContext context)
     {
-        if(!canAccessInventory) return;
         if (context.performed)
         {
+            if(!canAccessInventory) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access inventory in a combat location.");
+                return;
+            }
             InventoryManager.GetInstance().OpenInventory();
         }
     }
@@ -468,9 +478,12 @@ public class PlayerController : MonoBehaviour
     }
     public void MapPressed(InputAction.CallbackContext context)
     {
-        if(!canAccessMap) return;
         if (context.performed)
         {
+            if(!canAccessMap) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access the map at this time.");
+                return;
+            }
             MapManager.GetInstance().OpenMap();
         }
     }
@@ -484,9 +497,13 @@ public class PlayerController : MonoBehaviour
     }
     public void TogglePremiumShop(InputAction.CallbackContext context)
     {
-        if(!canAccessMap) return;
+        
         if (context.performed)
         {
+            if(!canAccessInventory) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access premium shop in a combat location.");
+                return;
+            }
             PlayerUIManager.GetInstance().TogglePremiumShop();
         }
     }

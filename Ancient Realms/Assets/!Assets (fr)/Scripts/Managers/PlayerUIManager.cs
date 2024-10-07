@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerUIManager : MonoBehaviour
 {
-    [Header("")]
+    [Header("Canvas")]
     [SerializeField] public Canvas canvas;
     [Header("Background")]
     [SerializeField] public GameObject backgroundGO;
@@ -45,6 +45,10 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Trivia")]
     [SerializeField] TextMeshProUGUI triviaTitle;
     [SerializeField] TextMeshProUGUI triviaDescription;
+    [Header("Popup Message")]
+    [SerializeField] GameObject popupParent;
+    [Header("Prefabs")]
+    [SerializeField] PopupMessage popupPrefab;
 
     public List<TriviaSO> triviaList;
     TriviaSO trivia;
@@ -167,6 +171,13 @@ public class PlayerUIManager : MonoBehaviour
         // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapGO.SetActive(false);
         worldMap.SetActive(false);
+    }
+    public void SpawnMessage(MType mType, string message){
+        PopupMessage nftPrefab = Instantiate(popupPrefab, Vector3.zero, Quaternion.identity);
+        nftPrefab.transform.SetParent(popupParent.transform, false);
+        nftPrefab.transform.localScale = Vector3.one;
+        nftPrefab.transform.localPosition = new Vector3(0f, 340f);
+        nftPrefab.SetMessage(mType, message);
     }
     public void TriviaLink(){
         Application.OpenURL(trivia.link);
