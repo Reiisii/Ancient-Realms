@@ -131,6 +131,14 @@ public enum MType {
     Success,
     Info
 }
+public enum WorkStation {
+    Furnace,
+    Hammering,
+    Grindstone,
+    Assembly,
+    Metal,
+    Submit
+}
 [Serializable]
 public class QuestList
 {
