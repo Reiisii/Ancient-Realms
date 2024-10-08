@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -16,5 +17,11 @@ public class ConnectionAnimation : MonoBehaviour
         UIManager.DisableAllButtons(LogoGO);
         Logo.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => UIManager.EnableAllButtons(LogoGO));
     }
-    
+    public async Task Close(){
+        UIManager.DisableAllButtons(LogoGO);
+        await Logo.DOAnchorPosY(defaultPanelPosY, panelDuration).SetEase((Ease)panelEaseType).OnComplete(() => {
+            UIManager.EnableAllButtons(LogoGO);
+            gameObject.SetActive(false);
+        }).AsyncWaitForCompletion();
+    }
 }

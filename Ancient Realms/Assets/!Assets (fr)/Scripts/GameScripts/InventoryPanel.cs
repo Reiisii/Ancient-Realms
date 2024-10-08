@@ -43,6 +43,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] RectTransform nftRectTransform;
     [Header("Prefabs")]
     [SerializeField] EquipmentPrefab equipmentPrefab;
+    [SerializeField] ItemPrefab itemPrefab;
     [SerializeField] InventoryNFT inventoryNFT;
     [Header("Inventory")]
     public List<EquipmentSO> equipments;
@@ -167,6 +168,16 @@ public class InventoryPanel : MonoBehaviour
             InitializeNFT();
             nftGO.SetActive(true);
             inventoryGO.SetActive(false);
+        }else if(currentTab == InventoryTab.Items || currentTab == InventoryTab.QuestItem){
+            foreach(EquipmentSO equipmentSO in equipmentToDisplay)
+            {
+                    ItemPrefab itmPrefab = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity);
+                    itmPrefab.transform.SetParent(inventoryRectTransform);
+                    itmPrefab.transform.localScale = Vector3.one;
+                    itmPrefab.SetData(equipmentSO);
+            }
+            nftGO.SetActive(false);
+            inventoryGO.SetActive(true);
         }else{
             foreach(EquipmentSO equipmentSO in equipmentToDisplay)
             {
@@ -189,22 +200,21 @@ public class InventoryPanel : MonoBehaviour
         ClearContent(nftRectTransform);
         if (accountNft == null) return;
         if (accountNft.Count < 1) return;
+        try{
         for(int i = 0; i < nftTotal; i++){
             if(accountNft[i].metaplexData.data.offchainData.attributes.Count > 3){
                 if(accountNft[i].metaplexData.data.offchainData.attributes[4].value.Equals("Eagle's Shadow")){
                     InventoryNFT nft = Instantiate(inventoryNFT, Vector3.zero, Quaternion.identity);
                     NFTSO nftData = AccountManager.Instance.nfts.FirstOrDefault(nft => nft.id == int.Parse(accountNft[i].metaplexData.data.offchainData.attributes[3].value));
-                    if (nftData != null) {
-                        Debug.Log(nftData.nftName);
-                    } else {
-                        Debug.LogWarning($"No matching NFT found for ID: {accountNft[i].metaplexData.data.offchainData.attributes[3].value}");
-                    }
                     nft.transform.SetParent(nftRectTransform);
                     nft.transform.localScale = new Vector3(1, 1, 1);
                     nft.setNFT(accountNft[i], nftData);
                 }
                 
             }
+        }
+        }catch(Exception err){
+            return;
         }
     }
     public void ChangeType(string type)
@@ -248,9 +258,21 @@ public class InventoryPanel : MonoBehaviour
     public void AddItem(){
         GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
         ItemData item1 = new ItemData(11, 3, 2, 1);
-        ItemData item2 = new ItemData(12, 3, 1, 1);
+        ItemData item2 = new ItemData(12, 1, 1, 1);
+        ItemData item3 = new ItemData(0, 2, 4, 1);
+        ItemData item4 = new ItemData(5, 4, 5, 1);
+        ItemData item5 = new ItemData(23, 5, 5, 1);
+        ItemData item6 = new ItemData(18, 4, 1, 1);
+        ItemData item7 = new ItemData(22, 0, 0, 1);
+        ItemData item8 = new ItemData(21, 0, 0, 1);
         gameData.inventory.items.Add(item1);
         gameData.inventory.items.Add(item2);
+        gameData.inventory.items.Add(item3);
+        gameData.inventory.items.Add(item4);
+        gameData.inventory.items.Add(item5);
+        gameData.inventory.items.Add(item6);
+        gameData.inventory.items.Add(item7);
+        gameData.inventory.items.Add(item8);
         PlayerStats.GetInstance().SaveInventoryToServer();
     }
 }

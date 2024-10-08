@@ -6,9 +6,16 @@ using UnityEngine.UI;
 
 public class EquipmentPrefab : MonoBehaviour
 {
+    [Header("Equipment Data")]
     [SerializeField] Image equipmentIcon;
-    // [SerializeField] TextMeshProUGUI tier;
-    // [SerializeField] TextMeshProUGUI level;
+    [SerializeField] TextMeshProUGUI level;
+    [SerializeField] GameObject levelGO;
+    [Header("Equipment Tier")]
+    [SerializeField] GameObject tier1;
+    [SerializeField] GameObject tier2;
+    [SerializeField] GameObject tier3;
+    [SerializeField] GameObject tier4;
+    [SerializeField] GameObject tier5;
     public EquipmentSO equipment; 
     
     public void InitializeEquipment()
@@ -17,6 +24,26 @@ public class EquipmentPrefab : MonoBehaviour
         {
             
             equipmentIcon.sprite = equipment.image;
+            
+            level.SetText(equipment.level.ToString());
+            levelGO.SetActive(true);
+            switch(equipment.tier){
+                case 1:
+                    tier1.SetActive(true);
+                break;
+                case 2:
+                    tier2.SetActive(true);
+                break;
+                case 3:
+                    tier3.SetActive(true);
+                break;
+                case 4:
+                    tier4.SetActive(true);
+                break;
+                case 5:
+                    tier5.SetActive(true);
+                break;
+            }
         }
         else
         {
@@ -27,6 +54,7 @@ public class EquipmentPrefab : MonoBehaviour
     public void SetData(EquipmentSO equipmentData)
     {
         equipment = equipmentData;
+
         InitializeEquipment();
     }
 }
