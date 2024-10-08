@@ -3892,6 +3892,7 @@ GameObject:
   m_Component:
   - component: {fileID: 145669854}
   - component: {fileID: 145669855}
+  - component: {fileID: 145669856}
   m_Layer: 0
   m_Name: Assembly
   m_TagString: Untagged
@@ -3915,7 +3916,6 @@ Transform:
   - {fileID: 267212614}
   - {fileID: 434719482}
   - {fileID: 2122057862}
-  - {fileID: 1465582294}
   m_Father: {fileID: 2046804871}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &145669855
@@ -3970,6 +3970,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &145669856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145669853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1dc3e238f2163840866f333f7623c5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parts: {fileID: 61332740}
 --- !u!1 &151032540
 GameObject:
   m_ObjectHideFlags: 0
@@ -37603,50 +37616,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1465324728}
   m_CullTransparentMesh: 1
---- !u!1 &1465582293
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1465582294}
-  - component: {fileID: 1465582295}
-  m_Layer: 0
-  m_Name: PuzzleManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1465582294
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465582293}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4043.0693, y: 16.097265, z: -1.8019738}
-  m_LocalScale: {x: 7.130282, y: 6.445796, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 145669854}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1465582295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465582293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1dc3e238f2163840866f333f7623c5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1474724768
 GameObject:
   m_ObjectHideFlags: 0

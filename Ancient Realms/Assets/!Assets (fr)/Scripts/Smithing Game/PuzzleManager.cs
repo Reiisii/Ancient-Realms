@@ -5,7 +5,8 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager instance;
-
+    [Header("Panel")]
+    [SerializeField] public GameObject parts;
     private bool isSwordBladePlaced = false;
     private bool isSwordRainGuardPlaced = false;
     private bool isSwordGripPlaced = false;
@@ -21,7 +22,7 @@ public class PuzzleManager : MonoBehaviour
     private bool isPugioGripPlaced = false;
     private bool isPugioPommelPlaced = false;
 
-    private void OnEnable()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -33,7 +34,7 @@ public class PuzzleManager : MonoBehaviour
         }
     }
     private void OnDisable(){
-        Destroy(gameObject);
+        Clear();
     }
     public void PiecePlaced(string pieceName)
     {
@@ -106,6 +107,32 @@ public class PuzzleManager : MonoBehaviour
             SmithingGameManager.GetInstance().score += 25;
             SmithingGameManager.GetInstance().assemblyUsed = true;
             SmithingGameManager.GetInstance().EndWorkStation(WorkStation.Assembly);
+        }
+    }
+    public void Clear(){
+        isSwordBladePlaced = false;
+        isSwordRainGuardPlaced = false;
+        isSwordGripPlaced = false;
+        isSwordPommelPlaced = false;
+        isPila1Placed = false;
+        isPila2Placed = false;
+        isPila3Placed = false;
+        isPila4Placed = false;
+        isPugioBladePlaced = false;
+        isPugioRainGuardPlaced = false;
+        isPugioGripPlaced = false;
+        isPugioPommelPlaced = false;
+        ResetPosition(parts);
+    }
+    public void ResetPosition(GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            DragDrop dragDropComponent = child.GetComponent<DragDrop>();
+            if (dragDropComponent != null)
+            {
+                dragDropComponent.ResetPostion();
+            }
         }
     }
 }

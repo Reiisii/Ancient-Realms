@@ -185,6 +185,7 @@ public class SmithingGameManager : MonoBehaviour
             assemblyUsed = false;
             totalScore += tempScore;
             PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "Weapon delivered! You received " + tempScore +" denarii.");
+            PlayerStats.GetInstance().AddGold(tempScore);
             score = 0;
             weaponMade++;
         }else{
