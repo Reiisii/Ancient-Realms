@@ -227,6 +227,8 @@ public class SmithingGameManager : MonoBehaviour
         await PlayerUIManager.GetInstance().ClosePlayerUI();
     }
     public async void EndGame(){
+        
+        PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "Overall denarii accumulated " + totalScore);
         ClearSmithingGame();
         PlayerStats.GetInstance().localPlayerData.gameData.denarii += totalScore;
         PlayerStats.GetInstance().isDataDirty = true;
