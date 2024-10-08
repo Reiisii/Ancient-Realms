@@ -31,6 +31,7 @@ public class AccountManager : MonoBehaviour
     public List<QuestSO> quests;
     public List<ArtifactsSO> achievements;
     public List<EquipmentSO> equipments;
+    public List<NFTSO> nfts;
     public string EntityId;
     public string UIDInstance;
     public PriceData priceData; 
@@ -41,6 +42,7 @@ public class AccountManager : MonoBehaviour
             quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
             achievements = Resources.LoadAll<ArtifactsSO>("ArtifactSO").ToList();
             equipments = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
+            nfts = Resources.LoadAll<NFTSO>("NFTSO").ToList();
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }

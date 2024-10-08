@@ -54,6 +54,7 @@ public class PlayerStats : MonoBehaviour
     public List<QuestSO> completedQuests;
     private static PlayerStats Instance;
     private List<EquipmentSO> equipmentLibrary;
+    public bool firstLogin = true;
     private void Awake()
     {
         equipmentLibrary = AccountManager.Instance.equipments;
@@ -76,37 +77,8 @@ public class PlayerStats : MonoBehaviour
     private void LoadPlayerData(PlayerData data)
     {
         GameData playerGameData = data.gameData;
-        foreach(QuestData quest in playerGameData.quests){
-            if(quest.isActive && !quest.completed){
-                QuestSO qData = AccountManager.Instance.quests.Where(q => q.questID == quest.questID).FirstOrDefault();
-                QuestSO copiedQuest = qData.CreateCopy();
-                copiedQuest.isPinned = quest.isPinned;
-                copiedQuest.isActive = quest.isActive;
-                copiedQuest.isCompleted = quest.completed;
-                copiedQuest.currentKnot = quest.currentKnot;
-                copiedQuest.currentGoal = quest.currentGoal;
-                copiedQuest.isRewarded = quest.isRewarded;
-                for (int i = 0; i < copiedQuest.goals.Count; i++)
-                {
-                    copiedQuest.goals[i].currentAmount = quest.goals[i].currentAmount;
-                }
-                activeQuests.Add(copiedQuest);
-            }else if(!quest.isActive && quest.completed){
-                QuestSO qData = AccountManager.Instance.quests.Where(q => q.questID == quest.questID).FirstOrDefault();
-                QuestSO copiedQuest = qData.CreateCopy();
-                copiedQuest.isPinned = quest.isPinned;
-                copiedQuest.isActive = quest.isActive;
-                copiedQuest.isCompleted = quest.completed;
-                copiedQuest.currentKnot = quest.currentKnot;
-                copiedQuest.currentGoal = quest.currentGoal;
-                copiedQuest.isRewarded = quest.isRewarded;
-                for (int i = 0; i < copiedQuest.goals.Count; i++)
-                {
-                    copiedQuest.goals[i].currentAmount = quest.goals[i].currentAmount;
-                }
-                completedQuests.Add(copiedQuest);
-            }
-        }
+        InitializeQuests(playerGameData);
+        InitializeEquipments(playerGameData);
         if(playerGameData.equippedData.helmSlot != null) {
             ItemData item = playerGameData.equippedData.helmSlot;
             EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
@@ -206,6 +178,19 @@ public class PlayerStats : MonoBehaviour
                 {
                     quest.goals[i].currentAmount = qData.goals[i].currentAmount;
                 }
+                isDataDirty = true;
+            }
+        }        
+    }
+    public void SaveInventoryToServer()
+    {
+        foreach(ItemData item in localPlayerData.gameData.inventory.items){
+            EquipmentSO iData = AccountManager.Instance.equipments.FirstOrDefault(q => q.equipmentId == item.equipmentId).CreateCopy(item);
+            if(iData != null){
+                item.equipmentId = iData.equipmentId;
+                item.level = iData.level;
+                item.tier = iData.tier;
+                item.stackAmount = iData.stackCount;
                 isDataDirty = true;
             }
         }        
@@ -312,6 +297,50 @@ public class PlayerStats : MonoBehaviour
         // Optionally save data immediately on level up
         await AccountManager.SaveData(localPlayerData);
         isDataDirty = false;
+    }
+    private void InitializeQuests(GameData playerGameData){
+        foreach(QuestData quest in playerGameData.quests){
+            if(quest.isActive && !quest.completed){
+                QuestSO qData = AccountManager.Instance.quests.Where(q => q.questID == quest.questID).FirstOrDefault();
+                QuestSO copiedQuest = qData.CreateCopy();
+                copiedQuest.isPinned = quest.isPinned;
+                copiedQuest.isActive = quest.isActive;
+                copiedQuest.isCompleted = quest.completed;
+                copiedQuest.currentKnot = quest.currentKnot;
+                copiedQuest.currentGoal = quest.currentGoal;
+                copiedQuest.isRewarded = quest.isRewarded;
+                for (int i = 0; i < copiedQuest.goals.Count; i++)
+                {
+                    copiedQuest.goals[i].currentAmount = quest.goals[i].currentAmount;
+                }
+                activeQuests.Add(copiedQuest);
+            }else if(!quest.isActive && quest.completed){
+                QuestSO qData = AccountManager.Instance.quests.Where(q => q.questID == quest.questID).FirstOrDefault();
+                QuestSO copiedQuest = qData.CreateCopy();
+                copiedQuest.isPinned = quest.isPinned;
+                copiedQuest.isActive = quest.isActive;
+                copiedQuest.isCompleted = quest.completed;
+                copiedQuest.currentKnot = quest.currentKnot;
+                copiedQuest.currentGoal = quest.currentGoal;
+                copiedQuest.isRewarded = quest.isRewarded;
+                for (int i = 0; i < copiedQuest.goals.Count; i++)
+                {
+                    copiedQuest.goals[i].currentAmount = quest.goals[i].currentAmount;
+                }
+                completedQuests.Add(copiedQuest);
+            }
+        }
+    }
+    public void InitializeEquipments(GameData playerGameData){
+        List<EquipmentSO> newList = new List<EquipmentSO>();
+        foreach(ItemData equipment in playerGameData.inventory.items){
+            
+            EquipmentSO equipmentSO = AccountManager.Instance.equipments.Where(eq => eq.equipmentId == equipment.equipmentId).FirstOrDefault();
+            EquipmentSO copiedEquipmentSO = equipmentSO.CreateCopy(equipment);
+            newList.Add(copiedEquipmentSO);
+            
+        }
+        inventory = newList;
     }
     private void CalculateStatsForCurrentLevel()
     {

@@ -27,7 +27,7 @@ public class EnterBuilding : MonoBehaviour
                     exteriorGrid.SetActive(true);
                     PlayerUIManager.GetInstance().locationText.SetText(buildingName);
                 }
-                
+                PlayerController.GetInstance().isInterior = !PlayerController.GetInstance().isInterior;
                 await Close();
             }
         }

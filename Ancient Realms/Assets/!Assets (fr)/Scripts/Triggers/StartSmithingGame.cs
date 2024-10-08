@@ -12,11 +12,6 @@ public class StartSmithingGame : MonoBehaviour
     {
         if(playerInRange && PlayerController.GetInstance().playerActionMap.enabled){
             if(PlayerController.GetInstance().GetInteractPressed()){
-                if(SmithingGameManager.GetInstance().inMiniGame){
-                    SmithingGameManager.GetInstance().EndGame();
-                }else{
-                    SmithingGameManager.GetInstance().StartGame();
-                }
                 await Open();
                 if(!interiorGrid.activeSelf){
                     interiorGrid.SetActive(true);
@@ -27,6 +22,12 @@ public class StartSmithingGame : MonoBehaviour
                     exteriorGrid.SetActive(true);
                     PlayerUIManager.GetInstance().locationText.SetText("Jan Janius Smithing Game");
                 }
+                if(SmithingGameManager.GetInstance().inMiniGame){
+                    SmithingGameManager.GetInstance().EndGame();
+                }else{
+                    SmithingGameManager.GetInstance().StartGame();
+                }
+                PlayerController.GetInstance().isInterior = !PlayerController.GetInstance().isInterior;
                 
                 await Close();
                 

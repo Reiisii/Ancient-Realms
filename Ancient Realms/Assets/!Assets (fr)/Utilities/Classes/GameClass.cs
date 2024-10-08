@@ -53,6 +53,12 @@ public class Reward
     public string value;
 }
 [Serializable]
+public class LocationData {
+    public string locationName;
+    public Vector3 location;
+}
+
+[Serializable]
 public class Notification
 {
     public string title;
@@ -138,6 +144,13 @@ public enum WorkStation {
     Assembly,
     Metal,
     Submit
+}
+public enum InventoryTab {
+    Equipments,
+    Weapons,
+    QuestItem,
+    NFTs,
+    Items
 }
 [Serializable]
 public class QuestList

@@ -7,7 +7,7 @@ public class HammeringMiniGame : MonoBehaviour
     [Header("Slider Settings")]
     public Slider slider;
     public float speed = 1.0f;
-    public float speedIncrement = 0.5f;
+    private float speedIncrement = 0.2f;
     private bool isMoving = false;
     private bool isMovingRight = true;
 
@@ -17,7 +17,6 @@ public class HammeringMiniGame : MonoBehaviour
     private int score = 0;
 
     [Header("UI Elements")]
-    public Text scoreText;
     public Text timerText;
     public Text startPromptText;
     public float roundTime = 5f;
@@ -32,7 +31,7 @@ public class HammeringMiniGame : MonoBehaviour
     public int greenScore = 3;
 
     [Header("Score Circle Settings")]
-    public Image[] scoreCircles;
+    public WorkstationScore workstationScore;
     public Color redColor = Color.red;
     public Color yellowColor = Color.yellow;
     public Color greenColor = Color.green;
@@ -46,7 +45,6 @@ public class HammeringMiniGame : MonoBehaviour
     public Image timerCircleImage;
     [Header("Proceed")]
     [SerializeField] GameObject hammering;
-    [SerializeField] GameObject grinding;
     private bool gameOver = false;
     private bool gameStarted = false;
     private float timeLeft;
@@ -57,10 +55,15 @@ public class HammeringMiniGame : MonoBehaviour
         InitializeSlider();
         InitializeTimer();
         DisplayStartPrompt(true);
-
         InitializeHammer();
     }
-
+    void OnDisable(){
+        gameOver = false;
+        gameStarted = false;
+        timeRunning = false;
+        pressCount = 0;
+        speed = 1;
+    }
     void Update()
     {
         if (!gameOver)
@@ -145,28 +148,20 @@ public class HammeringMiniGame : MonoBehaviour
             score += yellowScore;
         else if (RectTransformUtility.RectangleContainsScreenPoint(green, handlePosition))
             score += greenScore;
-
-        UpdateScoreText();
-    }
-
-    void UpdateScoreText()
-    {
-        scoreText.text = "Score: " + score;
     }
 
     void UpdateScoreCircle()
     {
-        if (pressCount < scoreCircles.Length)
+        if (pressCount < workstationScore.circleColors.Length)
         {
             Color color = DetermineScoreCircleColor();
-            scoreCircles[pressCount].color = color;
+            workstationScore.UpdateScoreCircle(pressCount, color);
         }
         else
         {
             Debug.LogWarning("Press count exceeds the number of circles.");
         }
     }
-
 
     Color DetermineScoreCircleColor()
     {
@@ -260,6 +255,7 @@ public class HammeringMiniGame : MonoBehaviour
             isMoving = false;
             gameOver = true;
             SetHammerAnimation("Static");
+            workstationScore.gameObject.SetActive(false);
             SmithingGameManager.GetInstance().hammerUsed = true;
             SmithingGameManager.GetInstance().EndWorkStation(WorkStation.Hammering);
         }

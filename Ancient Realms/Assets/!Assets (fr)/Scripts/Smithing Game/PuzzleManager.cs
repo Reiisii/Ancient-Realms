@@ -21,7 +21,7 @@ public class PuzzleManager : MonoBehaviour
     private bool isPugioGripPlaced = false;
     private bool isPugioPommelPlaced = false;
 
-    private void Awake()
+    private void OnEnable()
     {
         if (instance == null)
         {
@@ -32,7 +32,9 @@ public class PuzzleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void OnDisable(){
+        Destroy(gameObject);
+    }
     public void PiecePlaced(string pieceName)
     {
         switch (pieceName)
