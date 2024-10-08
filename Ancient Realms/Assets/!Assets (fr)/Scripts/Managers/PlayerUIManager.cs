@@ -188,6 +188,7 @@ public class PlayerUIManager : MonoBehaviour
         await ClosePlayerUI();
         await OpenDarkenUI();
         OpenBackgroundUI();
+        Time.timeScale = 1f;
         await CloseBackgroundUI();
         await OpenDarkenUI();
         await OpenLoadingUI();

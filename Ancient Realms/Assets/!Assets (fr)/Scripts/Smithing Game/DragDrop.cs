@@ -8,10 +8,11 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     [SerializeField] private Canvas canvas;
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
-
+    Vector3 oldPos;
     private void Awake(){
        rectTransform = GetComponent<RectTransform>();
        canvasGroup = GetComponent<CanvasGroup>();
+       oldPos = rectTransform.position;
     }
 
     public void OnBeginDrag(PointerEventData eventData){
@@ -27,7 +28,11 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }
-
+    public void ResetPostion(){
+        gameObject.transform.position = oldPos;
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+    }
     public void OnPointerDown(PointerEventData eventData){
     }
 }

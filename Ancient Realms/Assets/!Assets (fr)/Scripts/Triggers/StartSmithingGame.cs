@@ -13,36 +13,14 @@ public class StartSmithingGame : MonoBehaviour
         if(playerInRange && PlayerController.GetInstance().playerActionMap.enabled){
             if(PlayerController.GetInstance().GetInteractPressed()){
                 await Open();
-                if(!interiorGrid.activeSelf){
-                    interiorGrid.SetActive(true);
-                    exteriorGrid.SetActive(false);
-                    PlayerUIManager.GetInstance().locationText.SetText("End Shift?");
-                }else{
-                    interiorGrid.SetActive(false);
-                    exteriorGrid.SetActive(true);
-                    PlayerUIManager.GetInstance().locationText.SetText("Jan Janius Smithing Game");
-                }
                 if(SmithingGameManager.GetInstance().inMiniGame){
                     SmithingGameManager.GetInstance().EndGame();
                 }else{
                     SmithingGameManager.GetInstance().StartGame();
                 }
                 PlayerController.GetInstance().isInterior = !PlayerController.GetInstance().isInterior;
-                
                 await Close();
-                
             }
-        }
-        if(playerInRange && PlayerController.GetInstance().playerActionMap.enabled && SmithingGameManager.GetInstance().inMiniGame){
-                if(PlayerController.GetInstance().GetInteractPressed()){
-                    SmithingGameManager.GetInstance().inMiniGame = false;
-                    PlayerController.GetInstance().playerActionMap.Disable();
-                    await Open();
-                    interiorGrid.SetActive(false);
-                    exteriorGrid.SetActive(true);
-                    
-                    await Close();
-                }
         }
     }
     private async Task Open(){
@@ -57,7 +35,13 @@ public class StartSmithingGame : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){
             playerInRange = true;
-
+            if(interiorGrid != null && interiorGrid.activeSelf){
+                PlayerUIManager.GetInstance().locationText.SetText("End Shift?");
+                PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
+            }else{
+                PlayerUIManager.GetInstance().locationText.SetText("Jan Janius Smithing Game");
+                PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
+            }
         }
     }
 

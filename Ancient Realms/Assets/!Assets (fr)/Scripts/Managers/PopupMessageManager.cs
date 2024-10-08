@@ -25,7 +25,7 @@ public class PopupMessageManager : MonoBehaviour
 
     private static PopupMessageManager currentPopupInstance = null;
     private bool isDisplayed = false;
-    private bool isClosing = false; // New flag to check if popup is in the process of closing
+    private bool isClosing = false;
     private Tween lifetimeTween; // Store the delayed call tween
 
     // Create or update the popup
@@ -35,12 +35,12 @@ public class PopupMessageManager : MonoBehaviour
         {
             // Update existing popup's message
             currentPopupInstance.SetMessage(msgType, msg);
-            currentPopupInstance.ResetLifetime(); // Reset its lifetime to 1 second
+            currentPopupInstance.ResetLifetime(); // Reset its lifetime to waitDuration
             currentPopupInstance.ShowPopup(true); // Force the popup to replay the animation
             return currentPopupInstance;
         }
 
-        // Instantiate new popup and set it as the active instance
+        // Instantiate a new popup and set it as the active instance
         PopupMessageManager newPopup = Instantiate(popupPrefab, Vector3.zero, Quaternion.identity);
         newPopup.transform.SetParent(parent, false);
         newPopup.transform.localScale = Vector3.one;
@@ -117,6 +117,8 @@ public class PopupMessageManager : MonoBehaviour
     // Fade out and destroy the popup
     private async Task FadeOutAndDestroy()
     {
+        if (isClosing) return; // Avoid multiple fade-out processes
+
         isClosing = true; // Set the flag to indicate the popup is closing
         await transform.DOScale(0, 0.5f).SetEase(Ease.InBack).SetUpdate(true).AsyncWaitForCompletion();
 
