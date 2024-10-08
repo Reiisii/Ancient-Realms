@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -26,6 +27,11 @@ public class DevBlog : MonoBehaviour
     }
     public void ProcessRSS(string rssContent)
     {
+        if(rssContent.Equals("There was a problem fetching the Dev Blog")){
+            loadingText.gameObject.GetComponent<TextMeshProUGUI>().SetText("There was a problem fetching Dev Blog");
+            return;
+        }
+        try{
         XmlDocument rssDoc = new XmlDocument();
         rssDoc.LoadXml(rssContent);
 
@@ -44,5 +50,9 @@ public class DevBlog : MonoBehaviour
         loadingText.SetActive(false);
         // Set the formatted and cleaned description
         descriptionText.SetText(formattedDescription);
+        }catch(Exception err){
+            loadingText.gameObject.GetComponent<TextMeshProUGUI>().SetText("There was a problem fetching Dev Blog");
+            Debug.Log(err);
+        }
     }
 }

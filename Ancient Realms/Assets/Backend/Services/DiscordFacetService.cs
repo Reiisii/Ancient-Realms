@@ -33,7 +33,7 @@ namespace ESDatabase.Services
                 string rssContent = response.Body();
                 return rssContent;
             }else{
-                throw new Exception("Failed to fetch Itch.io RSS feed."); 
+                return "There was a problem fetching the Dev Blog"; 
             }
         }
     }

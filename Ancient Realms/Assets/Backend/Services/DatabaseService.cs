@@ -11,10 +11,12 @@ using System.Linq;
 using Unisave.Broadcasting;
 using ESDatabase.Messages;
 using ESDatabase.Services;
+using ESDatabase.Classes;
 public class DatabaseService : Facet
 {
-    public PlayerData InitializeLogin(string pubkey, string UID)
+    public LoginResponse InitializeLoginWithoutPrice(string pubkey, string UID)
     {
+        LoginResponse loginResponse = new LoginResponse();
         PlayerData player = DB.TakeAll<PlayerData>().Get().FirstOrDefault(data => data.publicKey == pubkey);
         string isExisting = DBHelper.IsPlayerExisting(pubkey, player);
         if(CheckSession(pubkey)){
@@ -25,7 +27,27 @@ public class DatabaseService : Facet
         copiedPlayer.Save();
         Auth.Login(copiedPlayer);
         DiscordFacetService.SendLoginMessageToDiscord(copiedPlayer);
-        return copiedPlayer;
+        loginResponse.playerData = copiedPlayer;
+        loginResponse.devBlog = DiscordFacetService.GetDevBlog();
+        return loginResponse;
+    }
+    public LoginResponse InitializeLoginWithPrice(string pubkey, string UID)
+    {
+        LoginResponse loginResponse = new LoginResponse();
+        PlayerData player = DB.TakeAll<PlayerData>().Get().FirstOrDefault(data => data.publicKey == pubkey);
+        string isExisting = DBHelper.IsPlayerExisting(pubkey, player);
+        if(CheckSession(pubkey)){
+            BroadcastExistingPlayerSession(player.EntityId);
+        }        
+        PlayerData copiedPlayer = DB.TakeAll<PlayerData>().Get().FirstOrDefault(data => data.EntityId == isExisting);
+        copiedPlayer.token = UID;
+        copiedPlayer.Save();
+        Auth.Login(copiedPlayer);
+        DiscordFacetService.SendLoginMessageToDiscord(copiedPlayer);
+        loginResponse.playerData = copiedPlayer;
+        loginResponse.priceData = GetPrice();
+        loginResponse.devBlog = DiscordFacetService.GetDevBlog();
+        return loginResponse;
     }
     public bool CheckSession(string pubkey)
     {
@@ -104,5 +126,16 @@ public class DatabaseService : Facet
             Log.Error("Error", err);
             return "Failed to save";
         }
+    }
+    public PriceData GetPrice()
+    {
+        string usdToSolUrl = "http://23.88.54.33:3443/nft-price"; // Use a crypto price API
+        decimal solPriceInUSD = decimal.Parse(Http.Get(usdToSolUrl)["data"].AsString);
+        DateTime fetchedDate = DateTime.Parse(Http.Get(usdToSolUrl)["lastUpdate"].AsString);
+        PriceData priceData = new PriceData(){
+            price = solPriceInUSD,
+            date = fetchedDate
+        };
+        return priceData;
     }
 }
