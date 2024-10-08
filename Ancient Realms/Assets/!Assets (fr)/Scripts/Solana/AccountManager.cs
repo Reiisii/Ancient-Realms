@@ -79,79 +79,111 @@ public class AccountManager : MonoBehaviour
     }
     public async void ForceLogout()
     {
-        Instance.loadingPanel.SetActive(true);
-        await FacetClient.CallFacet((DatabaseService facet) => facet.Logout())
-        .Then(()=> 
-        {
-            AccountManager.Instance.gameObject.GetComponent<PlayerClient>().enabled = false;
-            Web3.Instance.Logout();
-            Instance.EntityId = "";
-            Instance.UIDInstance = "";
-            UIManager.DisableAllButtons(Instance.mainMenu);
-            Instance.mainMenu.GetComponent<MainMenuAnimation>().Close();
-            Instance.mainMenu.GetComponent<UpdatePanelAnimation>().Close();
-            Instance.mainMenu.GetComponent<LogoAnimation>().Close();
-            connectionMenu.SetActive(true);
-            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
-        })
-        .Catch(error => 
-        {
-            Debug.LogError("Failed to clear session and logout: " + error);
-            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
-        });
+        if(PlayerUIManager.GetInstance() != null || PlayerStats.GetInstance() != null){
+            PlayerUIManager uiManager = PlayerUIManager.GetInstance();
+            await uiManager.BackToLogin();
+        }else{
+            Instance.loadingPanel.SetActive(true);
+            await FacetClient.CallFacet((DatabaseService facet) => facet.Logout())
+            .Then(()=> 
+            {
+                gameObject.GetComponent<PlayerClient>().enabled = false;
+                Web3.Instance.Logout();
+                Instance.EntityId = "";
+                Instance.UIDInstance = "";
+                UIManager.DisableAllButtons(Instance.mainMenu);
+                Instance.mainMenu.GetComponent<MainMenuAnimation>().Close();
+                Instance.mainMenu.GetComponent<UpdatePanelAnimation>().Close();
+                Instance.mainMenu.GetComponent<LogoAnimation>().Close();
+                connectionMenu.SetActive(true);
+                Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            })
+            .Catch(error => 
+            {
+                Debug.LogError("Failed to clear session and logout: " + error);
+                Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            });
+        }
     }
     public async Task InitializeLogin(string pubkey)
     {
         string generatedUID = Utilities.GenerateUuid();
-        await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLogin(pubkey, generatedUID))
-        .Then(response => 
-        {
-                    playerData = response;
-                    Instance.EntityId = response.EntityId;
-                    Instance.UIDInstance = generatedUID;
-                    Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
-                    Instance.mainMenu.SetActive(true);
-                    UIManager.DisableAllButtons(Instance.connectionMenu);
-                    Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
-                    Instance.connectionMenu.SetActive(false);
-                    Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
-                    FacetClient.CallFacet((DatabaseService facet) => facet.GetDevBlog())
-                    .Then(response => 
-                    {
-                        Instance.updateGO.GetComponent<DevBlog>().ProcessRSS(response);
-                    });
-                    if(priceData.date != null && Utilities.CheckIfLateBy10Minutes(priceData.date)){
-                        FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
-                        .Then(response => 
-                        {
-                            priceData.price = response.price;
-                            priceData.date = response.date;
-                            Utilities.CheckIfLateBy10Minutes(priceData.date);
-                        })
-                        .Catch(error => 
-                        {
-                            Debug.LogError("Failed to fetch Price: " + error);
-                        });
-                    }else if(priceData.date == null){
-                        FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())
-                        .Then(response => 
-                        {
-                            priceData = response;
-                        })
-                        .Catch(error => 
-                        {
-                            Debug.LogError("Failed to fetch Price: " + error);
-                        });
-                    }
-                    
+        if(priceData.date != null && Utilities.CheckIfLateBy10Minutes(priceData.date)){
+            await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLoginWithPrice(pubkey, generatedUID))
+            .Then(response => 
+            {
+                        playerData = response.playerData;
+                        Instance.EntityId = response.playerData.EntityId;
+                        Instance.UIDInstance = generatedUID;
+                        Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
+                        Instance.mainMenu.SetActive(true);
+                        UIManager.DisableAllButtons(Instance.connectionMenu);
+                        Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
+                        Instance.connectionMenu.SetActive(false);
+                        // DevBlog
+                        Instance.updateGO.GetComponent<DevBlog>().ProcessRSS(response.devBlog);
+                        priceData.price = response.priceData.price;
+                        priceData.date = response.priceData.date;
+                        Utilities.CheckIfLateBy10Minutes(response.priceData.date);
+                        Instance.loadingPanel.GetComponent<FadeAnimation>().Close();       
+                });
+            })
+            .Catch(error => 
+            {
+                Debug.LogError("Failed to Initialize Account: " + error);
+                Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
             });
-        })
-        .Catch(error => 
-        {
-            Debug.LogError("Failed to Initialize Account: " + error);
-            Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
-        });
-        
+        }else if(priceData.date != null && !Utilities.CheckIfLateBy10Minutes(priceData.date)){
+            await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLoginWithoutPrice(pubkey, generatedUID))
+            .Then(response => 
+            {
+                        playerData = response.playerData;
+                        Instance.EntityId = response.playerData.EntityId;
+                        Instance.UIDInstance = generatedUID;
+                        Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
+                        Instance.mainMenu.SetActive(true);
+                        UIManager.DisableAllButtons(Instance.connectionMenu);
+                        Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
+                        Instance.connectionMenu.SetActive(false);
+                        // DevBlog
+                        Instance.updateGO.GetComponent<DevBlog>().ProcessRSS(response.devBlog);
+                        priceData.price = response.priceData.price;
+                        priceData.date = response.priceData.date;
+                        Utilities.CheckIfLateBy10Minutes(response.priceData.date);
+                        Instance.loadingPanel.GetComponent<FadeAnimation>().Close();       
+                });
+            })
+            .Catch(error => 
+            {
+                Debug.LogError("Failed to Initialize Account: " + error);
+                Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            });
+        }else{
+            await FacetClient.CallFacet((DatabaseService facet) => facet.InitializeLoginWithPrice(pubkey, generatedUID))
+            .Then(response => 
+            {
+                        playerData = response.playerData;
+                        Instance.EntityId = response.playerData.EntityId;
+                        Instance.UIDInstance = generatedUID;
+                        Instance.gameObject.GetComponent<PlayerClient>().enabled = true;
+                        Instance.mainMenu.SetActive(true);
+                        UIManager.DisableAllButtons(Instance.connectionMenu);
+                        Instance.connectionMenu.GetComponent<RectTransform>().DOAnchorPosY(-940, 0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
+                        Instance.connectionMenu.SetActive(false);
+                        // DevBlog
+                        Instance.updateGO.GetComponent<DevBlog>().ProcessRSS(response.devBlog);
+                        priceData.price = response.priceData.price;
+                        priceData.date = response.priceData.date;
+                        Utilities.CheckIfLateBy10Minutes(response.priceData.date);
+                        Instance.loadingPanel.GetComponent<FadeAnimation>().Close();       
+                });
+            })
+            .Catch(error => 
+            {
+                Debug.LogError("Failed to Initialize Account: " + error);
+                Instance.loadingPanel.GetComponent<FadeAnimation>().Close();
+            });
+        }
     }
     public void GetPrice(){
         FacetClient.CallFacet((SolanaExchangeService facet) => facet.GetPrice())

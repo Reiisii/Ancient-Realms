@@ -49,6 +49,18 @@ public class Play : MonoBehaviour
         };
  
     }
+    public void PlayLogout()
+    {       
+        DOTween.Clear(true);
+            SceneManager.UnloadSceneAsync("Player UI Loader").completed += (operation) => {
+                oldSceneCanvas.enabled = true; // Re-enable the old canvas
+                canvasGroup.DOFade(0, 0.8f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(() => {
+                canvasGroup.gameObject.SetActive(false); // Ensure the canvas group is inactive to prevent blocking
+                AccountManager.Instance.ForceLogout();
+            });
+        };
+ 
+    }
     private void OnSceneLoaded(AsyncOperation operation)
     {
         // DOTween.Clear(true);

@@ -199,6 +199,24 @@ public class PlayerUIManager : MonoBehaviour
         };
  
     }
+    public async Task BackToLogin()
+    {
+        if(PlayerController.GetInstance() != null) PlayerController.GetInstance().playerActionMap.Disable();
+        
+        await ClosePlayerUI();
+        await OpenDarkenUI();
+        OpenBackgroundUI();
+        Time.timeScale = 1f;
+        await CloseBackgroundUI();
+        await OpenDarkenUI();
+        await OpenLoadingUI();
+        SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += async (operation) => {
+            await OpenDarkenUI();
+            OpenBackgroundUI();
+            Play.GetInstance().PlayLogout();
+        };
+ 
+    }
     private async void OnSceneLoaded(AsyncOperation operation)
     {
         await CloseBackgroundUI();

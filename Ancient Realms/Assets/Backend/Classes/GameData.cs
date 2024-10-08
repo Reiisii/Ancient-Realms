@@ -22,7 +22,9 @@ namespace ESDatabase.Classes
                 public List<ArtifactsData> artifacts {get;set;}
                 public List<int> characters {get;set;}
                 public List<int> equipments {get;set;}
+                public List<int> events {get;set;}
                 public List<string> uiSettings {get;set;}
+                public List<string> premiumPurchases {get;set;}
                 public SettingsData settings {get;set;}
                 public GameData(){
                         this.playerName = "Unnamed Legionnaire";
@@ -41,17 +43,11 @@ namespace ESDatabase.Classes
                         this.equippedData = new EquippedData();
                         this.quests = new List<QuestData>();
                         this.artifacts = new List<ArtifactsData>();
-                        List<int> equip = new List<int>();
-                        equip.Add(0);
-                        equip.Add(5);
-                        equip.Add(23);
-                        equip.Add(18);
-                        equip.Add(11);
-                        equip.Add(8);
-                        equip.Add(12);
                         this.characters = new List<int>();
-                        this.equipments = equip;
+                        this.equipments = new List<int> { 0, 5, 23, 18, 11, 8, 12 };;
                         this.uiSettings = new List<string>();
+                        this.events = new List<int>();
+                        this.premiumPurchases = new List<string>();
                         this.settings = new SettingsData();
                 }
         }
