@@ -40,14 +40,12 @@ public class Play : MonoBehaviour
     public void PlayMainMenu()
     {       
         DOTween.Clear(true);
-        SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += (operation) => {
             SceneManager.UnloadSceneAsync("Player UI Loader").completed += (operation) => {
                 oldSceneCanvas.enabled = true; // Re-enable the old canvas
                 canvasGroup.DOFade(0, 0.8f).SetEase(Ease.OutSine).SetUpdate(true).OnComplete(() => {
                 canvasGroup.gameObject.SetActive(false); // Ensure the canvas group is inactive to prevent blocking
                 mainMenu.SetActive(true);
             });
-            };
         };
  
     }

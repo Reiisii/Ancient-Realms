@@ -5,6 +5,7 @@ using UnityEngine;
 public class SmithingGameManager : MonoBehaviour
 {
     [Header("Smithing UI")]
+    [SerializeField] GameObject scoreboardUIGO;
     [SerializeField] GameObject smithingGame;
     [SerializeField] GameObject furnaceUIGO;
     [SerializeField] GameObject hammerUIGO;
@@ -18,7 +19,7 @@ public class SmithingGameManager : MonoBehaviour
     public bool hasMaterials = false;
     public bool furnaceUsed = false;
     public bool hammerUsed = false;
-    public bool grindstonUsed = false;
+    public bool grindstoneUsed = false;
     public bool assemblyUsed = false;
 
     [Header("Overall Game Stats")]
@@ -27,6 +28,7 @@ public class SmithingGameManager : MonoBehaviour
     public bool inWorkStation = false;
     [Header("Task Score")]
     public int score = 0;
+    public int weaponMade = 0;
     private static SmithingGameManager Instance;
     
     private void Awake(){
@@ -50,6 +52,7 @@ public class SmithingGameManager : MonoBehaviour
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already have the materials!");
                 return;
             }
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "Picked up materials.");
             hasMaterials = true;
             return;
         }
@@ -70,6 +73,7 @@ public class SmithingGameManager : MonoBehaviour
                 inWorkStation = true;
                 furnaceUIGO.SetActive(true);
                 furnaceGO.SetActive(true);
+                scoreboardUIGO.SetActive(true);
             break;
             case WorkStation.Hammering:
                 if(!hasMaterials){
@@ -87,6 +91,7 @@ public class SmithingGameManager : MonoBehaviour
                 inWorkStation = true;
                 hammerUIGO.SetActive(true);
                 hammerGO.SetActive(true);
+                scoreboardUIGO.SetActive(true);
             break;
             case WorkStation.Grindstone:
                 if(!hasMaterials){
@@ -101,7 +106,7 @@ public class SmithingGameManager : MonoBehaviour
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already hammered weapon!");
                     return;
                 }
-                if(grindstonUsed){
+                if(grindstoneUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already sharpened the weapon!");
                     return;
                 }
@@ -122,7 +127,7 @@ public class SmithingGameManager : MonoBehaviour
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Hammer the weapon first!");
                     return;
                 }
-                if(!grindstonUsed){
+                if(!grindstoneUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Sharpen the weapon first!");
                     return;
                 }
@@ -171,15 +176,17 @@ public class SmithingGameManager : MonoBehaviour
         }
     }
     public void Submit(){
-        if(hasMaterials && furnaceUsed && hammerUsed && grindstonUsed && assemblyUsed){
+        if(hasMaterials && furnaceUsed && hammerUsed && grindstoneUsed && assemblyUsed){
             int tempScore = score;
             hasMaterials = false;
             furnaceUsed = false;
             hammerUsed = false;
-            grindstonUsed = false;
+            grindstoneUsed = false;
             assemblyUsed = false;
             totalScore += tempScore;
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "Weapon delivered! You received " + tempScore +" denarii.");
             score = 0;
+            weaponMade++;
         }else{
             if(!hasMaterials){
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Go get some materials first!");
@@ -193,18 +200,33 @@ public class SmithingGameManager : MonoBehaviour
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Hammer the weapon first!");
                 return;
             }
-            if(!grindstonUsed){
+            if(!grindstoneUsed){
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Sharpen the weapon first!");
                 return;
             }
+            if(!assemblyUsed){
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Assemble the weapon first!");
+                return;
+            }
         }
+    }
+    public void ClearSmithingGame(){
+            inMiniGame = false;
+            hasMaterials = false;
+            furnaceUsed = false;
+            hammerUsed = false;
+            grindstoneUsed = false;
+            assemblyUsed = false;
+            totalScore = 0;
+            score = 0;
+            weaponMade = 0;
     }
     public async void StartGame(){
         inMiniGame = true;
         await PlayerUIManager.GetInstance().ClosePlayerUI();
     }
     public async void EndGame(){
-        inMiniGame = false;
+        ClearSmithingGame();
         PlayerStats.GetInstance().localPlayerData.gameData.denarii += totalScore;
         PlayerStats.GetInstance().isDataDirty = true;
         await PlayerUIManager.GetInstance().OpenPlayerUI();

@@ -4,6 +4,7 @@ using System.Linq;
 using Cinemachine;
 using DG.Tweening;
 using ESDatabase.Classes;
+using ESDatabase.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -67,7 +68,7 @@ public class PlayerController : MonoBehaviour
     public InputActionMap shopActionMap;
     private Vector3 originalCameraOffset;
     public List<EquipSO> equipmentList;
-
+    public bool isInterior = false;
     private void Awake()
     {
         if(Instance != null){
@@ -78,6 +79,12 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         equipmentList = Resources.LoadAll<EquipSO>("EquipSO").ToList();
         LoadPlayerData(PlayerStats.GetInstance());
+        if(PlayerStats.GetInstance().firstLogin){
+            Vector3 currentPosition = gameObject.transform.position;
+            PlayerData playerData = AccountManager.Instance.playerData;
+            gameObject.transform.position = new Vector3(playerData.gameData.lastX, playerData.gameData.lastY, currentPosition.z);
+            PlayerStats.GetInstance().firstLogin = false;
+        }
     }
     
     private void Start(){
@@ -98,11 +105,13 @@ public class PlayerController : MonoBehaviour
         return Instance;
     }
     private void OnEnable(){
-        canAccessCombatMode = LocationSettingsManager.GetInstance().locationSettings.canAccessCombatMode;
-        canAccessInventory = LocationSettingsManager.GetInstance().locationSettings.canAccessInventory;
-        canAccessMap = LocationSettingsManager.GetInstance().locationSettings.canAccessMap;
-        canAccessJournal = LocationSettingsManager.GetInstance().locationSettings.canAccessJournal;
-        PlayerStats.GetInstance().toggleStamina = LocationSettingsManager.GetInstance().locationSettings.toggleStamina;
+        LocationSO locationSettings = LocationSettingsManager.GetInstance().locationSettings;
+        canAccessCombatMode = locationSettings.canAccessCombatMode;
+        canAccessInventory = locationSettings.canAccessInventory;
+        canAccessMap = locationSettings.canAccessMap;
+        canAccessJournal = locationSettings.canAccessJournal;
+        isInterior = PlayerStats.GetInstance().localPlayerData.gameData.isInterior;
+        PlayerStats.GetInstance().toggleStamina = locationSettings.toggleStamina;
     }
     public bool GetInteractPressed() 
     {
@@ -208,6 +217,20 @@ public class PlayerController : MonoBehaviour
         }
         //<-- Equipping -->
         LoadPlayerData(PlayerStats.GetInstance());
+        // <-- Movement Tracking -->
+        float x = PlayerStats.GetInstance().localPlayerData.gameData.lastX;
+        float y = PlayerStats.GetInstance().localPlayerData.gameData.lastY;
+        bool isInter = PlayerStats.GetInstance().localPlayerData.gameData.isInterior;
+        if(!SmithingGameManager.GetInstance().inMiniGame){
+            if (transform.position.x != x || transform.position.y != y || isInter != isInterior)
+            {
+                PlayerStats.GetInstance().localPlayerData.gameData.lastX = transform.position.x;
+                PlayerStats.GetInstance().localPlayerData.gameData.lastY = transform.position.y;
+                PlayerStats.GetInstance().localPlayerData.gameData.isInterior = isInterior;
+                PlayerStats.GetInstance().isDataDirty = true;
+            }
+        }
+        
     }
 
     private void LoadPlayerData(PlayerStats player){

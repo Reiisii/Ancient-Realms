@@ -39,7 +39,13 @@ public class GrindingMiniGame : MonoBehaviour
         InitializeGrindstoneAnimation();
         SetGrindstoneAnimation(staticAnimationName); // Set the grindstone to Static state at the start
     }
-
+    void OnDisable(){
+        SetGrindstoneAnimation(staticAnimationName);
+        grindstonePrefab.SetActive(false);
+        gameStarted = false;
+        gameOver = false;
+        timeRunning = false;
+    }
     void Update()
     {
         if (!gameOver)
@@ -179,7 +185,7 @@ public class GrindingMiniGame : MonoBehaviour
                     slider.value = slider.maxValue;
                     StopGame(); // Stop the game when the slider is full
                     SmithingGameManager.GetInstance().score += 25;
-                    SmithingGameManager.GetInstance().grindstonUsed = true;
+                    SmithingGameManager.GetInstance().grindstoneUsed = true;
                 }
             }
         }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New Location", menuName = "SO/Location")]
 public class LocationSO : ScriptableObject
@@ -16,4 +18,6 @@ public class LocationSO : ScriptableObject
     public bool canAccessCombatMode = true;
     public bool toggleStamina = true;
     public bool visibleEncyc = true;
+    public bool hasInterior = false;
+    public List<LocationData> locations;
 }
