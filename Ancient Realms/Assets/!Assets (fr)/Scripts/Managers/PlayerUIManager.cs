@@ -47,6 +47,9 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI triviaDescription;
     [Header("Popup Message")]
     [SerializeField] GameObject popupParent;
+    [Header("Smithing")]
+    [SerializeField] GameObject smithingUI;
+    [SerializeField] GameObject smithing;
     [Header("Prefabs")]
     [SerializeField] PopupMessageManager popupPrefab;
 
@@ -202,7 +205,9 @@ public class PlayerUIManager : MonoBehaviour
     public async Task BackToLogin()
     {
         if(PlayerController.GetInstance() != null) PlayerController.GetInstance().playerActionMap.Disable();
-        
+        mapGO.SetActive(false);
+        worldMap.SetActive(false);
+
         await ClosePlayerUI();
         await OpenDarkenUI();
         OpenBackgroundUI();
