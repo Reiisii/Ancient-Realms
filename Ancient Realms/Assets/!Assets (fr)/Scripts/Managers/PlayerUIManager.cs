@@ -204,6 +204,7 @@ public class PlayerUIManager : MonoBehaviour
     }
     public async Task BackToLogin()
     {
+        PlayerStats.GetInstance().stopSaving = true;
         if(PlayerController.GetInstance() != null) PlayerController.GetInstance().playerActionMap.Disable();
         mapGO.SetActive(false);
         worldMap.SetActive(false);

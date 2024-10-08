@@ -55,6 +55,9 @@ public class PlayerStats : MonoBehaviour
     private static PlayerStats Instance;
     private List<EquipmentSO> equipmentLibrary;
     public bool firstLogin = true;
+    public float interval = 1f; // Time interval in seconds for each invocation
+    private bool isInvoking;
+    public bool stopSaving = false;
     private void Awake()
     {
         equipmentLibrary = AccountManager.Instance.equipments;
@@ -67,7 +70,7 @@ public class PlayerStats : MonoBehaviour
     }
     public void Start()
     {
-        InvokeRepeating("SaveDataToServer", 1f, 1f); // Save data to the server every 10 seconds
+        StartContinuousInvocation();
     }
     private void OnEnable()
     {
@@ -195,6 +198,14 @@ public class PlayerStats : MonoBehaviour
             }
         }        
     }
+    private void StartContinuousInvocation()
+    {
+        if (!isInvoking)
+        {
+            isInvoking = true; // Set the flag to true
+            StartCoroutine(InvokeContinuously());
+        }
+    }
     private async void SaveDataToServer()
     {
         if (isDataDirty)
@@ -203,7 +214,19 @@ public class PlayerStats : MonoBehaviour
             isDataDirty = false; // Reset the dirty flag after saving
         }
     }
-    
+    private IEnumerator InvokeContinuously()
+    {
+        while (isInvoking) // Loop while isInvoking is true
+        {
+            if(!stopSaving){
+                SaveDataToServer();
+            }
+             // Call your desired method
+            yield return new WaitForSecondsRealtime(interval); // Wait for the specified interval
+        }
+    }
+
+
     private void Update()
     {
         updateValues();
