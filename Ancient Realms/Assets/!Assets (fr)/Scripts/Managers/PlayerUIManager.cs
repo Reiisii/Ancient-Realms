@@ -207,7 +207,8 @@ public class PlayerUIManager : MonoBehaviour
         if(PlayerController.GetInstance() != null) PlayerController.GetInstance().playerActionMap.Disable();
         mapGO.SetActive(false);
         worldMap.SetActive(false);
-
+        smithingUI.SetActive(false);
+        smithing.SetActive(false);
         await ClosePlayerUI();
         await OpenDarkenUI();
         OpenBackgroundUI();
