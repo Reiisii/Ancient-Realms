@@ -5,7 +5,8 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager instance;
-
+    [Header("Panel")]
+    [SerializeField] public GameObject parts;
     private bool isSwordBladePlaced = false;
     private bool isSwordRainGuardPlaced = false;
     private bool isSwordGripPlaced = false;
@@ -32,7 +33,9 @@ public class PuzzleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void OnDisable(){
+        Clear();
+    }
     public void PiecePlaced(string pieceName)
     {
         switch (pieceName)
@@ -87,17 +90,49 @@ public class PuzzleManager : MonoBehaviour
     {
         if (isSwordBladePlaced && isSwordRainGuardPlaced && isSwordGripPlaced && isSwordPommelPlaced)
         {
-            Debug.Log("The sword is built!");
+            SmithingGameManager.GetInstance().score += 25;
+            SmithingGameManager.GetInstance().assemblyUsed = true;
+            SmithingGameManager.GetInstance().EndWorkStation(WorkStation.Assembly);
         }
 
         if (isPila1Placed && isPila2Placed && isPila3Placed && isPila4Placed)
         {
-            Debug.Log("The pila is built!");
+            SmithingGameManager.GetInstance().score += 25;
+            SmithingGameManager.GetInstance().assemblyUsed = true;
+            SmithingGameManager.GetInstance().EndWorkStation(WorkStation.Assembly);
         }
 
         if (isPugioBladePlaced && isPugioRainGuardPlaced && isPugioGripPlaced && isPugioPommelPlaced)
         {
-            Debug.Log("The pugio is built!");
+            SmithingGameManager.GetInstance().score += 25;
+            SmithingGameManager.GetInstance().assemblyUsed = true;
+            SmithingGameManager.GetInstance().EndWorkStation(WorkStation.Assembly);
+        }
+    }
+    public void Clear(){
+        isSwordBladePlaced = false;
+        isSwordRainGuardPlaced = false;
+        isSwordGripPlaced = false;
+        isSwordPommelPlaced = false;
+        isPila1Placed = false;
+        isPila2Placed = false;
+        isPila3Placed = false;
+        isPila4Placed = false;
+        isPugioBladePlaced = false;
+        isPugioRainGuardPlaced = false;
+        isPugioGripPlaced = false;
+        isPugioPommelPlaced = false;
+        ResetPosition(parts);
+    }
+    public void ResetPosition(GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            DragDrop dragDropComponent = child.GetComponent<DragDrop>();
+            if (dragDropComponent != null)
+            {
+                dragDropComponent.ResetPostion();
+            }
         }
     }
 }

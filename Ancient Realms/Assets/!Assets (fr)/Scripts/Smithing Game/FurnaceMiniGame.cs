@@ -21,22 +21,26 @@ public class FurnaceMiniGame : MonoBehaviour
     [Header("Score Colors")]
     public Color greenColor = Color.green;  // Define greenColor
     public Color xColor = Color.red;  // For overfill or not green score "X"
-
-    [Header("UI Settings")]
-    public Image[] scoreCircles;
+    public Text startPromptText;
+    [Header("Scoreboard")]
+    public WorkstationScore scoreBoard;
 
     [Header("Round Settings")]
     public float delayBeforeNextRound = 3f;  // Public delay variable
 
     private int lastGreenIndex = -1; // Track the last shown green area index
 
-    void Start()
+    void OnEnable()
     {
+        DisplayStartPrompt(true);
         InitializeSlider();
-        UpdateScoreCircles();
         SetActiveGreenArea();
     }
-
+    void OnDisable(){
+        currentRound = 1;
+        gameOver = false;
+        DisplayStartPrompt(false);
+    }
     void Update()
     {
         if (!gameOver && !isProcessingRound) // Reject input if processing a round
@@ -50,10 +54,12 @@ public class FurnaceMiniGame : MonoBehaviour
         slider.minValue = 0;
         slider.maxValue = 1;
         slider.value = 0;
+        isFilling = false;
     }
 
     void HandleSpaceBarInput()
     {
+        DisplayStartPrompt(false);
         if (Input.GetKey(KeyCode.Space))
         {
             if (!isFilling)
@@ -97,7 +103,7 @@ public class FurnaceMiniGame : MonoBehaviour
         if (overfilled)
         {
             Debug.Log("Round Overfilled!");
-            UpdateScoreCircle(currentRound - 1, xColor);  // Mark round as overfilled with "X"
+            scoreBoard.UpdateScoreCircle(currentRound - 1, xColor);  // Mark round as overfilled with "X"
         }
         else
         {
@@ -111,14 +117,15 @@ public class FurnaceMiniGame : MonoBehaviour
         if (currentRound < maxRounds)
         {
             currentRound++;
-            Debug.Log("Advancing to Round: " + currentRound);
             SetActiveGreenArea();
             ResetSlider();
         }
         else
         {
             gameOver = true;
-            Debug.Log("Game Over! Total Rounds Played: " + currentRound);
+            SmithingGameManager.GetInstance().furnaceUsed = true;
+            SmithingGameManager.GetInstance().EndWorkStation(WorkStation.Furnace);
+            scoreBoard.gameObject.SetActive(false);
         }
 
         // Reset processing flag after transitioning to the next round
@@ -137,30 +144,19 @@ public class FurnaceMiniGame : MonoBehaviour
 
         if (RectTransformUtility.RectangleContainsScreenPoint(greenAreas[lastGreenIndex].GetComponent<RectTransform>(), handlePosition))
         {
-            Debug.Log("Landed in Green");
-            UpdateScoreCircle(currentRound - 1, greenColor);
+            SmithingGameManager.GetInstance().score += 5;
+            scoreBoard.UpdateScoreCircle(currentRound - 1, greenColor);
         }
         else
         {
-            Debug.Log("Did Not Land in Green");
-            UpdateScoreCircle(currentRound - 1, xColor);  // Mark round as not green with "X"
+            scoreBoard.UpdateScoreCircle(currentRound - 1, xColor);
         }
     }
-
-    void UpdateScoreCircle(int roundIndex, Color scoreColor)
+    void DisplayStartPrompt(bool display)
     {
-        if (roundIndex >= 0 && roundIndex < scoreCircles.Length)
-        {
-            scoreCircles[roundIndex].color = scoreColor;
-        }
-    }
-
-    void UpdateScoreCircles()
-    {
-        for (int i = 0; i < scoreCircles.Length; i++)
-        {
-            scoreCircles[i].color = Color.clear;  // Reset colors
-        }
+        startPromptText.gameObject.SetActive(display);
+        if (display)
+            startPromptText.text = "--- Hold Spacebar to increase the slider bar ---";
     }
 
     void SetActiveGreenArea()

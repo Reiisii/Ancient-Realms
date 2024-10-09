@@ -47,6 +47,9 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI triviaDescription;
     [Header("Popup Message")]
     [SerializeField] GameObject popupParent;
+    [Header("Smithing")]
+    [SerializeField] GameObject smithingUI;
+    [SerializeField] GameObject smithing;
     [Header("Prefabs")]
     [SerializeField] PopupMessageManager popupPrefab;
 
@@ -181,6 +184,45 @@ public class PlayerUIManager : MonoBehaviour
     }
     public void TriviaLink(){
         Application.OpenURL(trivia.link);
+    }
+    [ContextMenu("BackToMainMenu")]
+    public async void BackToMainMenu()
+    {
+        await ClosePlayerUI();
+        await OpenDarkenUI();
+        OpenBackgroundUI();
+        Time.timeScale = 1f;
+        await CloseBackgroundUI();
+        await OpenDarkenUI();
+        await OpenLoadingUI();
+        SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += async (operation) => {
+            await OpenDarkenUI();
+            OpenBackgroundUI();
+            Play.GetInstance().PlayMainMenu();
+        };
+ 
+    }
+    public async Task BackToLogin()
+    {
+        PlayerStats.GetInstance().stopSaving = true;
+        if(PlayerController.GetInstance() != null) PlayerController.GetInstance().playerActionMap.Disable();
+        mapGO.SetActive(false);
+        worldMap.SetActive(false);
+        smithingUI.SetActive(false);
+        smithing.SetActive(false);
+        await ClosePlayerUI();
+        await OpenDarkenUI();
+        OpenBackgroundUI();
+        Time.timeScale = 1f;
+        await CloseBackgroundUI();
+        await OpenDarkenUI();
+        await OpenLoadingUI();
+        SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += async (operation) => {
+            await OpenDarkenUI();
+            OpenBackgroundUI();
+            Play.GetInstance().PlayLogout();
+        };
+ 
     }
     private async void OnSceneLoaded(AsyncOperation operation)
     {

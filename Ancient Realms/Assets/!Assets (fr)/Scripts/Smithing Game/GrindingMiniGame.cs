@@ -31,7 +31,7 @@ public class GrindingMiniGame : MonoBehaviour
     private float timeLeft;
     private bool timeRunning = false;
 
-    void Start()
+    void OnEnable()
     {
         InitializeSlider();
         InitializeTimer();
@@ -39,7 +39,13 @@ public class GrindingMiniGame : MonoBehaviour
         InitializeGrindstoneAnimation();
         SetGrindstoneAnimation(staticAnimationName); // Set the grindstone to Static state at the start
     }
-
+    void OnDisable(){
+        SetGrindstoneAnimation(staticAnimationName);
+        grindstonePrefab.SetActive(false);
+        gameStarted = false;
+        gameOver = false;
+        timeRunning = false;
+    }
     void Update()
     {
         if (!gameOver)
@@ -152,9 +158,7 @@ public class GrindingMiniGame : MonoBehaviour
         gameOver = true;
         timeRunning = false;
         SetGrindstoneAnimation(staticAnimationName); // Set to Static animation before ending
-        Debug.Log("Game over.");
-        grinding.SetActive(false);
-        assembly.SetActive(true);
+        SmithingGameManager.GetInstance().EndWorkStation(WorkStation.Grindstone);
     }
 
     void DisplayStartPrompt(bool display)
@@ -180,6 +184,8 @@ public class GrindingMiniGame : MonoBehaviour
                 {
                     slider.value = slider.maxValue;
                     StopGame(); // Stop the game when the slider is full
+                    SmithingGameManager.GetInstance().score += 25;
+                    SmithingGameManager.GetInstance().grindstoneUsed = true;
                 }
             }
         }
