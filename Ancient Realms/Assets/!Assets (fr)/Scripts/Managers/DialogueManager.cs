@@ -47,10 +47,25 @@ public class DialogueManager : MonoBehaviour
             QuestSO questData = AccountManager.Instance.quests.Find(quest => quest.questID == npc.giveableQuest[0]);
             QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
             QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
+            foreach(QuestSO quest in PlayerStats.GetInstance().activeQuests.ToList()){
+                if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
+                    currentStory = new Story(quest.dialogue.text);
+                    currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
+                    nameText.SetText(npc.name);
+                    npcImage.sprite = npc.portrait;
+                    dialogueIsPlaying = true;
+                    dialoguePanel.SetActive(true);
+                    ContinueStory();
+                    return;
+                }
+            }
             if(completedQuest && completedQuest.isCompleted && !completedQuest.isActive){
                 // If Quest is complete AND is not Active
                 currentStory = new Story(npcData.npcDialogue.text);
                 currentStory.ChoosePathString(npcData.dialogueKnot);
+            }else if(activeQuest && activeQuest.isActive && PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
+                currentStory = new Story(activeQuest.dialogue.text);
+                currentStory.ChoosePathString(activeQuest.goals[activeQuest.currentGoal].inkyRedirect);
             }else if(!activeQuest && !completedQuest){
                 // If NPC Quest's active quest is not active list && NPC Quest's is not on completed list
                 currentStory = new Story(questData.dialogue.text);
