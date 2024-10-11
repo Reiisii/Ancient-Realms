@@ -221,14 +221,13 @@ public class PlayerController : MonoBehaviour
         float x = PlayerStats.GetInstance().localPlayerData.gameData.lastX;
         float y = PlayerStats.GetInstance().localPlayerData.gameData.lastY;
         bool isInter = PlayerStats.GetInstance().localPlayerData.gameData.isInterior;
-        if(!SmithingGameManager.GetInstance().inMiniGame){
-            if (transform.position.x != x || transform.position.y != y || isInter != isInterior)
-            {
-                PlayerStats.GetInstance().localPlayerData.gameData.lastX = transform.position.x;
-                PlayerStats.GetInstance().localPlayerData.gameData.lastY = transform.position.y;
-                PlayerStats.GetInstance().localPlayerData.gameData.isInterior = isInterior;
-                PlayerStats.GetInstance().isDataDirty = true;
-            }
+       
+        if (transform.position.x != x || transform.position.y != y || isInter != isInterior)
+        {
+            PlayerStats.GetInstance().localPlayerData.gameData.lastX = transform.position.x;
+            PlayerStats.GetInstance().localPlayerData.gameData.lastY = transform.position.y;
+            PlayerStats.GetInstance().localPlayerData.gameData.isInterior = isInterior;
+            PlayerStats.GetInstance().isDataDirty = true;
         }
         
     }
