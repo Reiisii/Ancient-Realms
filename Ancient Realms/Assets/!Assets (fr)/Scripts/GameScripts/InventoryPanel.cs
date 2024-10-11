@@ -80,7 +80,7 @@ public class InventoryPanel : MonoBehaviour
     }
 
     public void LoadPlayerData(PlayerStats player){
-        player.equippedItems.Clear();
+        player.equippedItems.Clear();  
         GameData gameData = player.localPlayerData.gameData;
         SortEquipments(player.inventory);
         playerName.SetText(gameData.playerName);
@@ -104,6 +104,10 @@ public class InventoryPanel : MonoBehaviour
         damageText.SetText(Utilities.FormatNumber((int) equippedItems[4].baseDamage).ToString());
     }
     private void SortEquipments(List<EquipmentSO> inventory){
+        equipments.Clear();
+        weapons.Clear();
+        questItems.Clear();
+        items.Clear();
         foreach(EquipmentSO equipment in inventory){
             switch(equipment.equipmentType){
                 case EquipmentEnum.Armor:
@@ -204,7 +208,7 @@ public class InventoryPanel : MonoBehaviour
     public void UnequipArmor(string equipment){
         PlayerStats player = PlayerStats.GetInstance();
         List<EquipmentSO> equippedItems = player.equippedItems;
-
+        
         switch(equipment)
         {
             case "helm":
@@ -239,10 +243,9 @@ public class InventoryPanel : MonoBehaviour
                 ClearSlot(ArmorType.Foot);
             break;
         }
-
-        player.equippedItems = equippedItems;  // Update the equippedItems list
-        RefreshInventory();
-        LoadPlayerData(player);
+        player.equippedItems = equippedItems;
+        SortEquipments(equippedItems);
+        InitializeInventory();
     }
     private void OnNFTsUpdate(List<Nft> nfts, int total)
     {
@@ -284,7 +287,7 @@ public class InventoryPanel : MonoBehaviour
         };
 
         ClearContent(inventoryRectTransform);
-        LoadPlayerData(PlayerStats.GetInstance());
+        InitializeInventory();
     }
     public void ClearSlot(ArmorType armor)
     {
@@ -326,7 +329,7 @@ public class InventoryPanel : MonoBehaviour
         };
 
         ClearContent(inventoryRectTransform);
-        LoadPlayerData(PlayerStats.GetInstance());
+        InitializeInventory();
     }
     public void ClearContent(RectTransform cPanel)
     {
