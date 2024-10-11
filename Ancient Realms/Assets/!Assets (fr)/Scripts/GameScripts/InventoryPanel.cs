@@ -21,6 +21,14 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] Image mainSlot;
     [SerializeField] Image shieldSlot;
     [SerializeField] Image javelinSlot;
+    [Header("Equipment Sprite")]
+    [SerializeField] Sprite defaultHelmSprite;
+    [SerializeField] Sprite defaultChestSprite;
+    [SerializeField] Sprite defaultWaistSprite;
+    [SerializeField] Sprite defaultFootSprite;
+    [SerializeField] Sprite defaultMainSprite;
+    [SerializeField] Sprite defaultShieldSprite;
+    [SerializeField] Sprite defaultJavelinSprite;
     [Header("Stats")]
     [SerializeField] TextMeshProUGUI hpText;
     [SerializeField] TextMeshProUGUI staminaText;
@@ -71,26 +79,29 @@ public class InventoryPanel : MonoBehaviour
         items.Clear();
     }
 
-    private void LoadPlayerData(PlayerStats player){
+    public void LoadPlayerData(PlayerStats player){
+        player.equippedItems.Clear();
         GameData gameData = player.localPlayerData.gameData;
         SortEquipments(player.inventory);
-        PlayerStats.GetInstance().InitializeEquipments(gameData);
-        List<EquipmentSO> equippedItems = player.equippedItems;
         playerName.SetText(gameData.playerName);
-        helmSlot.sprite = equippedItems[0].image;
-        chestSlot.sprite = equippedItems[1].image;
-        waistSlot.sprite = equippedItems[2].image;
-        footSlot.sprite = equippedItems[3].image;
-        mainSlot.sprite = equippedItems[4].image;
-        shieldSlot.sprite = equippedItems[5].image;
-        javelinSlot.sprite = equippedItems[6].image;
+        InitializeInventory();
+    }
+    private void Update(){
+        PlayerStats player = PlayerStats.GetInstance();
+        GameData gameData = player.localPlayerData.gameData;
+        List<EquipmentSO> equippedItems = player.equippedItems;
+        if(equippedItems[0] != null) helmSlot.sprite = equippedItems[0].image;
+        if(equippedItems[1] != null)chestSlot.sprite = equippedItems[1].image;
+        if(equippedItems[2] != null)waistSlot.sprite = equippedItems[2].image;
+        if(equippedItems[3] != null)footSlot.sprite = equippedItems[3].image;
+        if(equippedItems[4] != null)mainSlot.sprite = equippedItems[4].image;
+        if(equippedItems[5] != null)shieldSlot.sprite = equippedItems[5].image;
+        if(equippedItems[6] != null)javelinSlot.sprite = equippedItems[6].image;
         denarii.SetText(Utilities.FormatNumber(gameData.denarii));
         hpText.SetText(Utilities.FormatNumber((int) player.maxHP).ToString());
         staminaText.SetText(Utilities.FormatNumber((int) player.maxStamina).ToString());
         armorText.SetText(Utilities.FormatNumber((int) player.armor).ToString());
         damageText.SetText(Utilities.FormatNumber((int) equippedItems[4].baseDamage).ToString());
-        
-        InitializeInventory();
     }
     private void SortEquipments(List<EquipmentSO> inventory){
         foreach(EquipmentSO equipment in inventory){
@@ -116,7 +127,7 @@ public class InventoryPanel : MonoBehaviour
             }
         }
     }
-    private void InitializeInventory(){
+    public void InitializeInventory(){
         ClearContent(nftRectTransform);
         ClearContent(inventoryRectTransform);
         List<EquipmentSO> equipmentToDisplay = currentTab switch
@@ -184,11 +195,54 @@ public class InventoryPanel : MonoBehaviour
                     EquipmentPrefab eqPrefab = Instantiate(equipmentPrefab, Vector3.zero, Quaternion.identity);
                     eqPrefab.transform.SetParent(inventoryRectTransform);
                     eqPrefab.transform.localScale = Vector3.one;
-                    eqPrefab.SetData(equipmentSO);
+                    eqPrefab.SetData(equipmentSO, gameObject);
             }
             nftGO.SetActive(false);
             inventoryGO.SetActive(true);
         }
+    }
+    public void UnequipArmor(string equipment){
+        PlayerStats player = PlayerStats.GetInstance();
+        List<EquipmentSO> equippedItems = player.equippedItems;
+
+        switch(equipment)
+        {
+            case "helm":
+                EquipmentSO helmToInv = equippedItems[0];
+                ItemData itemDataHelm = new ItemData(helmToInv.equipmentId, helmToInv.tier, helmToInv.level, helmToInv.stackCount);
+                player.localPlayerData.gameData.inventory.items.Add(itemDataHelm);
+                equippedItems[0] = null;  // Clear from equippedItems list
+                ClearSlot(ArmorType.Helmet);
+            break;
+            
+            case "chest":
+                EquipmentSO chestToInv = equippedItems[1];
+                ItemData itmDataChest = new ItemData(chestToInv.equipmentId, chestToInv.tier, chestToInv.level, chestToInv.stackCount);
+                player.localPlayerData.gameData.inventory.items.Add(itmDataChest);
+                equippedItems[1] = null;  // Clear from equippedItems list
+                ClearSlot(ArmorType.Chest);
+            break;
+            
+            case "waist":
+                EquipmentSO waitToInv = equippedItems[2];
+                ItemData itemDataWaist = new ItemData(waitToInv.equipmentId, waitToInv.tier, waitToInv.level, waitToInv.stackCount);
+                player.localPlayerData.gameData.inventory.items.Add(itemDataWaist);
+                equippedItems[2] = null;  // Clear from equippedItems list
+                ClearSlot(ArmorType.Waist);
+            break;
+            
+            case "foot":
+                EquipmentSO footToInv = equippedItems[3];
+                ItemData itemDataFoot = new ItemData(footToInv.equipmentId, footToInv.tier, footToInv.level, footToInv.stackCount);
+                player.localPlayerData.gameData.inventory.items.Add(itemDataFoot);
+                equippedItems[3] = null;  // Clear from equippedItems list
+                ClearSlot(ArmorType.Foot);
+            break;
+        }
+
+        player.equippedItems = equippedItems;  // Update the equippedItems list
+        RefreshInventory();
+        LoadPlayerData(player);
     }
     private void OnNFTsUpdate(List<Nft> nfts, int total)
     {
@@ -230,7 +284,34 @@ public class InventoryPanel : MonoBehaviour
         };
 
         ClearContent(inventoryRectTransform);
-        InitializeInventory();
+        LoadPlayerData(PlayerStats.GetInstance());
+    }
+    public void ClearSlot(ArmorType armor)
+    {
+        GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
+        switch(armor){
+            case ArmorType.Helmet:
+                gameData.equippedData.helmSlot = null;
+                helmSlot.sprite = defaultHelmSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
+            case ArmorType.Chest:
+                gameData.equippedData.chestSlot = null;
+                chestSlot.sprite = defaultChestSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
+            case ArmorType.Waist:
+                gameData.equippedData.waistSlot = null;
+                waistSlot.sprite = defaultWaistSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
+            case ArmorType.Foot:
+                gameData.equippedData.footSlot = null;
+                footSlot.sprite = defaultFootSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
+
+        }
     }
     public void ChangeType(InventoryTab tab)
     {
@@ -245,11 +326,18 @@ public class InventoryPanel : MonoBehaviour
         };
 
         ClearContent(inventoryRectTransform);
-        InitializeInventory();
+        LoadPlayerData(PlayerStats.GetInstance());
     }
     public void ClearContent(RectTransform cPanel)
     {
         foreach (Transform child in cPanel)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+    public void RefreshInventory()
+    {
+        foreach (Transform child in inventoryRectTransform)
         {
             Destroy(child.gameObject);
         }

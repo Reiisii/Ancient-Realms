@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ESDatabase.Classes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,8 +17,8 @@ public class EquipmentPrefab : MonoBehaviour
     [SerializeField] GameObject tier3;
     [SerializeField] GameObject tier4;
     [SerializeField] GameObject tier5;
-    public EquipmentSO equipment; 
-    
+    public InventoryPanel inventoryPanel;
+    public EquipmentSO equipment;
     public void InitializeEquipment()
     {
         if (equipment != null)
@@ -50,11 +51,55 @@ public class EquipmentPrefab : MonoBehaviour
             Debug.LogError("Equipment is null, cannot display equipment data.");
         }
     }
-    // Update is called once per frame
-    public void SetData(EquipmentSO equipmentData)
+    public void EquipArmor(){
+        if(equipment.equipmentType == EquipmentEnum.Armor)
+    {
+        PlayerStats playerStats = PlayerStats.GetInstance();
+        GameData gameData = playerStats.localPlayerData.gameData;
+        List<ItemData> inventoryItems = gameData.inventory.items;
+
+        switch(equipment.armorType)
+        {
+            case ArmorType.Helmet:
+                ItemData invToHelm = inventoryItems[equipment.dbIndex];
+                gameData.equippedData.helmSlot = invToHelm;
+                inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
+                inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                break;
+
+            case ArmorType.Chest:
+                ItemData invToChest = inventoryItems[equipment.dbIndex];
+                gameData.equippedData.chestSlot = invToChest;
+                inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
+                inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                break;
+
+            case ArmorType.Waist:
+                ItemData invToWaist = inventoryItems[equipment.dbIndex];
+                gameData.equippedData.waistSlot = invToWaist;
+                inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
+                inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                break;
+
+            case ArmorType.Foot:
+                ItemData invToFoot = inventoryItems[equipment.dbIndex];
+                gameData.equippedData.footSlot = invToFoot;
+                inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
+                inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                break;
+        }
+
+        // Refresh and reinitialize inventory to reflect the changes
+        inventoryPanel.RefreshInventory();
+        inventoryPanel.LoadPlayerData(PlayerStats.GetInstance());
+
+        playerStats.isDataDirty = true;  // Mark data as dirty to ensure changes are saved
+    }
+    }
+    public void SetData(EquipmentSO equipmentData, GameObject inventoryGO)
     {
         equipment = equipmentData;
-
+        inventoryPanel = inventoryGO.GetComponent<InventoryPanel>();
         InitializeEquipment();
     }
 }
