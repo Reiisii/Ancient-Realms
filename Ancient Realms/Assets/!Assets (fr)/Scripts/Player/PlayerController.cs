@@ -241,6 +241,10 @@ public class PlayerController : MonoBehaviour
         if(main != null){
             mainWeapon.sprite = equippedItems[4].front;
             mainWeaponBelt.sprite = equippedItems[4].front;
+        }else{
+            EquipmentSO pugio = AccountManager.Instance.equipments.FirstOrDefault(equip => equip.equipmentId == 13);
+            mainWeapon.sprite = pugio.front;
+            mainWeaponBelt.sprite = pugio.front;
         }
         if(shield != null){
             shieldFront.sprite = equippedItems[5].front;
@@ -255,6 +259,7 @@ public class PlayerController : MonoBehaviour
         if(context.performed){
             if(playerStats.stamina < 10) return;
             if(isHolding) return;
+            if(isEquipping) return;
             if(PlayerStats.GetInstance().isCombatMode && !isAttacking && IsRunning == false && !isHolding){
                 isAttacking = true;
                 playerStats.stamina -= 10f;
@@ -265,8 +270,13 @@ public class PlayerController : MonoBehaviour
     }
     public void OnThrowPilum(InputAction.CallbackContext context)
     {
+        EquipmentSO pilum = PlayerStats.GetInstance().equippedItems[6];
         if (context.started)
         {
+            if(pilum == null){
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a javelin");
+                return;
+            }
             if(playerStats.stamina < 10) return;
             if(isAttacking) return;
             if(playerStats.isCombatMode && !isAttacking && !IsRunning){
@@ -281,7 +291,7 @@ public class PlayerController : MonoBehaviour
     }
     private void ThrowPilum()
     {
-        float maxDamage = playerStats.attack * 1.5f;
+        float maxDamage = playerStats.equippedItems[6].baseDamage * 1.5f;
 
         // Calculate the throw force and corresponding damage based on hold time
         float damage = Mathf.Lerp(0, maxDamage, holdTime / playerStats.maxHoldTime);
@@ -350,7 +360,7 @@ public class PlayerController : MonoBehaviour
     void Applydamage(){
         Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
         foreach(Collider2D enemy in hitEnemies){
-            enemy.GetComponent<Enemy>().TakeDamage(playerStats.attack, GoalTypeEnum.HitMelee);
+            enemy.GetComponent<Enemy>().TakeDamage(playerStats.damage, GoalTypeEnum.HitMelee);
         }
     }
     void OnDrawGizmosSelected(){
@@ -358,7 +368,12 @@ public class PlayerController : MonoBehaviour
         Gizmos .DrawWireSphere(attackPoint.position, playerStats.attackRange);
     }
     public void Block(InputAction.CallbackContext context){
+        EquipmentSO shield = PlayerStats.GetInstance().equippedItems[5];
         if(context.performed){
+            if(shield == null){
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a shield");
+                return;
+            }
             if(PlayerStats.GetInstance().isCombatMode && IsRunning == false){
                 animator.SetBool("isBlocking", true);
                 playerStats.stamina -= 5f * Time.deltaTime;

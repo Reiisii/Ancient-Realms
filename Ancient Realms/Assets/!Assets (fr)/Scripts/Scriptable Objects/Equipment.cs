@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ESDatabase.Classes;
 using UnityEngine;
+[Serializable]
 [CreateAssetMenu(fileName = "New Equipment", menuName = "SO/Equipment")]
 public class EquipmentSO : ScriptableObject
 {
