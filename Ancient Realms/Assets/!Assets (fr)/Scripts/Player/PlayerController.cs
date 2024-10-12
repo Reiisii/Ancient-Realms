@@ -249,9 +249,14 @@ public class PlayerController : MonoBehaviour
         if(shield != null){
             shieldFront.sprite = equippedItems[5].front;
             shieldBack.sprite = equippedItems[5].back;
+        }else{
+            shieldFront.sprite = null;
+            shieldBack.sprite = null;
         }
         if(jav != null){
             javelin.sprite = equippedItems[6].front;
+        }else{
+            javelin.sprite = null;
         }
         
     }
