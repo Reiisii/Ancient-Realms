@@ -66,6 +66,7 @@ public class InventoryPanel : MonoBehaviour
     public InventoryTab currentTab;
     private void OnEnable(){
         Web3.OnNFTsUpdate += OnNFTsUpdate;
+        PlayerStats.GetInstance().InitializeEquipments();
         LoadPlayerData(PlayerStats.GetInstance());
         InitializeNFT();
     }
@@ -80,9 +81,7 @@ public class InventoryPanel : MonoBehaviour
     }
 
     public void LoadPlayerData(PlayerStats player){
-        player.equippedItems.Clear();  
         GameData gameData = player.localPlayerData.gameData;
-        SortEquipments(player.inventory);
         playerName.SetText(gameData.playerName);
         InitializeInventory();
     }
@@ -91,17 +90,21 @@ public class InventoryPanel : MonoBehaviour
         GameData gameData = player.localPlayerData.gameData;
         List<EquipmentSO> equippedItems = player.equippedItems;
         if(equippedItems[0] != null) helmSlot.sprite = equippedItems[0].image;
-        if(equippedItems[1] != null)chestSlot.sprite = equippedItems[1].image;
-        if(equippedItems[2] != null)waistSlot.sprite = equippedItems[2].image;
-        if(equippedItems[3] != null)footSlot.sprite = equippedItems[3].image;
-        if(equippedItems[4] != null)mainSlot.sprite = equippedItems[4].image;
-        if(equippedItems[5] != null)shieldSlot.sprite = equippedItems[5].image;
-        if(equippedItems[6] != null)javelinSlot.sprite = equippedItems[6].image;
+        if(equippedItems[1] != null) chestSlot.sprite = equippedItems[1].image;
+        if(equippedItems[2] != null) waistSlot.sprite = equippedItems[2].image;
+        if(equippedItems[3] != null) footSlot.sprite = equippedItems[3].image;
+        if(equippedItems[4] != null) {
+            mainSlot.sprite = equippedItems[4].image;
+            damageText.SetText(Utilities.FormatNumber((int) player.damage).ToString());
+        }else{
+            damageText.SetText(Utilities.FormatNumber((int) player.damage).ToString());
+        }
+        if(equippedItems[5] != null) shieldSlot.sprite = equippedItems[5].image;
+        if(equippedItems[6] != null) javelinSlot.sprite = equippedItems[6].image;
         denarii.SetText(Utilities.FormatNumber(gameData.denarii));
         hpText.SetText(Utilities.FormatNumber((int) player.maxHP).ToString());
         staminaText.SetText(Utilities.FormatNumber((int) player.maxStamina).ToString());
         armorText.SetText(Utilities.FormatNumber((int) player.armor).ToString());
-        damageText.SetText(Utilities.FormatNumber((int) equippedItems[4].baseDamage).ToString());
     }
     private void SortEquipments(List<EquipmentSO> inventory){
         equipments.Clear();
@@ -134,12 +137,19 @@ public class InventoryPanel : MonoBehaviour
     public void InitializeInventory(){
         ClearContent(nftRectTransform);
         ClearContent(inventoryRectTransform);
+        SortEquipments(PlayerStats.GetInstance().inventory);
         List<EquipmentSO> equipmentToDisplay = currentTab switch
         {
-            InventoryTab.Equipments => equipments,
-            InventoryTab.Weapons => weapons,
-            InventoryTab.Items => items,
-            InventoryTab.QuestItem => questItems,
+            InventoryTab.Equipments => equipments.OrderByDescending(e => e.tier)  // First, sort by tier (descending)
+            .ThenByDescending(e => e.level)  // Then, sort by level (descending)
+            .ToList(),
+            InventoryTab.Weapons => weapons.OrderByDescending(e => e.tier)  // First, sort by tier (descending)
+            .ThenByDescending(e => e.level)  // Then, sort by level (descending)
+            .ToList(),
+            InventoryTab.Items => items.OrderByDescending(e => e.itemName)
+            .ToList(),
+            InventoryTab.QuestItem => questItems.OrderByDescending(e => e.itemName)
+            .ToList(),
             _ => new List<EquipmentSO>()
         };
         switch(currentTab){
@@ -208,45 +218,101 @@ public class InventoryPanel : MonoBehaviour
     public void UnequipArmor(string equipment){
         PlayerStats player = PlayerStats.GetInstance();
         List<EquipmentSO> equippedItems = player.equippedItems;
-        
-        switch(equipment)
+        EquipmentSO equip = equipment switch
         {
-            case "helm":
-                EquipmentSO helmToInv = equippedItems[0];
-                ItemData itemDataHelm = new ItemData(helmToInv.equipmentId, helmToInv.tier, helmToInv.level, helmToInv.stackCount);
-                player.localPlayerData.gameData.inventory.items.Add(itemDataHelm);
-                equippedItems[0] = null;  // Clear from equippedItems list
-                ClearSlot(ArmorType.Helmet);
-            break;
-            
-            case "chest":
-                EquipmentSO chestToInv = equippedItems[1];
-                ItemData itmDataChest = new ItemData(chestToInv.equipmentId, chestToInv.tier, chestToInv.level, chestToInv.stackCount);
-                player.localPlayerData.gameData.inventory.items.Add(itmDataChest);
-                equippedItems[1] = null;  // Clear from equippedItems list
-                ClearSlot(ArmorType.Chest);
-            break;
-            
-            case "waist":
-                EquipmentSO waitToInv = equippedItems[2];
-                ItemData itemDataWaist = new ItemData(waitToInv.equipmentId, waitToInv.tier, waitToInv.level, waitToInv.stackCount);
-                player.localPlayerData.gameData.inventory.items.Add(itemDataWaist);
-                equippedItems[2] = null;  // Clear from equippedItems list
-                ClearSlot(ArmorType.Waist);
-            break;
-            
-            case "foot":
-                EquipmentSO footToInv = equippedItems[3];
-                ItemData itemDataFoot = new ItemData(footToInv.equipmentId, footToInv.tier, footToInv.level, footToInv.stackCount);
-                player.localPlayerData.gameData.inventory.items.Add(itemDataFoot);
-                equippedItems[3] = null;  // Clear from equippedItems list
-                ClearSlot(ArmorType.Foot);
-            break;
+            "helm" => equippedItems[0],
+            "chest" => equippedItems[1],
+            "waist" => equippedItems[2],
+            "foot" => equippedItems[3],
+            _ => null
+        };
+        if(equip != null){
+            switch(equipment)
+            {
+                case "helm":
+                    EquipmentSO helmToInv = equippedItems[0];
+                    ItemData itemDataHelm = new ItemData(helmToInv.equipmentId, helmToInv.tier, helmToInv.level, helmToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(itemDataHelm);
+                    equippedItems[0] = null;
+                    ClearSlot(ArmorType.Helmet);
+                break;
+                
+                case "chest":
+                    EquipmentSO chestToInv = equippedItems[1];
+                    ItemData itmDataChest = new ItemData(chestToInv.equipmentId, chestToInv.tier, chestToInv.level, chestToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(itmDataChest);
+                    equippedItems[1] = null;  // Clear from equippedItems list
+                    ClearSlot(ArmorType.Chest);
+                break;
+                
+                case "waist":
+                    EquipmentSO waitToInv = equippedItems[2];
+                    ItemData itemDataWaist = new ItemData(waitToInv.equipmentId, waitToInv.tier, waitToInv.level, waitToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(itemDataWaist);
+                    equippedItems[2] = null;  // Clear from equippedItems list
+                    ClearSlot(ArmorType.Waist);
+                break;
+                
+                case "foot":
+                    EquipmentSO footToInv = equippedItems[3];
+                    ItemData itemDataFoot = new ItemData(footToInv.equipmentId, footToInv.tier, footToInv.level, footToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(itemDataFoot);
+                    equippedItems[3] = null;  // Clear from equippedItems list
+                    ClearSlot(ArmorType.Foot);
+                break;
+            }
+            player.equippedItems = equippedItems;
+            PlayerStats.GetInstance().InitializeEquipments();
+            InitializeInventory();
+        }else{
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a armor to unequip");
         }
-        player.equippedItems = equippedItems;
-        SortEquipments(equippedItems);
-        InitializeInventory();
     }
+    public void UnequipWeapon(string equipment){
+        PlayerStats player = PlayerStats.GetInstance();
+        List<EquipmentSO> equippedItems = player.equippedItems;
+        EquipmentSO weapon = equipment switch
+        {
+            "main" => equippedItems[4],
+            "shield" => equippedItems[5],
+            "javelin" => equippedItems[6],
+            _ => null
+        };
+        if(weapon != null){
+            switch(equipment)
+            {
+                case "main":
+                    EquipmentSO weapToInv = equippedItems[4];
+                    ItemData weapData = new ItemData(weapToInv.equipmentId, weapToInv.tier, weapToInv.level, weapToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(weapData);
+                    equippedItems[4] = null;
+                    ClearSlot(WeaponType.Sword);
+                break;
+                
+                case "shield":
+                    EquipmentSO shieldToInv = equippedItems[5];
+                    ItemData shieldData = new ItemData(shieldToInv.equipmentId, shieldToInv.tier, shieldToInv.level, shieldToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(shieldData);
+                    equippedItems[5] = null;  // Clear from equippedItems list
+                    ClearSlot(EquipmentEnum.Shield);
+                break;
+                
+                case "javelin":
+                    EquipmentSO javelinToInv = equippedItems[6];
+                    ItemData itemDataWaist = new ItemData(javelinToInv.equipmentId, javelinToInv.tier, javelinToInv.level, javelinToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(itemDataWaist);
+                    equippedItems[6] = null;  // Clear from equippedItems list
+                    ClearSlot(WeaponType.Javelin);
+                break;
+            }
+            player.equippedItems = equippedItems;
+            PlayerStats.GetInstance().InitializeEquipments();
+            InitializeInventory();
+        }else{
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a weapon to unequip");
+        }
+    }
+
     private void OnNFTsUpdate(List<Nft> nfts, int total)
     {
         accountNft = nfts;
@@ -285,8 +351,6 @@ public class InventoryPanel : MonoBehaviour
             "nfts" => InventoryTab.NFTs,
             _ => InventoryTab.Equipments
         };
-
-        ClearContent(inventoryRectTransform);
         InitializeInventory();
     }
     public void ClearSlot(ArmorType armor)
@@ -313,7 +377,38 @@ public class InventoryPanel : MonoBehaviour
                 footSlot.sprite = defaultFootSprite;
                 PlayerStats.GetInstance().isDataDirty = true;
             break;
-
+        }
+    }
+    public void ClearSlot(WeaponType weapon)
+    {
+        GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
+        switch(weapon){
+            case WeaponType.Sword:
+                gameData.equippedData.mainSlot = null;
+                mainSlot.sprite = defaultMainSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
+            case WeaponType.Spear:
+                gameData.equippedData.mainSlot = null;
+                mainSlot.sprite = defaultMainSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
+            case WeaponType.Javelin:
+                gameData.equippedData.javelinSlot = null;
+                javelinSlot.sprite = defaultJavelinSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
+        }
+    }
+    public void ClearSlot(EquipmentEnum equipment)
+    {
+        GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
+        switch(equipment){
+            case EquipmentEnum.Shield:
+                gameData.equippedData.shieldSlot = null;
+                shieldSlot.sprite = defaultShieldSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
         }
     }
     public void ChangeType(InventoryTab tab)
@@ -327,8 +422,6 @@ public class InventoryPanel : MonoBehaviour
             InventoryTab.NFTs => InventoryTab.NFTs,
             _ => InventoryTab.Equipments
         };
-
-        ClearContent(inventoryRectTransform);
         InitializeInventory();
     }
     public void ClearContent(RectTransform cPanel)
