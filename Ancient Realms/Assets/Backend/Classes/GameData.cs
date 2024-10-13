@@ -18,6 +18,7 @@ namespace ESDatabase.Classes
                 public int currentEnergy {get;set;}
                 public Inventory inventory {get;set;}
                 public EquippedData equippedData {get;set;}
+                public List<NFTData> equippedNFT;
                 public List<QuestData> quests {get; set;}
                 public List<ArtifactsData> artifacts {get;set;}
                 public List<int> characters {get;set;}
@@ -41,10 +42,11 @@ namespace ESDatabase.Classes
                         this.rank = "Tiro";
                         this.inventory = new Inventory();
                         this.equippedData = new EquippedData();
+                        this.equippedNFT = new List<NFTData>();
                         this.quests = new List<QuestData>();
                         this.artifacts = new List<ArtifactsData>();
                         this.characters = new List<int>();
-                        this.equipments = new List<int> { 0, 5, 23, 18, 11, 8, 12 };;
+                        this.equipments = new List<int> { 0, 5, 23, 18, 11, 8, 12 };
                         this.uiSettings = new List<string>();
                         this.events = new List<int>();
                         this.premiumPurchases = new List<string>();

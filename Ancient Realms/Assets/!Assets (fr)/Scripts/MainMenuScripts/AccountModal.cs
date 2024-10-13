@@ -63,11 +63,6 @@ public class AccountModal : MonoBehaviour
                 if(accountNft[i].metaplexData.data.offchainData.attributes[4].value.Equals("Eagle's Shadow")){
                     NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
                     NFTSO nftData = nftArray.FirstOrDefault(nft => nft.id == int.Parse(accountNft[i].metaplexData.data.offchainData.attributes[3].value));
-                    if (nftData != null) {
-                        Debug.Log(nftData.nftName);
-                    } else {
-                        Debug.LogWarning($"No matching NFT found for ID: {accountNft[i].metaplexData.data.offchainData.attributes[3].value}");
-                    }
                     nft.transform.SetParent(contentPanel);
                     nft.transform.localScale = new Vector3(1, 1, 1);
                     nft.setGameObject(accountPanel);
