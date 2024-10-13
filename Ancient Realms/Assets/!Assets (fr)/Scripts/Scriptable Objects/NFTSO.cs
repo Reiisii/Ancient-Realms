@@ -8,8 +8,9 @@ public class NFTSO : ScriptableObject
     public string nftName;
     public string description;
     public string artWeaveLink;
+    public string mintKey;
     public RarityEnum rarity;
     public CultureEnum culture;
     public Sprite image;
-    public List<string> buffList;
+    public List<StatBuff> buffList;
 }

@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        if(canWalk && isEquipping == false){
+        if(canWalk && !isEquipping){
             if (moveInputActive)
             {
                 IsMoving = true;
@@ -276,13 +276,13 @@ public class PlayerController : MonoBehaviour
     public void OnThrowPilum(InputAction.CallbackContext context)
     {
         EquipmentSO pilum = PlayerStats.GetInstance().equippedItems[6];
+        if(playerStats.stamina < 10) return;
         if (context.started)
         {
             if(pilum == null){
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a javelin");
                 return;
             }
-            if(playerStats.stamina < 10) return;
             if(isAttacking) return;
             if(playerStats.isCombatMode && !isAttacking && !IsRunning){
                 isHolding = true;
@@ -477,6 +477,7 @@ public class PlayerController : MonoBehaviour
     }
     private void SetFacingDirection(Vector2 moveInput)
     {
+        if(isAttacking) return;
         if(moveInput.x > 0 && !IsFacingRight)
         {
             // Face the right

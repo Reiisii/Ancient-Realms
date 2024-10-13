@@ -66,6 +66,7 @@ public class Notification
     public Sprite image;
     public NotifType notifType;
 }
+
 public enum CultureEnum {
     Roman,
     Gallic,
@@ -151,6 +152,17 @@ public enum InventoryTab {
     QuestItem,
     NFTs,
     Items
+}
+public enum BuffType {
+    Health,
+    Armor,
+    Stamina,
+    Speed
+}
+[Serializable]
+public class StatBuff{
+    public BuffType buffType;
+    public float value;
 }
 [Serializable]
 public class QuestList

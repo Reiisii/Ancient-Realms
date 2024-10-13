@@ -449,14 +449,34 @@ public class InventoryPanel : MonoBehaviour
         ItemData item6 = new ItemData(18, 4, 1, 1);
         ItemData item7 = new ItemData(22, 0, 0, 1);
         ItemData item8 = new ItemData(21, 0, 0, 1);
-        gameData.inventory.items.Add(item1);
-        gameData.inventory.items.Add(item2);
-        gameData.inventory.items.Add(item3);
-        gameData.inventory.items.Add(item4);
-        gameData.inventory.items.Add(item5);
-        gameData.inventory.items.Add(item6);
-        gameData.inventory.items.Add(item7);
-        gameData.inventory.items.Add(item8);
-        PlayerStats.GetInstance().SaveInventoryToServer();
+        List<ItemData> itemList = new List<ItemData>{
+           new ItemData(0, 5, 5, 1),
+           new ItemData(1, 4, 1, 1),
+           new ItemData(2, 3, 1, 1),
+           new ItemData(3, 4, 1, 1),
+           new ItemData(4, 2, 1, 1),
+           new ItemData(5, 5, 5, 1),
+           new ItemData(6, 4, 1, 1),
+           new ItemData(7, 3, 1, 1),
+           new ItemData(8, 5, 5, 1),
+           new ItemData(9, 4, 1, 1),
+           new ItemData(10, 3, 1, 1),
+           new ItemData(11, 5, 5, 1),
+           new ItemData(12, 5, 5, 1),
+           new ItemData(14, 4, 3, 1),
+           new ItemData(15, 3, 5, 1),
+           new ItemData(16, 2, 1, 1),
+           new ItemData(17, 2, 1, 1),
+           new ItemData(18, 5, 5, 1),
+           new ItemData(19, 4, 3, 1),
+           new ItemData(20, 1, 1, 1),
+           new ItemData(21, 0, 0, 1),
+           new ItemData(22, 1, 1, 1),
+           new ItemData(23, 5, 5, 1),
+           new ItemData(24, 4, 2, 1),
+           new ItemData(25, 1, 1, 1)
+        };
+        gameData.inventory.items.AddRange(itemList);
+        PlayerStats.GetInstance().isDataDirty = true;
     }
 }

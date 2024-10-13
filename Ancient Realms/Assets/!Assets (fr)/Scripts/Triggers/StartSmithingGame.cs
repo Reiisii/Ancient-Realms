@@ -25,6 +25,7 @@ public class StartSmithingGame : MonoBehaviour
     }
     private async Task Open(){
         PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
+        PlayerController.GetInstance().playerActionMap.Disable();
         await PlayerUIManager.GetInstance().OpenDarkenUI();
     }
     public async Task Close(){
