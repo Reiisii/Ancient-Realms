@@ -371,7 +371,6 @@ public class PlayerStats : MonoBehaviour
             j++;
         }
         armor = sumArmor;
-        Debug.Log(damage);
     }
     private void CalculateStatsForCurrentLevel()
     {

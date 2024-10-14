@@ -13,14 +13,64 @@ public class InventoryPanel : MonoBehaviour
 {
     [Header("Details")]
     [SerializeField] TextMeshProUGUI playerName;
-    [Header("Equipment")]
+    [Header("Helmet Slot")]
     [SerializeField] Image helmSlot;
+    [SerializeField] GameObject helmTierGO;
+    [SerializeField] Image helmTierImage;
+    [SerializeField] TextMeshProUGUI helmTier;
+    [SerializeField] GameObject helmLevelGO;
+    [SerializeField] TextMeshProUGUI helmLevel;
+    [Header("Chest Slot")]
     [SerializeField] Image chestSlot;
+    [SerializeField] GameObject chestTierGO;
+    [SerializeField] TextMeshProUGUI chestTier;
+    [SerializeField] Image chestTierImage;
+    [SerializeField] GameObject chestLevelGO;
+    [SerializeField] TextMeshProUGUI chestLevel;
+    [Header("Waist Slot")]
     [SerializeField] Image waistSlot;
+    [SerializeField] GameObject waistTierGO;
+    [SerializeField] TextMeshProUGUI waistTier;
+    [SerializeField] Image waistTierImage;
+    [SerializeField] GameObject waistLevelGO;
+    [SerializeField] TextMeshProUGUI waistLevel;
+    [Header("Foot Slot")]
     [SerializeField] Image footSlot;
+    [SerializeField] GameObject footTierGO;
+    [SerializeField] TextMeshProUGUI footTier;
+    [SerializeField] Image footTierImage;
+    [SerializeField] GameObject footLevelGO;
+    [SerializeField] TextMeshProUGUI footLevel;
+    [Header("Main Slot")]
     [SerializeField] Image mainSlot;
+    [SerializeField] GameObject mainTierGO;
+    [SerializeField] TextMeshProUGUI mainTier;
+    [SerializeField] Image mainTierImage;
+    [SerializeField] GameObject mainLevelGO;
+    [SerializeField] TextMeshProUGUI mainLevel;
+    [Header("Shield Slot")]
     [SerializeField] Image shieldSlot;
+    [SerializeField] GameObject shieldTierGO;
+    [SerializeField] Image shieldTierImage;
+    [SerializeField] TextMeshProUGUI shieldTier;
+    [SerializeField] GameObject shieldLevelGO;
+    [SerializeField] TextMeshProUGUI shieldLevel;
+    [Header("Javelin Slot")]
     [SerializeField] Image javelinSlot;
+    [SerializeField] GameObject javelinTierGO;
+    [SerializeField] Image javelinTierImage;
+    [SerializeField] TextMeshProUGUI javelinTier;
+    [SerializeField] GameObject javelinLevelGO;
+    [SerializeField] TextMeshProUGUI javelinLevel;
+    [Header("Healing Slot")]
+    [SerializeField] Image healSlot;
+    [SerializeField] TextMeshProUGUI healSlotQuantity;
+    [Header("Tier Background")]
+    [SerializeField] Sprite tier1;
+    [SerializeField] Sprite tier2;
+    [SerializeField] Sprite tier3;
+    [SerializeField] Sprite tier4;
+    [SerializeField] Sprite tier5;
     [Header("Equipment Sprite")]
     [SerializeField] Sprite defaultHelmSprite;
     [SerializeField] Sprite defaultChestSprite;
@@ -29,6 +79,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] Sprite defaultMainSprite;
     [SerializeField] Sprite defaultShieldSprite;
     [SerializeField] Sprite defaultJavelinSprite;
+    [SerializeField] Sprite defaultHealSprite;
     [Header("Stats")]
     [SerializeField] TextMeshProUGUI hpText;
     [SerializeField] TextMeshProUGUI staminaText;
@@ -89,18 +140,91 @@ public class InventoryPanel : MonoBehaviour
         PlayerStats player = PlayerStats.GetInstance();
         GameData gameData = player.localPlayerData.gameData;
         List<EquipmentSO> equippedItems = player.equippedItems;
-        if(equippedItems[0] != null) helmSlot.sprite = equippedItems[0].image;
-        if(equippedItems[1] != null) chestSlot.sprite = equippedItems[1].image;
-        if(equippedItems[2] != null) waistSlot.sprite = equippedItems[2].image;
-        if(equippedItems[3] != null) footSlot.sprite = equippedItems[3].image;
+        if(equippedItems[0] != null) {
+            helmSlot.sprite = equippedItems[0].image;
+            helmTierGO.SetActive(true);
+            helmTierImage.sprite = TierEnum(equippedItems[0].tier);
+            helmTier.SetText(equippedItems[0].tier.ToString());
+            helmLevelGO.SetActive(true);
+            helmLevel.SetText(equippedItems[0].level.ToString());
+        }else{
+            helmTierGO.SetActive(false);
+            helmLevelGO.SetActive(false);
+        }
+
+        if(equippedItems[1] != null) {
+            chestSlot.sprite = equippedItems[1].image;
+            chestTierGO.SetActive(true);
+            chestTierImage.sprite = TierEnum(equippedItems[1].tier);
+            chestTier.SetText(equippedItems[1].tier.ToString());
+            chestLevelGO.SetActive(true);
+            chestLevel.SetText(equippedItems[1].level.ToString());
+        }else{
+            chestTierGO.SetActive(false);
+            chestLevelGO.SetActive(false);
+        }
+
+        if(equippedItems[2] != null) {
+            waistSlot.sprite = equippedItems[2].image;
+            waistTierGO.SetActive(true);
+            waistTierImage.sprite = TierEnum(equippedItems[2].tier);
+            waistTier.SetText(equippedItems[2].tier.ToString());
+            waistLevelGO.SetActive(true);
+            waistLevel.SetText(equippedItems[2].level.ToString());
+        }else{
+            waistTierGO.SetActive(false);
+            waistLevelGO.SetActive(false);
+        }
+        if(equippedItems[3] != null) {
+            footSlot.sprite = equippedItems[3].image;
+            footTierGO.SetActive(true);
+            footTierImage.sprite = TierEnum(equippedItems[3].tier);
+            footTier.SetText(equippedItems[3].tier.ToString());
+            footLevelGO.SetActive(true);
+            footLevel.SetText(equippedItems[3].level.ToString());
+        }else{
+            footTierGO.SetActive(false);
+            footLevelGO.SetActive(false);
+        }
         if(equippedItems[4] != null) {
             mainSlot.sprite = equippedItems[4].image;
+            mainTierGO.SetActive(true);
+            mainTierImage.sprite = TierEnum(equippedItems[4].tier);
+            mainTier.SetText(equippedItems[4].tier.ToString());
+            mainLevelGO.SetActive(true);
+            mainLevel.SetText(equippedItems[4].level.ToString());
             damageText.SetText(Utilities.FormatNumber((int) player.damage).ToString());
         }else{
             damageText.SetText(Utilities.FormatNumber((int) player.damage).ToString());
+            mainTierGO.SetActive(false);
+            mainLevelGO.SetActive(false);
         }
-        if(equippedItems[5] != null) shieldSlot.sprite = equippedItems[5].image;
-        if(equippedItems[6] != null) javelinSlot.sprite = equippedItems[6].image;
+        if(equippedItems[5] != null) {
+            shieldSlot.sprite = equippedItems[5].image;
+            shieldTierGO.SetActive(true);
+            shieldTierImage.sprite = TierEnum(equippedItems[5].tier);
+            shieldTier.SetText(equippedItems[5].tier.ToString());
+            shieldLevelGO.SetActive(true);
+            shieldLevel.SetText(equippedItems[5].level.ToString());
+        }else{
+            shieldTierGO.SetActive(false);
+            shieldLevelGO.SetActive(false);
+        }
+        if(equippedItems[6] != null) {
+            javelinSlot.sprite = equippedItems[6].image;
+            javelinTierGO.SetActive(true);
+            javelinTierImage.sprite = TierEnum(equippedItems[6].tier);
+            javelinTier.SetText(equippedItems[6].tier.ToString());
+            javelinLevelGO.SetActive(true);
+            javelinLevel.SetText(equippedItems[6].level.ToString());
+        }else{
+            javelinTierGO.SetActive(false);
+            javelinLevelGO.SetActive(false);
+        }
+        if(equippedItems[7] != null) {
+            healSlot.sprite = equippedItems[6].image;
+            healSlotQuantity.SetText(equippedItems[6].stackCount.ToString());
+        }
         denarii.SetText(Utilities.FormatNumber(gameData.denarii));
         hpText.SetText(Utilities.FormatNumber((int) player.maxHP).ToString());
         staminaText.SetText(Utilities.FormatNumber((int) player.maxStamina).ToString());
@@ -126,7 +250,7 @@ public class InventoryPanel : MonoBehaviour
                     questItems.Add(equipment);
                 break;
                 case EquipmentEnum.Consumable:
-                    equipments.Add(equipment);
+                    items.Add(equipment);
                 break;
                 case EquipmentEnum.Item:
                     items.Add(equipment);
@@ -252,7 +376,6 @@ public class InventoryPanel : MonoBehaviour
                     equippedItems[2] = null;  // Clear from equippedItems list
                     ClearSlot(ArmorType.Waist);
                 break;
-                
                 case "foot":
                     EquipmentSO footToInv = equippedItems[3];
                     ItemData itemDataFoot = new ItemData(footToInv.equipmentId, footToInv.tier, footToInv.level, footToInv.stackCount);
@@ -276,6 +399,7 @@ public class InventoryPanel : MonoBehaviour
             "main" => equippedItems[4],
             "shield" => equippedItems[5],
             "javelin" => equippedItems[6],
+            "consumable" => equippedItems[7],
             _ => null
         };
         if(weapon != null){
@@ -304,6 +428,13 @@ public class InventoryPanel : MonoBehaviour
                     equippedItems[6] = null;  // Clear from equippedItems list
                     ClearSlot(WeaponType.Javelin);
                 break;
+                case "consumable":
+                    EquipmentSO consumableToInv = equippedItems[7];
+                    ItemData itemDataconsumable = new ItemData(consumableToInv.equipmentId, consumableToInv.tier, consumableToInv.level, consumableToInv.stackCount);
+                    player.localPlayerData.gameData.inventory.items.Add(itemDataconsumable);
+                    equippedItems[7] = null;  // Clear from equippedItems list
+                    ClearSlot(EquipmentEnum.Consumable);
+                break;
             }
             player.equippedItems = equippedItems;
             PlayerStats.GetInstance().InitializeEquipments();
@@ -312,7 +443,6 @@ public class InventoryPanel : MonoBehaviour
             PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a weapon to unequip");
         }
     }
-
     private void OnNFTsUpdate(List<Nft> nfts, int total)
     {
         accountNft = nfts;
@@ -409,6 +539,11 @@ public class InventoryPanel : MonoBehaviour
                 shieldSlot.sprite = defaultShieldSprite;
                 PlayerStats.GetInstance().isDataDirty = true;
             break;
+            case EquipmentEnum.Consumable:
+                gameData.equippedData.bandageSlot = null;
+                healSlot.sprite = defaultHealSprite;
+                PlayerStats.GetInstance().isDataDirty = true;
+            break;
         }
     }
     public void ChangeType(InventoryTab tab)
@@ -441,14 +576,6 @@ public class InventoryPanel : MonoBehaviour
     [ContextMenu("AddItem")]
     public void AddItem(){
         GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
-        ItemData item1 = new ItemData(11, 3, 2, 1);
-        ItemData item2 = new ItemData(12, 1, 1, 1);
-        ItemData item3 = new ItemData(0, 2, 4, 1);
-        ItemData item4 = new ItemData(5, 4, 5, 1);
-        ItemData item5 = new ItemData(23, 5, 5, 1);
-        ItemData item6 = new ItemData(18, 4, 1, 1);
-        ItemData item7 = new ItemData(22, 0, 0, 1);
-        ItemData item8 = new ItemData(21, 0, 0, 1);
         List<ItemData> itemList = new List<ItemData>{
            new ItemData(0, 5, 5, 1),
            new ItemData(1, 4, 1, 1),
@@ -478,5 +605,20 @@ public class InventoryPanel : MonoBehaviour
         };
         gameData.inventory.items.AddRange(itemList);
         PlayerStats.GetInstance().isDataDirty = true;
+    }
+    public Sprite TierEnum(int tier){
+        switch(tier){
+            case 1:
+                return tier1;
+            case 2:
+                return tier2;
+            case 3:
+                return tier3;
+            case 4:
+                return tier4;
+            case 5:
+                return tier5;
+        }
+        return null;
     }
 }
