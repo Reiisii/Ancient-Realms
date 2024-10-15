@@ -12,6 +12,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private Sprite npcIcon;
     [SerializeField] private string currentKnot;
     [SerializeField] private List<string> quests;
+    [SerializeField] public List<QuestSO> activePlayerQuests;
 
     [Header("Visual Cue")]
     [SerializeField] private GameObject VisualCue;
@@ -32,7 +33,6 @@ public class DialogueTrigger : MonoBehaviour
         VisualCue.SetActive(false);
         VisualCueKey.SetActive(false);
         playerInRange = false;
-        
     }
     private void Start(){
         npcData = new NPCData
@@ -42,7 +42,7 @@ public class DialogueTrigger : MonoBehaviour
                     portrait = npcIcon,
                     dialogueKnot = currentKnot,
                     npcDialogue = dialogue,
-                    giveableQuest = quests
+                    giveableQuest = quests,
                 };
         initialFlipX = npcSpriteRenderer.flipX;;
     }
@@ -52,6 +52,15 @@ public class DialogueTrigger : MonoBehaviour
             VisualCueKey.SetActive(true);
             setVisualCue();
             if(PlayerController.GetInstance().GetInteractPressed()){
+                activePlayerQuests.Clear();
+                foreach(QuestSO quest in PlayerStats.GetInstance().activeQuests){
+                    foreach(string npcQuestList in quests){
+                        if(quest.questID.Equals(npcQuestList)){
+                            activePlayerQuests.Add(quest);
+                        }
+                    }
+                }
+                npcData.activePlayerQuest = activePlayerQuests;
                 DialogueManager.GetInstance().EnterDialogueMode(npcData);
                 FlipPlayerSprite();
             }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class NotificationQueue : MonoBehaviour
 {
     public bool isActive = false;
+    private bool isInvoking;
     [SerializeField] GameObject questStartGO;
     [SerializeField] GameObject questCompleteGO;
     [SerializeField] GameObject achievementGO;
@@ -13,12 +14,30 @@ public class NotificationQueue : MonoBehaviour
     public void Awake(){
         queue = new Queue<Notification>();
     }
+    public void Start(){
+        StartContinuousInvocation();
+    }
+    private void StartContinuousInvocation()
+    {
+        if (!isInvoking)
+        {
+            isInvoking = true; // Set the flag to true
+            StartCoroutine(InvokeContinuously());
+        }
+    }
+    private IEnumerator InvokeContinuously()
+    {
+        while (isInvoking) // Loop while isInvoking is true
+        {
+            if(!isActive){
+                StartCoroutine(ProcessQueue());
+            }
+             // Call your desired method
+            yield return new WaitForSecondsRealtime(1f); // Wait for the specified interval
+        }
+    }
     public void AddQueue(Notification data){
         queue.Enqueue(data);
-        if (!isActive)
-        {
-            StartCoroutine(ProcessQueue());
-        }
     }
     private IEnumerator ProcessQueue()
     {

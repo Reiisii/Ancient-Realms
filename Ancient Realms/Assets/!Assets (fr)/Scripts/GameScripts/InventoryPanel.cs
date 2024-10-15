@@ -64,6 +64,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI javelinLevel;
     [Header("Healing Slot")]
     [SerializeField] Image healSlot;
+    [SerializeField] GameObject healSlotGO;
     [SerializeField] TextMeshProUGUI healSlotQuantity;
     [Header("Tier Background")]
     [SerializeField] Sprite tier1;
@@ -223,7 +224,10 @@ public class InventoryPanel : MonoBehaviour
         }
         if(equippedItems[7] != null) {
             healSlot.sprite = equippedItems[6].image;
+            healSlotGO.SetActive(true);
             healSlotQuantity.SetText(equippedItems[6].stackCount.ToString());
+        }else{
+            healSlotGO.SetActive(false);
         }
         denarii.SetText(Utilities.FormatNumber(gameData.denarii));
         hpText.SetText(Utilities.FormatNumber((int) player.maxHP).ToString());
