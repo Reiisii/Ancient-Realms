@@ -43,10 +43,34 @@ public class DialogueManager : MonoBehaviour
     }
     public void EnterDialogueMode(NPCData npc){
         npcData = npc;
+
         if(Utilities.npcHasQuest(npcData)){
-            QuestSO questData = AccountManager.Instance.quests.Find(quest => quest.questID == npc.giveableQuest[0]);
-            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
-            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npc.giveableQuest[0]);
+            // Default response
+            currentStory = new Story(npc.npcDialogue.text);
+            currentStory.ChoosePathString(npc.dialogueKnot);
+            // Check if NPC has talk quest in their active quests THIS WILL THEORETICALLY WILL PLAY EXHAUST
+
+            // Check if NPC has giveable quest and is can be given
+            foreach(string quest in npc.giveableQuest){
+                QuestSO giveableQuests = AccountManager.Instance.quests.Find(q => q.questID == quest);
+                QuestSO playerHasActiveQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
+                QuestSO playerHasCompletedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
+                // if quest is not on completed and not on active quest list STOP loop and give quest
+                if(giveableQuests != null && CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
+                    currentStory = new Story(giveableQuests.dialogue.text);
+                    currentStory.ChoosePathString("start");
+                    nameText.SetText(npc.name);
+                    npcImage.sprite = npc.portrait;
+                    dialogueIsPlaying = true;
+                    dialoguePanel.SetActive(true);
+                    ContinueStory();
+                    return;
+                }
+            }
+            var relevantQuests = PlayerStats.GetInstance().activeQuests
+            .Where(q => q.goals.Any(g => g.goalType == GoalTypeEnum.Talk && 
+                                            q.characters[g.characterIndex] == npcData.id))
+            .ToList();
             foreach(QuestSO quest in PlayerStats.GetInstance().activeQuests.ToList()){
                 if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
                     currentStory = new Story(quest.dialogue.text);
@@ -58,24 +82,6 @@ public class DialogueManager : MonoBehaviour
                     ContinueStory();
                     return;
                 }
-            }
-            if(completedQuest && completedQuest.isCompleted && !completedQuest.isActive){
-                // If Quest is complete AND is not Active
-                currentStory = new Story(npcData.npcDialogue.text);
-                currentStory.ChoosePathString(npcData.dialogueKnot);
-            }else if(activeQuest && activeQuest.isActive && PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
-                currentStory = new Story(activeQuest.dialogue.text);
-                currentStory.ChoosePathString(activeQuest.goals[activeQuest.currentGoal].inkyRedirect);
-            }else if(!activeQuest && !completedQuest){
-                // If NPC Quest's active quest is not active list && NPC Quest's is not on completed list
-                currentStory = new Story(questData.dialogue.text);
-                currentStory.ChoosePathString("start");
-            }else if(activeQuest && activeQuest.isActive && PlayerStats.GetInstance().activeQuests.Find(quest => quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id)){
-                currentStory = new Story(activeQuest.dialogue.text);
-                currentStory.ChoosePathString(activeQuest.goals[activeQuest.currentGoal].inkyRedirect);
-            }else{
-                currentStory = new Story(npc.npcDialogue.text);
-                currentStory.ChoosePathString(npc.dialogueKnot);
             }
             nameText.SetText(npc.name);
             npcImage.sprite = npc.portrait;
@@ -120,32 +126,29 @@ public class DialogueManager : MonoBehaviour
 
         if (Utilities.npcHasQuest(npcData))
         {
-            QuestSO questToGive = AccountManager.Instance.quests
-                .FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
-            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
-            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == npcData.giveableQuest.FirstOrDefault());
-            if (questToGive != null && activeQuest == null && completedQuest == null)
-            {
-                // Start the quest if it's not already active or completed
-                QuestManager.GetInstance().StartQuest(questToGive.questID);
+            foreach(string quest in npcData.giveableQuest){
+                QuestSO giveableQuests = AccountManager.Instance.quests.Find(q => q.questID == quest);
+                QuestSO playerHasActiveQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
+                QuestSO playerHasCompletedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
+                
+                
+                if(giveableQuests != null && CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
+                    QuestManager.GetInstance().StartQuest(giveableQuests.questID);
+                    return;
+                }
+
             }
         }
-        
-            // Update talk goals for each relevant quest
-            foreach (var quest in relevantQuests)
+        if(relevantQuests.Count > 0){
+            if (relevantQuests[0].isActive)
             {
-                if (quest.isActive)
+                Goal currentGoal = relevantQuests[0].goals[relevantQuests[0].currentGoal];
+                if (currentGoal.goalType == GoalTypeEnum.Talk && relevantQuests[0].characters[currentGoal.characterIndex] == npcData.id)
                 {
-                    Goal currentGoal = quest.goals[quest.currentGoal];
-                    if (currentGoal.goalType == GoalTypeEnum.Talk && 
-                        quest.characters[currentGoal.characterIndex] == npcData.id)
-                    {
-                        
-                        QuestManager.GetInstance().UpdateTalkGoal(quest);
-                    }
+                    QuestManager.GetInstance().UpdateTalkGoal(relevantQuests[0]);
                 }
             }
-    
+        }
     }
     private void ContinueStory(){
         if(currentStory.canContinue){
@@ -155,6 +158,18 @@ public class DialogueManager : MonoBehaviour
         }else{
             ExitDialogueMode();
         }
+    }
+
+    public bool CheckRequirements(QuestSO quest){
+        List<QuestSO> playerCompletedQuest = PlayerStats.GetInstance().completedQuests;
+        List<bool> arrayCompletion = new List<bool>();
+        if(quest.requirements.Count < 1) return true;
+        foreach(string questFinished in quest.requirements){
+            QuestSO questComplete = playerCompletedQuest.FirstOrDefault(q => q.questID.Equals(questFinished));
+            arrayCompletion.Add(questComplete != null && questComplete.isCompleted && !questComplete.isActive);
+        }
+
+        return arrayCompletion.All(b => b);
     }
     private string ReplacePlayerName(string text)
     {

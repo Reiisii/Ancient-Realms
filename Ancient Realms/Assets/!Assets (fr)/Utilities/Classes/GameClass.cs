@@ -21,6 +21,7 @@ public class NPCData{
     public string dialogueKnot {get;set;}
     public TextAsset npcDialogue;
     public List<string> giveableQuest;
+    public List<QuestSO> activePlayerQuest;
 }
 [Serializable]
 public class Goal
