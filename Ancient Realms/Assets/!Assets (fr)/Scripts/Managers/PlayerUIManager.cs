@@ -50,6 +50,10 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Smithing")]
     [SerializeField] GameObject smithingUI;
     [SerializeField] GameObject smithing;
+    [Header("Toggle Quest")]
+    [SerializeField] GameObject hideButton;
+    [SerializeField] GameObject unHideButton;
+    [SerializeField] GameObject activeQuestPanel;
     [Header("Prefabs")]
     [SerializeField] PopupMessageManager popupPrefab;
 
@@ -75,6 +79,7 @@ public class PlayerUIManager : MonoBehaviour
         PlayerData playerData = AccountManager.Instance.playerData;
 
         SceneManager.LoadSceneAsync(playerData.gameData.lastLocationVisited, LoadSceneMode.Additive).completed += OnSceneLoaded;
+        CheckActiveQuest();
     }
 
     public static PlayerUIManager GetInstance(){
@@ -223,6 +228,34 @@ public class PlayerUIManager : MonoBehaviour
             Play.GetInstance().PlayLogout();
         };
  
+    }
+    public void CheckActiveQuest()
+    {
+        if(PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Contains("activeQuest")){
+            activeQuestPanel.SetActive(false);
+            hideButton.SetActive(false);
+            unHideButton.SetActive(true);
+        }else{
+            activeQuestPanel.SetActive(true);
+            hideButton.SetActive(true);
+            unHideButton.SetActive(false);
+        }
+    }
+    public void ToggleActiveQuest()
+    {
+        if(PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Contains("activeQuest")){
+            activeQuestPanel.SetActive(true);
+            PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Remove("activeQuest");
+            PlayerStats.GetInstance().isDataDirty = true;
+            hideButton.SetActive(true);
+            unHideButton.SetActive(false);
+        }else{
+            activeQuestPanel.SetActive(false);
+            PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Add("activeQuest");
+            PlayerStats.GetInstance().isDataDirty = true;
+            hideButton.SetActive(false);
+            unHideButton.SetActive(true);
+        }
     }
     private async void OnSceneLoaded(AsyncOperation operation)
     {
