@@ -60,6 +60,7 @@ public class Enemy : MonoBehaviour
     private void Awake(){
         previousPosition = transform.position;
         CalculateStatsForCurrentLevel();
+        if(isDummy) return;
         aiPath.maxSpeed = walkSpeed;
     }
     private void Update(){
@@ -165,7 +166,8 @@ public class Enemy : MonoBehaviour
                 currentHP -= damage;
                 if(currentHP <= 0){
                     isDead = true;
-                    gameObject.SetActive(false);
+                    animator.Play("Death");
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
                     foreach(QuestSO q in quest){
                     if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Kill && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                             QuestManager.GetInstance().UpdateKillGoal();
@@ -186,7 +188,6 @@ public class Enemy : MonoBehaviour
                             QuestManager.GetInstance().UpdateHitJavelinGoal();
                         } 
                     }
-                    Destroy(gameObject);
                 }
             }
 
