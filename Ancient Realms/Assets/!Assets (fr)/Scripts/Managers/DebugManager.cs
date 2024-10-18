@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DebugManager : MonoBehaviour
 {
+    [ContextMenu("resetQuestsSO")]
     public void resetQuestsSO(){
         List<QuestSO> quests = Resources.LoadAll<QuestSO>("QuestSO").ToList();
         ClearContent(QuestManager.GetInstance().questPanel);
