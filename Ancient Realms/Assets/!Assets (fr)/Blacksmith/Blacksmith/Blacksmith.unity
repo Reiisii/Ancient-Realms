@@ -440,7 +440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &255178468
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1785,7 +1785,7 @@ RectTransform:
   m_Father: {fileID: 1732883218}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 10, y: 0}
   m_SizeDelta: {x: 20, y: -38.082253}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2114,14 +2114,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.50980395, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1de31a7a54903f54b8fc5ad4ec9ed168, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2321,14 +2321,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.50980395, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1de31a7a54903f54b8fc5ad4ec9ed168, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3188,7 +3188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1260372378
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3308,14 +3308,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.50980395, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1de31a7a54903f54b8fc5ad4ec9ed168, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3461,9 +3461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1287287001}
   speed: 1
-  speedIncrement: 0.5
   maxPresses: 5
-  scoreText: {fileID: 451445871}
   timerText: {fileID: 1584510502}
   startPromptText: {fileID: 308065773}
   roundTime: 5
@@ -3476,12 +3474,7 @@ MonoBehaviour:
   redScore: 1
   yellowScore: 2
   greenScore: 3
-  scoreCircles:
-  - {fileID: 2096681190}
-  - {fileID: 1476940808}
-  - {fileID: 492186855}
-  - {fileID: 2145429381}
-  - {fileID: 1284315962}
+  workstationScore: {fileID: 0}
   redColor: {r: 0.50980395, g: 0, b: 0, a: 1}
   yellowColor: {r: 0.735849, g: 0.67721564, b: 0, a: 1}
   greenColor: {r: 0, g: 0.50980395, b: 0, a: 1}
@@ -3489,7 +3482,6 @@ MonoBehaviour:
   hammerAnimationParam: isHammering
   timerCircleImage: {fileID: 408473791}
   hammering: {fileID: 1260372377}
-  grinding: {fileID: 546746915}
 --- !u!114 &1287287001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3905,6 +3897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1dc3e238f2163840866f333f7623c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parts: {fileID: 0}
 --- !u!1 &1476940806
 GameObject:
   m_ObjectHideFlags: 0
@@ -5898,7 +5891,7 @@ RectTransform:
   m_Father: {fileID: 1367822456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 2.5, y: -2.4}
   m_SizeDelta: {x: 21.849, y: -67.4041}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6167,14 +6160,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.50980395, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1de31a7a54903f54b8fc5ad4ec9ed168, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6471,12 +6464,8 @@ MonoBehaviour:
   - {fileID: 545899824}
   greenColor: {r: 0, g: 0.50980395, b: 0, a: 1}
   xColor: {r: 0.50980395, g: 0, b: 0.0077323914, a: 1}
-  scoreCircles:
-  - {fileID: 1998807020}
-  - {fileID: 1208660071}
-  - {fileID: 2105171543}
-  - {fileID: 466292836}
-  - {fileID: 328568944}
+  startPromptText: {fileID: 0}
+  scoreBoard: {fileID: 0}
   delayBeforeNextRound: 2
 --- !u!1 &1907649013
 GameObject:
@@ -6773,7 +6762,7 @@ RectTransform:
   m_Father: {fileID: 2013139572}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.41939926}
   m_SizeDelta: {x: 10, y: 2.3552}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6981,14 +6970,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.50980395, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1de31a7a54903f54b8fc5ad4ec9ed168, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
