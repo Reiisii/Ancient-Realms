@@ -698,7 +698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6677944120409441088
 Transform:
   m_ObjectHideFlags: 0
@@ -1651,6 +1651,7 @@ GameObject:
   - component: {fileID: 8143464205618705029}
   - component: {fileID: 3575490194625955687}
   - component: {fileID: -6049172724251349994}
+  - component: {fileID: 7123475701890168702}
   - component: {fileID: 6803588018265507997}
   - component: {fileID: -7447427150435233297}
   - component: {fileID: 1069500992766602489}
@@ -1877,6 +1878,18 @@ MonoBehaviour:
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
+--- !u!114 &7123475701890168702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369763902341509201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa011fe4a7455b4487cb3086180cf94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6803588018265507997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2382,6 +2395,86 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 77077ac1-7cc5-45b4-87fb-aca0039a73d9
     m_ActionName: Shop/Toggle[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7123475701890168702}
+        m_TargetAssemblyTypeName: CommanderSystem, Assembly-CSharp
+        m_MethodName: ToggleFollow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 729024b2-d687-49ac-9822-9a762a2744f1
+    m_ActionName: Player/Toggle_Follow[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7123475701890168702}
+        m_TargetAssemblyTypeName: CommanderSystem, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 58d2ec00-351e-429d-a8cd-6eb0e3cc22b2
+    m_ActionName: Player/F_Attack[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7123475701890168702}
+        m_TargetAssemblyTypeName: CommanderSystem, Assembly-CSharp
+        m_MethodName: CombatFormation
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 16a74997-4d48-4186-945e-d24e78523cbc
+    m_ActionName: Player/F_Battle[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7123475701890168702}
+        m_TargetAssemblyTypeName: CommanderSystem, Assembly-CSharp
+        m_MethodName: MarchFormation
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0852cde8-b5f8-48f7-9cee-e357b84ca424
+    m_ActionName: Player/F_March[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7123475701890168702}
+        m_TargetAssemblyTypeName: CommanderSystem, Assembly-CSharp
+        m_MethodName: ToggleCombatMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: aedb71fd-61b2-4b7a-829a-31160f791ede
+    m_ActionName: Player/F_CombatMode[/Keyboard/5]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2533,7 +2626,7 @@ MonoBehaviour:
   - {x: -11.980261, y: 17.198854, z: 0}
   m_ShapePathHash: -1779318330
   m_Mesh: {fileID: 0}
-  m_InstanceId: 102904
+  m_InstanceId: 248266
   m_LocalBounds:
     m_Center: {x: 0.51626015, y: 5.4031525, z: 0}
     m_Extent: {x: 13.058325, y: 26.380466, z: 0}
@@ -2553,7 +2646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8915283599488495083
 Transform:
   m_ObjectHideFlags: 0

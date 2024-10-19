@@ -2,35 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockWalkBehavior : StateMachineBehaviour
+public class NPCIdle : StateMachineBehaviour
 {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        PlayerController.GetInstance().isBlocking = true;
-         PlayerController.GetInstance().canWalk = true;
+    {   
+        Ally ally = animator.gameObject.GetComponent<Ally>();
+        if(ally != null){
+            ally.isEquipping = false;
+            ally.canMove = true;
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(PlayerController.GetInstance().isAttacking){
-            PlayerController.GetInstance().isBlocking = false;
-            animator.Play("Combat Shield Bash");
-            PlayerController.GetInstance().canWalk = false;
-        }
-        if(PlayerStats.GetInstance().stamina < 1){
-            PlayerController.GetInstance().isBlocking = false;
-            animator.SetBool("isBlocking", false);
-
+        Ally ally = animator.gameObject.GetComponent<Ally>();
+        if(ally != null){
+            if(ally.isCombatMode && animator.GetBool("isCombatMode") && ally.isEquipping){
+                ally.canMove = false;
+                ally.isRunning = false;
+                ally.IsMoving = false;
+                animator.Play("Equip");
+            }
         }
     }
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        PlayerController.GetInstance().isAttacking = false;
-    }
-
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{

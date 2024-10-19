@@ -173,8 +173,9 @@ public class PlayerController : MonoBehaviour
         if(canWalk && !isEquipping){
             if (moveInputActive)
             {
-                IsMoving = true;
                 SetFacingDirection(moveInput);
+                if(isHolding) return;
+                IsMoving = true;
                 rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
                 Vector2 currentPosition = transform.position;
                 float deltaX = currentPosition.x - lastPosition.x;
@@ -363,10 +364,12 @@ public class PlayerController : MonoBehaviour
         virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = originalCameraOffset;
     }
     void Applydamage(){
+        List<Enemy> enemiesInRange = new List<Enemy>();
         Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
         foreach(Collider2D enemy in hitEnemies){
-            enemy.GetComponent<Enemy>().TakeDamage(playerStats.damage, GoalTypeEnum.HitMelee);
+            enemiesInRange.Add(enemy.GetComponent<Enemy>());
         }
+        Enemy targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
     }
     void OnDrawGizmosSelected(){
         if(attackPoint == null) return;
@@ -475,8 +478,6 @@ public class PlayerController : MonoBehaviour
                 playerStats.isCombatMode = !playerStats.isCombatMode;
                 isEquipping = !isEquipping;
             }
-   
-            
         }
     }
     public void SubmitPressed(InputAction.CallbackContext context)

@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Enemy Stat")]
     private float maxHP = 100f;
-    private float currentHP = 100f;
+    public float currentHP = 100f;
     public string id = "";
     public bool isDead = false;
     public bool isDummy = false;
@@ -194,17 +194,42 @@ public class Enemy : MonoBehaviour
         }
         
     }
+    public void TakeDamage(float damage){
+
+            if(invulnerable){
+                return;
+            }else if(currentHP > 0 && isBlocking && !isDead){
+                currentHP -= damage - (damage * 0.5f);
+                if(currentHP <= 0){
+                    isDead = true;
+                    animator.Play("Death");
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                }
+            }else if(currentHP > 0 && !isDead){
+                currentHP -= damage;
+                if(currentHP <= 0){
+                    isDead = true;
+                    animator.Play("Death");
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                }
+            }
+        
+    }
     GameObject FindNearestTargetWithinRadius()
     {
         GameObject nearestTarget = null;
         float nearestDistance = detectionRadius;
 
-        // Search for objects with tag "Player" or "Ally"
-        GameObject[] potentialTargets = GameObject.FindGameObjectsWithTag("Player");
-        potentialTargets = potentialTargets.Concat(GameObject.FindGameObjectsWithTag("Ally")).ToArray();
-
+        // Search for objects with tag "Player", "Ally", and "Enemy"
+        List<GameObject> potentialTargets = new List<GameObject>();
+        
+        potentialTargets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+        potentialTargets.AddRange(GameObject.FindGameObjectsWithTag("Ally"));
         foreach (GameObject target in potentialTargets)
         {
+            // Skip if the target is this enemy itself to avoid self-targeting
+            if (target == gameObject) continue;
+
             float distance = Vector3.Distance(transform.position, target.transform.position);
 
             if (distance <= nearestDistance)
@@ -216,6 +241,7 @@ public class Enemy : MonoBehaviour
 
         return nearestTarget;
     }
+
     private void SetFacingDirection(Vector2 moveInput)
     {
         if (isAttacking) return; // Don't flip while attacking
@@ -235,7 +261,7 @@ public class Enemy : MonoBehaviour
     private void CalculateStatsForCurrentLevel()
     {
         // Calculate the stats based on the current level without incrementing it
-        maxHP = 100f * Mathf.Pow(1.05f, level - 1); // Assuming initial maxHP is 100
+        maxHP = 100f * Mathf.Pow(1.02f, level - 1);
         currentHP = maxHP;
         maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
         staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
