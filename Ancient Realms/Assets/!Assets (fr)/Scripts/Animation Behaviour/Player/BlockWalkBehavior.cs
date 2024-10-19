@@ -2,33 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PilumAimStatic : StateMachineBehaviour
+public class BlockWalkBehavior : StateMachineBehaviour
 {
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        PlayerController.GetInstance().canWalk = false;
-        PlayerController.GetInstance().forceGO.SetActive(true);
+        PlayerController.GetInstance().isBlocking = true;
+        PlayerController.GetInstance().canWalk = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (PlayerController.GetInstance().isHolding)
-        {
-            PlayerController.GetInstance().forceSlider.value = PlayerController.GetInstance().holdTime;
-            PlayerController.GetInstance().holdTime += Time.deltaTime;
-            PlayerController.GetInstance().holdTime = Mathf.Min(PlayerController.GetInstance().holdTime, PlayerStats.GetInstance().maxHoldTime); // Cap the hold time to the max hold time
-            PlayerController.GetInstance().PanCameraBasedOnPlayerDirection();
+        if(PlayerController.GetInstance().isAttacking){
+            PlayerController.GetInstance().isBlocking = false;
+            animator.Play("Combat Shield Bash");
+            PlayerController.GetInstance().canWalk = false;
         }
-        if(!PlayerController.GetInstance().isHolding){
-            animator.Play("Pilum Throw");
-            PlayerController.GetInstance().forceGO.SetActive(false);
-            PlayerController.GetInstance().forceSlider.value = 0f;
+        if(PlayerStats.GetInstance().stamina < 1){
+            PlayerController.GetInstance().isBlocking = false;
+            animator.SetBool("isBlocking", false);
+
         }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        PlayerController.GetInstance().isAttacking = false;
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

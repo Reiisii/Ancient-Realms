@@ -117,6 +117,33 @@ public class EquipmentSO : ScriptableObject
         newEquipment.dbIndex = i;
         return newEquipment;
     }
+    public EquipmentSO CreateCopy(int i, int tier, int level)
+    {
+        EquipmentSO newEquipment = ScriptableObject.CreateInstance<EquipmentSO>();
+        newEquipment.equipmentId = this.equipmentId;
+        newEquipment.itemName = this.itemName;
+        newEquipment.description = this.description;
+        if(this.equipmentType == EquipmentEnum.Armor){
+            newEquipment.baseArmor = CalculateArmor(tier, level, this.baseArmor);
+        }else newEquipment.baseArmor = 0f;
+        if(this.equipmentType == EquipmentEnum.Weapon){
+            newEquipment.baseDamage = CalculateDamage(tier, level, this.baseDamage);
+        }else newEquipment.baseDamage = 0f;
+        newEquipment.attackRange = this.attackRange;
+        newEquipment.isStackable = this.isStackable;
+        newEquipment.stackCount = 1;
+        newEquipment.tier = tier;
+        newEquipment.level = level;
+        newEquipment.culture = this.culture;
+        newEquipment.equipmentType = this.equipmentType;
+        newEquipment.armorType = this.armorType;
+        newEquipment.weaponType = this.weaponType;
+        newEquipment.image = this.image;
+        newEquipment.front = this.front;  // Copy front sprite
+        newEquipment.back = this.back;
+        newEquipment.dbIndex = i;
+        return newEquipment;
+    }
     public float CalculateDamage(int tier, int level, float baseDamage)
     {
         float bd = baseDamage + (tier * 3f); // Base damage depends on tier, tier 0 has a base damage of 5

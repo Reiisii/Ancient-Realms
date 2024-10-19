@@ -2,14 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using Unity.VisualScripting;
+using System.Linq;
+using DG.Tweening;
 
 public class Ally : MonoBehaviour
 {
+    [Header("Ally Stats")]
+    private float maxHP = 100f;
+    private float currentHP = 100f;
+    public string id = "R-Ally";
+    public bool isDead = false;
+    public bool isDummy = false;
+    public int level = 1;
+    public int tier = 1;
+    public int equipmentLevel = 1;
+    private float maxStamina = 70f;
+    public float stamina = 70f;
+    private float walkSpeed = 3.2f;
+    private float runSpeed = 5f;
+    public float staminaDepletionRate = 20f;
+    private float staminaRegenRate = 10f;
+    private float attackRange = 0.5f;
+    private float damage = 1;
+    private float armor = 0;
+    public List<int> equipments;
+    private List<EquipmentSO> equippedSOs;
+    private List<Enemy> enemiesInRange = new List<Enemy>();
+    public LayerMask enemyLayer;
+
+    [Header("Enemy Controller")]
+    public bool invulnerable = false;
+    public bool canMove = true;
+    public bool IsMoving = false;
+    public bool isCombatMode = false;
+    public bool isRunning = false;
+    public bool isAttacking = false;
+    public bool isEquipping = false;
+    public bool isBlocking = false;
+    public bool isHolding = false;
+    public bool isJavelin = false;
+
     [Header("Ally Settings")]
     public Transform contubernium; // Reference to the Contubernium
     private Vector3 targetPosition; 
     public float followDistance = 1.5f; // Distance to maintain from the Contubernium
     public float followSpeed = 2.5f; // Speed of the ally
+    public float attackCooldown = 3f;
+    private float lastAttackTime; 
     public int row; // Row of the ally in the formation
     public int positionInRow; // Position in the row
 
@@ -18,30 +58,137 @@ public class Ally : MonoBehaviour
     public AIPath aiPath; // A* pathfinding component
     public AIDestinationSetter aiDestination; // A* destination setter
     public SpriteRenderer spriteRenderer;
-    
+    [SerializeField] public SpriteRenderer mainHolster;
+    [SerializeField] public SpriteRenderer hand;
+    [SerializeField] public SpriteRenderer forearm;
+    [SerializeField] public SpriteRenderer mainSlot;
+    [SerializeField] public SpriteRenderer shieldSlotFront;
+    [SerializeField] public SpriteRenderer shieldSlotBack;
+    [SerializeField] public SpriteRenderer shieldSlotHandle;
+    [SerializeField] public SpriteRenderer javelinSlot;
+    [SerializeField] public JavelinPrefab javelinPrefab;
+    [SerializeField] public Transform javelinPoint;
+    [SerializeField] public Transform attackPoint;
     private Vector3 previousPosition; // Store previous position for movement detection
     private Vector3 originalScale; // Store the original scale of the ally
 
     private GameObject tempTargetContainer;
-
+    
     private void Awake()
     {
+        CalculateStatsForCurrentLevel();
         previousPosition = transform.position;
         aiPath = GetComponent<AIPath>();
         aiDestination = GetComponent<AIDestinationSetter>();
         aiPath.maxSpeed = followSpeed;
-        tempTargetContainer = contubernium.gameObject.GetComponent<Contubernium>().tempTargetContainer;
-        
+        tempTargetContainer = contubernium.GetComponent<Contubernium>().tempTargetContainer;
+        InitializeEquipments();
         // Store the original scale
         originalScale = transform.localScale;
     }
+    private void Start(){
+        bool contuberniumFacingRight = contubernium.localScale.x > 0;
+        IsFacingRight = contuberniumFacingRight;
 
+    }
+    [ContextMenu("Die")]
+    public void Die(){
+        currentHP = 0;
+    }
     private void Update()
     {
-        aiDestination.target = CreateTempTarget(targetPosition);
-        aiPath.maxSpeed = followSpeed;
+        if (currentHP <= 0 && !isDead)
+        {
+            isDead = true;
+            animator.Play("Death");
+            
+            // Notify the Contubernium that this ally has died
+            Contubernium.Instance.HandleAllyDeath(this);
+        }else if (canMove) // Only execute movement logic if canMove is true
+        {
+            aiDestination.target = CreateTempTarget(targetPosition);
+            aiPath.maxSpeed = followSpeed;
+            float distanceToContubernium = Vector3.Distance(transform.position, contubernium.position);
+            SetRunningAnimation(distanceToContubernium);
+            if (IsMoving)
+            {
+                SetFacingDirection(aiPath.velocity); // Face the direction of movement
+            }
+            else
+            {
+                FaceContubernium(); // Align with the Contubernium's direction when not moving
+            }
+        }
+        CheckForEnemiesAndAttack();
+    }
 
+    void FixedUpdate(){
         OnMove();
+    }
+    public void CombatToggle(){
+        if(!isEquipping && !isAttacking && !isBlocking){
+                animator.SetBool("isCombatMode", !isCombatMode);
+                isCombatMode = !isCombatMode;
+                isEquipping = !isEquipping;
+        }
+    }
+    private void ThrowPilum()
+    {
+        PlayerStats playerStats = PlayerStats.GetInstance();
+        PlayerController playerController = PlayerController.GetInstance();
+        float maxDamage = equippedSOs[6].baseDamage * 1.5f;
+
+        // Calculate the throw force and corresponding damage based on hold time
+        float damage = Mathf.Lerp(0, maxDamage, playerController.holdTime / playerStats.maxHoldTime);
+
+        // Instantiate the pilum
+        JavelinPrefab pilum = Instantiate(javelinPrefab, javelinPoint.position, javelinPoint.rotation);
+        // Apply force to the pilum in an arching trajectory
+        Rigidbody2D rb = pilum.GetComponent<Rigidbody2D>();
+        float throwForce = 1f / 1f * playerStats.maxThrowForce;
+
+        float throwAngle = 22f; // Lower angle for a flatter trajectory
+
+        // Adjust the force direction based on whether the player is facing right or left
+        Vector2 forceDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 force = new Vector2(
+            forceDirection.x * throwForce * Mathf.Cos(throwAngle * Mathf.Deg2Rad), 
+            throwForce * Mathf.Sin(throwAngle * Mathf.Deg2Rad) * 0.5f // Reduce the vertical component
+        );
+
+        pilum.SetDamage(damage);
+
+        // Apply the force to the pilum
+        rb.AddForce(force, ForceMode2D.Impulse);
+
+        // Apply rotation to the pilum for a realistic spinning effect
+        float torqueDirection = IsFacingRight ? -1 : 1; // Reverse torque direction based on facing
+        float maxTorque = 0.3f;
+        float torqueAmount = Mathf.Lerp(0, maxTorque, throwForce / playerStats.maxThrowForce);
+
+        rb.AddTorque(torqueDirection * torqueAmount, ForceMode2D.Impulse); // Use a fixed torque value
+
+        // Flip the pilum if throwing to the left
+        if (!IsFacingRight)
+        {
+            Vector3 pilumScale = pilum.transform.localScale;
+            pilumScale.x *= -1; // Flip the pilum horizontally
+            pilum.transform.localScale = pilumScale;
+        }
+        isHolding = false;
+    }
+    private void SetRunningAnimation(float distance)
+    {
+        if (distance > 20f)
+        {
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+        }
+        animator.SetBool("isRunning", isRunning);
     }
 
     private Transform CreateTempTarget(Vector3 position)
@@ -59,25 +206,18 @@ public class Ally : MonoBehaviour
         // Check if the object has moved more than the threshold value
         if (distanceMoved > 0.01f)
         {
+            IsMoving = true;
             animator.SetBool("isMoving", true);
-
-            // Determine movement direction and flip ally if necessary
-            if (transform.position.x < targetPosition.x) // Moving to the right
-            {
-                transform.localScale = new Vector3(Mathf.Abs(originalScale.x), originalScale.y, originalScale.z); // Face right
-            }
-            else if (transform.position.x > targetPosition.x) // Moving to the left
-            {
-                transform.localScale = new Vector3(-Mathf.Abs(originalScale.x), originalScale.y, originalScale.z); // Face left
-            }
         }
         else
         {
+            IsMoving = false;
             animator.SetBool("isMoving", false);
         }
 
         previousPosition = transform.position;
     }
+
 
 
     public void SetTargetPosition(Vector3 position)
@@ -88,5 +228,212 @@ public class Ally : MonoBehaviour
     public void SetSpriteOrder(int order)
     {
         spriteRenderer.sortingOrder = order;
+        mainHolster.sortingOrder = order + 3;
+        mainSlot.sortingOrder = order + 3;
+        shieldSlotBack.sortingOrder = order - 1;
+        shieldSlotFront.sortingOrder = order + 2;
+        shieldSlotHandle.sortingOrder = order + 1;
+        javelinSlot.sortingOrder = order + 3;
+        hand.sortingOrder = order + 4;
+        forearm.sortingOrder = order + 4;
+
+    }
+    private void SetFacingDirection(Vector2 velocity)
+    {
+        if (isAttacking) return; // Don't flip while attacking
+
+        // Check the velocity to determine the direction
+        bool shouldFaceRight = velocity.x > 0.1f; // Adjust the threshold to handle small values of velocity
+
+        // Face the movement direction
+        if (shouldFaceRight && !IsFacingRight)
+        {
+            IsFacingRight = true;
+        }
+        else if (!shouldFaceRight && IsFacingRight && velocity.x < -0.1f)
+        {
+            IsFacingRight = false;
+        }
+    }
+    public void SetFacingDirection(bool isR){
+        if(isR){
+            IsFacingRight = true;
+        }else{
+            IsFacingRight = false;
+        }
+    }
+    private void FaceContubernium()
+    {
+        // Check the Contubernium's facing direction
+        bool contuberniumFacingRight = contubernium.localScale.x > 0;
+
+        // Face the same direction as the Contubernium
+        if (contuberniumFacingRight && !IsFacingRight)
+        {
+            IsFacingRight = true;
+        }
+        else if (!contuberniumFacingRight && IsFacingRight)
+        {
+            IsFacingRight = false;
+        }
+    }
+
+    public bool IsFacingRight
+    {
+        get 
+        {
+            // Ally is facing right if the localScale.x is positive
+            return transform.localScale.x > 0;
+        }
+        private set 
+        {
+            // Flip the ally only if needed
+            if ((value && transform.localScale.x < 0) || (!value && transform.localScale.x > 0))
+            {
+                // Flip the local scale by multiplying x by -1
+                transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            }
+        }
+    }
+    
+    public void InitializeEquipments(){
+        List<EquipmentSO> newList = new List<EquipmentSO>();
+        foreach(int equipment in equipments){
+            EquipmentSO equipmentSO = AccountManager.Instance.equipments.Where(eq => eq.equipmentId == equipment).FirstOrDefault();
+            EquipmentSO copiedEquipmentSO = equipmentSO.CreateCopy(equipment, tier, equipmentLevel);
+            newList.Add(copiedEquipmentSO);
+        }
+        equippedSOs = newList;
+        int j = 0;
+        float sumArmor = 0;
+        damage = 1;
+        mainHolster.sprite = equippedSOs[4].front;
+        mainSlot.sprite = equippedSOs[4].front;
+        shieldSlotFront.sprite = equippedSOs[5].front;
+        shieldSlotBack.sprite = equippedSOs[5].back;
+        javelinSlot.sprite = equippedSOs[6].front;
+        foreach(EquipmentSO equipment in equippedSOs){
+            if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
+                sumArmor += equipment.baseArmor;
+            }
+            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && (equipment.weaponType == WeaponType.Sword ||  equipment.weaponType == WeaponType.Spear) && j == 4){
+                damage = equipment.baseDamage;
+                attackRange = equipment.attackRange;
+            }
+            j++;
+        }
+        armor = sumArmor;
+    }
+    void CheckForEnemiesAndAttack()
+    {
+        // Use Physics2D.OverlapCircleAll to detect enemies in the attack range
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        
+        // If there are enemies within range
+        if (hitEnemies.Length > 0)
+        {
+            // Get a list of Enemy components from the hit colliders
+            List<Enemy> enemiesInRange = hitEnemies
+                .Select(collider => collider.GetComponent<Enemy>())
+                .Where(enemy => enemy != null && !enemy.isDead) // Ensure valid and alive enemies
+                .ToList();
+
+            if (enemiesInRange.Count > 0)
+            {
+                // Find the target enemy (e.g., the one with the lowest health)
+                Enemy targetEnemy = enemiesInRange.OrderBy(enemy => enemy.currentHP).FirstOrDefault();
+
+                if (targetEnemy != null && !targetEnemy.isDead)
+                {
+                    if (Time.time < lastAttackTime + attackCooldown) return;
+                    PerformAttack(targetEnemy);
+                }
+            }
+        }
+    }
+
+    void ApplyDamage(){
+        Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        foreach(Collider2D enemy in hitEnemies){
+            enemiesInRange.Add(enemy.GetComponent<Enemy>());
+        }
+        Enemy targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
+        targetEnemy.TakeDamage(damage);
+    }
+    private void PerformAttack(Enemy target)
+    {
+        target.TakeDamage(damage);  // Assuming the Enemy script has a TakeDamage method
+        isAttacking = true;
+        lastAttackTime = Time.time;
+        // Optionally, add a cooldown or delay between attacks
+    }
+    public void TakeDamage(float damage){
+
+            if(invulnerable){
+                return;
+            }else if(isBlocking){
+                currentHP -= damage - (damage * 0.5f);
+                if(currentHP <= 0){
+                    isDead = true;
+                    animator.Play("Death");
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                }
+            }else{
+                currentHP -= damage;
+                if(currentHP <= 0){
+                    isDead = true;
+                    animator.Play("Death");
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                }
+            }
+    }
+    void MoveFront()
+    {
+        // Get the character's current position
+        Vector2 cP = gameObject.transform.position;
+
+        // Define the movement distance (adjust as needed)
+        float moveDistance = 0.3f;
+
+        // Calculate the new position based on the direction the character is facing
+        Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 newPosition = cP + moveDirection * moveDistance;
+
+        // Define the duration for the smooth movement (adjust as needed)
+        float moveDuration = 0.2f;
+
+        // Use DOTween to smoothly move the character to the new position
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        
+    }
+
+    void MoveBack()
+    {
+        // Get the character's current position
+        Vector2 cP = gameObject.transform.position;
+
+        // Define the movement distance (adjust as needed)
+        float moveDistance = -0.3f;
+
+        // Calculate the new position based on the direction the character is facing
+        Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 newPosition = cP + moveDirection * moveDistance;
+
+        // Define the duration for the smooth movement (adjust as needed)
+        float moveDuration = 0.2f;
+
+        // Use DOTween to smoothly move the character to the new position
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        
+    }
+    private void CalculateStatsForCurrentLevel()
+    {
+        // Calculate the stats based on the current level without incrementing it
+        maxHP = 100f * Mathf.Pow(1.02f, level - 1); // Assuming initial maxHP is 100
+        currentHP = maxHP;
+        maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
+        staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
     }
 }
