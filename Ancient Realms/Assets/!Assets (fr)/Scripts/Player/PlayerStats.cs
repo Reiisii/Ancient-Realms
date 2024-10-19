@@ -376,7 +376,7 @@ public class PlayerStats : MonoBehaviour
     {
         // Calculate the stats based on the current level without incrementing it
         maxXP = CalculateXPToNextLevel(level);
-        maxHP = 100f * Mathf.Pow(1.05f, level - 1); // Assuming initial maxHP is 100
+        maxHP = 100f * Mathf.Pow(1.02f, level - 1);
         currentHP = maxHP;
         maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
         // attack = 30f * Mathf.Pow(1.04f, level - 1); // Assuming initial attack is 30
