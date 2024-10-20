@@ -24,6 +24,7 @@ public class StartSmithingGame : MonoBehaviour
         }
     }
     private async Task Open(){
+        AudioManager.GetInstance().PlayAudio(SoundType.ENTER);
         PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
         PlayerController.GetInstance().playerActionMap.Disable();
         await PlayerUIManager.GetInstance().OpenDarkenUI();
@@ -32,6 +33,7 @@ public class StartSmithingGame : MonoBehaviour
         await PlayerUIManager.GetInstance().CloseDarkenUI();
         PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
         PlayerController.GetInstance().playerActionMap.Enable();
+        AudioManager.GetInstance().PlayAudio(SoundType.CLOSE);
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){

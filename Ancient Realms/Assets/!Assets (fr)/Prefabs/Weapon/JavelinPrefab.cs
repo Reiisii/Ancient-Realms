@@ -18,7 +18,7 @@ public class JavelinPrefab : MonoBehaviour
         CompositeCollider2D ground = hitInfo.GetComponent<CompositeCollider2D>();
         if(enemy != null){
             Debug.Log(hitInfo.name);
-            enemy.TakeDamage(damage, GoalTypeEnum.HitJavelin);
+            enemy.TakeDamage(damage);
             Destroy(gameObject);
         }
         if(ground != null){

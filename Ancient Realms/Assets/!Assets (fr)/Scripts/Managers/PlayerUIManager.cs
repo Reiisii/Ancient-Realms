@@ -54,6 +54,8 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] GameObject hideButton;
     [SerializeField] GameObject unHideButton;
     [SerializeField] GameObject activeQuestPanel;
+    [Header("Time")]
+    [SerializeField] public TimeController time;
     [Header("Prefabs")]
     [SerializeField] PopupMessageManager popupPrefab;
 
@@ -131,6 +133,7 @@ public class PlayerUIManager : MonoBehaviour
         playerUI.SetActive(false);
     }
     public async Task OpenLoadingUI(){
+        AudioManager.GetInstance().PlayMusic(MusicType.Loading, 0.6f, 0.5f);
         trivia = Utilities.GetRandomNumberFromList(triviaList);
         triviaTitle.SetText(trivia.triviaTitle);
         triviaDescription.SetText(trivia.triviaDescription);
@@ -203,6 +206,7 @@ public class PlayerUIManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += async (operation) => {
             await OpenDarkenUI();
             OpenBackgroundUI();
+            AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 1f, 1f);
             Play.GetInstance().PlayMainMenu();
         };
  
@@ -225,6 +229,7 @@ public class PlayerUIManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += async (operation) => {
             await OpenDarkenUI();
             OpenBackgroundUI();
+            AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 1f, 1f);
             Play.GetInstance().PlayLogout();
         };
  
@@ -259,8 +264,14 @@ public class PlayerUIManager : MonoBehaviour
     }
     private async void OnSceneLoaded(AsyncOperation operation)
     {
+        LocationSO location = LocationSettingsManager.GetInstance().locationSettings;
+       
         await CloseBackgroundUI();
         await CloseLoadingUI();
+        AudioManager.GetInstance().SetAmbience(time.hours < 17, location.background, location.hasWater);
+        if(!location.canAccessCombatMode) AudioManager.GetInstance().PlayMusic(MusicType.Town, 0.6f, 1f);
+        else if(location.canAccessCombatMode && !location.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.7f, 1f);
+        else AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 0.6f, 1f);
         await OpenPlayerUI();
         DOTween.Clear(true);
     }
