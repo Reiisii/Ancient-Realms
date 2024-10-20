@@ -7,7 +7,7 @@ using UnityEngine.Audio;
 [ExecuteInEditMode]
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] public AudioMixer audioMixer;
     [SerializeField] public SoundList[] soundEffectList;
     [SerializeField] public AudioClip[] musicList;
     [SerializeField] public AudioSource soundFXAudioSource;
@@ -186,21 +186,72 @@ public class AudioManager : MonoBehaviour
         audioMixer.SetFloat("masterVolume", Mathf.Log10(level) * 20f);
     }
 
+    public void SetMasterVolume()
+    {
+        audioMixer.SetFloat("masterVolume", GetMasterVolume());
+    }
+
+    public float GetMasterVolume()
+    {
+        float volume = 0f;
+        if (audioMixer.GetFloat("masterVolume", out volume))
+        {
+            return volume;
+        }
+        else
+        {
+            Debug.LogError("Master volume not found!");
+            return -1f; // Return a default value or handle the error as needed
+        }
+    }
+
     public void SetSoundFXVolume(float level)
     {
         audioMixer.SetFloat("soundFXVolume", Mathf.Log10(level) * 20f);
     }
-    
+    public void SetSoundFXVolume()
+    {
+        audioMixer.SetFloat("soundFXVolume", GetSoundFXVolume());
+    }
+    public float GetSoundFXVolume()
+    {
+        float volume = 0f;
+        if (audioMixer.GetFloat("soundFXVolume", out volume))
+        {
+            return volume;
+        }
+        else
+        {
+            Debug.LogError("Master volume not found!");
+            return -1f; // Return a default value or handle the error as needed
+        }
+    }
     public void SetMusicVolume(float level)
     {
         audioMixer.SetFloat("musicVolume", Mathf.Log10(level) * 20f);
     }
-    #if    UNITY_EDITOR
+    public void SetMusicVolume()
+    {
+        audioMixer.SetFloat("musicVolume", GetSoundMusicVolume());
+    }
+    public float GetSoundMusicVolume()
+    {
+        float volume = 0f;
+        if (audioMixer.GetFloat("musicVolume", out volume))
+        {
+            return volume;
+        }
+        else
+        {
+            Debug.LogError("Master volume not found!");
+            return -1f; // Return a default value or handle the error as needed
+        }
+    }
+    #if UNITY_EDITOR
     private void OnEnable(){
         string[] names = Enum.GetNames(typeof(SoundType));
         Array.Resize(ref soundEffectList, names.Length);
         for(int i = 0; i < soundEffectList.Length; i++)soundEffectList[i].name = names[i];
-        
     }
     #endif
 }
