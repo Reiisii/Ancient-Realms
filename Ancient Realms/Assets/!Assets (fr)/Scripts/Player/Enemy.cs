@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Ink;
 using Pathfinding;
 using UnityEngine;
@@ -15,13 +16,16 @@ public class Enemy : MonoBehaviour
     public bool isDummy = false;
     public int level = 1;
     public int tier = 1;
+    public int equipmentLevel = 1;
     private float maxStamina = 70f;
-    private float stamina = 70f;
+    public float stamina = 70f;
     private float walkSpeed = 3.2f;
     private float runSpeed = 5f;
     public float staminaDepletionRate = 20f;
     private float staminaRegenRate = 10f;
     private float attackRange = 0.5f;
+    private float damage = 1;
+    private float armor = 0;
     public float detectionRadius = 50f;
     [Header("Enemy Controller")]
     public bool invulnerable = false;
@@ -31,13 +35,24 @@ public class Enemy : MonoBehaviour
     public bool isRunning = false;
     public bool isAttacking = false;
     public bool isBlocking = false;
-    public List<string> equipmentSOs;
+    public bool isEquipping = false;
+    public List<int> equipments;
+    public List<EquipmentSO> equippedSOs;
+    private List<Ally> enemiesInRange = new List<Ally>();
     private Vector3 previousPosition;
+    public LayerMask enemyLayer;
     [Header("Enemy Components")]
     [SerializeField] public Animator animator;
     [SerializeField] public AIPath aiPath;
-
     [SerializeField] public AIDestinationSetter aiDestination;
+    [SerializeField] public SpriteRenderer mainHolster;
+    [SerializeField] public SpriteRenderer hand;
+    [SerializeField] public SpriteRenderer forearm;
+    [SerializeField] public SpriteRenderer mainSlot;
+    [SerializeField] public SpriteRenderer shieldSlotFront;
+    [SerializeField] public SpriteRenderer shieldSlotBack;
+    [SerializeField] public SpriteRenderer shieldSlotHandle;
+    [SerializeField] public Transform attackPoint;
     public bool _isFacingRight = true;
     public bool IsFacingRight 
     { 
@@ -77,7 +92,11 @@ public class Enemy : MonoBehaviour
 
                 // Check the distance to the target
                 float distanceToTarget = Vector3.Distance(transform.position, nearestTarget.transform.position);
-                if(distanceToTarget <= 2f){
+                if(!canMove) {
+                    aiPath.maxSpeed = 0;
+                    return;
+                };
+                if(distanceToTarget <= 0.5f){
                     aiPath.maxSpeed = 0;
                 }else if(distanceToTarget <= 12f){
                     aiPath.maxSpeed = 2.3f;
@@ -195,18 +214,19 @@ public class Enemy : MonoBehaviour
         
     }
     public void TakeDamage(float damage){
-
+            float newDamage = damage - armor;
             if(invulnerable){
                 return;
             }else if(currentHP > 0 && isBlocking && !isDead){
-                currentHP -= damage - (damage * 0.5f);
+                
+                currentHP -= newDamage - (newDamage * 0.5f);
                 if(currentHP <= 0){
                     isDead = true;
                     animator.Play("Death");
                     gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
                 }
             }else if(currentHP > 0 && !isDead){
-                currentHP -= damage;
+                currentHP -= newDamage;
                 if(currentHP <= 0){
                     isDead = true;
                     animator.Play("Death");
@@ -241,7 +261,84 @@ public class Enemy : MonoBehaviour
 
         return nearestTarget;
     }
+    void ApplyDamage(){
+        Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        bool hasPlayer = false;
+        foreach(Collider2D enemy in hitEnemies){
 
+            if(enemy.GetComponent<Ally>() != null){
+                enemiesInRange.Add(enemy.GetComponent<Ally>());
+            }
+            if(enemy.GetComponent<PlayerController>() != null){
+                hasPlayer = true;
+            }
+        }
+        if(!hasPlayer){
+            Ally targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
+            targetEnemy.TakeDamage(damage);
+        }else{
+            PlayerController.GetInstance().TakeDamage(damage);
+        }
+        
+    }
+    public void MoveFront()
+    {
+        // Get the character's current position
+        Vector2 cP = gameObject.transform.position;
+
+        // Define the movement distance (adjust as needed)
+        float moveDistance = 0.3f;
+
+        // Calculate the new position based on the direction the character is facing
+        Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 newPosition = cP + moveDirection * moveDistance;
+
+        // Define the duration for the smooth movement (adjust as needed)
+        float moveDuration = 0.2f;
+
+        // Use DOTween to smoothly move the character to the new position
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        
+    }
+    private void RegenStamina(){
+        if (!isBlocking && !isAttacking)
+        {
+            if(isCombatMode && IsMoving) {
+                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.25f) * Time.deltaTime);
+                return;
+            }else if(isCombatMode){
+                stamina = Mathf.Min(maxStamina, stamina + (staminaRegenRate - (staminaRegenRate * 0.50f)) * Time.deltaTime);
+            }else{
+                stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
+            }
+        }
+    }
+    public void MoveBackStun()
+    {
+        // Get the character's current position
+        Vector2 cP = gameObject.transform.position;
+
+        // Define the movement distance (adjust as needed)
+        float moveDistance = -0.4f;
+
+        // Calculate the new position based on the direction the character is facing
+        Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 newPosition = cP + moveDirection * moveDistance;
+
+        // Define the duration for the smooth movement (adjust as needed)
+        float moveDuration = 0.2f;
+        
+        canMove = false;
+        // Use DOTween to smoothly move the character to the new position
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnComplete(()=>{
+            DOVirtual.DelayedCall(3f, () => 
+            {
+                canMove = true;
+            });
+        });
+    }
     private void SetFacingDirection(Vector2 moveInput)
     {
         if (isAttacking) return; // Don't flip while attacking
@@ -257,7 +354,33 @@ public class Enemy : MonoBehaviour
             IsFacingRight = false; // Flip to face left
         }
     }
-
+    public void InitializeEquipments(){
+        List<EquipmentSO> newList = new List<EquipmentSO>();
+        foreach(int equipment in equipments){
+            EquipmentSO equipmentSO = AccountManager.Instance.equipments.Where(eq => eq.equipmentId == equipment).FirstOrDefault();
+            EquipmentSO copiedEquipmentSO = equipmentSO.CreateCopy(equipment, tier, equipmentLevel);
+            newList.Add(copiedEquipmentSO);
+        }
+        equippedSOs = newList;
+        int j = 0;
+        float sumArmor = 0;
+        damage = 1;
+        mainHolster.sprite = equippedSOs[4].front;
+        mainSlot.sprite = equippedSOs[4].front;
+        shieldSlotFront.sprite = equippedSOs[5].front;
+        shieldSlotBack.sprite = equippedSOs[5].back;
+        foreach(EquipmentSO equipment in equippedSOs){
+            if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
+                sumArmor += equipment.baseArmor;
+            }
+            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && (equipment.weaponType == WeaponType.Sword ||  equipment.weaponType == WeaponType.Spear) && j == 4){
+                damage = equipment.baseDamage;
+                attackRange = equipment.attackRange;
+            }
+            j++;
+        }
+        armor = sumArmor;
+    }
     private void CalculateStatsForCurrentLevel()
     {
         // Calculate the stats based on the current level without incrementing it

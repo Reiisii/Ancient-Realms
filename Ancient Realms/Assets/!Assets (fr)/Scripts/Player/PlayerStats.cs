@@ -30,6 +30,7 @@ public class PlayerStats : MonoBehaviour
     public float maxStamina = 70f;
     public float stamina = 70f;
     public float armor = 0f;
+    public bool isDead = false;
     [Header("Movement Stats")]
     public float walkSpeed = 5f;
     public float runSpeed = 8f;

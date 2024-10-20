@@ -10,7 +10,6 @@ public class CombatIdleBehaviour : StateMachineBehaviour
         PlayerController.GetInstance().canWalk = true;
         // PlayerController.GetInstance().isEquipping = false;
         PlayerController.GetInstance().isBlocking = false;
-        PlayerController.GetInstance().isAttacking = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

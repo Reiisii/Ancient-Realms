@@ -101,6 +101,9 @@ public class Contubernium : MonoBehaviour
         };
 
         isFollowing = !isFollowing;
+        isAttacking = false;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        aiDestination.target = player;
         lastCommandTime = Time.time; // Update the last command time
         PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "Centurio is " + (Contubernium.Instance.isFollowing ? "Following" : "Holding"));
     }
@@ -111,9 +114,13 @@ public class Contubernium : MonoBehaviour
             PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "Command Cooldown!");
             return;
         };
+        if(!isCombatMode){
+            ToggleCombatMode();
+        }
         isFollowing = false;
         isAttacking = true;
         lastCommandTime = Time.time; // Update the last command time
+        FindNearestEnemy();
         PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "Attack!!!");
     }
 
@@ -233,6 +240,37 @@ public class Contubernium : MonoBehaviour
         }
     }
 
+    private void FindNearestEnemy()
+    {
+        // Assume there's a way to find all enemies (you can adjust this logic based on your project)
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        float closestDistance = Mathf.Infinity;
+        GameObject closestEnemy = null;
+
+        // Loop through all enemies and find the nearest one
+        foreach (GameObject enemy in enemies)
+        {
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distanceToEnemy < closestDistance)
+            {
+                closestDistance = distanceToEnemy;
+                closestEnemy = enemy;
+            }
+        }
+
+        // Set the destination to the nearest enemy if one is found
+        if (closestEnemy != null)
+        {
+            aiDestination.target = closestEnemy.transform;
+            aiPath.maxSpeed = followSpeed; // Adjust speed to engage enemy
+        }
+        else
+        {
+            // If no enemy is found, the Contubernium remains idle or stops moving
+            aiPath.maxSpeed = 0;
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "No enemies found!");
+        }
+    }
     private int FindNearestAlly(int gapIndex, List<bool> filledPositions)
     {
         float closestDistance = float.MaxValue;

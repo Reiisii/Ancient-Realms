@@ -10,7 +10,7 @@ public class Ally : MonoBehaviour
 {
     [Header("Ally Stats")]
     private float maxHP = 100f;
-    private float currentHP = 100f;
+    public float currentHP = 100f;
     public string id = "R-Ally";
     public bool isDead = false;
     public bool isDummy = false;
@@ -26,8 +26,10 @@ public class Ally : MonoBehaviour
     private float attackRange = 0.5f;
     private float damage = 1;
     private float armor = 0;
+    public float maxHoldTime = 1f;
+    public float holdTime = 0f;
     public List<int> equipments;
-    private List<EquipmentSO> equippedSOs;
+    public List<EquipmentSO> equippedSOs;
     private List<Enemy> enemiesInRange = new List<Enemy>();
     public LayerMask enemyLayer;
 
@@ -42,13 +44,14 @@ public class Ally : MonoBehaviour
     public bool isBlocking = false;
     public bool isHolding = false;
     public bool isJavelin = false;
+    private bool hasBashed = false; 
 
     [Header("Ally Settings")]
     public Transform contubernium; // Reference to the Contubernium
     private Vector3 targetPosition; 
     public float followDistance = 1.5f; // Distance to maintain from the Contubernium
     public float followSpeed = 2.5f; // Speed of the ally
-    public float attackCooldown = 3f;
+    private float attackCooldown = 2f;
     private float lastAttackTime; 
     public int row; // Row of the ally in the formation
     public int positionInRow; // Position in the row
@@ -97,6 +100,12 @@ public class Ally : MonoBehaviour
     }
     private void Update()
     {
+        RegenStamina();
+        if (isHolding)
+        {
+            holdTime += Time.deltaTime;
+            holdTime = Mathf.Min(holdTime, maxHoldTime); // Cap the hold time to the max hold time
+        }
         if (currentHP <= 0 && !isDead)
         {
             isDead = true;
@@ -140,7 +149,7 @@ public class Ally : MonoBehaviour
 
         // Calculate the throw force and corresponding damage based on hold time
         float damage = Mathf.Lerp(0, maxDamage, playerController.holdTime / playerStats.maxHoldTime);
-
+        stamina -= 10f;
         // Instantiate the pilum
         JavelinPrefab pilum = Instantiate(javelinPrefab, javelinPoint.position, javelinPoint.rotation);
         // Apply force to the pilum in an arching trajectory
@@ -158,7 +167,7 @@ public class Ally : MonoBehaviour
         );
 
         pilum.SetDamage(damage);
-
+        holdTime = 0f;
         // Apply the force to the pilum
         rb.AddForce(force, ForceMode2D.Impulse);
 
@@ -345,41 +354,102 @@ public class Ally : MonoBehaviour
 
                 if (targetEnemy != null && !targetEnemy.isDead)
                 {
-                    if (Time.time < lastAttackTime + attackCooldown) return;
-                    PerformAttack(targetEnemy);
+                    if (stamina < 20f && !isBlocking)
+                    {
+                        StartBlocking(); // Initiate block
+                    }
+                    else if (!isAttacking)
+                    {
+                        if (Time.time < lastAttackTime + attackCooldown || stamina < 20) return;
+                        PerformAttack(targetEnemy); // Attack if not already attacking
+                    }
                 }
             }
         }
     }
+    void StartBlocking()
+    {
+        isBlocking = true;
+        hasBashed = false;
+        animator.SetBool("isBlocking", true); // Play block animation
 
+        // Block for a fixed time or until stamina depletes
+        StartCoroutine(BlockCoroutine());
+    }
+    void StopBlocking()
+    {
+        isBlocking = false;
+        animator.SetBool("isBlocking", false);// Return to idle
+    }
+
+    IEnumerator BlockCoroutine()
+    {
+        float blockTime = 2f; // Duration of blocking
+        float blockStartTime = Time.time;
+
+        while (Time.time < blockStartTime + blockTime && stamina > 0f)
+        {
+            stamina = Mathf.Max(0, stamina + (staminaRegenRate * 0.25f) * Time.deltaTime);
+            if (Random.value > 0.8f && !hasBashed) // 20% chance, only if enough stamina
+            {
+                hasBashed = true;
+                PerformShieldBash();
+            }
+            yield return null; // Wait for next frame
+        }
+        StopBlocking(); // Stop when out of stamina or time is up
+    }
     void ApplyDamage(){
         Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        enemiesInRange.Clear();
         foreach(Collider2D enemy in hitEnemies){
             enemiesInRange.Add(enemy.GetComponent<Enemy>());
         }
         Enemy targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
-        targetEnemy.TakeDamage(damage);
+        if (targetEnemy != null) {
+            targetEnemy.TakeDamage(damage);
+        }
+        enemiesInRange.Clear();
+    }
+    void ApplyBash(){
+        Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        enemiesInRange.Clear();
+        foreach(Collider2D enemy in hitEnemies){
+            enemiesInRange.Add(enemy.GetComponent<Enemy>());
+        }
+        Enemy targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
+        if (targetEnemy != null) {
+            targetEnemy.MoveBackStun();
+        }
+        enemiesInRange.Clear();
     }
     private void PerformAttack(Enemy target)
     {
-        target.TakeDamage(damage);  // Assuming the Enemy script has a TakeDamage method
+        if(stamina < 10) return;
         isAttacking = true;
         lastAttackTime = Time.time;
+        stamina -= 10f;
         // Optionally, add a cooldown or delay between attacks
     }
+    private void PerformShieldBash()
+    {
+        // Play the shield bash animation
+        if(stamina > 20) return;
+        isAttacking = true; // You need a shield bash animation in the Animator
+    }
     public void TakeDamage(float damage){
-
+            float newDamage = damage - armor;
             if(invulnerable){
                 return;
             }else if(isBlocking){
-                currentHP -= damage - (damage * 0.5f);
+                currentHP -= newDamage * 0.5f;
                 if(currentHP <= 0){
                     isDead = true;
                     animator.Play("Death");
                     gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
                 }
             }else{
-                currentHP -= damage;
+                currentHP -= newDamage;
                 if(currentHP <= 0){
                     isDead = true;
                     animator.Play("Death");
@@ -387,7 +457,7 @@ public class Ally : MonoBehaviour
                 }
             }
     }
-    void MoveFront()
+    public void MoveFront()
     {
         // Get the character's current position
         Vector2 cP = gameObject.transform.position;
@@ -407,8 +477,20 @@ public class Ally : MonoBehaviour
         gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
         
     }
-
-    void MoveBack()
+    private void RegenStamina(){
+        if (!isBlocking && !isAttacking)
+        {
+            if(isCombatMode && IsMoving) {
+                stamina = Mathf.Max(0, stamina - (staminaDepletionRate * 0.25f) * Time.deltaTime);
+                return;
+            }else if(isCombatMode){
+                stamina = Mathf.Min(maxStamina, stamina + (staminaRegenRate - (staminaRegenRate * 0.50f)) * Time.deltaTime);
+            }else{
+                stamina = Mathf.Min(maxStamina, stamina + staminaRegenRate * Time.deltaTime);
+            }
+        }
+    }
+    public void MoveBack()
     {
         // Get the character's current position
         Vector2 cP = gameObject.transform.position;
