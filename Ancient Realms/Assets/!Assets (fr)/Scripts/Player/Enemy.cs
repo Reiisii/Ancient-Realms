@@ -79,6 +79,7 @@ public class Enemy : MonoBehaviour
         aiPath.maxSpeed = walkSpeed;
     }
     private void Update(){
+        if(isDummy) return;
         GameObject nearestTarget = FindNearestTargetWithinRadius();
         if (nearestTarget != null)
         {
@@ -132,6 +133,7 @@ public class Enemy : MonoBehaviour
         }
     }
     public void FixedUpdate(){
+        if(isDummy) return;
         OnMove();
         if(aiPath.desiredVelocity.x >= 0.01f){
             transform.localScale *= new Vector2(-1, 1);
@@ -156,7 +158,7 @@ public class Enemy : MonoBehaviour
 
         previousPosition = transform.position;
     }
-    public void TakeDamage(float damage, GoalTypeEnum goal){
+    public void TakeDamage(float damage){
         List<QuestSO> quest = PlayerStats.GetInstance().activeQuests.ToList();
         foreach(QuestSO q in quest){
         if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Damage && q.goals[q.currentGoal].targetCharacters.Contains(id)){
@@ -165,24 +167,25 @@ public class Enemy : MonoBehaviour
         }
         if(isDummy){
             foreach(QuestSO q in quest){
-            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitMelee && GoalTypeEnum.HitMelee == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitMelee && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                     QuestManager.GetInstance().UpdateHitMeleeGoal();
                 }
             }
             foreach(QuestSO q in quest){
-            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitAny  && GoalTypeEnum.HitAny == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitAny && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                     QuestManager.GetInstance().UpdateHitAnyGoal();
                 } 
             }
             foreach(QuestSO q in quest){
-            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitJavelin && GoalTypeEnum.HitJavelin == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+            if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitJavelin && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                     QuestManager.GetInstance().UpdateHitJavelinGoal();
                 } 
             }
         }else{
             if(invulnerable) return;
             else{
-                currentHP -= damage;
+                float newDamage = damage - armor;
+                currentHP -= newDamage;
                 if(currentHP <= 0){
                     isDead = true;
                     animator.Play("Death");
@@ -193,17 +196,17 @@ public class Enemy : MonoBehaviour
                         } 
                     }
                     foreach(QuestSO q in quest){
-                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitMelee && GoalTypeEnum.HitMelee == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitMelee && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                             QuestManager.GetInstance().UpdateHitMeleeGoal();
                         }
                     }
                     foreach(QuestSO q in quest){
-                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitAny  && GoalTypeEnum.HitAny == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitAny && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                             QuestManager.GetInstance().UpdateHitAnyGoal();
                         } 
                     }
                     foreach(QuestSO q in quest){
-                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitJavelin && GoalTypeEnum.HitJavelin == goal && q.goals[q.currentGoal].targetCharacters.Contains(id)){
+                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.HitJavelin && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                             QuestManager.GetInstance().UpdateHitJavelinGoal();
                         } 
                     }
@@ -211,28 +214,6 @@ public class Enemy : MonoBehaviour
             }
 
         }
-        
-    }
-    public void TakeDamage(float damage){
-            float newDamage = damage - armor;
-            if(invulnerable){
-                return;
-            }else if(currentHP > 0 && isBlocking && !isDead){
-                
-                currentHP -= newDamage - (newDamage * 0.5f);
-                if(currentHP <= 0){
-                    isDead = true;
-                    animator.Play("Death");
-                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-                }
-            }else if(currentHP > 0 && !isDead){
-                currentHP -= newDamage;
-                if(currentHP <= 0){
-                    isDead = true;
-                    animator.Play("Death");
-                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-                }
-            }
         
     }
     GameObject FindNearestTargetWithinRadius()

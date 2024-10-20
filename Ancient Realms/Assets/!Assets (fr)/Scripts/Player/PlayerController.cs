@@ -371,7 +371,10 @@ public class PlayerController : MonoBehaviour
             enemiesInRange.Add(enemy.GetComponent<Enemy>());
         }
         Enemy targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
-        targetEnemy.TakeDamage(playerStats.damage);
+        if(targetEnemy != null){
+            targetEnemy.TakeDamage(playerStats.damage);
+        }
+        
     }
     void ApplyBash(){
         List<Enemy> enemiesInRange = new List<Enemy>();
@@ -588,7 +591,6 @@ public class PlayerController : MonoBehaviour
             PlayerUIManager.GetInstance().TogglePremiumShop();
         }
     }
-
     // Quest Pressed Right
     public void OnRun(InputAction.CallbackContext context)
     {

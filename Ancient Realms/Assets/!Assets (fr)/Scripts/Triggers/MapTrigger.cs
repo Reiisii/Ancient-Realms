@@ -43,6 +43,7 @@ public class MapTrigger : MonoBehaviour
         }
     }
     public async void ChangeScene(){
+        AudioManager.GetInstance().StopAmbience();
         PlayerStats.GetInstance().isCombatMode = false;
         PlayerUIManager.GetInstance().TransitionMapUI();
         await PlayerUIManager.GetInstance().ClosePlayerUI();
@@ -53,6 +54,9 @@ public class MapTrigger : MonoBehaviour
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
             SceneManager.LoadSceneAsync(locationScene, LoadSceneMode.Additive).completed += async (operation) => {
                 LocationSO loadedLocation = LocationSettingsManager.GetInstance().locationSettings;
+                if(loadedLocation.canAccessCombatMode && !loadedLocation.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.7f, 1f); 
+                else AudioManager.GetInstance().PlayMusic(MusicType.Town, 1f, 1f);
+                AudioManager.GetInstance().SetAmbience(PlayerUIManager.GetInstance().time.hours < 17, loadedLocation.background, loadedLocation.hasWater);
                 PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = locationScene;
                 PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;
                 PlayerStats.GetInstance().localPlayerData.gameData.lastX = loadedLocation.locations[0].location.x;

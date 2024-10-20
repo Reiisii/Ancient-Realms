@@ -19,10 +19,13 @@ public class EnterBuilding : MonoBehaviour
                 PlayerController.GetInstance().playerActionMap.Disable();
                 await Open();
                 if(!interiorGrid.activeSelf){
+                    StartCoroutine(AudioManager.GetInstance().FadeOutAmbience(AudioManager.GetInstance().waterAmbience, 0.5f));
                     interiorGrid.SetActive(true);
                     exteriorGrid.SetActive(false);
                     PlayerUIManager.GetInstance().locationText.SetText(districtName);
+
                 }else{
+                    StartCoroutine(AudioManager.GetInstance().FadeInAmbience(AudioManager.GetInstance().waterAmbience, 0.4f, 0.5f));
                     interiorGrid.SetActive(false);
                     exteriorGrid.SetActive(true);
                     PlayerUIManager.GetInstance().locationText.SetText(buildingName);
@@ -33,6 +36,7 @@ public class EnterBuilding : MonoBehaviour
         }
     }
     private async Task Open(){
+        AudioManager.GetInstance().PlayAudio(SoundType.ENTER);
         PlayerUIManager.GetInstance().locationPlaque.SetActive(true);
         await PlayerUIManager.GetInstance().OpenDarkenUI();
     }
@@ -40,6 +44,7 @@ public class EnterBuilding : MonoBehaviour
         await PlayerUIManager.GetInstance().CloseDarkenUI();
         PlayerUIManager.GetInstance().locationPlaque.SetActive(false);
         PlayerController.GetInstance().playerActionMap.Enable();
+        AudioManager.GetInstance().PlayAudio(SoundType.CLOSE);
     }
     private void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.tag == "Player"){

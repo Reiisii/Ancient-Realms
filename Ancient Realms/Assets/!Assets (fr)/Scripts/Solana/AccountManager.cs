@@ -44,6 +44,7 @@ public class AccountManager : MonoBehaviour
             equipments = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
             nfts = Resources.LoadAll<NFTSO>("NFTSO").ToList();
             Instance = this;
+            AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 1f, 1f);
             DontDestroyOnLoad(gameObject);
         }
         else

@@ -160,6 +160,43 @@ public enum BuffType {
     Stamina,
     Speed
 }
+public enum SoundType{
+    SLASH,
+    PILUM,
+    BASH,
+    WALK,
+    RUN,
+    ENTER,
+    STAIRS,
+    HELMET,
+    CHEST,
+    WAIST,
+    FOOT,
+    FIELDS,
+    FOREST,
+    CAVE,
+    TOWN,
+    TRAINING,
+    WATER,
+    DAY,
+    NIGHT,
+    CLOSE,
+    SHEATHE,
+    UNSHEATHE
+}
+public enum MusicType{
+    Combat,
+    MainMenu,
+    Town,
+    Loading
+}
+[Serializable]
+public struct SoundList
+{
+    public AudioClip[] Sounds {get => sounds;}
+    [HideInInspector] public string name;
+    [SerializeField] private AudioClip[] sounds;
+}
 [Serializable]
 public class StatBuff{
     public BuffType buffType;
