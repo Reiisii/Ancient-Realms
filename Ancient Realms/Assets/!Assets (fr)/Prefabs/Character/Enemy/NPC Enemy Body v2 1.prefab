@@ -84,6 +84,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &456091032666569321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3506353862372625099}
+  m_Layer: 6
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3506353862372625099
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456091032666569321}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.8, y: 0, z: 0}
+  m_LocalScale: {x: 0.9545833, y: 0.94385755, z: 0.025201002}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7941785817879570570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519115494339392711
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,6 +2227,7 @@ Transform:
   - {fileID: 6733913137458214321}
   - {fileID: 7957322804683989708}
   - {fileID: 1331522267325654449}
+  - {fileID: 3506353862372625099}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2879941003437751525
@@ -2354,11 +2386,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8590cdb9e70cd42bf2f5cf2acfe713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHP: 100
   id: dummy-00
   isDead: 0
   isDummy: 0
-  level: 0
+  level: 1
   tier: 1
+  equipmentLevel: 1
+  stamina: 70
   staminaDepletionRate: 40
   detectionRadius: 50
   invulnerable: 0
@@ -2368,10 +2403,23 @@ MonoBehaviour:
   isRunning: 0
   isAttacking: 0
   isBlocking: 0
-  equipmentSOs: []
+  isEquipping: 0
+  equipments: 030000000600000018000000130000000e00000009000000
+  equippedSOs: []
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 384
   animator: {fileID: 6535328451953144701}
   aiPath: {fileID: 7033045282589477796}
   aiDestination: {fileID: 2549724246916377931}
+  mainHolster: {fileID: 4234131018201039058}
+  hand: {fileID: 6491352589579333884}
+  forearm: {fileID: 6491352589579333884}
+  mainSlot: {fileID: 8992853246534307617}
+  shieldSlotFront: {fileID: 0}
+  shieldSlotBack: {fileID: 2141838607487794110}
+  shieldSlotHandle: {fileID: 404682678495441931}
+  attackPoint: {fileID: 3506353862372625099}
   _isFacingRight: 1
 --- !u!114 &5478305999234797475
 MonoBehaviour:
