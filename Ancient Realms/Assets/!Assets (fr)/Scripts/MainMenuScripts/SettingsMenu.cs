@@ -41,9 +41,9 @@ public class SettingsMenu : MonoBehaviour
         if (oldMasterVolume != masterVolume || oldMusicVolume != musicVolume || oldSoundFXVolume != soundFXVolume)
         {
             await AccountManager.SaveData(playerData);
-            AudioManager.GetInstance().SetSoundFXVolume(soundFXVolume);
-            AudioManager.GetInstance().SetMusicVolume(musicVolume);
-            AudioManager.GetInstance().SetMasterVolume(masterVolume);
+            AudioManager.GetInstance().SetSoundFXVolume();
+            AudioManager.GetInstance().SetMusicVolume();
+            AudioManager.GetInstance().SetMasterVolume();
             oldMasterVolume = masterSlider.value;
             oldMusicVolume = musicSlider.value;
             oldSoundFXVolume = soundFXSlider.value;
