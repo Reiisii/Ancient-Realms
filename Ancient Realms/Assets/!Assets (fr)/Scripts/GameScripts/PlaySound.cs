@@ -26,10 +26,18 @@ public class PlaySound : MonoBehaviour
     }
     public void PlayEquip()
     {
-        AudioManager.GetInstance().PlayAudio(SoundType.SHEATHE, 1f);
+        AudioManager.GetInstance().PlayAudio(SoundType.SHEATHE, 0.2f);
+    }
+    public void PlayerEquip()
+    {
+        AudioManager.GetInstance().PlayAudio(SoundType.SHEATHE, 0.6f);
+    }
+    public void PlayerUnequip()
+    {
+        AudioManager.GetInstance().PlayAudio(SoundType.UNSHEATHE, 0.6f);
     }
     public void PlayUnequip()
     {
-        AudioManager.GetInstance().PlayAudio(SoundType.UNSHEATHE, 1f);
+        AudioManager.GetInstance().PlayAudio(SoundType.UNSHEATHE, 0.2f);
     }
 }
