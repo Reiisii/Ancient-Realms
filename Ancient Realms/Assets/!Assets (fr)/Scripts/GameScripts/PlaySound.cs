@@ -26,10 +26,10 @@ public class PlaySound : MonoBehaviour
     }
     public void PlayEquip()
     {
-        AudioManager.GetInstance().PlayAudio(SoundType.BASH, 1f);
+        AudioManager.GetInstance().PlayAudio(SoundType.SHEATHE, 1f);
     }
     public void PlayUnequip()
     {
-        AudioManager.GetInstance().PlayAudio(SoundType.BASH, 1f);
+        AudioManager.GetInstance().PlayAudio(SoundType.UNSHEATHE, 1f);
     }
 }
