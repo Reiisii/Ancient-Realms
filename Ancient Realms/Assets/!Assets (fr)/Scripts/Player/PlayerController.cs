@@ -266,7 +266,8 @@ public class PlayerController : MonoBehaviour
             if(playerStats.stamina < 10) return;
             if(isHolding) return;
             if(isEquipping) return;
-            if(PlayerStats.GetInstance().isCombatMode && !isAttacking && IsRunning == false && !isHolding){
+            if(isAttacking) return;
+            if(PlayerStats.GetInstance().isCombatMode && !IsRunning && !isHolding){
                 isAttacking = true;
                 playerStats.stamina -= 10f;
             }else{
@@ -370,6 +371,19 @@ public class PlayerController : MonoBehaviour
             enemiesInRange.Add(enemy.GetComponent<Enemy>());
         }
         Enemy targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
+        targetEnemy.TakeDamage(playerStats.damage);
+    }
+    void ApplyBash(){
+        List<Enemy> enemiesInRange = new List<Enemy>();
+        Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, playerStats.attackRange, enemyLayer);
+        foreach(Collider2D enemy in hitEnemies){
+            enemiesInRange.Add(enemy.GetComponent<Enemy>());
+        }
+        Enemy targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
+        if (targetEnemy != null) {
+            targetEnemy.MoveBackStun();
+        }
+
     }
     void OnDrawGizmosSelected(){
         if(attackPoint == null) return;
@@ -390,6 +404,24 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("isBlocking", false);
         }
+    }
+    public void TakeDamage(float damage){
+            float newDamage = damage - playerStats.armor;
+            if(isBlocking){
+                playerStats.currentHP -= newDamage * 0.5f;
+                if(playerStats.currentHP <= 0){
+                    playerStats.isDead = true;
+                    animator.Play("Death");
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                }
+            }else{
+                playerStats.currentHP -= newDamage;
+                if(playerStats.currentHP <= 0){
+                    playerStats.isDead = true;
+                    animator.Play("Death");
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                }
+            }
     }
     void MoveFront()
     {
