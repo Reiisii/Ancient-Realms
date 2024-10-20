@@ -12,6 +12,8 @@ public class LocationSO : ScriptableObject
     public string SceneName;
     public Sprite image;
     [Header("Map Settings")]
+    public SoundType background;
+    public bool hasWater = false;
     public bool canAccessInventory = true;
     public bool canAccessJournal = true;
     public bool canAccessMap = true;

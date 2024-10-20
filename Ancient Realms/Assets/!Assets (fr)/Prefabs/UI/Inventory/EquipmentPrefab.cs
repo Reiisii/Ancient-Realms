@@ -77,6 +77,7 @@ public class EquipmentPrefab : MonoBehaviour
                 gameData.equippedData.helmSlot = invToHelm;
                 inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                 inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                AudioManager.GetInstance().PlayAudio(SoundType.HELMET, 0.5f);
                 break;
 
             case ArmorType.Chest:
@@ -90,6 +91,7 @@ public class EquipmentPrefab : MonoBehaviour
                 gameData.equippedData.chestSlot = invToChest;
                 inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                 inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                AudioManager.GetInstance().PlayAudio(SoundType.CHEST, 0.7f);
                 break;
 
             case ArmorType.Waist:
@@ -103,6 +105,7 @@ public class EquipmentPrefab : MonoBehaviour
                 gameData.equippedData.waistSlot = invToWaist;
                 inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                 inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                AudioManager.GetInstance().PlayAudio(SoundType.WAIST, 1f);
                 break;
 
             case ArmorType.Foot:
@@ -116,6 +119,7 @@ public class EquipmentPrefab : MonoBehaviour
                 gameData.equippedData.footSlot = invToFoot;
                 inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                 inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                AudioManager.GetInstance().PlayAudio(SoundType.FOOT, 1f);
                 break;
         }
 

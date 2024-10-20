@@ -362,6 +362,7 @@ public class InventoryPanel : MonoBehaviour
                     ItemData itemDataHelm = new ItemData(helmToInv.equipmentId, helmToInv.tier, helmToInv.level, helmToInv.stackCount);
                     player.localPlayerData.gameData.inventory.items.Add(itemDataHelm);
                     equippedItems[0] = null;
+                    AudioManager.GetInstance().PlayAudio(SoundType.HELMET, 0.5f);
                     ClearSlot(ArmorType.Helmet);
                 break;
                 
@@ -370,6 +371,7 @@ public class InventoryPanel : MonoBehaviour
                     ItemData itmDataChest = new ItemData(chestToInv.equipmentId, chestToInv.tier, chestToInv.level, chestToInv.stackCount);
                     player.localPlayerData.gameData.inventory.items.Add(itmDataChest);
                     equippedItems[1] = null;  // Clear from equippedItems list
+                    AudioManager.GetInstance().PlayAudio(SoundType.CHEST, 0.7f);
                     ClearSlot(ArmorType.Chest);
                 break;
                 
@@ -378,6 +380,7 @@ public class InventoryPanel : MonoBehaviour
                     ItemData itemDataWaist = new ItemData(waitToInv.equipmentId, waitToInv.tier, waitToInv.level, waitToInv.stackCount);
                     player.localPlayerData.gameData.inventory.items.Add(itemDataWaist);
                     equippedItems[2] = null;  // Clear from equippedItems list
+                    AudioManager.GetInstance().PlayAudio(SoundType.WAIST, 1f);
                     ClearSlot(ArmorType.Waist);
                 break;
                 case "foot":
@@ -385,6 +388,7 @@ public class InventoryPanel : MonoBehaviour
                     ItemData itemDataFoot = new ItemData(footToInv.equipmentId, footToInv.tier, footToInv.level, footToInv.stackCount);
                     player.localPlayerData.gameData.inventory.items.Add(itemDataFoot);
                     equippedItems[3] = null;  // Clear from equippedItems list
+                    AudioManager.GetInstance().PlayAudio(SoundType.FOOT, 1f);
                     ClearSlot(ArmorType.Foot);
                 break;
             }
