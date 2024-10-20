@@ -27,14 +27,14 @@ public class NPCIdle : StateMachineBehaviour
                 ally.canMove = false;
                 ally.isRunning = false;
                 ally.IsMoving = false;
-                animator.Play("Equip");
+                animator.Play("Equip AI");
             }
         }else if(enemy != null){
             if(enemy.isCombatMode && animator.GetBool("isCombatMode") && enemy.isEquipping){
                 enemy.canMove = false;
                 enemy.isRunning = false;
                 enemy.IsMoving = false;
-                animator.Play("Equip");
+                animator.Play("Equip AI");
             }
         }
     }

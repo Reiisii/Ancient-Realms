@@ -28,7 +28,7 @@ public class NPCCIdle : StateMachineBehaviour
                 ally.canMove = false;
                 ally.isRunning = false;
                 ally.IsMoving = false;
-                animator.Play("Unequip");
+                animator.Play("Unequip AI");
             }
             if(ally.isAttacking && !ally.isHolding){
                 if(ally.equippedSOs[4].weaponType == WeaponType.Sword){
@@ -46,7 +46,7 @@ public class NPCCIdle : StateMachineBehaviour
                 enemy.canMove = false;
                 enemy.isRunning = false;
                 enemy.IsMoving = false;
-                animator.Play("Unequip");
+                animator.Play("Unequip AI");
             }
         }
     }
