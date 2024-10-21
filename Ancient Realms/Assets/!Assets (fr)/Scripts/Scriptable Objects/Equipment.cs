@@ -146,8 +146,8 @@ public class EquipmentSO : ScriptableObject
     }
     public float CalculateDamage(int tier, int level, float baseDamage)
     {
-        float bd = baseDamage + (tier * 3f); // Base damage depends on tier, tier 0 has a base damage of 5
-        float additionalDamage = level * 1.5f; // Each level adds 1.5 to damage
+        float bd = baseDamage + (tier * 4f); // Base damage depends on tier, tier 0 has a base damage of 5
+        float additionalDamage = level * 5f; // Each level adds 1.5 to damage
         
         // Ensure level is within bounds
         level = Mathf.Clamp(level, 0, 6);
@@ -156,7 +156,7 @@ public class EquipmentSO : ScriptableObject
     }
     public float CalculateArmor(int tier, int level, float baseArmor)
     {
-        float ba = baseArmor + (tier * 3f); // Base damage depends on tier, tier 0 has a base damage of 5
+        float ba = baseArmor + (tier * 0.5f); // Base damage depends on tier, tier 0 has a base damage of 5
         float additionalDamage = level * 1.5f; // Each level adds 1.5 to damage
         
         // Ensure level is within bounds

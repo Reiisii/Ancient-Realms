@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SmithingGameManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class SmithingGameManager : MonoBehaviour
     [SerializeField] GameObject hammerGO;
     [SerializeField] GameObject grindstoneGO;
     [SerializeField] GameObject assemblyGO;
+    [SerializeField] public OrderType order;
     [Header("Workstation Status")]
     public bool hasMaterials = false;
     public bool furnaceUsed = false;
