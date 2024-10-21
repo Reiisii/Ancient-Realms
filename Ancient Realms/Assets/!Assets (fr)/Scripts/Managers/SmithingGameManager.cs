@@ -52,6 +52,7 @@ public class SmithingGameManager : MonoBehaviour
         if(workStation == WorkStation.Metal) {
             if(hasMaterials) {
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already have the materials!");
+                AudioManager.GetInstance().PlayAudio(SoundType.RED);
                 return;
             }
             PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "Picked up materials.");
@@ -66,10 +67,12 @@ public class SmithingGameManager : MonoBehaviour
             case WorkStation.Furnace:
                 if(!hasMaterials){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Go get some materials first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(furnaceUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already smelt the iron!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 inWorkStation = true;
@@ -80,14 +83,17 @@ public class SmithingGameManager : MonoBehaviour
             case WorkStation.Hammering:
                 if(!hasMaterials){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Go get some materials first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(!furnaceUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Smelt the iron first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(hammerUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already Hammered the weapon!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 inWorkStation = true;
@@ -98,18 +104,22 @@ public class SmithingGameManager : MonoBehaviour
             case WorkStation.Grindstone:
                 if(!hasMaterials){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Go get some materials first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(!furnaceUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Smelt the iron first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(!hammerUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already hammered weapon!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(grindstoneUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already sharpened the weapon!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 inWorkStation = true;
@@ -119,22 +129,27 @@ public class SmithingGameManager : MonoBehaviour
             case WorkStation.Assembly:
                 if(!hasMaterials){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Go get some materials first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(!furnaceUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Smelt the iron first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(!hammerUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Hammer the weapon first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(!grindstoneUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Sharpen the weapon first!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 if(assemblyUsed){
                     PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already assembled the weapon!");
+                    AudioManager.GetInstance().PlayAudio(SoundType.RED);
                     return;
                 }
                 inWorkStation = true;
@@ -190,7 +205,9 @@ public class SmithingGameManager : MonoBehaviour
             PlayerStats.GetInstance().AddGold(tempScore);
             score = 0;
             weaponMade++;
+            AudioManager.GetInstance().PlayAudio(SoundType.DELIVERED);
         }else{
+            AudioManager.GetInstance().PlayAudio(SoundType.RED);
             if(!hasMaterials){
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "Go get some materials first!");
                 return;

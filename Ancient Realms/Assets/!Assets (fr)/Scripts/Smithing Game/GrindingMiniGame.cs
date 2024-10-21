@@ -142,6 +142,7 @@ public class GrindingMiniGame : MonoBehaviour
             {
                 timeLeft = 0;
                 StopGame();
+                AudioManager.GetInstance().PlayAudio(SoundType.RED);
             }
         }
     }
@@ -194,6 +195,7 @@ public class GrindingMiniGame : MonoBehaviour
                     StopGame(); // Stop the game when the slider is full
                     SmithingGameManager.GetInstance().score += 25;
                     SmithingGameManager.GetInstance().grindstoneUsed = true;
+                    AudioManager.GetInstance().PlayAudio(SoundType.GREEN);
                 }
             }
         }
