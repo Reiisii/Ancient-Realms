@@ -160,9 +160,17 @@ public class PuzzleManager : MonoBehaviour
         pilaDz.SetActive(false);
         pugio.SetActive(false);
         pugioDz.SetActive(false);
-        ResetPosition(sword);
-        ResetPosition(pila);
-        ResetPosition(pugio);
+        switch(SmithingGameManager.GetInstance().order){
+            case OrderType.Gladius:
+                ResetPosition(sword);
+            break;
+            case OrderType.Pila:
+                ResetPosition(pila);
+            break;
+            case OrderType.Pugio:
+                ResetPosition(pugio);
+            break;
+        }
     }
     public void ResetPosition(GameObject parent)
     {
