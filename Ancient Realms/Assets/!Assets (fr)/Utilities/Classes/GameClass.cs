@@ -160,6 +160,11 @@ public enum BuffType {
     Stamina,
     Speed
 }
+public enum OrderType {
+    Gladius,
+    Pila,
+    Pugio
+}
 public enum SoundType{
     SLASH,
     PILUM,

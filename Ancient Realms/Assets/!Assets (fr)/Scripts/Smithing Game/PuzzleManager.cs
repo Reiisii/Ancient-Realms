@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class PuzzleManager : MonoBehaviour
 {
+    [Header("Tool Tip")]
+    [SerializeField] GameObject tooltip;
     public static PuzzleManager instance;
+    [Header("Dropzone")]
+    [SerializeField] public GameObject swordDz;
+    [SerializeField] public GameObject pilaDz;
+    [SerializeField] public GameObject pugioDz;
+    
     [Header("Panel")]
-    [SerializeField] public GameObject parts;
+    [SerializeField] public GameObject sword;
+    [SerializeField] public GameObject pila;
+    [SerializeField] public GameObject pugio;
+    
     private bool isSwordBladePlaced = false;
     private bool isSwordRainGuardPlaced = false;
     private bool isSwordGripPlaced = false;
@@ -33,6 +43,28 @@ public class PuzzleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void OnEnable(){
+        if(PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Contains("assembly")){
+            tooltip.SetActive(false);
+        }else{
+            tooltip.SetActive(true);
+        }
+        switch(SmithingGameManager.GetInstance().order){
+            case OrderType.Gladius:
+                sword.SetActive(true);
+                swordDz.SetActive(true);
+            break;
+            case OrderType.Pila:
+                pila.SetActive(true);
+                pilaDz.SetActive(true);
+            break;
+            case OrderType.Pugio:
+                pugio.SetActive(true);
+                pugioDz.SetActive(true);
+            break;
+        }
+    }
+
     private void OnDisable(){
         Clear();
     }
@@ -122,7 +154,23 @@ public class PuzzleManager : MonoBehaviour
         isPugioRainGuardPlaced = false;
         isPugioGripPlaced = false;
         isPugioPommelPlaced = false;
-        ResetPosition(parts);
+        sword.SetActive(false);
+        swordDz.SetActive(false);
+        pila.SetActive(false);
+        pilaDz.SetActive(false);
+        pugio.SetActive(false);
+        pugioDz.SetActive(false);
+        switch(SmithingGameManager.GetInstance().order){
+            case OrderType.Gladius:
+                ResetPosition(sword);
+            break;
+            case OrderType.Pila:
+                ResetPosition(pila);
+            break;
+            case OrderType.Pugio:
+                ResetPosition(pugio);
+            break;
+        }
     }
     public void ResetPosition(GameObject parent)
     {

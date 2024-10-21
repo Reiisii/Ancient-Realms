@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
+using ESDatabase.Classes;
 using ESDatabase.Entities;
 using TMPro;
 using UnityEngine;
@@ -261,6 +262,12 @@ public class PlayerUIManager : MonoBehaviour
             hideButton.SetActive(false);
             unHideButton.SetActive(true);
         }
+    }
+    public void AddToUISettings(string val){
+            GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
+            if(gameData.uiSettings.Contains(val)) return;
+            gameData.uiSettings.Add(val);
+            PlayerStats.GetInstance().isDataDirty = true;
     }
     private async void OnSceneLoaded(AsyncOperation operation)
     {
