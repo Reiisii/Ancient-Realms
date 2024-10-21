@@ -27,10 +27,10 @@ public class PuzzleManager : MonoBehaviour
     private bool isPila3Placed = false;
     private bool isPila4Placed = false;
 
-    private bool isPugioBladePlaced = false;
-    private bool isPugioRainGuardPlaced = false;
-    private bool isPugioGripPlaced = false;
-    private bool isPugioPommelPlaced = false;
+    [SerializeField] private bool isPugioBladePlaced = false;
+    [SerializeField] private bool isPugioRainGuardPlaced = false;
+    [SerializeField] private bool isPugioGripPlaced = false;
+    [SerializeField] private bool isPugioPommelPlaced = false;
 
     private void Awake()
     {

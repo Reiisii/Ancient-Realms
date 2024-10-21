@@ -116,12 +116,15 @@ public class HammeringMiniGame : MonoBehaviour
         switch(color){
             case "Green":
                 SmithingGameManager.GetInstance().score += 5;
+                AudioManager.GetInstance().PlayAudio(SoundType.GREEN);
             break;
             case "Yellow":
                 SmithingGameManager.GetInstance().score += 3;
+                AudioManager.GetInstance().PlayAudio(SoundType.YELLOW);
             break;
             case "Red":
                 SmithingGameManager.GetInstance().score += 0;
+                AudioManager.GetInstance().PlayAudio(SoundType.RED);
             break;
         }
     }

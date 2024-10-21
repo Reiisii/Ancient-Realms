@@ -197,6 +197,7 @@ public class PlayerUIManager : MonoBehaviour
     [ContextMenu("BackToMainMenu")]
     public async void BackToMainMenu()
     {
+        AudioManager.GetInstance().StopAmbience();
         await ClosePlayerUI();
         await OpenDarkenUI();
         OpenBackgroundUI();
@@ -215,6 +216,7 @@ public class PlayerUIManager : MonoBehaviour
     public async Task BackToLogin()
     {
         PlayerStats.GetInstance().stopSaving = true;
+        AudioManager.GetInstance().StopAmbience();
         if(PlayerController.GetInstance() != null) PlayerController.GetInstance().playerActionMap.Disable();
         mapGO.SetActive(false);
         worldMap.SetActive(false);

@@ -110,7 +110,6 @@ public class FurnaceMiniGame : MonoBehaviour
     {
         if (overfilled)
         {
-            Debug.Log("Round Overfilled!");
             scoreBoard.UpdateScoreCircle(currentRound - 1, xColor);  // Mark round as overfilled with "X"
         }
         else
@@ -154,10 +153,12 @@ public class FurnaceMiniGame : MonoBehaviour
         {
             SmithingGameManager.GetInstance().score += 5;
             scoreBoard.UpdateScoreCircle(currentRound - 1, greenColor);
+            AudioManager.GetInstance().PlayAudio(SoundType.GREEN);
         }
         else
         {
             scoreBoard.UpdateScoreCircle(currentRound - 1, xColor);
+            AudioManager.GetInstance().PlayAudio(SoundType.RED);
         }
     }
     void DisplayStartPrompt(bool display)

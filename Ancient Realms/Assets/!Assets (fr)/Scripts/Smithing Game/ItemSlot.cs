@@ -18,14 +18,14 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             {
                 // Snap the piece to the slot
                 droppedPiece.anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-                Debug.Log(acceptedPiece + " placed correctly.");
+                AudioManager.GetInstance().PlayAudio(SoundType.GREEN);
 
                 // Notify the PuzzleManager
                 PuzzleManager.instance.PiecePlaced(acceptedPiece);
             }
             else
             {
-                Debug.Log("Wrong piece.");
+                AudioManager.GetInstance().PlayAudio(SoundType.RED);
             }
         }
     }

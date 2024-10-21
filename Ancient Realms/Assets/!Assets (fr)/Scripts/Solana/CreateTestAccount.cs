@@ -19,7 +19,7 @@ public class CreateTestAccount : MonoBehaviour
     }
     [ContextMenu("Thyrone")]
     public void Thyrone(){
-        Web3.Instance.CreateAccount("57a8H8Kwzv2kdyTYFs6zgpfAWSkqPCVFhhhZnnwo26YZTb2BgQ3zhLSuoA5B7hYXxv7PZZiAxuHAJWiUF5a6FqBt", "xptaker45");
+        Web3.Instance.CreateAccount("4mtQ7XgCc25v2rv8FqEYeQTrtcf2TumNpXDHta9PLYzUAL64UX83y5DA3XgnYB1YoVeeEUm8mG4FdpktJb6is7FP", "xptaker45");
     }
     [ContextMenu("Archie")]
     public void Archie(){

@@ -14,9 +14,12 @@ public class StartSmithingGame : MonoBehaviour
             if(PlayerController.GetInstance().GetInteractPressed()){
                 await Open();
                 if(SmithingGameManager.GetInstance().inMiniGame){
+                    StartCoroutine(AudioManager.GetInstance().FadeInAmbience(AudioManager.GetInstance().waterAmbience, 0.4f, 0.5f));
                     SmithingGameManager.GetInstance().EndGame();
                 }else{
+                    StartCoroutine(AudioManager.GetInstance().FadeOutAmbience(AudioManager.GetInstance().waterAmbience, 0.5f));
                     SmithingGameManager.GetInstance().StartGame();
+                    
                 }
                 PlayerController.GetInstance().isInterior = !PlayerController.GetInstance().isInterior;
                 await Close();
