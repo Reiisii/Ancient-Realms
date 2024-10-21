@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
-    [SerializeField] private string acceptedPiece;
+    [SerializeField] private PieceType acceptedPiece;
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -14,8 +14,10 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             RectTransform droppedPiece = eventData.pointerDrag.GetComponent<RectTransform>();
             DragDrop dragDrop = eventData.pointerDrag.GetComponent<DragDrop>();
 
-            if (dragDrop != null && eventData.pointerDrag.name == acceptedPiece)
+            if (dragDrop != null && eventData.pointerDrag.gameObject.GetComponent<DragDrop>().pieceType == acceptedPiece)
             {
+                Debug.Log("Accepted piece: " + acceptedPiece + " | Dropped piece: " + eventData.pointerDrag.name);
+
                 // Snap the piece to the slot
                 droppedPiece.anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
                 AudioManager.GetInstance().PlayAudio(SoundType.GREEN);

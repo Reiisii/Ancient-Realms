@@ -68,49 +68,45 @@ public class PuzzleManager : MonoBehaviour
     private void OnDisable(){
         Clear();
     }
-    public void PiecePlaced(string pieceName)
+    public void PiecePlaced(PieceType piece)
     {
-        switch (pieceName)
+        switch (piece)
         {
-            // Sword parts
-            case "SwordBlade":
+            case PieceType.G_BLADE:
                 isSwordBladePlaced = true;
                 break;
-            case "SwordRainGuard":
+            case PieceType.G_RAINGUARD:
                 isSwordRainGuardPlaced = true;
                 break;
-            case "SwordGrip":
+            case PieceType.G_GRIP:
                 isSwordGripPlaced = true;
                 break;
-            case "SwordPommel":
+            case PieceType.G_POMMEL:
                 isSwordPommelPlaced = true;
                 break;
-            
-            // Pila parts
-            case "1":
+            case PieceType.P_TIP:
                 isPila1Placed = true;
                 break;
-            case "2":
+            case PieceType.P_TIPSHAFT:
                 isPila2Placed = true;
                 break;
-            case "3":
+            case PieceType.P_SHAFT:
                 isPila3Placed = true;
                 break;
-            case "4":
+            case PieceType.P_Pommel:
                 isPila4Placed = true;
                 break;
-            
-            // Pugio parts
-            case "PugioBlade":
+            case PieceType.PG_BLADE:
                 isPugioBladePlaced = true;
+                Debug.Log("Placed");
                 break;
-            case "PugioRainGuard":
+            case PieceType.PG_RAINGUARD:
                 isPugioRainGuardPlaced = true;
                 break;
-            case "PugioGrip":
+            case PieceType.PG_GRIP:
                 isPugioGripPlaced = true;
                 break;
-            case "PugioPommel":
+            case PieceType.PG_POMMEL:
                 isPugioPommelPlaced = true;
                 break;
         }

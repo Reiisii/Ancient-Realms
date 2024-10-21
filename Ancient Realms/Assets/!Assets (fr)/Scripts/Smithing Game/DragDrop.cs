@@ -8,6 +8,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     [SerializeField] private Canvas canvas;
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
+    public PieceType pieceType;
     Vector3 oldPos;
     private void Awake(){
        rectTransform = GetComponent<RectTransform>();

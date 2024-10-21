@@ -165,6 +165,20 @@ public enum OrderType {
     Pila,
     Pugio
 }
+public enum PieceType {
+    G_BLADE,
+    G_POMMEL,
+    G_RAINGUARD,
+    G_GRIP,
+    P_TIP,
+    P_SHAFT,
+    P_Pommel,
+    P_TIPSHAFT,
+    PG_POMMEL,
+    PG_RAINGUARD,
+    PG_BLADE,
+    PG_GRIP
+}
 public enum SoundType{
     SLASH,
     PILUM,
