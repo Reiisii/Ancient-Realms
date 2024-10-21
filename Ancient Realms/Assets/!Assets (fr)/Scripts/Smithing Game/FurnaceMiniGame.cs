@@ -4,6 +4,8 @@ using System.Collections;
 
 public class FurnaceMiniGame : MonoBehaviour
 {
+    [Header("Tool Tip")]
+    [SerializeField] GameObject tooltip;
     [Header("Slider Settings")]
     public Slider slider;
     public float fillSpeed = 1.0f;
@@ -33,6 +35,11 @@ public class FurnaceMiniGame : MonoBehaviour
     void OnEnable()
     {
         DisplayStartPrompt(true);
+        if(PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Contains("furnace")){
+            tooltip.SetActive(false);
+        }else{
+            tooltip.SetActive(true);
+        }
         InitializeSlider();
         SetActiveGreenArea();
     }
@@ -64,6 +71,7 @@ public class FurnaceMiniGame : MonoBehaviour
         {
             if (!isFilling)
             {
+                tooltip.SetActive(false);
                 isFilling = true;
             }
             FillSlider();

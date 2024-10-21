@@ -4,6 +4,8 @@ using System.Collections;
 
 public class HammeringMiniGame : MonoBehaviour
 {
+    [Header("Tool Tip")]
+    [SerializeField] GameObject tooltip;
     [Header("Slider Settings")]
     public Slider slider;
     public float speed = 1.0f;
@@ -52,6 +54,11 @@ public class HammeringMiniGame : MonoBehaviour
 
     void OnEnable()
     {
+        if(PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Contains("hammering")){
+            tooltip.SetActive(false);
+        }else{
+            tooltip.SetActive(true);
+        }
         InitializeSlider();
         InitializeTimer();
         DisplayStartPrompt(true);
@@ -304,6 +311,7 @@ public class HammeringMiniGame : MonoBehaviour
         {
             if (!gameStarted)
             {
+                tooltip.SetActive(false);
                 StartGame();
             }
             else if (pressCount < maxPresses)

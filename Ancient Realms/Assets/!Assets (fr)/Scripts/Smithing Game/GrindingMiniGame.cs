@@ -4,6 +4,8 @@ using System.Collections;
 
 public class GrindingMiniGame : MonoBehaviour
 {
+    [Header("Tool Tip")]
+    [SerializeField] GameObject tooltip;
     [Header("Slider Settings")]
     public Slider slider;
     public float incrementAmount = 0.1f; // Fixed amount to increase the slider per press
@@ -33,6 +35,11 @@ public class GrindingMiniGame : MonoBehaviour
 
     void OnEnable()
     {
+        if(PlayerStats.GetInstance().localPlayerData.gameData.uiSettings.Contains("grindstone")){
+            tooltip.SetActive(false);
+        }else{
+            tooltip.SetActive(true);
+        }
         InitializeSlider();
         InitializeTimer();
         DisplayStartPrompt(true);
@@ -174,6 +181,7 @@ public class GrindingMiniGame : MonoBehaviour
         {
             if (!gameStarted)
             {
+                tooltip.SetActive(false);
                 StartGame();
             }
             else
