@@ -80,6 +80,28 @@ public class AudioManager : MonoBehaviour
         backgroundAmbience.Play();
         StartCoroutine(FadeInAmbience(backgroundAmbience, 0.4f, fadeDuration));
     }
+    public void SetAmbienceDay(bool isDay, float fadeDuration = 1f)
+    {
+        // Play day or night ambience with fade-in
+        if (!isDay)
+        {
+            AudioClip[] clips = soundEffectList[(int)SoundType.NIGHT].Sounds;
+            AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+            dayAmbience.clip = randomClip;
+            dayAmbience.volume = 0f;  // Start at 0 volume for fade-in
+            dayAmbience.Play();
+            StartCoroutine(FadeInAmbience(dayAmbience, 0.3f, fadeDuration)); // Fade to 0.3 volume
+        }
+        else
+        {
+            AudioClip[] clips = soundEffectList[(int)SoundType.DAY].Sounds;
+            AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+            dayAmbience.clip = randomClip;
+            dayAmbience.volume = 0f;
+            dayAmbience.Play();
+            StartCoroutine(FadeInAmbience(dayAmbience, 0.3f, fadeDuration));
+        }
+    }
 
     // Coroutine for fading in ambience
     public IEnumerator FadeInAmbience(AudioSource ambienceSource, float targetVolume, float fadeDuration)

@@ -101,6 +101,8 @@ public class TimeController : MonoBehaviour
             if (!activateLights && mins > 45) // if lights haven't been turned on and it's pretty dark
             {
                 activateLights = true;
+                AudioManager.GetInstance().SetAmbienceDay(false, 1f);
+                
             }
         }
 
@@ -115,6 +117,8 @@ public class TimeController : MonoBehaviour
             if (activateLights && mins > 10) // if lights are on and it's pretty bright
             {
                 activateLights = false;
+                AudioManager.GetInstance().SetAmbienceDay(true, 1f);
+                
             }
         }
     }
