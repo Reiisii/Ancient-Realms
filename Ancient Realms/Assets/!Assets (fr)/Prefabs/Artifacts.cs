@@ -40,12 +40,19 @@ public class Artifacts : MonoBehaviour
     }
     public void OnItemClick()
     {
-        bool visible = artName.text.Equals("???");
-        EncycHandler.Instance.ShowItemDetails(artifact, !visible);
-        UIManager.DisableAllButtons(panel);
-        panel.GetComponent<RectTransform>().DOAnchorPosY(-1050, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => {
-           panel.SetActive(false);
-        });
+        PlayerData playerData = AccountManager.Instance.playerData;
+        if(playerData != null){
+            if(playerData.gameData.artifacts.FirstOrDefault(a => a.artifactID == artifact.id) == null){
+                return;
+            }
+        
+            bool visible = artName.text.Equals("???");
+            EncycHandler.Instance.ShowItemDetails(artifact, !visible);
+            UIManager.DisableAllButtons(panel);
+            panel.GetComponent<RectTransform>().DOAnchorPosY(-1050, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => {
+            panel.SetActive(false);
+            });
+        }
     }
     public void setGameObject(GameObject pnl){
         panel = pnl;
