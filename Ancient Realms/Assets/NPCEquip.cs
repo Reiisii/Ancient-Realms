@@ -14,17 +14,32 @@ public class NPCEquip : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         Ally ally = animator.gameObject.GetComponent<Ally>();
-        ally.canMove = false;
-        ally.isRunning = false;
-        ally.IsMoving = false;
+        Enemy enemy = animator.gameObject.GetComponent<Enemy>();
+        if(ally != null){
+            ally.canMove = false;
+            ally.isRunning = false;
+            ally.IsMoving = false;
+        }else if(enemy != null){
+            enemy.canMove = false;
+            enemy.isRunning = false;
+            enemy.IsMoving = false;
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         Ally ally = animator.gameObject.GetComponent<Ally>();
+        Enemy enemy = animator.gameObject.GetComponent<Enemy>();
         ally.isEquipping = false;
         ally.canMove = false;
+        if(ally != null){
+            ally.isEquipping = false;
+            ally.canMove = false;
+        }else if(enemy != null){
+            ally.isEquipping = false;
+            ally.canMove = false;
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

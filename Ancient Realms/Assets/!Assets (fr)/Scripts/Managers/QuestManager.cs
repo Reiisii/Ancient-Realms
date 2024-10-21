@@ -362,6 +362,7 @@ public class QuestManager : MonoBehaviour
             if (goal.currentAmount >= goal.requiredAmount)
             {
                 quest.currentGoal++;
+                AudioManager.GetInstance().PlayAudio(SoundType.GOAL, 1f);
                 playerStats.SaveQuestToServer();
                 if(goal.inkyRedirect.Equals("")) return;
                 else quest.currentKnot = goal.inkyRedirect;

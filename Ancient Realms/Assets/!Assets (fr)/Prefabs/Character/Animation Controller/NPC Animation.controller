@@ -656,7 +656,8 @@ AnimatorState:
   - {fileID: 5750030045612194002}
   - {fileID: -959304671354082528}
   - {fileID: -6273136223971693977}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 4188611858077919177}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -1894,6 +1895,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &4188611858077919177
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9635bd680ff5104f8157c8ee08d5ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1102 &4495072632102116982
 AnimatorState:
   serializedVersion: 6
@@ -2074,7 +2087,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.2
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
   m_HasExitTime: 1
@@ -2153,7 +2166,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unequip_AI
+  m_Name: Unequip AI
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -2343,18 +2356,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!114 &8483174872021548972
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e312fa31a1803746b0809c297048a9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1102 &8508541342225494631
 AnimatorState:
   serializedVersion: 6
@@ -2367,8 +2368,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 278128016628932554}
-  m_StateMachineBehaviours:
-  - {fileID: 8483174872021548972}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

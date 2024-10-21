@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AtkThreeBehavior : StateMachineBehaviour
+public class NPCCShieldBash : StateMachineBehaviour
 {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        PlayerController.GetInstance().isAttacking = false;
-    }
+    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,7 +19,13 @@ public class AtkThreeBehavior : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // PlayerController.GetInstance().isAttacking = false;
+        Ally ally = animator.gameObject.GetComponent<Ally>();
+        Enemy enemy = animator.gameObject.GetComponent<Enemy>();
+        if(ally != null){
+            ally.isAttacking = false;
+        }else if(enemy != null){
+            enemy.isAttacking = false;
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
