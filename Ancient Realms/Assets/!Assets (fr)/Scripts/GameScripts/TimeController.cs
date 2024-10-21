@@ -101,7 +101,6 @@ public class TimeController : MonoBehaviour
             if (!activateLights && mins > 45) // if lights haven't been turned on and it's pretty dark
             {
                 activateLights = true;
-                StartCoroutine(AudioManager.GetInstance().FadeOutAmbience(AudioManager.GetInstance().dayAmbience, 0.5f));
                 AudioManager.GetInstance().SetAmbienceDay(false, 1f);
                 
             }
@@ -118,7 +117,6 @@ public class TimeController : MonoBehaviour
             if (activateLights && mins > 10) // if lights are on and it's pretty bright
             {
                 activateLights = false;
-                StartCoroutine(AudioManager.GetInstance().FadeOutAmbience(AudioManager.GetInstance().dayAmbience, 0.5f));
                 AudioManager.GetInstance().SetAmbienceDay(true, 1f);
                 
             }
