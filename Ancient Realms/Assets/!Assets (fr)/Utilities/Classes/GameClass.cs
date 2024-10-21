@@ -182,13 +182,19 @@ public enum SoundType{
     NIGHT,
     CLOSE,
     SHEATHE,
-    UNSHEATHE
+    UNSHEATHE,
+    GOAL,
+    GREEN,
+    YELLOW,
+    RED,
+    DELIVERED
 }
 public enum MusicType{
     Combat,
     MainMenu,
     Town,
-    Loading
+    Loading,
+    Smithing
 }
 [Serializable]
 public struct SoundList
