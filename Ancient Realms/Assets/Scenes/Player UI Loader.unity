@@ -2805,7 +2805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &103460769
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4972,12 +4972,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 1891474885}
-  swordDz: {fileID: 0}
+  swordDz: {fileID: 103460768}
   pilaDz: {fileID: 985088747}
   pugioDz: {fileID: 872705528}
-  sword: {fileID: 0}
+  sword: {fileID: 329333311}
   pila: {fileID: 755128060}
   pugio: {fileID: 198772332}
+  isPugioBladePlaced: 0
+  isPugioRainGuardPlaced: 0
+  isPugioGripPlaced: 0
+  isPugioPommelPlaced: 0
 --- !u!1 &151032540
 GameObject:
   m_ObjectHideFlags: 0
@@ -6004,7 +6008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &172919331
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6036,7 +6040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: 4
+  acceptedPiece: 6
 --- !u!114 &172919333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11500,7 +11504,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &329333312
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12889,6 +12893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 9
 --- !u!114 &374626496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14972,6 +14977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 1
 --- !u!114 &441367434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18460,6 +18466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 8
 --- !u!114 &541630240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19375,7 +19382,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &578206326
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19420,6 +19427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 6
 --- !u!114 &578206329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24668,7 +24676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &768357682
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24713,6 +24721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 7
 --- !u!114 &768357685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29472,7 +29481,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &901163860
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29712,6 +29721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 11
 --- !u!114 &918456747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31758,7 +31768,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &976287454
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31803,6 +31813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 4
 --- !u!114 &976287457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34962,7 +34973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: 'PugioBlade '
+  acceptedPiece: 10
 --- !u!114 &1062205264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38532,7 +38543,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1146544090
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38564,7 +38575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: 1
+  acceptedPiece: 4
 --- !u!114 &1146544092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39735,7 +39746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1181172712
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39767,7 +39778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: 3
+  acceptedPiece: 5
 --- !u!114 &1181172714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40774,6 +40785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 2
 --- !u!114 &1197455417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41379,7 +41391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: PugioPommel
+  acceptedPiece: 8
 --- !u!114 &1231574276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53693,7 +53705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: SwordPommel
+  acceptedPiece: 1
 --- !u!114 &1580692668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57299,7 +57311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: SwordBlade
+  acceptedPiece: 0
 --- !u!114 &1667075537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57778,7 +57790,7 @@ RectTransform:
   m_Father: {fileID: 1838732450}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 10, y: 0}
   m_SizeDelta: {x: 20, y: -38.082253}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -57981,7 +57993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: SwordGrip
+  acceptedPiece: 3
 --- !u!114 &1687417181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60026,6 +60038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 3
 --- !u!114 &1747234809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62823,7 +62836,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1836667469
 RectTransform:
   m_ObjectHideFlags: 0
@@ -62868,6 +62881,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 5
 --- !u!114 &1836667472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63711,6 +63725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 10
 --- !u!114 &1863177458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69364,7 +69379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: SwordRainGuard
+  acceptedPiece: 2
 --- !u!114 &2042044424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70667,7 +70682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2078065641
 RectTransform:
   m_ObjectHideFlags: 0
@@ -70699,7 +70714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: 2
+  acceptedPiece: 7
 --- !u!114 &2078065643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71669,6 +71684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 13590185}
+  pieceType: 0
 --- !u!114 &2094804141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71833,7 +71849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: PugioRainGuard
+  acceptedPiece: 9
 --- !u!114 &2095477982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72475,7 +72491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a84a1931a8ac14eaec2f0ad2501a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptedPiece: PugioGrip
+  acceptedPiece: 11
 --- !u!114 &2110612779
 MonoBehaviour:
   m_ObjectHideFlags: 0
