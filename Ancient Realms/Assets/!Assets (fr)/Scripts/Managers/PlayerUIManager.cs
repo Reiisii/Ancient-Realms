@@ -196,7 +196,8 @@ public class PlayerUIManager : MonoBehaviour
     }
     [ContextMenu("BackToMainMenu")]
     public async void BackToMainMenu()
-    {
+    {   
+        PauseManager.GetInstance().pausePanel.GetComponent<LogoAnimation>().Close();
         AudioManager.GetInstance().StopAmbience();
         await ClosePlayerUI();
         await OpenDarkenUI();
@@ -279,8 +280,9 @@ public class PlayerUIManager : MonoBehaviour
         await CloseLoadingUI();
         AudioManager.GetInstance().SetAmbience(time.hours < 17 && time.hours > 7, location.background, location.hasWater);
         if(!location.canAccessCombatMode) AudioManager.GetInstance().PlayMusic(MusicType.Town, 0.6f, 1f);
-        else if(location.canAccessCombatMode && !location.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.7f, 1f);
-        else AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 0.6f, 1f);
+        else if(location.canAccessCombatMode && location.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Town, 0.6f, 1f);
+        else if(location.canAccessCombatMode && !location.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.6f, 1f);
+        else AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 1f, 1f);
         await OpenPlayerUI();
         DOTween.Clear(true);
     }

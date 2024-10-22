@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 890544b5093b32344a8ead325d2cd2d4, type: 3}
+  m_Name: Quest-00-002
+  m_EditorClassIdentifier: 
+  questID: quest-00-002
+  questTitle: A Legionnaire's Training III
+  questDescription: Now that movement, and combat training is done I need to learn
+    how to equip myself for battle. If I want to survive in the battlefield I must
+    learn how to utilize my equipment, the Legate told me to find the Aquilifer for
+    my Equipment Training.
+  dialogue: {fileID: 4900000, guid: f621290f3118ebc478818873a595b0d2, type: 3}
+  characters:
+  - Aquilifer-00-002
+  - Roma-Aquilifer-00-002
+  requirements:
+  - quest-00-001
+  chapter: 0
+  isMain: 1
+  isActive: 0
+  isCompleted: 0
+  isPinned: 0
+  isChained: 1
+  isRewarded: 0
+  currentGoal: 0
+  currentKnot: start
+  goals:
+  - goalID: 0
+    goalDescription: Talk to Aquilifer for Training
+    goalType: 2
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: start
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 1
+    goalDescription: Open your backpack
+    goalType: 18
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: exhaust_backpack
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 2
+    goalDescription: Talk to Aquilifer for further Instruction
+    goalType: 2
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: goal_0
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 3
+    goalDescription: Unequip 4 Items
+    goalType: 22
+    requiredAmount: 4
+    currentAmount: 0
+    inkyRedirect: exhaust_unequip
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 4
+    goalDescription: Equip 4 items
+    goalType: 23
+    requiredAmount: 4
+    currentAmount: 0
+    inkyRedirect: exhaust_equip
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 5
+    goalDescription: Talk to Aquilifer
+    goalType: 2
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: goal_1
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 6
+    goalDescription: Open Journal
+    goalType: 21
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: exhaust_journal
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 7
+    goalDescription: Unpin this Quest
+    goalType: 20
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: exhaust_unpin
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 8
+    goalDescription: Pin this quest
+    goalType: 19
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: exhaust_pin
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 9
+    goalDescription: Talk to the Aquilifer
+    goalType: 2
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: goal_2
+    characterIndex: 0
+    targetCharacters: []
+    missionID: 
+    questID: 
+  - goalID: 10
+    goalDescription: Go to Roma and talk to Aquilifer
+    goalType: 2
+    requiredAmount: 1
+    currentAmount: 0
+    inkyRedirect: goal_3
+    characterIndex: 1
+    targetCharacters: []
+    missionID: 
+    questID: 
+  rewards:
+  - rewardType: 0
+    value: 20
+  - rewardType: 1
+    value: 10
+  - rewardType: 3
+    value: 5

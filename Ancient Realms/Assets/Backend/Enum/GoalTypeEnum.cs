@@ -17,5 +17,11 @@ public enum GoalTypeEnum
     RunRight,
     Mission,
     Quest,
-    Prompt
+    Prompt,
+    OpenBackpack,
+    Pin,
+    Unpin,
+    OpenJournal,
+    UnequipItem,
+    EquipItem,
 }

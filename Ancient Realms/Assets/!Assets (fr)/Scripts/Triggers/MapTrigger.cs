@@ -54,8 +54,8 @@ public class MapTrigger : MonoBehaviour
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
             SceneManager.LoadSceneAsync(locationScene, LoadSceneMode.Additive).completed += async (operation) => {
                 LocationSO loadedLocation = LocationSettingsManager.GetInstance().locationSettings;
-                if(loadedLocation.canAccessCombatMode && !loadedLocation.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.7f, 1f); 
-                else AudioManager.GetInstance().PlayMusic(MusicType.Town, 1f, 1f);
+                if(loadedLocation.canAccessCombatMode && !loadedLocation.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.6f, 1f); 
+                else AudioManager.GetInstance().PlayMusic(MusicType.Town, 0.6f, 1f);
                 AudioManager.GetInstance().SetAmbience(PlayerUIManager.GetInstance().time.hours < 17 && PlayerUIManager.GetInstance().time.hours > 7, loadedLocation.background, loadedLocation.hasWater);
                 PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = locationScene;
                 PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;

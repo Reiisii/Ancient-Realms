@@ -12,6 +12,7 @@ public class PausePanel : MonoBehaviour
     }
     public void BackToGame(){
         Time.timeScale = 1f;
+        PauseManager.GetInstance().pausePanel.GetComponent<LogoAnimation>().Close();
         PauseManager.GetInstance().OpenPause();
     }
 }

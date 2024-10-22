@@ -355,6 +355,7 @@ public class InventoryPanel : MonoBehaviour
             _ => null
         };
         if(equip != null){
+            QuestManager.GetInstance().UpdateUnequipGoal();
             switch(equipment)
             {
                 case "helm":
@@ -411,6 +412,7 @@ public class InventoryPanel : MonoBehaviour
             _ => null
         };
         if(weapon != null){
+            QuestManager.GetInstance().UpdateUnequipGoal();
             switch(equipment)
             {
                 case "main":
@@ -447,6 +449,7 @@ public class InventoryPanel : MonoBehaviour
             player.equippedItems = equippedItems;
             PlayerStats.GetInstance().InitializeEquipments();
             InitializeInventory();
+            
         }else{
             PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a weapon to unequip");
         }

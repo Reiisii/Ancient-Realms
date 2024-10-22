@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Mathematics;
@@ -21,6 +22,28 @@ public class Utilities {
                 default:
                         return culture.ToString();
                 }
+        }
+        public static bool CheckRequirements(QuestSO quest){
+                List<QuestSO> playerCompletedQuest = PlayerStats.GetInstance().completedQuests;
+                List<bool> arrayCompletion = new List<bool>();
+                if(quest.requirements.Count < 1) return true;
+                foreach(string questFinished in quest.requirements){
+                QuestSO questComplete = playerCompletedQuest.FirstOrDefault(q => q.questID.Equals(questFinished));
+                arrayCompletion.Add(questComplete != null && questComplete.isCompleted && !questComplete.isActive);
+                }
+
+                return arrayCompletion.All(b => b);
+        }
+        public static bool CheckRequirements(string[] questRequired){
+                List<QuestSO> playerCompletedQuest = PlayerStats.GetInstance().completedQuests;
+                List<bool> arrayCompletion = new List<bool>();
+                if(questRequired.Length < 1) return true;
+                foreach(string val in questRequired){
+                        QuestSO q = playerCompletedQuest.FirstOrDefault(que => que.questID == val);
+                        arrayCompletion.Add(q !=null ? true : false);
+                }
+
+                return arrayCompletion.All(b => b);
         }
         public static string FormatNumber(int number)
         {

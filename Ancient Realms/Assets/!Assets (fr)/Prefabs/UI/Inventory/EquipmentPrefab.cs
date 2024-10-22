@@ -126,7 +126,7 @@ public class EquipmentPrefab : MonoBehaviour
         // Refresh and reinitialize inventory to reflect the changes
         PlayerStats.GetInstance().InitializeEquipments();
         inventoryPanel.InitializeInventory();
-
+        QuestManager.GetInstance().UpdateEquipGoal();
         playerStats.isDataDirty = true;  // Mark data as dirty to ensure changes are saved
         }else if(equipment.equipmentType == EquipmentEnum.Shield){
             PlayerStats playerStats = PlayerStats.GetInstance();
@@ -148,7 +148,7 @@ public class EquipmentPrefab : MonoBehaviour
             // Refresh and reinitialize inventory to reflect the changes
             PlayerStats.GetInstance().InitializeEquipments();
             inventoryPanel.InitializeInventory();
-
+            QuestManager.GetInstance().UpdateEquipGoal();
             playerStats.isDataDirty = true; 
         }else if(equipment.equipmentType == EquipmentEnum.Weapon){
             PlayerStats playerStats = PlayerStats.GetInstance();
@@ -214,7 +214,7 @@ public class EquipmentPrefab : MonoBehaviour
             // Refresh and reinitialize inventory to reflect the changes
             PlayerStats.GetInstance().InitializeEquipments();
             inventoryPanel.InitializeInventory();
-
+            QuestManager.GetInstance().UpdateEquipGoal();
             playerStats.isDataDirty = true; 
             }
     }

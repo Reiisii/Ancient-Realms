@@ -145,7 +145,8 @@ public class QuestManager : MonoBehaviour
                 PlayerController.GetInstance().playerActionMap.Enable();
                 PlayerController.GetInstance().questActionMap.Disable();
                 journalPanel.SetActive(false);
-            }else{  
+            }else{
+                UpdateJournalGoal();
                 Time.timeScale = 0f;
                 PlayerController.GetInstance().playerActionMap.Disable();
                 PlayerController.GetInstance().questActionMap.Enable();
@@ -313,6 +314,120 @@ public class QuestManager : MonoBehaviour
                 if (goal.goalType == GoalTypeEnum.Damage)
                 {
                     goal.IncrementProgress(Convert.ToInt32(damage));
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateBackpackGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.OpenBackpack)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateEquipGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.EquipItem)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateUnequipGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.UnequipItem)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateJournalGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.OpenJournal)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdatePinGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.Pin)
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
+    public void UpdateUnpinGoal()
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.Unpin)
+                {
+                    goal.IncrementProgress(1);
                     playerStats.SaveQuestToServer();
                     if (goal.currentAmount >= goal.requiredAmount)
                     {

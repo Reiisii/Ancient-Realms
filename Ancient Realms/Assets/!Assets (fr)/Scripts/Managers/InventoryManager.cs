@@ -35,6 +35,7 @@ public class InventoryManager : MonoBehaviour
                 inventoryPanel.SetActive(false);
             }else{  
                 Time.timeScale = 0f;
+                QuestManager.GetInstance().UpdateBackpackGoal();
                 PlayerController.GetInstance().playerActionMap.Disable();
                 PlayerController.GetInstance().inventoryActionMap.Enable();
                 inventoryPanel.SetActive(true);

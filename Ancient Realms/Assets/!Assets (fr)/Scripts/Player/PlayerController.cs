@@ -551,6 +551,10 @@ public class PlayerController : MonoBehaviour
        
         if (context.performed)
         {
+            if(SmithingGameManager.GetInstance().inMiniGame) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't use open journal while in smithing game.");
+                return;
+            }
             QuestManager.GetInstance().OpenJournal();
         }
     }
@@ -558,6 +562,10 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
+            if(SmithingGameManager.GetInstance().inMiniGame) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't use open inventory while in smithing game.");
+                return;
+            }
             InventoryManager.GetInstance().OpenInventory();
         }
     }
@@ -572,6 +580,10 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
+            if(SmithingGameManager.GetInstance().inMiniGame) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't use open map while in smithing game.");
+                return;
+            }
             MapManager.GetInstance().OpenMap();
         }
     }
@@ -588,6 +600,10 @@ public class PlayerController : MonoBehaviour
         
         if (context.performed)
         {
+            if(SmithingGameManager.GetInstance().inMiniGame) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't use open Premium Shop while in smithing game.");
+                return;
+            }
             PlayerUIManager.GetInstance().TogglePremiumShop();
         }
     }
