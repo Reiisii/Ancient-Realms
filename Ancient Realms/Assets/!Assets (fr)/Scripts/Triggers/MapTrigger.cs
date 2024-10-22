@@ -42,6 +42,9 @@ public class MapTrigger : MonoBehaviour
             Panel.SetActive(false);
         }
     }
+    private void OnDisable(){
+        Panel.SetActive(false);
+    }
     public async void ChangeScene(){
         AudioManager.GetInstance().StopAmbience();
         PlayerStats.GetInstance().isCombatMode = false;
