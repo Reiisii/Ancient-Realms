@@ -18,7 +18,7 @@ To throw your pilum hold W key for a second and then when you got your targe on 
 == goal_1 ==
 Well done, Tiro! You've shown skill and determination in your training today. Each thrust of your gladius brings you closer to becoming a true legionnaire.
 Remember, the lessons learned here on the training grounds will save your life on the battlefield. Your gladius, and pilum are not just weapons—they are extensions of your will, your discipline, and your duty to Rome.
-Dismissed, Tiro. Prepare yourself for what's next. This is just the beginning of your journey.
+Dismissed, Tiro. Go to the Aquilifer for Equipment Training and Journal Training.
 -> DONE
 
 == exhaust ==

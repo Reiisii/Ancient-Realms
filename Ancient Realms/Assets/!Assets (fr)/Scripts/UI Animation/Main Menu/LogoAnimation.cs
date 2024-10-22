@@ -16,6 +16,7 @@ public class LogoAnimation : MonoBehaviour
         Logo.DOAnchorPosY(newPanelPosY, panelDuration).SetEase((Ease)panelEaseType).SetUpdate(true).OnComplete(() => UIManager.EnableAllButtons(LogoGO));
     }
     public void Close(){
+        UIManager.EnableAllButtons(LogoGO);
         Logo.DOAnchorPosY(defaultPanelPosY, panelDuration).SetUpdate(true).SetEase((Ease)panelEaseType);
     }
 }

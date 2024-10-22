@@ -56,7 +56,7 @@ public class DialogueManager : MonoBehaviour
                 QuestSO playerHasActiveQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
                 QuestSO playerHasCompletedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
                 // if quest is not on completed and not on active quest list STOP loop and give quest
-                if(giveableQuests != null && CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
+                if(giveableQuests != null && Utilities.CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
                     currentStory = new Story(giveableQuests.dialogue.text);
                     currentStory.ChoosePathString("start");
                     nameText.SetText(npc.name);
@@ -132,7 +132,7 @@ public class DialogueManager : MonoBehaviour
                 QuestSO playerHasCompletedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
                 
                 
-                if(giveableQuests != null && CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
+                if(giveableQuests != null && Utilities.CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
                     QuestManager.GetInstance().StartQuest(giveableQuests.questID);
                     return;
                 }
@@ -160,17 +160,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public bool CheckRequirements(QuestSO quest){
-        List<QuestSO> playerCompletedQuest = PlayerStats.GetInstance().completedQuests;
-        List<bool> arrayCompletion = new List<bool>();
-        if(quest.requirements.Count < 1) return true;
-        foreach(string questFinished in quest.requirements){
-            QuestSO questComplete = playerCompletedQuest.FirstOrDefault(q => q.questID.Equals(questFinished));
-            arrayCompletion.Add(questComplete != null && questComplete.isCompleted && !questComplete.isActive);
-        }
-
-        return arrayCompletion.All(b => b);
-    }
     private string ReplacePlayerName(string text)
     {
         // Retrieve the player name from PlayerStats
