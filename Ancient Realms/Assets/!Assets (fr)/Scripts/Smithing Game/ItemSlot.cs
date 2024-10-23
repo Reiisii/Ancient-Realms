@@ -20,6 +20,9 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 
                 // Snap the piece to the slot
                 droppedPiece.anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
+                dragDrop.placed = true;
+                dragDrop.canvasGroup.interactable = false;
+                dragDrop.canvasGroup.blocksRaycasts = false;
                 AudioManager.GetInstance().PlayAudio(SoundType.GREEN);
 
                 // Notify the PuzzleManager

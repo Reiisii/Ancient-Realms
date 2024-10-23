@@ -206,7 +206,8 @@ public enum SoundType{
     GREEN,
     YELLOW,
     RED,
-    DELIVERED
+    DELIVERED,
+    Hammering
 }
 public enum MusicType{
     Combat,

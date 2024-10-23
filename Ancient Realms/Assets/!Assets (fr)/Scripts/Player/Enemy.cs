@@ -264,11 +264,33 @@ public class Enemy : MonoBehaviour
     }
     public void MoveFront()
     {
+        if(isDummy) return;
         // Get the character's current position
         Vector2 cP = gameObject.transform.position;
 
         // Define the movement distance (adjust as needed)
         float moveDistance = 0.3f;
+
+        // Calculate the new position based on the direction the character is facing
+        Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 newPosition = cP + moveDirection * moveDistance;
+
+        // Define the duration for the smooth movement (adjust as needed)
+        float moveDuration = 0.2f;
+
+        // Use DOTween to smoothly move the character to the new position
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        
+    }
+    public void MoveBack()
+    {
+        if(isDummy) return;
+        // Get the character's current position
+        Vector2 cP = gameObject.transform.position;
+
+        // Define the movement distance (adjust as needed)
+        float moveDistance = -0.3f;
 
         // Calculate the new position based on the direction the character is facing
         Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
@@ -297,6 +319,7 @@ public class Enemy : MonoBehaviour
     }
     public void MoveBackStun()
     {
+         if(isDummy) return;
         // Get the character's current position
         Vector2 cP = gameObject.transform.position;
 
