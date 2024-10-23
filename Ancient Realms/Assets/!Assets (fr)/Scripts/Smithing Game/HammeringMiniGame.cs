@@ -41,6 +41,7 @@ public class HammeringMiniGame : MonoBehaviour
     [Header("Hammer Animation Settings")]
     public GameObject hammerPrefab;
     private Animator hammerAnimator;
+    public GameObject[] items;
     public string hammerAnimationParam = "isHammering";
 
     [Header("Timer Radial Settings")]
@@ -59,12 +60,27 @@ public class HammeringMiniGame : MonoBehaviour
         }else{
             tooltip.SetActive(true);
         }
+        switch(SmithingGameManager.GetInstance().order){
+            case OrderType.Gladius:
+                items[0].SetActive(true);
+            break;
+            case OrderType.Pila:
+                items[1].SetActive(true);
+            break;
+            case OrderType.Pugio:
+                items[2].SetActive(true);
+            break;
+
+        }
         InitializeSlider();
         InitializeTimer();
         DisplayStartPrompt(true);
         InitializeHammer();
     }
     void OnDisable(){
+        foreach(GameObject go in items){
+            go.SetActive(false);
+        }
         gameOver = false;
         gameStarted = false;
         timeRunning = false;
@@ -90,7 +106,6 @@ public class HammeringMiniGame : MonoBehaviour
         DisplayStartPrompt(false);
         StartSlider();
         SetHammerAnimation("Static");
-        Debug.Log("Round 1 started.");
     }
 
     void StartSlider()
@@ -138,7 +153,7 @@ public class HammeringMiniGame : MonoBehaviour
 
     void ResetSlider()
     {
-        slider.value = 0.5f;
+        slider.value = Random.Range(0.0f, 1f);
         isMovingRight = true;
     }
 
@@ -241,7 +256,6 @@ public class HammeringMiniGame : MonoBehaviour
 
     IEnumerator WaitAndStartNextRound(float delay)
     {
-        Debug.Log("Waiting for " + delay + " seconds before starting the next round...");
         yield return new WaitForSeconds(delay);
 
         if (pressCount < maxPresses)
@@ -250,7 +264,6 @@ public class HammeringMiniGame : MonoBehaviour
             StartSlider();
             IncreaseSpeed();
             SetHammerAnimation("Static");
-            Debug.Log("Round " + (pressCount + 1) + " started.");
         }
         else
         {
@@ -327,7 +340,11 @@ public class HammeringMiniGame : MonoBehaviour
                     StopTimer();
                     pressCount++;
                     StartCoroutine(WaitAndStartNextRound(delayBeforeNextRound));
-                    SetHammerAnimation("Hammering");
+                    if(SmithingGameManager.GetInstance().order == OrderType.Pugio){
+                        SetHammerAnimation(""); // Pugio animation name
+                    }else{
+                        SetHammerAnimation("Hammering");
+                    }
                 }
             }
         }

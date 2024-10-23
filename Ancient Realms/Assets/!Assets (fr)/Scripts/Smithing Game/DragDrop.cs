@@ -7,8 +7,9 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 {
     [SerializeField] private Canvas canvas;
     private RectTransform rectTransform;
-    private CanvasGroup canvasGroup;
+    public CanvasGroup canvasGroup;
     public PieceType pieceType;
+    public bool placed = false;
     Vector3 oldPos;
     private void Awake(){
        rectTransform = GetComponent<RectTransform>();
@@ -26,12 +27,15 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     }
 
     public void OnEndDrag(PointerEventData eventData){
+        if(placed) return;
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }
     public void ResetPostion(){
+        placed = false;
         gameObject.transform.position = oldPos;
         canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
     }
     public void OnPointerDown(PointerEventData eventData){
