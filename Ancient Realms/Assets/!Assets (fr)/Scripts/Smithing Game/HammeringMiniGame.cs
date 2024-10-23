@@ -341,7 +341,7 @@ public class HammeringMiniGame : MonoBehaviour
                     pressCount++;
                     StartCoroutine(WaitAndStartNextRound(delayBeforeNextRound));
                     if(SmithingGameManager.GetInstance().order == OrderType.Pugio){
-                        SetHammerAnimation(""); // Pugio animation name
+                        SetHammerAnimation("Pugio Hammering"); // Pugio animation name
                     }else{
                         SetHammerAnimation("Hammering");
                     }
