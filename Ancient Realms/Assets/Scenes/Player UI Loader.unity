@@ -14971,6 +14971,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 9
+  placed: 0
 --- !u!114 &374626496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15992,10 +15993,22 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 408929040}
+  m_TargetGraphic: {fileID: 1336058033}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 102356604}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &408929040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17550,6 +17563,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 1
+  placed: 0
 --- !u!114 &441367434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18420,10 +18434,22 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 472891910}
+  m_TargetGraphic: {fileID: 510688014}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 301502329}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &473382892
 GameObject:
   m_ObjectHideFlags: 0
@@ -21580,6 +21606,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 8
+  placed: 0
 --- !u!114 &541630240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22622,6 +22649,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 6
+  placed: 0
 --- !u!114 &578206329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28737,6 +28765,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 7
+  placed: 0
 --- !u!114 &768357685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34212,6 +34241,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 11
+  placed: 0
 --- !u!114 &918456747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36478,6 +36508,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 4
+  placed: 0
 --- !u!114 &976287457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36861,10 +36892,22 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 982961080}
+  m_TargetGraphic: {fileID: 2051368800}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 612794660}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &982961080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46624,6 +46667,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 2
+  placed: 0
 --- !u!114 &1197455417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70072,6 +70116,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 3
+  placed: 0
 --- !u!114 &1747234809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73070,6 +73115,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 5
+  placed: 0
 --- !u!114 &1836667472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74199,6 +74245,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 10
+  placed: 0
 --- !u!114 &1863177458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79633,10 +79680,22 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2023958552}
+  m_TargetGraphic: {fileID: 1565925400}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1158048971}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2023958552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80901,10 +80960,22 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2045341099}
+  m_TargetGraphic: {fileID: 980326192}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1891474885}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2045341099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82976,6 +83047,7 @@ MonoBehaviour:
   canvas: {fileID: 13590185}
   canvasGroup: {fileID: 0}
   pieceType: 0
+  placed: 0
 --- !u!114 &2094804141
 MonoBehaviour:
   m_ObjectHideFlags: 0
