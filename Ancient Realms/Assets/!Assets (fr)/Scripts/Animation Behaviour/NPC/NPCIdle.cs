@@ -6,15 +6,15 @@ public class NPCIdle : StateMachineBehaviour
 {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {   
-        Ally ally = animator.gameObject.GetComponent<Ally>();
-        Enemy enemy = animator.gameObject.GetComponent<Enemy>();
-        if(ally != null){
-            ally.isEquipping = false;
-            ally.canMove = true;
-        }else if(enemy != null){
-            enemy.isEquipping = false;
-            enemy.canMove = true;
-        }
+        // Ally ally = animator.gameObject.GetComponent<Ally>();
+        // Enemy enemy = animator.gameObject.GetComponent<Enemy>();
+        // if(ally != null){
+        //     ally.isEquipping = false;
+        //     ally.canMove = true;
+        // }else if(enemy != null){
+        //     enemy.isEquipping = false;
+        //     enemy.canMove = true;
+        // }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

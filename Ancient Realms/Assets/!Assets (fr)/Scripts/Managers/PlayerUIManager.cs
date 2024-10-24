@@ -80,7 +80,7 @@ public class PlayerUIManager : MonoBehaviour
     private async void Start(){
         await OpenLoadingUI();
         PlayerData playerData = AccountManager.Instance.playerData;
-
+        LocationSettingsManager.GetInstance().LoadSettings(playerData.gameData.lastLocationVisited);
         SceneManager.LoadSceneAsync(playerData.gameData.lastLocationVisited, LoadSceneMode.Additive).completed += OnSceneLoaded;
         CheckActiveQuest();
     }
@@ -275,7 +275,7 @@ public class PlayerUIManager : MonoBehaviour
     private async void OnSceneLoaded(AsyncOperation operation)
     {
         LocationSO location = LocationSettingsManager.GetInstance().locationSettings;
-       
+        
         await CloseBackgroundUI();
         await CloseLoadingUI();
         AudioManager.GetInstance().SetAmbience(time.hours < 17 && time.hours > 7, location.background, location.hasWater);

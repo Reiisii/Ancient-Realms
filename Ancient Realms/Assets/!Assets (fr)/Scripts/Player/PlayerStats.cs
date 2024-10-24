@@ -92,12 +92,12 @@ public class PlayerStats : MonoBehaviour
 
         // Update UI elements
         levelText.SetText(Utilities.FormatNumber(level));
-        hpSlider.maxValue = maxHP;
-        hpSlider.value = currentHP;
-        xpSlider.value = currentXP;
-        xpSlider.maxValue = maxXP;
-        staminaSlider.maxValue = maxStamina;
-        staminaSlider.value = staminaSlider.maxValue;
+        // hpSlider.maxValue = maxHP;
+        // hpSlider.value = currentHP;
+        // xpSlider.value = currentXP;
+        // xpSlider.maxValue = maxXP;
+        // staminaSlider.maxValue = maxStamina;
+        // staminaSlider.value = staminaSlider.maxValue;
     }
     public void SaveQuestToServer()
     {
@@ -158,11 +158,17 @@ public class PlayerStats : MonoBehaviour
             yield return new WaitForSecondsRealtime(interval); // Wait for the specified interval
         }
     }
-
+    public void ReplenishStats(){
+        currentHP = maxHP;
+        stamina = maxStamina;
+    }
 
     private void Update()
     {
-        if(SmithingGameManager.GetInstance().inMiniGame){
+        LocationSO loadedLocation = LocationSettingsManager.GetInstance().locationSettings;
+        if(loadedLocation != null && loadedLocation.instanceMission){
+            stopSaving = true;
+        }else if(SmithingGameManager.GetInstance().inMiniGame){
             stopSaving = true;
         }else{
             stopSaving = false;
