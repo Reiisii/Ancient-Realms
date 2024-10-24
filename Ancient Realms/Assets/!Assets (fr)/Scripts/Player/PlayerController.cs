@@ -85,12 +85,6 @@ public class PlayerController : MonoBehaviour
             gameObject.transform.position = new Vector3(playerData.gameData.lastX, playerData.gameData.lastY, currentPosition.z);
             PlayerStats.GetInstance().firstLogin = false;
         }
-    }
-    
-    private void Start(){
-        playerStats = PlayerStats.GetInstance();
-        lastPosition = transform.position;
-        originalCameraOffset = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset;
         playerActionMap = inputActions.FindActionMap("Player");
         questActionMap = inputActions.FindActionMap("Quest");
         inventoryActionMap = inputActions.FindActionMap("Inventory");
@@ -100,6 +94,12 @@ public class PlayerController : MonoBehaviour
         mapActionMap = inputActions.FindActionMap("Map");
         mintingActionMap = inputActions.FindActionMap("Minting");
         shopActionMap = inputActions.FindActionMap("Shop");
+    }
+    
+    private void Start(){
+        playerStats = PlayerStats.GetInstance();
+        lastPosition = transform.position;
+        originalCameraOffset = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset;
     }
     public static PlayerController GetInstance(){
         return Instance;
@@ -120,117 +120,126 @@ public class PlayerController : MonoBehaviour
         return result;
     }
 
-    public void FixedUpdate()
+    public async void FixedUpdate()
     {
-        if (!moveInputActive && IsRunning || !IsRunning && canWalk)
-            {
-                if(playerStats.isCombatMode) {
-                    playerStats.walkSpeed = Mathf.Max(playerStats.walkSpeed, playerStats.walkSpeed - (playerStats.walkSpeed * 0.25f) * Time.deltaTime);
-                    playerStats.staminaRegenRate = Mathf.Max(playerStats.staminaRegenRate, playerStats.staminaRegenRate - (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
-                }
-                if (playerStats.isCombatMode && IsMoving && isBlocking){
-                    // Walking and blocking - deplete stamina at 50% of the current depletion rate
-                    playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.5f) * Time.deltaTime);
-                }else if (playerStats.isCombatMode && !IsMoving && isBlocking)
-                {
-                    // Standing and blocking - regenerate stamina at 25% of the current regeneration rate
-                    playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
-                }else if(playerStats.isCombatMode && IsMoving){
-                    playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.25f) * Time.deltaTime);
-                }else{
-                    playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + playerStats.staminaRegenRate * Time.deltaTime);
-                }
-                
-            }
-        if (DialogueManager.GetInstance().dialogueIsPlaying)
-        {
-            // Stop player movement during dialogue or interaction
-            rb.velocity = Vector2.zero;
-            IsRunning = false;
-            IsMoving = false;
-            if(playerStats.isCombatMode){
-                animator.SetBool("isCombatMode", false);
-                playerStats.isCombatMode = false;
-                isEquipping = true;
-            }
+        if(PlayerStats.GetInstance().currentHP <= 0 && !PlayerStats.GetInstance().isDead){
+            PlayerStats.GetInstance().isDead = true;
+            animator.Play("Death");
+            gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
             playerActionMap.Disable();
-            dialogueActionMap.Enable();
+            await PlayerUIManager.GetInstance().ClosePlayerUI();
             return;
         }
-        if(IsMoving){
-            if (IsRunning && moveInputActive)
-            {
-                if (playerStats.stamina > 0 && playerStats.toggleStamina == true)
+        if(!PlayerStats.GetInstance().isDead){
+            if (!moveInputActive && IsRunning || !IsRunning && canWalk)
                 {
-                    playerStats.stamina -= playerStats.staminaDepletionRate * Time.deltaTime;
-                    playerStats.stamina = Mathf.Max(0, playerStats.stamina);
-                }
-                else if(playerStats.stamina < 1){
-                    IsRunning = false;
-                }
-            }
-        }
-        if(canWalk && !isEquipping){
-            if (moveInputActive)
-            {
-                SetFacingDirection(moveInput);
-                if(isHolding) return;
-                IsMoving = true;
-                rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
-                Vector2 currentPosition = transform.position;
-                float deltaX = currentPosition.x - lastPosition.x;
-                
-                if (Mathf.Abs(deltaX) > 0.01f)
-                {
-                    distanceMoved += Mathf.Abs(deltaX);
-                    if (distanceMoved >= moveThreshold)
-                    {
-                        if (IsRunning == true){
-                            List<QuestSO> quest = playerStats.activeQuests.ToList();
-                            foreach(QuestSO q in quest){
-                                if(q.goals[q.currentGoal].goalType == GoalTypeEnum.RunLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.RunRight){
-                                    QuestManager.GetInstance().UpdateRunGoals(deltaX);
-                                    distanceMoved = 0f;
-                                } 
-                            }
-                            
-                            distanceMoved = 0f;
-                        }else if (!IsRunning){
-                            List<QuestSO> quest = playerStats.activeQuests.ToList();
-                            foreach(QuestSO q in quest){
-                                if(q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkRight){
-                                    QuestManager.GetInstance().UpdateWalkGoals(deltaX);
-                                    distanceMoved = 0f;
-                                } 
-                            }
-                            
-                        }
-                        // Reset the distanceMoved counter
+                    if(playerStats.isCombatMode) {
+                        playerStats.walkSpeed = Mathf.Max(playerStats.walkSpeed, playerStats.walkSpeed - (playerStats.walkSpeed * 0.25f) * Time.deltaTime);
+                        playerStats.staminaRegenRate = Mathf.Max(playerStats.staminaRegenRate, playerStats.staminaRegenRate - (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
                     }
-                    lastPosition = currentPosition;
+                    if (playerStats.isCombatMode && IsMoving && isBlocking){
+                        // Walking and blocking - deplete stamina at 50% of the current depletion rate
+                        playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.5f) * Time.deltaTime);
+                    }else if (playerStats.isCombatMode && !IsMoving && isBlocking)
+                    {
+                        // Standing and blocking - regenerate stamina at 25% of the current regeneration rate
+                        playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
+                    }else if(playerStats.isCombatMode && IsMoving){
+                        playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.25f) * Time.deltaTime);
+                    }else{
+                        playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + playerStats.staminaRegenRate * Time.deltaTime);
+                    }
+                    
                 }
-
-            }
-            else
+            if (DialogueManager.GetInstance().dialogueIsPlaying)
             {
+                // Stop player movement during dialogue or interaction
                 rb.velocity = Vector2.zero;
+                IsRunning = false;
+                IsMoving = false;
+                if(playerStats.isCombatMode){
+                    animator.SetBool("isCombatMode", false);
+                    playerStats.isCombatMode = false;
+                    isEquipping = true;
+                }
+                playerActionMap.Disable();
+                dialogueActionMap.Enable();
+                return;
+            }
+            if(IsMoving){
+                if (IsRunning && moveInputActive)
+                {
+                    if (playerStats.stamina > 0 && playerStats.toggleStamina == true)
+                    {
+                        playerStats.stamina -= playerStats.staminaDepletionRate * Time.deltaTime;
+                        playerStats.stamina = Mathf.Max(0, playerStats.stamina);
+                    }
+                    else if(playerStats.stamina < 1){
+                        IsRunning = false;
+                    }
+                }
+            }
+            if(canWalk && !isEquipping){
+                if (moveInputActive)
+                {
+                    SetFacingDirection(moveInput);
+                    if(isHolding) return;
+                    IsMoving = true;
+                    rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+                    Vector2 currentPosition = transform.position;
+                    float deltaX = currentPosition.x - lastPosition.x;
+                    
+                    if (Mathf.Abs(deltaX) > 0.01f)
+                    {
+                        distanceMoved += Mathf.Abs(deltaX);
+                        if (distanceMoved >= moveThreshold)
+                        {
+                            if (IsRunning == true){
+                                List<QuestSO> quest = playerStats.activeQuests.ToList();
+                                foreach(QuestSO q in quest){
+                                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.RunLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.RunRight){
+                                        QuestManager.GetInstance().UpdateRunGoals(deltaX);
+                                        distanceMoved = 0f;
+                                    } 
+                                }
+                                
+                                distanceMoved = 0f;
+                            }else if (!IsRunning){
+                                List<QuestSO> quest = playerStats.activeQuests.ToList();
+                                foreach(QuestSO q in quest){
+                                    if(q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkRight){
+                                        QuestManager.GetInstance().UpdateWalkGoals(deltaX);
+                                        distanceMoved = 0f;
+                                    } 
+                                }
+                                
+                            }
+                            // Reset the distanceMoved counter
+                        }
+                        lastPosition = currentPosition;
+                    }
+
+                }
+                else
+                {
+                    rb.velocity = Vector2.zero;
+                }
+            }
+            //<-- Equipping -->
+            LoadPlayerData(PlayerStats.GetInstance());
+            // <-- Movement Tracking -->
+            float x = PlayerStats.GetInstance().localPlayerData.gameData.lastX;
+            float y = PlayerStats.GetInstance().localPlayerData.gameData.lastY;
+            bool isInter = PlayerStats.GetInstance().localPlayerData.gameData.isInterior;
+        
+            if (transform.position.x != x || transform.position.y != y || isInter != isInterior)
+            {
+                PlayerStats.GetInstance().localPlayerData.gameData.lastX = transform.position.x;
+                PlayerStats.GetInstance().localPlayerData.gameData.lastY = transform.position.y;
+                PlayerStats.GetInstance().localPlayerData.gameData.isInterior = isInterior;
+                PlayerStats.GetInstance().isDataDirty = true;
             }
         }
-        //<-- Equipping -->
-        LoadPlayerData(PlayerStats.GetInstance());
-        // <-- Movement Tracking -->
-        float x = PlayerStats.GetInstance().localPlayerData.gameData.lastX;
-        float y = PlayerStats.GetInstance().localPlayerData.gameData.lastY;
-        bool isInter = PlayerStats.GetInstance().localPlayerData.gameData.isInterior;
-       
-        if (transform.position.x != x || transform.position.y != y || isInter != isInterior)
-        {
-            PlayerStats.GetInstance().localPlayerData.gameData.lastX = transform.position.x;
-            PlayerStats.GetInstance().localPlayerData.gameData.lastY = transform.position.y;
-            PlayerStats.GetInstance().localPlayerData.gameData.isInterior = isInterior;
-            PlayerStats.GetInstance().isDataDirty = true;
-        }
-        
     }
 
     private void LoadPlayerData(PlayerStats player){
@@ -409,21 +418,11 @@ public class PlayerController : MonoBehaviour
         }
     }
     public void TakeDamage(float damage){
-            float newDamage = damage - playerStats.armor;
+            float newDamage = Utilities.CalculateDamage(damage,  playerStats.armor);
             if(isBlocking){
-                playerStats.currentHP -= newDamage * 0.5f;
-                if(playerStats.currentHP <= 0){
-                    playerStats.isDead = true;
-                    animator.Play("Death");
-                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-                }
+                playerStats.currentHP -= Utilities.CalculateDamage(damage,  playerStats.armor, true);
             }else{
                 playerStats.currentHP -= newDamage;
-                if(playerStats.currentHP <= 0){
-                    playerStats.isDead = true;
-                    animator.Play("Death");
-                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-                }
             }
     }
     void MoveFront()
@@ -447,7 +446,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    void MoveBack()
+    public void MoveBack()
     {
         // Get the character's current position
         Vector2 cP = gameObject.transform.position;

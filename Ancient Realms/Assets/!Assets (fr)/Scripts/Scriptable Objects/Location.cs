@@ -21,5 +21,6 @@ public class LocationSO : ScriptableObject
     public bool toggleStamina = true;
     public bool visibleEncyc = true;
     public bool hasInterior = false;
+    public bool instanceMission = false;
     public List<LocationData> locations;
 }

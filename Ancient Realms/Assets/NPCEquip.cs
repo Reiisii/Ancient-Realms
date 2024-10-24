@@ -31,14 +31,12 @@ public class NPCEquip : StateMachineBehaviour
     {
         Ally ally = animator.gameObject.GetComponent<Ally>();
         Enemy enemy = animator.gameObject.GetComponent<Enemy>();
-        ally.isEquipping = false;
-        ally.canMove = false;
         if(ally != null){
             ally.isEquipping = false;
             ally.canMove = false;
         }else if(enemy != null){
-            ally.isEquipping = false;
-            ally.canMove = false;
+            enemy.isEquipping = false;
+            enemy.canMove = false;
         }
     }
 

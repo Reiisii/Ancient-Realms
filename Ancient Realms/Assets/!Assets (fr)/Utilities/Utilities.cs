@@ -13,6 +13,29 @@ public class Utilities {
                 
                 return image;
         }
+        public static float CalculateDamage(float damage, float armor)
+        {
+        // Ensure armor is non-negative and cannot reduce more than 100% damage
+        float armorReduction = armor / (armor + 100); 
+        float newDamage = damage * (1 - armorReduction);
+        
+        return Mathf.Max(newDamage, 0); // Ensure damage doesn't drop below 0
+        }
+        public static float CalculateDamage(float damage, float armor, bool isBlocking)
+        {
+        // Step 1: Apply blocking reduction (50%)
+        if (isBlocking)
+        {
+                damage *= 0.5f;
+        }
+
+        // Step 2: Apply armor reduction
+        float armorReduction = armor / (armor + 100); // Tunable constant for armor scaling
+        float newDamage = damage * (1 - armorReduction);
+
+        return Mathf.Max(newDamage, 0); // Ensure damage doesn't drop below 0
+        }
+
         public static string FormatCultureName(CultureEnum culture)
         {
                 switch (culture)
