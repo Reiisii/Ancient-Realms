@@ -110,7 +110,7 @@ public class Ally : MonoBehaviour
         {
             isDead = true;
             animator.Play("Death");
-            
+            gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
             // Notify the Contubernium that this ally has died
             Contubernium.Instance.HandleAllyDeath(this);
         }else if (canMove) // Only execute movement logic if canMove is true
@@ -236,6 +236,7 @@ public class Ally : MonoBehaviour
 
     public void SetSpriteOrder(int order)
     {
+        if(isDead) return;
         spriteRenderer.sortingOrder = order;
         mainHolster.sortingOrder = order + 3;
         mainSlot.sortingOrder = order + 3;
@@ -336,7 +337,7 @@ public class Ally : MonoBehaviour
     void CheckForEnemiesAndAttack()
     {
         // Use Physics2D.OverlapCircleAll to detect enemies in the attack range
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange + 0.2f, enemyLayer);
         
         // If there are enemies within range
         if (hitEnemies.Length > 0)
@@ -438,23 +439,13 @@ public class Ally : MonoBehaviour
         isAttacking = true; // You need a shield bash animation in the Animator
     }
     public void TakeDamage(float damage){
-            float newDamage = damage - armor;
+            float newDamage = Utilities.CalculateDamage(damage,  armor);
             if(invulnerable){
                 return;
             }else if(isBlocking){
-                currentHP -= newDamage * 0.5f;
-                if(currentHP <= 0){
-                    isDead = true;
-                    animator.Play("Death");
-                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-                }
+                currentHP -= Utilities.CalculateDamage(damage,  armor, true);
             }else{
                 currentHP -= newDamage;
-                if(currentHP <= 0){
-                    isDead = true;
-                    animator.Play("Death");
-                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-                }
             }
     }
     public void MoveFront()
@@ -509,6 +500,32 @@ public class Ally : MonoBehaviour
         // Use DOTween to smoothly move the character to the new position
         gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
         
+    }
+    public void MoveBackStun()
+    {
+         if(isDummy) return;
+        // Get the character's current position
+        Vector2 cP = gameObject.transform.position;
+
+        // Define the movement distance (adjust as needed)
+        float moveDistance = -0.4f;
+
+        // Calculate the new position based on the direction the character is facing
+        Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
+
+        Vector2 newPosition = cP + moveDirection * moveDistance;
+
+        // Define the duration for the smooth movement (adjust as needed)
+        float moveDuration = 0.2f;
+        
+        canMove = false;
+        // Use DOTween to smoothly move the character to the new position
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnComplete(()=>{
+            DOVirtual.DelayedCall(3f, () => 
+            {
+                canMove = true;
+            });
+        });
     }
     private void CalculateStatsForCurrentLevel()
     {

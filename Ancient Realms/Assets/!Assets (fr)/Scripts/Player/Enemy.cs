@@ -36,11 +36,14 @@ public class Enemy : MonoBehaviour
     public bool isAttacking = false;
     public bool isBlocking = false;
     public bool isEquipping = false;
+    private bool hasBashed = false; 
     public List<int> equipments;
     public List<EquipmentSO> equippedSOs;
     private List<Ally> enemiesInRange = new List<Ally>();
     private Vector3 previousPosition;
     public LayerMask enemyLayer;
+    private float attackCooldown = 2f;
+    private float lastAttackTime; 
     [Header("Enemy Components")]
     [SerializeField] public Animator animator;
     [SerializeField] public AIPath aiPath;
@@ -76,10 +79,12 @@ public class Enemy : MonoBehaviour
         previousPosition = transform.position;
         CalculateStatsForCurrentLevel();
         if(isDummy) return;
+        if(equipments.Count > 0) InitializeEquipments();
         aiPath.maxSpeed = walkSpeed;
     }
     private void Update(){
         if(isDummy) return;
+        RegenStamina();
         GameObject nearestTarget = FindNearestTargetWithinRadius();
         if (nearestTarget != null)
         {
@@ -87,7 +92,10 @@ public class Enemy : MonoBehaviour
             aiDestination.target = nearestTarget.transform;
             if (nearestTarget != null)
             {
-                isCombatMode = true;
+                if(nearestTarget != null && isCombatMode == false){
+                    
+                    CombatToggle();
+                }
                 // Set the target for the AI Destination Setter
                 aiDestination.target = nearestTarget.transform;
 
@@ -97,8 +105,9 @@ public class Enemy : MonoBehaviour
                     aiPath.maxSpeed = 0;
                     return;
                 };
-                if(distanceToTarget <= 0.5f){
+                if(distanceToTarget <= attackRange + 0.2f){
                     aiPath.maxSpeed = 0;
+                    CheckForEnemiesAndAttack();
                 }else if(distanceToTarget <= 12f){
                     aiPath.maxSpeed = 2.3f;
                 }else if (distanceToTarget > 20f)
@@ -139,6 +148,87 @@ public class Enemy : MonoBehaviour
             transform.localScale *= new Vector2(-1, 1);
         }
     }
+
+    void CheckForEnemiesAndAttack()
+    {
+        // Use Physics2D.OverlapCircleAll to detect enemies in the attack range
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRange + 0.2f);
+
+        // If there are objects within range
+        if (hitColliders.Length > 0)
+        {
+            foreach (Collider2D collider in hitColliders)
+            {
+                // Check if the object is on the Ally or Player layer
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Ally"))
+                {
+                    Ally ally = collider.GetComponent<Ally>();
+                    if (ally != null && !ally.isDead)
+                    {
+                        // Perform attack on the Ally
+                        PerformAttack();
+                    }
+                }
+                else if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    PlayerController player = collider.GetComponent<PlayerController>();
+                    if (player != null)
+                    {
+                        // Perform attack on the Player
+                        PerformAttack();
+                    }
+                }
+            }
+        }
+    }
+
+    private void PerformAttack()
+    {
+        if(stamina < 10) return;
+        isAttacking = true;
+        lastAttackTime = Time.time;
+        stamina -= 10f;
+        // Optionally, add a cooldown or delay between attacks
+    }
+    void StartBlocking()
+    {
+        isBlocking = true;
+        hasBashed = false;
+        animator.SetBool("isBlocking", true); // Play block animation
+
+        // Block for a fixed time or until stamina depletes
+        StartCoroutine(BlockCoroutine());
+    }
+    void StopBlocking()
+    {
+        isBlocking = false;
+        animator.SetBool("isBlocking", false);// Return to idle
+    }
+
+    IEnumerator BlockCoroutine()
+    {
+        float blockTime = 2f; // Duration of blocking
+        float blockStartTime = Time.time;
+
+        while (Time.time < blockStartTime + blockTime && stamina > 0f)
+        {
+            stamina = Mathf.Max(0, stamina + (staminaRegenRate * 0.25f) * Time.deltaTime);
+            if (Random.value > 0.8f && !hasBashed) // 20% chance, only if enough stamina
+            {
+                hasBashed = true;
+                PerformShieldBash();
+            }
+            yield return null; // Wait for next frame
+        }
+        StopBlocking(); // Stop when out of stamina or time is up
+    }
+    private void PerformShieldBash()
+    {
+        // Play the shield bash animation
+        if(stamina > 20) return;
+        isAttacking = true; // You need a shield bash animation in the Animator
+    }
+
     public void OnMove() 
     {
             float distanceMoved = Vector3.Distance(transform.position, previousPosition);
@@ -184,8 +274,12 @@ public class Enemy : MonoBehaviour
         }else{
             if(invulnerable) return;
             else{
-                float newDamage = damage - armor;
-                currentHP -= newDamage;
+                float newDamage =Utilities.CalculateDamage(damage,  armor);
+                if(isBlocking){
+                    currentHP -= Utilities.CalculateDamage(damage,  armor, true);
+                }else{
+                    currentHP -= newDamage;
+                }
                 if(currentHP <= 0){
                     isDead = true;
                     animator.Play("Death");
@@ -242,25 +336,64 @@ public class Enemy : MonoBehaviour
 
         return nearestTarget;
     }
-    void ApplyDamage(){
+    void ApplyDamage()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange);
+
+        bool hasPlayer = false;
+        enemiesInRange.Clear();  // Clear the previous list
+
+        foreach (Collider2D collider in hitEnemies)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                hasPlayer = true; // Player is found
+            }
+            else if (collider.gameObject.layer == LayerMask.NameToLayer("Ally"))
+            {
+                Ally ally = collider.GetComponent<Ally>();
+                if (ally != null)
+                {
+                    enemiesInRange.Add(ally);  // Add Ally to the list
+                }
+            }
+        }
+
+        if (!hasPlayer)
+        {
+            // Target Ally if no player is found
+            Ally targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
+            if (targetEnemy != null)
+            {
+                targetEnemy.TakeDamage(damage);
+            }
+        }
+        else
+        {
+            // Target Player if player is found
+            PlayerController.GetInstance().TakeDamage(damage);
+        }
+    }
+
+    void ApplyBash(){
         Collider2D [] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        enemiesInRange.Clear();
         bool hasPlayer = false;
         foreach(Collider2D enemy in hitEnemies){
-
-            if(enemy.GetComponent<Ally>() != null){
+             if(enemy.GetComponent<Ally>() != null){
                 enemiesInRange.Add(enemy.GetComponent<Ally>());
             }
             if(enemy.GetComponent<PlayerController>() != null){
                 hasPlayer = true;
             }
         }
-        if(!hasPlayer){
-            Ally targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
-            targetEnemy.TakeDamage(damage);
+        Ally targetEnemy = enemiesInRange.OrderByDescending(enemy => enemy.currentHP).FirstOrDefault();
+        if (targetEnemy != null) {
+            targetEnemy.MoveBackStun();
         }else{
-            PlayerController.GetInstance().TakeDamage(damage);
+            PlayerController.GetInstance().MoveBack();
         }
-        
+        enemiesInRange.Clear();
     }
     public void MoveFront()
     {
@@ -345,6 +478,7 @@ public class Enemy : MonoBehaviour
     }
     private void SetFacingDirection(Vector2 moveInput)
     {
+        if(isDummy) return;
         if (isAttacking) return; // Don't flip while attacking
 
         // Face right if the movement is to the right (positive x) and currently facing left
@@ -359,6 +493,7 @@ public class Enemy : MonoBehaviour
         }
     }
     public void InitializeEquipments(){
+        
         List<EquipmentSO> newList = new List<EquipmentSO>();
         foreach(int equipment in equipments){
             EquipmentSO equipmentSO = AccountManager.Instance.equipments.Where(eq => eq.equipmentId == equipment).FirstOrDefault();
@@ -392,5 +527,12 @@ public class Enemy : MonoBehaviour
         currentHP = maxHP;
         maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
         staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
+    }
+    public void CombatToggle(){
+        if(!isEquipping && !isAttacking && !isBlocking){
+                animator.SetBool("isCombatMode", !isCombatMode);
+                isCombatMode = !isCombatMode;
+                isEquipping = !isEquipping;
+        }
     }
 }

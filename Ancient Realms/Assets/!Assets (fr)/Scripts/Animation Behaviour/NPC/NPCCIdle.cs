@@ -41,12 +41,20 @@ public class NPCCIdle : StateMachineBehaviour
             if(!ally.isAttacking && ally.isHolding && ally.isJavelin){
                 animator.Play("Pilum Aim");
             }
-        }else{
+        }else if(enemy != null){
             if(!enemy.isCombatMode && !animator.GetBool("isCombatMode") && enemy.isEquipping){
                 enemy.canMove = false;
                 enemy.isRunning = false;
                 enemy.IsMoving = false;
                 animator.Play("Unequip AI");
+            }
+            if(enemy.isAttacking){
+                if(enemy.equippedSOs[4].weaponType == WeaponType.Sword){
+                    animator.Play("Gallic Attack");
+                }else if(enemy.equippedSOs[4].weaponType == WeaponType.Spear){
+                    animator.Play("Spear Normal Attack AI E");
+                }
+                enemy.canMove = false;
             }
         }
     }
