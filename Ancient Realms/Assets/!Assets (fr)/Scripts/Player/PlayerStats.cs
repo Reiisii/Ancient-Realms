@@ -159,6 +159,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
     public void ReplenishStats(){
+        isDead = false;
         currentHP = maxHP;
         stamina = maxStamina;
     }

@@ -20,6 +20,10 @@ public class PlayerUIManager : MonoBehaviour
     [Header("Player UI")]
     [SerializeField] public GameObject playerUI;
     [SerializeField] public CanvasGroup playerCanvasGroup;
+    [Header("Death UI")]
+    [SerializeField] public GameObject deathUI;
+    [SerializeField] public CanvasGroup deathUICanvasGroup;
+    [Header("Quest Pointer")]
     [SerializeField] public GameObject questPointer;
     [Header("Minting UI")]
     [SerializeField] public GameObject mintingUI;
@@ -132,6 +136,22 @@ public class PlayerUIManager : MonoBehaviour
         playerCanvasGroup.interactable = false;
         await playerCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         playerUI.SetActive(false);
+    }
+    public async void CloseDeath(){
+        await CloseDeathUI();
+        Respawn();
+    }
+    public async Task OpenDeathUI(){
+        deathUI.SetActive(true);
+        deathUICanvasGroup.interactable = false;
+        await deathUICanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        deathUICanvasGroup.interactable = true;
+        Time.timeScale = 0f;
+    }
+    public async Task CloseDeathUI(){
+        deathUICanvasGroup.interactable = false;
+        await deathUICanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
+        deathUI.SetActive(false);
     }
     public async Task OpenLoadingUI(){
         AudioManager.GetInstance().PlayMusic(MusicType.Loading, 0.6f, 0.5f);
@@ -271,6 +291,35 @@ public class PlayerUIManager : MonoBehaviour
             if(gameData.uiSettings.Contains(val)) return;
             gameData.uiSettings.Add(val);
             PlayerStats.GetInstance().isDataDirty = true;
+    }
+    public async void Respawn(){
+        string prevLoc = LocationSettingsManager.GetInstance().locationSettings.SceneName;
+        AudioManager.GetInstance().StopAmbience();
+        OpenBackgroundUI();
+        await OpenLoadingUI();
+        PlayerStats.GetInstance().ReplenishStats();
+        SceneManager.UnloadSceneAsync(prevLoc).completed += (operation) => {
+            backgroundGO.SetActive(false);
+            LocationSettingsManager.GetInstance().LoadSettings("Rome");
+            SceneManager.LoadSceneAsync("Rome", LoadSceneMode.Additive).completed += async (operation) => {
+                Time.timeScale = 1f;
+                LocationSO loadedLocation = LocationSettingsManager.GetInstance().locationSettings;
+                if(loadedLocation.canAccessCombatMode && !loadedLocation.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.6f, 1f); 
+                else AudioManager.GetInstance().PlayMusic(MusicType.Town, 1f, 1f);
+                AudioManager.GetInstance().SetAmbience(time.hours < 17 && time.hours > 7, loadedLocation.background, loadedLocation.hasWater);
+                if(!loadedLocation.instanceMission){
+                    PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = "Rome";
+                    PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;
+                    PlayerStats.GetInstance().localPlayerData.gameData.lastX = loadedLocation.locations[0].location.x;
+                    PlayerStats.GetInstance().localPlayerData.gameData.lastY = loadedLocation.locations[0].location.y;
+                    PlayerStats.GetInstance().isDataDirty = true;
+                }else{
+                    PlayerStats.GetInstance().stopSaving = true;
+                }
+                await CloseLoadingUI();
+                await OpenPlayerUI();
+            };
+        };
     }
     private async void OnSceneLoaded(AsyncOperation operation)
     {
