@@ -47,7 +47,6 @@ public class MapTrigger : MonoBehaviour
     }
     public async void ChangeScene(){
         string prevLoc = LocationSettingsManager.GetInstance().locationSettings.SceneName;
-        Debug.Log(prevLoc);
         AudioManager.GetInstance().StopAmbience();
         PlayerStats.GetInstance().isCombatMode = false;
         PlayerUIManager.GetInstance().TransitionMapUI();

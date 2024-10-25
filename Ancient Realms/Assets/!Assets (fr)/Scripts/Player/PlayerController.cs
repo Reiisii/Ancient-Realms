@@ -128,6 +128,7 @@ public class PlayerController : MonoBehaviour
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
             playerActionMap.Disable();
             await PlayerUIManager.GetInstance().ClosePlayerUI();
+            await PlayerUIManager.GetInstance().OpenDeathUI();
             return;
         }
         if(!PlayerStats.GetInstance().isDead){
