@@ -26,6 +26,7 @@ public class Ally : MonoBehaviour
     private float attackRange = 0.5f;
     private float damage = 1;
     private float armor = 0;
+    public int pilumCount = 1;
     public float maxHoldTime = 1f;
     public float holdTime = 0f;
     public List<int> equipments;
@@ -168,6 +169,7 @@ public class Ally : MonoBehaviour
 
         pilum.SetDamage(damage);
         holdTime = 0f;
+        pilumCount -= 1;
         // Apply the force to the pilum
         rb.AddForce(force, ForceMode2D.Impulse);
 
@@ -498,35 +500,37 @@ public class Ally : MonoBehaviour
         float moveDuration = 0.2f;
 
         // Use DOTween to smoothly move the character to the new position
-        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnKill(() => {
+            if (gameObject == null) return;  // Stops movement if the object is destroyed
+        });;
         
     }
     public void MoveBackStun()
     {
-         if(isDummy) return;
-        // Get the character's current position
+        if (gameObject == null) return;
         Vector2 cP = gameObject.transform.position;
-
-        // Define the movement distance (adjust as needed)
         float moveDistance = -0.4f;
-
-        // Calculate the new position based on the direction the character is facing
         Vector2 moveDirection = IsFacingRight ? Vector2.right : Vector2.left;
-
         Vector2 newPosition = cP + moveDirection * moveDistance;
-
-        // Define the duration for the smooth movement (adjust as needed)
         float moveDuration = 0.2f;
-        
+
         canMove = false;
-        // Use DOTween to smoothly move the character to the new position
-        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnComplete(()=>{
-            DOVirtual.DelayedCall(3f, () => 
-            {
-                canMove = true;
+
+        gameObject.transform.DOMove(new Vector3(newPosition.x, newPosition.y, transform.position.z), moveDuration)
+            .SetEase(Ease.OutQuad)
+            .OnKill(() => {
+                if (gameObject == null) return;  // Prevents further movement if destroyed
+            })
+            .OnComplete(() => {
+                if (gameObject == null) return;
+                DOVirtual.DelayedCall(3f, () => 
+                {
+                    if (gameObject == null) return;
+                    canMove = true;
+                });
             });
-        });
     }
+
     private void CalculateStatsForCurrentLevel()
     {
         // Calculate the stats based on the current level without incrementing it

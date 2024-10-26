@@ -100,13 +100,18 @@ public class MintingManager : MonoBehaviour
         List<NFTSO> filteredNFTs = GetNFTsByRarityAndCulture(randomRarity);
         if (filteredNFTs.Count > 0)
         {
-            if(randomRarity == RarityEnum.Legendary){
-                Debug.Log($"Attained Legendary at: {attempts} pulls");
-            }
             NFTSO nft = filteredNFTs[0];
             button.interactable = false;
-            await SolanaUtility.MintNFT(nft, priceData.price);
-            button.interactable = true;
+            NFTResponse nftResponse = await SolanaUtility.MintNFT(nft, priceData.price);
+            if(nftResponse.response){
+                PlayerStats.GetInstance().AddStatistics(StatisticsType.MintingTotal, "1");
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "Check the Web Console (F12 Console) for your receipt");
+                Debug.Log("Your NFT Receipt" + nftResponse.url);
+                button.interactable = true;
+            }else{
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Success, nftResponse.url);
+                button.interactable = true;
+            }
         }
         else
         {

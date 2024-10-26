@@ -104,7 +104,7 @@ public class SolanaUtility : MonoBehaviour
             //var sendResult = await Web3.Rpc.SendTransactionAsync(Convert.ToBase64String(transaction.Serialize()));
     }
     
-    public static async Task MintNFT(NFTSO nft, decimal price)
+    public static async Task<NFTResponse> MintNFT(NFTSO nft, decimal price)
     {
         var mint = new Account();
         var associatedTokenAccount = AssociatedTokenAccountProgram
@@ -182,13 +182,17 @@ public class SolanaUtility : MonoBehaviour
         
         // Sign and Send the transaction
         var res = await Web3.Wallet.SignAndSendTransaction(tx);
-        
+        NFTResponse nftResponse = new NFTResponse();
         // Show Confirmation
         if (res?.Result != null){
             await Web3.Rpc.ConfirmTransaction(res.Result, Commitment.Confirmed);
-            Debug.Log("Minting succeeded, see transaction at https://explorer.solana.com/tx/" 
-                      + res.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower());
+            nftResponse.url = " https://explorer.solana.com/tx/" + res.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower();
+            nftResponse.response = true;
+        }else{
+            nftResponse.url = "Transaction Reverted/Cancelled";
+            nftResponse.response = false;
         }
+        return nftResponse;
     }
 
 }

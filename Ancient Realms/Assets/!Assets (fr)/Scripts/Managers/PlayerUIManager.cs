@@ -29,6 +29,9 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] public GameObject mintingUI;
     [Header("Premium UI")]
     [SerializeField] public GameObject premiumUI;
+    [Header("Chapter Select UI")]
+    [SerializeField] public GameObject chapterSelectUI;
+    [SerializeField] public GameObject topButton;
     [Header("Loading Screen")]
     [SerializeField] public GameObject loadingScreen;
     [SerializeField] public CanvasGroup loadingCanvasGroup;
@@ -99,6 +102,7 @@ public class PlayerUIManager : MonoBehaviour
         playerCanvasGroup.interactable = false;
         await playerCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         playerCanvasGroup.interactable = true;
+        if(PlayerController.GetInstance() != null) PlayerController.GetInstance().playerActionMap.Enable();
     }
     public void TogglePlayerUI(){
         playerUI.SetActive(!playerUI.activeSelf);
@@ -119,7 +123,7 @@ public class PlayerUIManager : MonoBehaviour
     public void TogglePremiumShop(){
         if(PlayerController.GetInstance() != null){
             if(!PlayerController.GetInstance().canAccessInventory) {
-                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access premium shop in a combat location.");
+                SpawnMessage(MType.Error, "You can't access premium shop in a combat location.");
                 return;
             }
             premiumUI.SetActive(!premiumUI.activeSelf);
@@ -132,6 +136,23 @@ public class PlayerUIManager : MonoBehaviour
             }
         }
     }
+    public void ToggleChapterSelect(){
+        if(PlayerController.GetInstance() != null){
+            if(!topButton.activeSelf) return;
+            if(!PlayerController.GetInstance().canAccessInventory) {
+                SpawnMessage(MType.Error, "You can't access Chapter Select in a combat location.");
+                return;
+            }
+            chapterSelectUI.SetActive(!chapterSelectUI.activeSelf);
+            if(chapterSelectUI.activeSelf){
+                PlayerController.GetInstance().playerActionMap.Disable();
+                PlayerController.GetInstance().chapterSelectActionMap.Enable();
+            }else{
+                PlayerController.GetInstance().playerActionMap.Enable();
+                PlayerController.GetInstance().chapterSelectActionMap.Disable();
+            }
+        }
+    }
     public async Task ClosePlayerUI(){
         playerCanvasGroup.interactable = false;
         await playerCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
@@ -139,7 +160,6 @@ public class PlayerUIManager : MonoBehaviour
     }
     public async void CloseDeath(){
         await CloseDeathUI();
-        Respawn();
     }
     public async Task OpenDeathUI(){
         deathUI.SetActive(true);
@@ -152,6 +172,7 @@ public class PlayerUIManager : MonoBehaviour
         deathUICanvasGroup.interactable = false;
         await deathUICanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         deathUI.SetActive(false);
+        Respawn();
     }
     public async Task OpenLoadingUI(){
         AudioManager.GetInstance().PlayMusic(MusicType.Loading, 0.6f, 0.5f);
@@ -192,13 +213,13 @@ public class PlayerUIManager : MonoBehaviour
         // await mapCanvasGroup.DOFade(1, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapCanvasGroup.interactable = true;
     }
-    public async Task CloseMapUI(){
+    public void CloseMapUI(){
         mapCanvasGroup.interactable = false;
         mapCanvasGroup.alpha = 0f;
         // await mapCanvasGroup.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         mapGO.SetActive(false);
         worldMap.SetActive(false);
-        await OpenPlayerUI();
+        TogglePlayerUI();
     }
     public void TransitionMapUI(){
         OpenBackgroundUI();
@@ -226,7 +247,8 @@ public class PlayerUIManager : MonoBehaviour
         await CloseBackgroundUI();
         await OpenDarkenUI();
         await OpenLoadingUI();
-        SceneManager.UnloadSceneAsync(AccountManager.Instance.playerData.gameData.lastLocationVisited).completed += async (operation) => {
+        string prevLoc = LocationSettingsManager.GetInstance().locationSettings.SceneName;
+        SceneManager.UnloadSceneAsync(prevLoc).completed += async (operation) => {
             await OpenDarkenUI();
             OpenBackgroundUI();
             AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 1f, 1f);

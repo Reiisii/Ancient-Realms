@@ -16,6 +16,7 @@ namespace ESDatabase.Classes
                 public float lastY {get;set;}
                 public bool isInterior {get;set;}
                 public int currentEnergy {get;set;}
+                public StatisticsData statistics {get;set;}
                 public Inventory inventory {get;set;}
                 public EquippedData equippedData {get;set;}
                 public List<NFTData> equippedNFT;
@@ -40,6 +41,7 @@ namespace ESDatabase.Classes
                         this.lastY = -2.96f;
                         this.isInterior = false;
                         this.rank = "Tiro";
+                        this.statistics = new StatisticsData();
                         this.inventory = new Inventory();
                         this.equippedData = new EquippedData();
                         this.equippedNFT = new List<NFTData>();

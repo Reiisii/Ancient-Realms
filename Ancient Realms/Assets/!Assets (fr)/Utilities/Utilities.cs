@@ -28,12 +28,20 @@ public class Utilities {
         {
                 damage *= 0.5f;
         }
-
+        
         // Step 2: Apply armor reduction
         float armorReduction = armor / (armor + 100); // Tunable constant for armor scaling
         float newDamage = damage * (1 - armorReduction);
 
         return Mathf.Max(newDamage, 0); // Ensure damage doesn't drop below 0
+        }
+        public static OrderType GetRandomWeapon()
+        {
+                // Get all values from the Weapon enum
+                OrderType[] weapons = (OrderType[]) Enum.GetValues(typeof(OrderType));
+                
+                // Select a random value
+                return weapons[UnityEngine.Random.Range(0, weapons.Length)];
         }
 
         public static string FormatCultureName(CultureEnum culture)

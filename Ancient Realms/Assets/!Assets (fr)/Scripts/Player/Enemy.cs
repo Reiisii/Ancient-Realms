@@ -434,7 +434,9 @@ public class Enemy : MonoBehaviour
         float moveDuration = 0.2f;
 
         // Use DOTween to smoothly move the character to the new position
-        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnKill(()=>{
+            if (gameObject == null) return; 
+        });
         
     }
     private void RegenStamina(){
@@ -469,9 +471,15 @@ public class Enemy : MonoBehaviour
         
         canMove = false;
         // Use DOTween to smoothly move the character to the new position
-        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnComplete(()=>{
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad)
+        .OnKill(() => {
+            if (gameObject == null) return;  // Prevents further movement if destroyed
+        })
+        .OnComplete(()=>{
+            if (gameObject == null) return;
             DOVirtual.DelayedCall(3f, () => 
             {
+                if (gameObject == null) return;
                 canMove = true;
             });
         });
@@ -535,4 +543,10 @@ public class Enemy : MonoBehaviour
                 isEquipping = !isEquipping;
         }
     }
+    private void OnDestroy()
+    {
+        // Ensures that all DOTween operations for this game object are killed upon destruction
+        DOTween.Kill(this, true);
+    }
+
 }

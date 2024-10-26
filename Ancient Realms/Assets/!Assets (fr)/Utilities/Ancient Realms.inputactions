@@ -175,6 +175,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Chapter Select",
+                    "type": "Button",
+                    "id": "eee372d6-1844-4694-99a9-e3b577d09c1a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -560,6 +569,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "F_CombatMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2284690-cc3a-4346-bea0-80bf152ebe9d",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Chapter Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1645,6 +1665,45 @@
                     "name": "",
                     "id": "01260306-9d82-4d7a-b1f9-93546e887729",
                     "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "ChapterSelect",
+            "id": "0a6eefd1-8c88-4d16-8cc2-14157a83e400",
+            "actions": [
+                {
+                    "name": "Toggle",
+                    "type": "Button",
+                    "id": "531bac7c-d735-4289-841b-ca36da8f077c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2e383bb0-6b66-48ec-81ab-8c668040e6d3",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "894b4934-6c1b-4575-b1aa-03cd71e6def2",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

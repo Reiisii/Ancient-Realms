@@ -201,10 +201,15 @@ public class SmithingGameManager : MonoBehaviour
             grindstoneUsed = false;
             assemblyUsed = false;
             totalScore += tempScore;
+            if(tempScore > 0) {
+                PlayerStats.GetInstance().localPlayerData.gameData.statistics.smithingTotal += 1;
+                PlayerStats.GetInstance().AddStatistics(StatisticsType.SmithingTotal, "1");
+            }
             PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "Weapon delivered! You received " + tempScore +" denarii.");
             PlayerStats.GetInstance().AddGold(tempScore);
             score = 0;
             weaponMade++;
+            order = Utilities.GetRandomWeapon();
             AudioManager.GetInstance().PlayAudio(SoundType.DELIVERED);
         }else{
             AudioManager.GetInstance().PlayAudio(SoundType.RED);
@@ -243,6 +248,7 @@ public class SmithingGameManager : MonoBehaviour
     }
     public async void StartGame(){
         inMiniGame = true;
+        order = Utilities.GetRandomWeapon();
         await PlayerUIManager.GetInstance().ClosePlayerUI();
     }
     public async void EndGame(){
