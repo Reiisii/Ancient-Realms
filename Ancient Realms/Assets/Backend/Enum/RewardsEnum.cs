@@ -5,4 +5,5 @@ public enum RewardsEnum
     Item,
     Artifact,
     Quest,
+    Event
 }

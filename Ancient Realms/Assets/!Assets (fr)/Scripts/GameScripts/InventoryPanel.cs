@@ -586,36 +586,35 @@ public class InventoryPanel : MonoBehaviour
     }
     [ContextMenu("AddItem")]
     public void AddItem(){
-        GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
-        List<ItemData> itemList = new List<ItemData>{
-           new ItemData(0, 5, 5, 1),
-           new ItemData(1, 4, 1, 1),
-           new ItemData(2, 3, 1, 1),
-           new ItemData(3, 4, 1, 1),
-           new ItemData(4, 2, 1, 1),
-           new ItemData(5, 5, 5, 1),
-           new ItemData(6, 4, 1, 1),
-           new ItemData(7, 3, 1, 1),
-           new ItemData(8, 5, 5, 1),
-           new ItemData(9, 4, 1, 1),
-           new ItemData(10, 3, 1, 1),
-           new ItemData(11, 5, 5, 1),
-           new ItemData(12, 5, 5, 1),
-           new ItemData(14, 4, 3, 1),
-           new ItemData(15, 3, 5, 1),
-           new ItemData(16, 2, 1, 1),
-           new ItemData(17, 2, 1, 1),
-           new ItemData(18, 5, 5, 1),
-           new ItemData(19, 4, 3, 1),
-           new ItemData(20, 1, 1, 1),
-           new ItemData(21, 0, 0, 1),
-           new ItemData(22, 1, 1, 1),
-           new ItemData(23, 5, 5, 1),
-           new ItemData(24, 4, 2, 1),
-           new ItemData(25, 1, 1, 1)
-        };
-        gameData.inventory.items.AddRange(itemList);
-        PlayerStats.GetInstance().isDataDirty = true;
+        PlayerStats playerStats = PlayerStats.GetInstance();
+        playerStats.AddItem(0, 5, 5, 1);
+        playerStats.AddItem(1, 4, 1, 1);
+        playerStats.AddItem(2, 3, 1, 1);
+        playerStats.AddItem(3, 4, 1, 1);
+        playerStats.AddItem(4, 2, 1, 1);
+        playerStats.AddItem(5, 5, 5, 1);
+        playerStats.AddItem(6, 4, 1, 1);
+        playerStats.AddItem(7, 3, 1, 1);
+        playerStats.AddItem(8, 5, 5, 1);
+        playerStats.AddItem(9, 4, 1, 1);
+        playerStats.AddItem(10, 3, 1, 1);
+        playerStats.AddItem(11, 5, 5, 1);
+        playerStats.AddItem(12, 5, 5, 1);
+        playerStats.AddItem(14, 4, 3, 1);
+        playerStats.AddItem(15, 3, 5, 1);
+        playerStats.AddItem(16, 2, 1, 1);
+        playerStats.AddItem(17, 2, 1, 1);
+        playerStats.AddItem(18, 5, 5, 1);
+        playerStats.AddItem(19, 4, 3, 1);
+        playerStats.AddItem(20, 1, 1, 1);
+        playerStats.AddItem(21, 0, 0, 1);
+        playerStats.AddItem(22, 1, 1, 1);
+        playerStats.AddItem(23, 5, 5, 1);
+        playerStats.AddItem(24, 4, 2, 1);
+        playerStats.AddItem(25, 1, 1, 1);
+        playerStats.AddItem(27, 0, 0, 10);
+        playerStats.AddItem(28, 0, 0, 32);
+        playerStats.AddItem(33, 0, 0, 8);
     }
     public Sprite TierEnum(int tier){
         switch(tier){

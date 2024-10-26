@@ -74,7 +74,7 @@ public class Contubernium : MonoBehaviour
             foreach (Transform child in gameObject.transform)
             {
                 Ally ally = child.gameObject.GetComponent<Ally>();
-                if (ally != null && !ally.isDead)
+                if (ally != null && !ally.isDead && ally.pilumCount > 0)
                 {
                     ally.isHolding = true;
                 }

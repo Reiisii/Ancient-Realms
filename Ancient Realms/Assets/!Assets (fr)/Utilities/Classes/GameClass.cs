@@ -52,6 +52,15 @@ public class Reward
 {
     public RewardsEnum rewardType;
     public string value;
+    public int tier;
+    public int level;
+    public int amount;
+}
+[Serializable]
+public class NFTResponse
+{
+    public string url;
+    public bool response;
 }
 [Serializable]
 public class LocationData {
@@ -160,6 +169,45 @@ public enum BuffType {
     Stamina,
     Speed
 }
+[Serializable]
+public class MissionGoal
+{
+    public int taskID;
+    public string taskDescription;
+    public MissionGoalType missionType;
+    [Header("Mission Settings")]
+    public int requiredAmount;
+    public int currentAmount;
+    public Time holdTime;
+    public string itemID;
+    public string[] targetIDs;
+
+    public void IncrementProgress(int amount)
+    {
+        currentAmount += amount;
+        if (currentAmount > requiredAmount)
+        {
+            currentAmount = requiredAmount;
+        }
+    }
+
+}
+public enum MissionGoalType
+{
+    Defend,
+    Capture,
+    Clear,
+    Pickup
+}
+public enum MissionRewardEnum
+{
+    Gold,
+    Item,
+    Artifacts,
+    Xp,
+    Artifact,
+    Event,
+}
 public enum OrderType {
     Gladius,
     Pila,
@@ -215,6 +263,19 @@ public enum MusicType{
     Town,
     Loading,
     Smithing
+}
+public enum EncycType{
+    Character,
+    Equipment,
+    Event
+}
+public enum StatisticsType{
+    MoveDistance,
+    Kill,
+    DenariiTotal,
+    SmithingTotal,
+    MintingTotal,
+    DeathTotal
 }
 [Serializable]
 public struct SoundList

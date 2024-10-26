@@ -32,6 +32,7 @@ public class AccountManager : MonoBehaviour
     public List<ArtifactsSO> achievements;
     public List<EquipmentSO> equipments;
     public List<NFTSO> nfts;
+    public List<MissionSO> missions;
     public string EntityId;
     public string UIDInstance;
     public PriceData priceData; 
@@ -43,6 +44,7 @@ public class AccountManager : MonoBehaviour
             achievements = Resources.LoadAll<ArtifactsSO>("ArtifactSO").ToList();
             equipments = Resources.LoadAll<EquipmentSO>("EquipmentSO").ToList();
             nfts = Resources.LoadAll<NFTSO>("NFTSO").ToList();
+            missions = Resources.LoadAll<MissionSO>("MissionSO").ToList();
             Instance = this;
             AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 1f, 1f);
             DontDestroyOnLoad(gameObject);

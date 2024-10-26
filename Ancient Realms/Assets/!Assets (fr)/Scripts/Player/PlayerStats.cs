@@ -162,6 +162,7 @@ public class PlayerStats : MonoBehaviour
         isDead = false;
         currentHP = maxHP;
         stamina = maxStamina;
+        isCombatMode = false;
     }
 
     private void Update()
@@ -190,25 +191,49 @@ public class PlayerStats : MonoBehaviour
     {
         denarii += amount;
         localPlayerData.gameData.denarii += amount;
+        AddStatistics(StatisticsType.DenariiTotal, amount.ToString());
         isDataDirty = true; // Mark data as dirty
     }
 
     public void AddXp(int amount)
     {
         currentXP += amount;
-        if(currentXP >= maxXP) LevelUp();
+        Debug.Log($"Adding XP: {amount}, New currentXP: {currentXP}, maxXP: {maxXP}");
+        
+        if (currentXP >= maxXP) LevelUp();
         AnimateXPChange(currentXP - amount, currentXP);
 
         localPlayerData.gameData.currentXP += amount;
-        isDataDirty = true; // Mark data as dirty
+        isDataDirty = true;
     }
+
     public void AddQuest(QuestData qData, QuestSO questSO)
     {
         activeQuests.Add(questSO);
         localPlayerData.gameData.quests.Add(qData);
         isDataDirty = true; // Mark data as dirty
     }
-
+    public void AddStatistics(StatisticsType type, string amount){
+        StatisticsData statisticsData = localPlayerData.gameData.statistics;
+        switch(type){
+            case StatisticsType.MoveDistance:
+                statisticsData.moveDistanceTotal += float.Parse(amount);
+            break;
+            case StatisticsType.Kill:
+                statisticsData.kills += int.Parse(amount);
+            break;
+            case StatisticsType.DenariiTotal:
+                statisticsData.denariiTotal += int.Parse(amount);
+            break;
+            case StatisticsType.SmithingTotal:
+                statisticsData.smithingTotal += int.Parse(amount);
+            break;
+            case StatisticsType.DeathTotal:
+                statisticsData.deathTotal += int.Parse(amount);
+            break;
+        }
+        isDataDirty = true;
+    }
     public void AddArtifact(string artifactID)
     {
         List<ArtifactsSO> artifactList = Resources.LoadAll<ArtifactsSO>("ArtifactSO").ToList();
@@ -218,6 +243,37 @@ public class PlayerStats : MonoBehaviour
             acquiredDate = DateTime.Now,
         };
         localPlayerData.gameData.artifacts.Add(artifactData);
+        isDataDirty = true; // Mark data as dirty
+    }
+    public void AddItem(int itemID, int tier, int level, int amount)
+    {
+        EquipmentSO item = equipmentLibrary.Where(q => q.equipmentId.Equals(itemID)).FirstOrDefault();
+        AddEncyc(EncycType.Equipment, itemID);
+        ItemData existingItemData = localPlayerData.gameData.inventory.items.FirstOrDefault(itm => itm.equipmentId.Equals(item.equipmentId));
+        if(item.isStackable && existingItemData != null){
+            existingItemData.stackAmount += amount;
+        }else{
+            ItemData itemData = new ItemData(item.equipmentId, tier, level, amount);
+            localPlayerData.gameData.inventory.items.Add(itemData);
+        }
+        isDataDirty = true; // Mark data as dirty
+    }
+    public void AddEncyc(EncycType encycType, int value)
+    {
+        switch(encycType){
+            case EncycType.Character:
+                if(localPlayerData.gameData.characters.Contains(value)) return;
+                localPlayerData.gameData.characters.Add(value);
+            break;
+            case EncycType.Event:
+                if(localPlayerData.gameData.events.Contains(value)) return;
+                localPlayerData.gameData.events.Add(value);
+            break;
+            case EncycType.Equipment:
+                if(localPlayerData.gameData.equipments.Contains(value)) return;
+                localPlayerData.gameData.equipments.Add(value);
+            break;
+        }
         isDataDirty = true; // Mark data as dirty
     }
     public void updateValues()
@@ -250,22 +306,22 @@ public class PlayerStats : MonoBehaviour
     {
         level++;
         maxXP = CalculateXPToNextLevel(level);
-        maxHP *= 1.05f; // Increase health by 5%
+        maxHP *= 1.05f;
         currentHP = maxHP;
-        maxStamina *= 1.03f; // Increase stamina by 3%
+        maxStamina *= 1.03f;
         staminaRegenRate *= 1.03f;
         currentXP = 0;
-        
+
         localPlayerData.gameData.currentXP = currentXP;
         localPlayerData.gameData.maxXP = maxXP;
         localPlayerData.gameData.level = level;
 
-        isDataDirty = true; // Mark data as dirty
-        
-        // Optionally save data immediately on level up
+        isDataDirty = true;
+
         await AccountManager.SaveData(localPlayerData);
         isDataDirty = false;
     }
+
     private void InitializeQuests(GameData playerGameData){
         foreach(QuestData quest in playerGameData.quests){
             if(quest.isActive && !quest.completed){
