@@ -285,8 +285,8 @@ public class Enemy : MonoBehaviour
                     animator.Play("Death");
                     if(MissionManager.GetInstance().inMission){
                         MissionSO mission = MissionManager.GetInstance().mission;
-                        MissionGoal missionGoal = mission.goals[mission.currentGoal];
-                        if(missionGoal.missionType.Equals(MissionGoalType.Clear) && missionGoal.targetIDs.Contains(id)){
+                        MissionGoal currentGoal = mission.goals[mission.currentGoal];
+                        if(currentGoal.missionType.Equals(MissionGoalType.Clear) && currentGoal.targetIDs.Contains(id)){
                             MissionManager.GetInstance().UpdateGoal(MissionGoalType.Clear);
                         }
                     }
@@ -479,9 +479,6 @@ public class Enemy : MonoBehaviour
         canMove = false;
         // Use DOTween to smoothly move the character to the new position
         gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad)
-        .OnKill(() => {
-            if (gameObject == null) return;  // Prevents further movement if destroyed
-        })
         .OnComplete(()=>{
             if(gameObject !=null){
             DOVirtual.DelayedCall(3f, () => 
