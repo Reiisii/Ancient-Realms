@@ -22,7 +22,6 @@ public class PilumAimStatic : StateMachineBehaviour
             PlayerController.GetInstance().PanCameraBasedOnPlayerDirection();
         }
         if(!animator.GetBool("isHolding")){
-            PlayerController.GetInstance().isThrowing = true;
             animator.Play("Pilum Throw");
             PlayerController.GetInstance().forceGO.SetActive(false);
             PlayerController.GetInstance().forceSlider.value = 0f;

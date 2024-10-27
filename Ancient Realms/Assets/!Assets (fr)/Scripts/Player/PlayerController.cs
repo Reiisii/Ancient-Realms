@@ -307,7 +307,7 @@ public class PlayerController : MonoBehaviour
             if(isAttacking) return;
             if(playerStats.isCombatMode && !isAttacking && !IsRunning){
                 isHolding = true;
-                isAttacking = true;
+                isThrowing = true;
                 animator.SetBool("isHolding", true);
             }
         }else if (context.canceled)
