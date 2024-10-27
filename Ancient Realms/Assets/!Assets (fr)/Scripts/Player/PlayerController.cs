@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     public bool isEquipping = false;
     public float holdTime = 0f;
     public bool isHolding = false;
+    public bool isThrowing = false;
     [Header("Restriction")]
     public bool canAccessInventory = true;
     public bool canAccessJournal = true;
@@ -137,25 +138,33 @@ public class PlayerController : MonoBehaviour
         }
         if(!PlayerStats.GetInstance().isDead){
             if (!moveInputActive && IsRunning || !IsRunning && canWalk)
+            {
+                if (playerStats.isCombatMode)
                 {
-                    if(playerStats.isCombatMode) {
-                        playerStats.walkSpeed = Mathf.Max(playerStats.walkSpeed, playerStats.walkSpeed - (playerStats.walkSpeed * 0.25f) * Time.deltaTime);
-                        playerStats.staminaRegenRate = Mathf.Max(playerStats.staminaRegenRate, playerStats.staminaRegenRate - (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
-                    }
-                    if (playerStats.isCombatMode && IsMoving && isBlocking){
-                        // Walking and blocking - deplete stamina at 50% of the current depletion rate
-                        playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.5f) * Time.deltaTime);
-                    }else if (playerStats.isCombatMode && !IsMoving && isBlocking)
-                    {
-                        // Standing and blocking - regenerate stamina at 25% of the current regeneration rate
-                        playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
-                    }else if(playerStats.isCombatMode && IsMoving){
-                        playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.25f) * Time.deltaTime);
-                    }else{
-                        playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + playerStats.staminaRegenRate * Time.deltaTime);
-                    }
-                    
+                    playerStats.walkSpeed = Mathf.Max(playerStats.walkSpeed, playerStats.walkSpeed - (playerStats.walkSpeed * 0.25f) * Time.deltaTime);
+                    playerStats.staminaRegenRate = Mathf.Max(playerStats.staminaRegenRate, playerStats.staminaRegenRate - (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
                 }
+
+                // Stamina management logic
+                if (playerStats.isCombatMode && IsMoving && isBlocking)
+                {
+                    playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.5f) * Time.deltaTime);
+                }
+                else if (playerStats.isCombatMode && !IsMoving && isBlocking)
+                {
+                    // Standing and blocking - regenerate stamina
+                    playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + (playerStats.staminaRegenRate * 0.25f) * Time.deltaTime);
+                }
+                else if (playerStats.isCombatMode && IsMoving)
+                {
+                    playerStats.stamina = Mathf.Max(0, playerStats.stamina - (playerStats.staminaDepletionRate * 0.25f) * Time.deltaTime);
+                }
+                else
+                {
+                    // Regular regeneration when not moving
+                    playerStats.stamina = Mathf.Min(playerStats.maxStamina, playerStats.stamina + playerStats.staminaRegenRate * Time.deltaTime);
+                }
+            }
             if (DialogueManager.GetInstance().dialogueIsPlaying)
             {
                 // Stop player movement during dialogue or interaction
@@ -171,16 +180,17 @@ public class PlayerController : MonoBehaviour
                 dialogueActionMap.Enable();
                 return;
             }
-            if(IsMoving){
+            if (IsMoving)
+            {
                 if (IsRunning && moveInputActive)
                 {
-                    if (playerStats.stamina > 0 && playerStats.toggleStamina == true)
+                    if (playerStats.stamina > 0 && playerStats.toggleStamina)
                     {
-                        playerStats.stamina -= playerStats.staminaDepletionRate * Time.deltaTime;
-                        playerStats.stamina = Mathf.Max(0, playerStats.stamina);
-                    }
-                    else if(playerStats.stamina < 1){
-                        IsRunning = false;
+                        playerStats.stamina = Mathf.Max(0, playerStats.stamina - playerStats.staminaDepletionRate * Time.deltaTime);
+                        if (playerStats.stamina < 1)
+                        {
+                            IsRunning = false; // Stop running if stamina is too low
+                        }
                     }
                 }
             }
@@ -275,10 +285,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Attack(InputAction.CallbackContext context){
         if(context.performed){
-            if(playerStats.stamina < 10) return;
-            if(isHolding) return;
-            if(isEquipping) return;
-            if(isAttacking) return;
+            if(playerStats.stamina < 10 || isHolding || isEquipping || isAttacking || isThrowing) return;
             if(PlayerStats.GetInstance().isCombatMode && !IsRunning && !isHolding){
                 isAttacking = true;
                 playerStats.stamina -= 10f;
