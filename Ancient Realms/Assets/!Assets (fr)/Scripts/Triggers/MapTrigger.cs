@@ -12,33 +12,30 @@ public class MapTrigger : MonoBehaviour
 {
     [Header("Location Data")]
     [SerializeField] private LocationSO location;
+    [SerializeField] private MissionSO mission;
     private bool playerInRange;
 
-    void Start()
-    {
-        locationName.SetText(location.locationName);
-        locationImage.sprite = location.image;
-        locationScene = location.SceneName;
-    }
-
     private void Awake(){
-        //Panel.SetActive(false);
         playerInRange = false;
     }
     private void Update(){
         if(playerInRange){
-            //Panel.SetActive(true);
+            if(mission != null){
+                PlayerUIManager.GetInstance().OpenMission(mission);
+            }else{
+                PlayerUIManager.GetInstance().OpenLocation(location);
+            }
             if(PlayerController.GetInstance().mapActionMap.enabled){
                 if(PlayerController.GetInstance().GetInteractPressed()){
                     ChangeScene();
                 }
             }
         }else{
-            //Panel.SetActive(false);
+            PlayerUIManager.GetInstance().CloseMissionLocation();
         }
     }
     private void OnDisable(){
-        //Panel.SetActive(false);
+        PlayerUIManager.GetInstance().CloseMissionLocation();
     }
     public async void ChangeScene(){
         string prevLoc = LocationSettingsManager.GetInstance().locationSettings.SceneName;
@@ -49,16 +46,16 @@ public class MapTrigger : MonoBehaviour
         await PlayerUIManager.GetInstance().ClosePlayerUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
         PlayerController.GetInstance().mapActionMap.Disable();
-        LocationSettingsManager.GetInstance().LoadSettings(locationScene);
+        LocationSettingsManager.GetInstance().LoadSettings(location.locationName);
         SceneManager.UnloadSceneAsync(prevLoc).completed += (operation) => {
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
-            SceneManager.LoadSceneAsync(locationScene, LoadSceneMode.Additive).completed += async (operation) => {
+            SceneManager.LoadSceneAsync(location.SceneName, LoadSceneMode.Additive).completed += async (operation) => {
                 LocationSO loadedLocation = LocationSettingsManager.GetInstance().locationSettings;
                 if(loadedLocation.canAccessCombatMode && !loadedLocation.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.6f, 1f); 
                 else AudioManager.GetInstance().PlayMusic(MusicType.Town, 1f, 1f);
                 AudioManager.GetInstance().SetAmbience(PlayerUIManager.GetInstance().time.hours < 17 && PlayerUIManager.GetInstance().time.hours > 7, loadedLocation.background, loadedLocation.hasWater);
                 if(!loadedLocation.instanceMission){
-                    PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = locationScene;
+                    PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = location.SceneName;
                     PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;
                     PlayerStats.GetInstance().localPlayerData.gameData.lastX = loadedLocation.locations[0].location.x;
                     PlayerStats.GetInstance().localPlayerData.gameData.lastY = loadedLocation.locations[0].location.y;

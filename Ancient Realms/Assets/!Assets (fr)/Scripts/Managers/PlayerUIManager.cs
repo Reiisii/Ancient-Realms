@@ -9,6 +9,7 @@ using ESDatabase.Entities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -62,11 +63,19 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] GameObject hideButton;
     [SerializeField] GameObject unHideButton;
     [SerializeField] GameObject activeQuestPanel;
+    [Header("Map Mission")]
+    [SerializeField] GameObject missionGO;
+    [SerializeField] TextMeshProUGUI missionTitle;
+    [SerializeField] TextMeshProUGUI missionDescription;
+    [Header("Map Location")]
+    [SerializeField] GameObject mapLocationGO;
+    [SerializeField] TextMeshProUGUI mapLocationText;
+    [SerializeField] TextMeshProUGUI mapLocationDescription;
+    [SerializeField] Image mapLocationImage;
     [Header("Time")]
     [SerializeField] public TimeController time;
     [Header("Prefabs")]
     [SerializeField] PopupMessageManager popupPrefab;
-
     public List<TriviaSO> triviaList;
     TriviaSO trivia;
     private static PlayerUIManager Instance;
@@ -95,7 +104,6 @@ public class PlayerUIManager : MonoBehaviour
     public static PlayerUIManager GetInstance(){
         return Instance;
     }
-
 
     public async Task OpenPlayerUI(){
         playerUI.SetActive(true);
@@ -195,6 +203,20 @@ public class PlayerUIManager : MonoBehaviour
     public async Task CloseDarkenUI(){
         await fade.DOFade(0, fadeDuration).SetEase((Ease)fadeEaseType).SetUpdate(true).AsyncWaitForCompletion();
         fadeGO.SetActive(false);
+    }
+    public void OpenMission(MissionSO mission){
+        missionGO.SetActive(true);
+        missionTitle.SetText(mission.missionTitle);
+        missionDescription.SetText(mission.missionDescription);
+    }
+    public void CloseMissionLocation(){
+        missionGO.SetActive(false);
+        mapLocationGO.SetActive(false);
+    }
+    public void OpenLocation(LocationSO location){
+        mapLocationGO.SetActive(true);
+        mapLocationText.SetText(location.locationName);
+        mapLocationImage.sprite = location.image;
     }
     public void OpenBackgroundUI(){
         backgroundGO.SetActive(true);
