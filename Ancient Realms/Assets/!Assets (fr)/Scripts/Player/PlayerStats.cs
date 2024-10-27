@@ -85,11 +85,14 @@ public class PlayerStats : MonoBehaviour
         InitializeEquipments();
         level = playerGameData.level;
         currentXP = playerGameData.currentXP;
+        maxXP = playerGameData.maxXP;
         denarii = playerGameData.denarii;
         
         // Calculate the stats for the current level
         CalculateStatsForCurrentLevel();
-
+        if(currentXP > maxXP){
+            LevelUp();
+        }
         // Update UI elements
         levelText.SetText(Utilities.FormatNumber(level));
         // hpSlider.maxValue = maxHP;
@@ -198,8 +201,6 @@ public class PlayerStats : MonoBehaviour
     public void AddXp(int amount)
     {
         currentXP += amount;
-        Debug.Log($"Adding XP: {amount}, New currentXP: {currentXP}, maxXP: {maxXP}");
-        
         if (currentXP >= maxXP) LevelUp();
         AnimateXPChange(currentXP - amount, currentXP);
 

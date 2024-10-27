@@ -194,9 +194,9 @@ public class InventoryPanel : MonoBehaviour
             mainTier.SetText(equippedItems[4].tier.ToString());
             mainLevelGO.SetActive(true);
             mainLevel.SetText(equippedItems[4].level.ToString());
-            damageText.SetText(Utilities.FormatNumber((int) player.damage).ToString());
+            damageText.SetText(Utilities.ConvertToOneDecimal(player.damage));
         }else{
-            damageText.SetText(Utilities.FormatNumber((int) player.damage).ToString());
+            damageText.SetText(Utilities.ConvertToOneDecimal(player.damage));
             mainTierGO.SetActive(false);
             mainLevelGO.SetActive(false);
         }
@@ -229,10 +229,10 @@ public class InventoryPanel : MonoBehaviour
         }else{
             healSlotGO.SetActive(false);
         }
-        denarii.SetText(Utilities.FormatNumber(gameData.denarii));
-        hpText.SetText(Utilities.FormatNumber((int) player.maxHP).ToString());
-        staminaText.SetText(Utilities.FormatNumber((int) player.maxStamina).ToString());
-        armorText.SetText(Utilities.FormatNumber((int) player.armor).ToString());
+        denarii.SetText(Utilities.ConvertToOneDecimal(gameData.denarii));
+        hpText.SetText(Utilities.ConvertToOneDecimal(player.maxHP));
+        staminaText.SetText(Utilities.ConvertToOneDecimal(player.maxStamina));
+        armorText.SetText(Utilities.ConvertToOneDecimal(player.armor));
     }
     private void SortEquipments(List<EquipmentSO> inventory){
         equipments.Clear();

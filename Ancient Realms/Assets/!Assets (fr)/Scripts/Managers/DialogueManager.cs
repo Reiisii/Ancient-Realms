@@ -117,6 +117,8 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         PlayerController.GetInstance().playerActionMap.Enable();
         PlayerController.GetInstance().dialogueActionMap.Disable();
+        npcData.gameObject.GetComponent<Animator>().SetBool("isDialogue", false);
+        PlayerController.GetInstance().animator.SetBool("isDialogue", false);
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
         var relevantQuests = PlayerStats.GetInstance().activeQuests
