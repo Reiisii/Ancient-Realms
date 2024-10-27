@@ -35,6 +35,11 @@ public class Utilities {
 
         return Mathf.Max(newDamage, 0); // Ensure damage doesn't drop below 0
         }
+        public static string ConvertToOneDecimal(float number)
+        {
+                return number.ToString("F1");
+        }
+
         public static OrderType GetRandomWeapon()
         {
                 // Get all values from the Weapon enum
