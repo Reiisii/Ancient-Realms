@@ -9,6 +9,7 @@ public class CombatIdleBehaviour : StateMachineBehaviour
     {
         PlayerController.GetInstance().canWalk = true;
         // PlayerController.GetInstance().isEquipping = false;
+        PlayerController.GetInstance().isThrowing = false;
         PlayerController.GetInstance().isBlocking = false;
     }
 
