@@ -35,6 +35,7 @@ public class MintingManager : MonoBehaviour
     private double previousSolBalance = 0;
     private static MintingManager Instance;
     public bool isFetching = false;
+    public bool isMinting = false;
     private void Awake(){
         if (Instance == null)
         {
@@ -69,48 +70,45 @@ public class MintingManager : MonoBehaviour
         Web3.OnBalanceChange -= OnBalanceChange;
     }
     private void Update(){
+        if(isFetching || isMinting) {
+            button.interactable = false;
+        }else{
+            button.interactable = true;
+        }
         if(Utilities.CheckIfLateBy10Minutes(AccountManager.Instance.priceData.date) && !isFetching){
             solPrice.SetText("Fetching...");
             priceUpdateDate.SetText("Fetching...");
-            button.interactable = false;
             isFetching = true;
             AccountManager.Instance.GetPrice();
         }else if(isFetching){
             solPrice.SetText("Fetching...");
             priceUpdateDate.SetText("Fetching...");
-            button.interactable = false;
         }else{
             solPrice.SetText(Utilities.FormatSolana((double) priceData.price));
             TimeSpan timeRemaining = priceData.date.ToLocalTime().AddMinutes(10) - DateTime.Now;
 
             priceUpdateDate.SetText(Utilities.FormatTimeRemaining(timeRemaining).ToString());
-            if(priceData.date !=null){
-                button.interactable = true;
-            }else{
-                button.interactable = false;
-            }
         }
     }
     public static MintingManager GetInstance(){
         return Instance;
     }
     public async void Mint(){
-        attempts++;
+        isMinting = true;
         RarityEnum randomRarity = GetRandomRarity();
         List<NFTSO> filteredNFTs = GetNFTsByRarityAndCulture(randomRarity);
         if (filteredNFTs.Count > 0)
         {
             NFTSO nft = filteredNFTs[0];
-            button.interactable = false;
             NFTResponse nftResponse = await SolanaUtility.MintNFT(nft, priceData.price);
             if(nftResponse.response){
                 PlayerStats.GetInstance().AddStatistics(StatisticsType.MintingTotal, "1");
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "Check the Web Console (F12 Console) for your receipt");
                 Debug.Log("Your NFT Receipt" + nftResponse.url);
-                button.interactable = true;
+                isMinting = false;
             }else{
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Success, nftResponse.url);
-                button.interactable = true;
+                isMinting = false;
             }
         }
         else
