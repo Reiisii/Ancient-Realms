@@ -26,7 +26,7 @@ public class CombatIdleBehaviour : StateMachineBehaviour
             animator.Play("Roman Normal Attack 1");
             PlayerController.GetInstance().canWalk = false;
         }
-        if(PlayerController.GetInstance().isAttacking && PlayerController.GetInstance().isHolding){
+        if(!PlayerController.GetInstance().isAttacking && PlayerController.GetInstance().isHolding){
             animator.Play("Pilum Aim");
             PlayerController.GetInstance().canWalk = false;
             PlayerController.GetInstance().isHolding = true;
