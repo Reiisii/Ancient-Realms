@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class EquipmentTooltip : MonoBehaviour
+public class EquipmentTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public EquipmentSO equipment;
-    private void OnMouseEnter(){
-        Debug.Log("ya");
+    public void OnPointerEnter(PointerEventData eventData)
+    {
         TooltipManager.GetInstance().ShowEquipmentTooltip(gameObject.GetComponent<EquipmentPrefab>().equipment);
     }
 
-    private void OnMouseExit(){
-        Debug.Log("no");
+    public void OnPointerExit(PointerEventData eventData)
+    {
         TooltipManager.GetInstance().HideEquipmentTooltip();
     }
     private void OnDestroy(){

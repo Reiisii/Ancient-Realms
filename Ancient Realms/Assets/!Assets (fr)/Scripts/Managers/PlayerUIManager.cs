@@ -206,7 +206,6 @@ public class PlayerUIManager : MonoBehaviour
         fadeGO.SetActive(false);
     }
     public void OpenMission(MissionSO mission){
-        Debug.Log("Pumasok");
         missionGO.SetActive(true);
         missionTitle.SetText(mission.missionTitle);
         missionDescription.SetText(mission.missionDescription);
@@ -216,7 +215,6 @@ public class PlayerUIManager : MonoBehaviour
         mapLocationGO.SetActive(false);
     }
     public void OpenLocation(LocationSO location){
-        Debug.Log("Pumasok");
         mapLocationGO.SetActive(true);
         mapLocationText.SetText(location.locationName);
         mapLocationDescription.SetText(location.description.IsNullOrEmpty() ? location.culture + " location." : location.description);
