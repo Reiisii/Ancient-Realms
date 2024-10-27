@@ -119,8 +119,6 @@ public class SolanaUtility : MonoBehaviour
             sellerFeeBasisPoints = 0,
             creators = new List<Creator> { new(Web3.Account.PublicKey, 100, true) }
         };
-        Debug.Log(await Web3.Rpc.GetMinimumBalanceForRentExemptionAsync(TokenProgram.MintAccountDataSize));
-        // Prepare the transaction
         ulong lamports = ConvertSolToLamports(price);
         var blockHash = await Web3.Rpc.GetLatestBlockHashAsync();
         var minimumRent = await Web3.Rpc.GetMinimumBalanceForRentExemptionAsync(TokenProgram.MintAccountDataSize);
