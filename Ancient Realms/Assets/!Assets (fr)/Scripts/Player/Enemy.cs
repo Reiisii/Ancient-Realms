@@ -476,10 +476,12 @@ public class Enemy : MonoBehaviour
             if (gameObject == null) return;  // Prevents further movement if destroyed
         })
         .OnComplete(()=>{
+            if(gameObject !=null){
             DOVirtual.DelayedCall(3f, () => 
             {
                 canMove = true;
             });
+            }
         });
     }
     private void SetFacingDirection(Vector2 moveInput)

@@ -22,6 +22,7 @@ public class NPCData{
     public TextAsset npcDialogue;
     public List<string> giveableQuest;
     public List<QuestSO> activePlayerQuest;
+    public GameObject gameObject;
 }
 [Serializable]
 public class Goal
