@@ -5,20 +5,32 @@ using UnityEngine.EventSystems;
 
 public class EquipmentTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public EquipmentSO equipment;
+    public EquipmentPrefab equipmentPrefab;
+    [SerializeField] private bool isHovering = false;
     public void OnPointerEnter(PointerEventData eventData)
     {
-        TooltipManager.GetInstance().ShowEquipmentTooltip(gameObject.GetComponent<EquipmentPrefab>().equipment);
+        if (!isHovering)
+        {
+            isHovering = true;
+            TooltipManager.GetInstance().ShowEquipmentTooltip(equipmentPrefab.equipment);
+        }
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        TooltipManager.GetInstance().HideEquipmentTooltip();
+        if (isHovering)
+        {
+            isHovering = false;
+            TooltipManager.GetInstance().HideEquipmentTooltip();
+        }
+
     }
     private void OnDestroy(){
-        if(TooltipManager.GetInstance().equipmentTooltip.activeSelf) TooltipManager.GetInstance().HideEquipmentTooltip();
-    }
-    private void OnDisable(){
-        if(TooltipManager.GetInstance().equipmentTooltip.activeSelf) TooltipManager.GetInstance().HideEquipmentTooltip();
+        if (isHovering)
+        {
+            isHovering = false;
+            TooltipManager.GetInstance().HideEquipmentTooltip();
+        }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MissionManager : MonoBehaviour
@@ -26,6 +27,11 @@ public class MissionManager : MonoBehaviour
             inMission = true;
         }else{
             inMission = false;
+        }
+    }
+    void Update(){
+        if(mission != null){
+            Debug.Log(mission.goals[mission.currentGoal].currentAmount + "/" + mission.goals[mission.currentGoal].requiredAmount);
         }
     }
     public void EndMission(){
