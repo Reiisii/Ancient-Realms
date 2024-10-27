@@ -283,6 +283,13 @@ public class Enemy : MonoBehaviour
                 if(currentHP <= 0){
                     isDead = true;
                     animator.Play("Death");
+                    if(MissionManager.GetInstance().inMission){
+                        MissionSO mission = MissionManager.GetInstance().mission;
+                        MissionGoal missionGoal = mission.goals[mission.currentGoal];
+                        if(missionGoal.missionType.Equals(MissionGoalType.Clear) && missionGoal.targetIDs.Contains(id)){
+                            MissionManager.GetInstance().UpdateGoal(MissionGoalType.Clear);
+                        }
+                    }
                     gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
                     foreach(QuestSO q in quest){
                     if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Kill && q.goals[q.currentGoal].targetCharacters.Contains(id)){

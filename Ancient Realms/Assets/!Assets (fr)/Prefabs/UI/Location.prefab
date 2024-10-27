@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8924319580760311832}
   m_Layer: 0
   m_Name: Location
-  m_TagString: Untagged
+  m_TagString: Location
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,10 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   location: {fileID: 0}
-  Panel: {fileID: 0}
-  locationName: {fileID: 0}
-  locationScene: 
-  locationImage: {fileID: 0}
+  mission: {fileID: 0}
+  playerInRange: 0
 --- !u!61 &8924319580760311832
 BoxCollider2D:
   m_ObjectHideFlags: 0

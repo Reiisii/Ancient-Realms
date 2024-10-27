@@ -13,26 +13,31 @@ public class MapTrigger : MonoBehaviour
     [Header("Location Data")]
     [SerializeField] private LocationSO location;
     [SerializeField] private MissionSO mission;
-    private bool playerInRange;
+    public bool playerInRange;
 
     private void Awake(){
         playerInRange = false;
     }
     private void Update(){
         if(playerInRange){
-            if(mission != null){
-                PlayerUIManager.GetInstance().OpenMission(mission);
-            }else{
-                PlayerUIManager.GetInstance().OpenLocation(location);
-            }
             if(PlayerController.GetInstance().mapActionMap.enabled){
                 if(PlayerController.GetInstance().GetInteractPressed()){
                     ChangeScene();
                 }
             }
-        }else{
-            PlayerUIManager.GetInstance().CloseMissionLocation();
         }
+    }
+    public void OpenTrigger(){
+        playerInRange = true;
+        if(mission != null){
+            PlayerUIManager.GetInstance().OpenMission(mission);
+        }else{
+            PlayerUIManager.GetInstance().OpenLocation(location);
+        }
+    }
+    public void CloseTrigger(){
+        playerInRange = false;
+        PlayerUIManager.GetInstance().CloseMissionLocation();
     }
     private void OnDisable(){
         PlayerUIManager.GetInstance().CloseMissionLocation();
@@ -61,6 +66,7 @@ public class MapTrigger : MonoBehaviour
                     PlayerStats.GetInstance().localPlayerData.gameData.lastY = loadedLocation.locations[0].location.y;
                     PlayerStats.GetInstance().isDataDirty = true;
                 }else{
+                    MissionManager.GetInstance().StartMission(mission.missionID);
                     PlayerStats.GetInstance().stopSaving = true;
                 }
                 await PlayerUIManager.GetInstance().CloseLoadingUI();
@@ -68,16 +74,5 @@ public class MapTrigger : MonoBehaviour
                 
             };
         };
-    }
-    private void OnTriggerEnter2D(Collider2D collider){
-        if(collider.gameObject.tag == "MapP"){
-            playerInRange = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collider){
-        if(collider.gameObject.tag == "MapP"){
-            playerInRange = false;
-        }
     }
 }
