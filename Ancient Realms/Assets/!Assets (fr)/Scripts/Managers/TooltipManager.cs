@@ -40,7 +40,8 @@ public class TooltipManager : MonoBehaviour
             equipmentTooltip.SetActive(true);
             equipmentTooltip.transform.position = Input.mousePosition;
         }
-
+        eqName.SetText(equipment.itemName);
+        eqName.color = Utilities.GetColorForCulture(equipment.culture);
         eqTierAndLevel.SetText($"Tier: {equipment.tier}                                        Level: {equipment.level}");
         if(equipment.equipmentType == EquipmentEnum.Armor){
             StatPrefab stat = Instantiate(statPrefab, Vector3.zero, Quaternion.identity);
