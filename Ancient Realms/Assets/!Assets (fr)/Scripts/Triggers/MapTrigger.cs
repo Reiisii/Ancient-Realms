@@ -12,11 +12,6 @@ public class MapTrigger : MonoBehaviour
 {
     [Header("Location Data")]
     [SerializeField] private LocationSO location;
-    [Header("Panel")]
-    [SerializeField] private GameObject Panel;
-    [SerializeField] private TextMeshProUGUI locationName;
-    [SerializeField] private string locationScene;
-    [SerializeField] private Image locationImage;
     private bool playerInRange;
 
     void Start()
@@ -27,23 +22,23 @@ public class MapTrigger : MonoBehaviour
     }
 
     private void Awake(){
-        Panel.SetActive(false);
+        //Panel.SetActive(false);
         playerInRange = false;
     }
     private void Update(){
         if(playerInRange){
-            Panel.SetActive(true);
+            //Panel.SetActive(true);
             if(PlayerController.GetInstance().mapActionMap.enabled){
                 if(PlayerController.GetInstance().GetInteractPressed()){
                     ChangeScene();
                 }
             }
         }else{
-            Panel.SetActive(false);
+            //Panel.SetActive(false);
         }
     }
     private void OnDisable(){
-        Panel.SetActive(false);
+        //Panel.SetActive(false);
     }
     public async void ChangeScene(){
         string prevLoc = LocationSettingsManager.GetInstance().locationSettings.SceneName;
