@@ -15,6 +15,7 @@ public class PlayerMapMovement : MonoBehaviour
     private Vector2 movementInput;
     public bool inWater = false;
     public bool isFacingRight = true;
+    public bool playerInRange = false;
     private Vector2 _moveDir = Vector2.zero;
     private static PlayerMapMovement Instance;
     void Awake(){
@@ -78,11 +79,17 @@ public class PlayerMapMovement : MonoBehaviour
         if(collider.gameObject.tag == "Water"){
             inWater = true;
         }
+        if(collider.gameObject.tag == "Location"){
+            collider.gameObject.GetComponent<MapTrigger>().OpenTrigger();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collider){
         if(collider.gameObject.tag == "Water"){
             inWater = false;
+        }
+         if(collider.gameObject.tag == "Location"){
+            collider.gameObject.GetComponent<MapTrigger>().CloseTrigger();
         }
     }
 }
