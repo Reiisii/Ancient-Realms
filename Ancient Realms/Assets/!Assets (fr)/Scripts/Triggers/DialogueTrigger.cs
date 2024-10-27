@@ -46,6 +46,7 @@ public class DialogueTrigger : MonoBehaviour
                     dialogueKnot = currentKnot,
                     npcDialogue = dialogue,
                     giveableQuest = quests,
+                    gameObject = gameObject,
                 };
         initialFlipX = npcSpriteRenderer.flipX;
         if(encycID.IsNullOrEmpty()) return;
@@ -57,6 +58,8 @@ public class DialogueTrigger : MonoBehaviour
             VisualCueKey.SetActive(true);
             setVisualCue();
             if(PlayerController.GetInstance().GetInteractPressed()){
+                gameObject.GetComponent<Animator>().SetBool("isDialogue", true);
+                PlayerController.GetInstance().animator.SetBool("isDialogue", true);
                 activePlayerQuests.Clear();
                 foreach(QuestSO quest in PlayerStats.GetInstance().activeQuests){
                     foreach(string npcQuestList in quests){
