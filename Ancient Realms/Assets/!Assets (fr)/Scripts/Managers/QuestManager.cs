@@ -295,6 +295,7 @@ public class QuestManager : MonoBehaviour
                 if (goal.goalType == GoalTypeEnum.Kill)
                 {
                     goal.IncrementProgress(1);
+                    PlayerStats.GetInstance().AddStatistics(StatisticsType.Kill, "1");
                     playerStats.SaveQuestToServer();
                     if (goal.currentAmount >= goal.requiredAmount)
                     {
@@ -550,7 +551,7 @@ public class QuestManager : MonoBehaviour
                     }
                     break;
                 case RewardsEnum.Item:
-                    // playerStats.AddItem(reward.value);
+                    playerStats.AddItem(int.Parse(reward.value), reward.tier, reward.level, reward.amount);
                     break;
                 case RewardsEnum.Artifact:
                     if(!quest.isRewarded){

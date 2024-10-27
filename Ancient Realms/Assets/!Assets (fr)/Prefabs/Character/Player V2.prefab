@@ -1851,6 +1851,12 @@ MonoBehaviour:
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
+  chapterSelectActionMap:
+    m_Name: Chapter Select
+    m_Id: a87de9ca-adc0-4810-bd4a-a0f70209c8dd
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
   questActionMap:
     m_Name: Quest
     m_Id: 33114b8d-8b37-4dba-9aa0-7171acaaa5a7
@@ -2501,6 +2507,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: aedb71fd-61b2-4b7a-829a-31160f791ede
     m_ActionName: Player/F_CombatMode[/Keyboard/5]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: ToggleChapterSelect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: eee372d6-1844-4694-99a9-e3b577d09c1a
+    m_ActionName: Player/Toggle Chapter Select[/Keyboard/l]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -6049172724251349994}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: ToggleChapterSelect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 531bac7c-d735-4289-841b-ca36da8f077c
+    m_ActionName: ChapterSelect/Toggle[/Keyboard/tab,/Keyboard/l]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2642,7 +2680,7 @@ MonoBehaviour:
   - {x: -11.980261, y: 17.198854, z: 0}
   m_ShapePathHash: -1779318330
   m_Mesh: {fileID: 0}
-  m_InstanceId: 67098
+  m_InstanceId: 549496
   m_LocalBounds:
     m_Center: {x: 0.51626015, y: 5.4031525, z: 0}
     m_Extent: {x: 13.058325, y: 26.380466, z: 0}

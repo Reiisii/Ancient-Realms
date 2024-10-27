@@ -23,6 +23,7 @@ Congratulations, you've successfully completed your training. You're ready to ta
 
 == exhaust ==
 Didn't I assign you to do something?
+-> DONE
 == exhaust_backpack ==
 Open your backpack and check your items before talking to me.
 -> DONE

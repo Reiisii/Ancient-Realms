@@ -24,7 +24,7 @@ public class MapManager : MonoBehaviour
         return Instance;
     }
 
-    public async void OpenMap(){
+    public void OpenMap(){
         if(PlayerController.GetInstance() != null){
             if(!PlayerController.GetInstance().canAccessMap) {
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't access the map at this time.");
@@ -36,7 +36,7 @@ public class MapManager : MonoBehaviour
             }
                 PlayerController.GetInstance().playerActionMap.Enable();
                 PlayerController.GetInstance().mapActionMap.Disable();
-                await PlayerUIManager.GetInstance().CloseMapUI();
+                PlayerUIManager.GetInstance().CloseMapUI();
             }else{
                 if(PlayerController.GetInstance() != null){
                     PlayerController.GetInstance().cm.SetActive(false);

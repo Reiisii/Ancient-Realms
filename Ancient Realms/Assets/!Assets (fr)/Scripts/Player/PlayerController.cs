@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
     private float panDistance = 7f;
     public InputActionAsset inputActions;
     public InputActionMap playerActionMap;
+    public InputActionMap chapterSelectActionMap;
     public InputActionMap questActionMap;
     public InputActionMap inventoryActionMap;
     public InputActionMap pauseActionMap;
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
             PlayerStats.GetInstance().firstLogin = false;
         }
         playerActionMap = inputActions.FindActionMap("Player");
+        chapterSelectActionMap = inputActions.FindActionMap("ChapterSelect");
         questActionMap = inputActions.FindActionMap("Quest");
         inventoryActionMap = inputActions.FindActionMap("Inventory");
         pauseActionMap = inputActions.FindActionMap("Pause");
@@ -94,6 +96,7 @@ public class PlayerController : MonoBehaviour
         mapActionMap = inputActions.FindActionMap("Map");
         mintingActionMap = inputActions.FindActionMap("Minting");
         shopActionMap = inputActions.FindActionMap("Shop");
+        playerActionMap.Disable();
     }
     
     private void Start(){
@@ -124,6 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         if(PlayerStats.GetInstance().currentHP <= 0 && !PlayerStats.GetInstance().isDead){
             PlayerStats.GetInstance().isDead = true;
+            PlayerStats.GetInstance().AddStatistics(StatisticsType.DeathTotal, "1");
             animator.Play("Death");
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
             playerActionMap.Disable();
@@ -195,26 +199,24 @@ public class PlayerController : MonoBehaviour
                         distanceMoved += Mathf.Abs(deltaX);
                         if (distanceMoved >= moveThreshold)
                         {
+                            PlayerStats.GetInstance().AddStatistics(StatisticsType.MoveDistance, "1");
                             if (IsRunning == true){
                                 List<QuestSO> quest = playerStats.activeQuests.ToList();
                                 foreach(QuestSO q in quest){
                                     if(q.goals[q.currentGoal].goalType == GoalTypeEnum.RunLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.RunRight){
                                         QuestManager.GetInstance().UpdateRunGoals(deltaX);
-                                        distanceMoved = 0f;
                                     } 
                                 }
-                                
-                                distanceMoved = 0f;
                             }else if (!IsRunning){
                                 List<QuestSO> quest = playerStats.activeQuests.ToList();
                                 foreach(QuestSO q in quest){
                                     if(q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkLeft || q.goals[q.currentGoal].goalType == GoalTypeEnum.WalkRight){
                                         QuestManager.GetInstance().UpdateWalkGoals(deltaX);
-                                        distanceMoved = 0f;
                                     } 
                                 }
                                 
                             }
+                            distanceMoved = 0f;
                             // Reset the distanceMoved counter
                         }
                         lastPosition = currentPosition;
@@ -443,7 +445,9 @@ public class PlayerController : MonoBehaviour
         float moveDuration = 0.2f;
 
         // Use DOTween to smoothly move the character to the new position
-        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnKill(() => {
+            if (gameObject == null) return;  // Stops movement if the object is destroyed
+        });;
         
     }
 
@@ -464,7 +468,9 @@ public class PlayerController : MonoBehaviour
         float moveDuration = 0.2f;
 
         // Use DOTween to smoothly move the character to the new position
-        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad);
+        gameObject.transform.DOMove(newPosition, moveDuration).SetEase(Ease.OutQuad).OnKill(() => {
+            if (gameObject == null) return;  // Prevents further movement if destroyed
+        });
         
     }
     public void OnMove(InputAction.CallbackContext context) 
@@ -605,6 +611,18 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             PlayerUIManager.GetInstance().TogglePremiumShop();
+        }
+    }
+    public void ToggleChapterSelect(InputAction.CallbackContext context)
+    {
+        
+        if (context.performed)
+        {
+            if(SmithingGameManager.GetInstance().inMiniGame) {
+                PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You can't use open Chapter Select while in smithing game.");
+                return;
+            }
+            PlayerUIManager.GetInstance().ToggleChapterSelect();
         }
     }
     // Quest Pressed Right

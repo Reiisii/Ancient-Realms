@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Ink.Parsed;
 using UnityEngine;
+using WebSocketSharp;
 
 public class DialogueTrigger : MonoBehaviour
 {
     [Header("NPC Details")]
     [SerializeField] private string npcID;
+    [SerializeField] private string encycID;
     [SerializeField] private string npcName;
     [SerializeField] private Sprite npcIcon;
     [SerializeField] private string currentKnot;
@@ -44,7 +47,9 @@ public class DialogueTrigger : MonoBehaviour
                     npcDialogue = dialogue,
                     giveableQuest = quests,
                 };
-        initialFlipX = npcSpriteRenderer.flipX;;
+        initialFlipX = npcSpriteRenderer.flipX;
+        if(encycID.IsNullOrEmpty()) return;
+        else PlayerStats.GetInstance().AddEncyc(EncycType.Character, Convert.ToInt32(encycID));
     }
     private void Update(){
         if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying && PlayerController.GetInstance().playerActionMap.enabled){
@@ -105,9 +110,10 @@ public class DialogueTrigger : MonoBehaviour
         if (npcData.giveableQuest.Count > 0)
         {
             QuestSO quest = PlayerStats.GetInstance().activeQuests
-                            .Find(q => q.characters != null && q.goals != null &&
-                                    q.currentGoal < q.goals.Count &&
-                                    q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
+            .Find(q => q.characters != null && q.goals != null &&
+                    q.currentGoal < q.goals.Count &&
+                    q.goals[q.currentGoal].characterIndex < q.characters.Count && // Ensure characterIndex is valid
+                    q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
 
             if (quest != null)
             {
@@ -117,11 +123,11 @@ public class DialogueTrigger : MonoBehaviour
         else
         {
             QuestSO quest = PlayerStats.GetInstance().activeQuests
-                            .Find(q => q.characters != null && q.goals != null &&
-                                    q.currentGoal < q.goals.Count &&
-                                    q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
-
-            if (quest != null)
+            .Find(q => q.characters != null && q.goals != null &&
+                    q.currentGoal < q.goals.Count &&
+                    q.goals[q.currentGoal].characterIndex < q.characters.Count && // Ensure characterIndex is valid
+                    q.characters[q.goals[q.currentGoal].characterIndex] == npcData.id);
+                    if (quest != null)
             {
                 return !quest.isCompleted && quest.isActive && (quest.currentGoal + 1) == quest.goals.Count;
             }
