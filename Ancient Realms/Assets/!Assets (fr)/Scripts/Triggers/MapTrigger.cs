@@ -40,6 +40,7 @@ public class MapTrigger : MonoBehaviour
         PlayerUIManager.GetInstance().CloseMissionLocation();
     }
     private void OnDisable(){
+        playerInRange = false;
         PlayerUIManager.GetInstance().CloseMissionLocation();
     }
     public async void ChangeScene(){
@@ -51,7 +52,7 @@ public class MapTrigger : MonoBehaviour
         await PlayerUIManager.GetInstance().ClosePlayerUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
         PlayerController.GetInstance().mapActionMap.Disable();
-        LocationSettingsManager.GetInstance().LoadSettings(location.locationName);
+        LocationSettingsManager.GetInstance().LoadSettings(location);
         SceneManager.UnloadSceneAsync(prevLoc).completed += (operation) => {
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
             SceneManager.LoadSceneAsync(location.SceneName, LoadSceneMode.Additive).completed += async (operation) => {

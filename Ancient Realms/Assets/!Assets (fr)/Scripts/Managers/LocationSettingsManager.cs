@@ -28,4 +28,7 @@ public class LocationSettingsManager : MonoBehaviour
     public void LoadSettings(string location){
         locationSettings = locationArray.Where(q => q.SceneName.Equals(location)).FirstOrDefault();
     }
+    public void LoadSettings(LocationSO location){
+        locationSettings = location;
+    }
 }
