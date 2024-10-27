@@ -290,9 +290,9 @@ public class PlayerController : MonoBehaviour
     public void OnThrowPilum(InputAction.CallbackContext context)
     {
         EquipmentSO pilum = PlayerStats.GetInstance().equippedItems[6];
-        if(playerStats.stamina < 10) return;
         if (context.started)
         {
+            if(playerStats.stamina < 10) return;
             if(pilum == null){
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a javelin");
                 return;
@@ -300,11 +300,13 @@ public class PlayerController : MonoBehaviour
             if(isAttacking) return;
             if(playerStats.isCombatMode && !isAttacking && !IsRunning){
                 isHolding = true;
+                animator.SetBool("isHolding", true);
             }
         }else if (context.canceled)
         {
             // Release the W key
             isHolding = false;
+            animator.SetBool("isHolding", false);
         }
 
     }

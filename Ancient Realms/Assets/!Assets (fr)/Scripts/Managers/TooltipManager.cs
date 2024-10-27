@@ -41,7 +41,7 @@ public class TooltipManager : MonoBehaviour
             equipmentTooltip.transform.position = Input.mousePosition;
         }
 
-        eqTierAndLevel.SetText($"Tier: {equipment.tier}                        Level: {equipment.level}");
+        eqTierAndLevel.SetText($"Tier: {equipment.tier}                                        Level: {equipment.level}");
         if(equipment.equipmentType == EquipmentEnum.Armor){
             StatPrefab stat = Instantiate(statPrefab, Vector3.zero, Quaternion.identity);
             stat.transform.SetParent(stats);
