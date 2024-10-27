@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NPCIdle : StateMachineBehaviour
 {
+    private string[] talkAnimations = { "Talk_1", "Talk_2", "Talk_3", "Talk_4" };
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {   
         // Ally ally = animator.gameObject.GetComponent<Ally>();
@@ -22,6 +23,14 @@ public class NPCIdle : StateMachineBehaviour
     {
         Ally ally = animator.gameObject.GetComponent<Ally>();
         Enemy enemy = animator.gameObject.GetComponent<Enemy>();
+        if(DialogueManager.GetInstance().dialogueIsPlaying && animator.GetBool("isDialogue")){
+            int randomIndex = Random.Range(0, talkAnimations.Length);  // Choose a random index from 0 to 3
+            string randomAnimation = talkAnimations[randomIndex];  // Get the corresponding animation name
+            animator.SetBool("isDialogue", true);
+            animator.Play(randomAnimation);
+        }else{
+            animator.SetBool("isDialogue", false);
+        }
         if(ally != null){
             if(ally.isCombatMode && animator.GetBool("isCombatMode") && ally.isEquipping){
                 ally.canMove = false;

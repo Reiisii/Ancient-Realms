@@ -8,7 +8,7 @@ public class DialogueBehavior : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(DialogueManager.GetInstance().dialogueIsPlaying){
+        if(DialogueManager.GetInstance().dialogueIsPlaying && animator.GetBool("isDialogue")){
             int randomIndex = Random.Range(0, talkAnimations.Length);  // Choose a random index from 0 to 3
             string randomAnimation = talkAnimations[randomIndex];  // Get the corresponding animation name
             animator.Play(randomAnimation);
@@ -20,7 +20,7 @@ public class DialogueBehavior : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(!DialogueManager.GetInstance().dialogueIsPlaying){
+        if(!DialogueManager.GetInstance().dialogueIsPlaying && !animator.GetBool("isDialogue")){
             animator.SetBool("isDialogue", false);
         }
     }

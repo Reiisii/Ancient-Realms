@@ -695,7 +695,7 @@ Animator:
   m_GameObject: {fileID: 8542662719839802627}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7afee66fd75af3a40834701fea88bd81, type: 2}
+  m_Controller: {fileID: 9100000, guid: b6675d4cabc17664cbe01bad92f29a15, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -755,10 +755,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcID: 
+  encycID: 
   npcName: 
   npcIcon: {fileID: 21300000, guid: a4c3ef041ee9a3146b8d69772eac1f63, type: 3}
   currentKnot: exhaust
   quests: []
+  activePlayerQuests: []
   VisualCue: {fileID: 3938914090894238841}
   VisualCueKey: {fileID: 6169447772747933138}
   icon: {fileID: 6284356115157952633}
