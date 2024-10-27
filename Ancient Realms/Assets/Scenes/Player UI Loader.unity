@@ -4921,6 +4921,13 @@ MonoBehaviour:
   hideButton: {fileID: 341624298}
   unHideButton: {fileID: 1035448151}
   activeQuestPanel: {fileID: 963216651}
+  missionGO: {fileID: 1606906008}
+  missionTitle: {fileID: 205092404}
+  missionDescription: {fileID: 621929671}
+  mapLocationGO: {fileID: 1606906008}
+  mapLocationText: {fileID: 1784746572}
+  mapLocationDescription: {fileID: 1693433960}
+  mapLocationImage: {fileID: 868661238}
   time: {fileID: 26578138}
   popupPrefab: {fileID: 3719489370025623175, guid: cf973365e5339984dbf711db338e767d, type: 3}
   triviaList: []
@@ -23627,6 +23634,10 @@ PrefabInstance:
       propertyPath: Panel
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8494332951418333384, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+      propertyPath: mission
+      value: 
+      objectReference: {fileID: 11400000, guid: 16b9969e11a50cc4a9cc850ba1f94a3e, type: 2}
     - target: {fileID: 8494332951418333384, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
       propertyPath: location
       value: 
@@ -59328,7 +59339,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1606906009
 RectTransform:
   m_ObjectHideFlags: 0

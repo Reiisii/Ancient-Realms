@@ -39,6 +39,10 @@ public class Equipments : MonoBehaviour
     }
     public void OnItemClick()
     {
+        PlayerData playerData = AccountManager.Instance.playerData;
+        if(!playerData.gameData.equipments.Contains(equipment.equipmentId)){
+            return;
+        }
         EncycHandler.Instance.ShowItemDetails(equipment);
         UIManager.DisableAllButtons(panel);
         panel.GetComponent<RectTransform>().DOAnchorPosY(-1050, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => {

@@ -7,6 +7,7 @@ using ESDatabase.Entities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 
 public class CharacterPortrait : MonoBehaviour
@@ -40,6 +41,10 @@ public class CharacterPortrait : MonoBehaviour
     }
     public void OnItemClick()
     {
+        PlayerData playerData = AccountManager.Instance.playerData;
+        if(!playerData.gameData.characters.Contains(character.id)){
+            return;
+        }
         UIManager.DisableAllButtons(panel);
         panel.GetComponent<RectTransform>().DOAnchorPosY(-1050, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => {
            panel.SetActive(false);
