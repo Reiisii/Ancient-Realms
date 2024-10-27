@@ -353,8 +353,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1414125273
-  m_SortingLayer: 2
+  m_SortingLayerID: 260688393
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0dc59f6c7a76de14bad9ecd989c3c2d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -482,10 +482,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcID: 
+  encycID: 
   npcName: 
   npcIcon: {fileID: 0}
   currentKnot: 
   quests: []
+  activePlayerQuests: []
   VisualCue: {fileID: 4109714729919311760}
   VisualCueKey: {fileID: 1969672137521222553}
   icon: {fileID: 6383837275792663440}
@@ -859,7 +861,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 3bcf441174f29324988b0ad1282fd48c, type: 3}
     - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_SortingLayerID

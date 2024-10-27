@@ -248,7 +248,6 @@ public class Ally : MonoBehaviour
         javelinSlot.sortingOrder = order + 3;
         hand.sortingOrder = order + 4;
         forearm.sortingOrder = order + 4;
-
     }
     private void SetFacingDirection(Vector2 velocity)
     {
