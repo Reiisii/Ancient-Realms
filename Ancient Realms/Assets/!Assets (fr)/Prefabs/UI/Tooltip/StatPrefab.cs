@@ -14,6 +14,7 @@ public class StatPrefab : MonoBehaviour
     [SerializeField] Sprite damageSprite;
     [SerializeField] Sprite staminaSprite;
     [SerializeField] Sprite speedSprite;
+    [SerializeField] Sprite rangeSprite;
 
     public void SetHP(string hp){
         icon.sprite = hpSprite;
@@ -37,6 +38,6 @@ public class StatPrefab : MonoBehaviour
     }
     public void SetRange(string range){
         icon.sprite = speedSprite;
-        text.SetText($"Speed: +{range}");
+        text.SetText($"Range: +{range}");
     }
 }
