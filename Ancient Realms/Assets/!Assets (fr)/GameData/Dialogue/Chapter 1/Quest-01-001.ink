@@ -43,6 +43,23 @@ Remember, this is not just about strength. Use your wits, coordinate with your c
 Prepare yourself and gather a small group to assist you. Move swiftly, and return victorious. The eyes of the Legion are upon you!
 -> DONE
 
+== goal_4 ==
+Well done, soldier! You've proven yourself out there, and your actions have not gone unnoticed. The strength and discipline you displayed are what make Rome mighty. Consider this a victory worthy of the Legion!
+Now, there’s no time to rest on our laurels. The Legate himself, Mark Antony, is expecting you. Head to him at once for a full mission update and to receive your next orders.
+-> DONE
+
+== goal_5 ==
+Well done, soldier. You’ve served the Thirteenth with honor, and your deeds have not gone unnoticed.
+But listen carefully—there’s news from the front. The Gauls have been spotted advancing on Bibracte. We cannot let them gain ground. We’ll be marching soon to meet them, and we’ll need every legionary ready and prepared.
+Find your Centurion and deliver this message. Tell him we go to Bibracte, where Rome will once again make her mark. Go now, and be swift.
+-> DONE
+
+== goal_6 ==
+So, the Gauls march to Bibracte, do they? It seems they’ve forgotten the bite of Roman steel. No matter—we’ll be there to remind them.
+You’ve done well, soldier. Thanks to you, we’re one step closer to victory. Prepare yourself; the Thirteenth marches soon, and we’ll need every able man ready for what lies ahead.
+Dismissed. Ready yourself for battle—and know that Rome is watching.
+-> DONE
+
 == exhaust_talk ==
 Hm? What do you want? didn't I assign you to talk to the Veterans?
 -> DONE

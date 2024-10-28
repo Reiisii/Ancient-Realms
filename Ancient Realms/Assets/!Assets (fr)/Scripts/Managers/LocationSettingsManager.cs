@@ -7,6 +7,7 @@ public class LocationSettingsManager : MonoBehaviour
 {
     private static LocationSettingsManager Instance;
     List<LocationSO> locationArray;
+    public LocationSO lastLocationVisited;
     public LocationSO locationSettings;
     private void Awake(){
         locationArray = Resources.LoadAll<LocationSO>("LocationSO").ToList();
@@ -26,9 +27,19 @@ public class LocationSettingsManager : MonoBehaviour
         return Instance;
     }
     public void LoadSettings(string location){
+        if(locationSettings != null){
+            lastLocationVisited = locationSettings;
+        }else{
+            lastLocationVisited = locationArray.Where(q => q.SceneName.Equals(location)).FirstOrDefault();;
+        }
         locationSettings = locationArray.Where(q => q.SceneName.Equals(location)).FirstOrDefault();
     }
     public void LoadSettings(LocationSO location){
+        if(locationSettings != null){
+            lastLocationVisited = locationSettings;
+        }else{
+            lastLocationVisited = location;
+        }
         locationSettings = location;
     }
 }

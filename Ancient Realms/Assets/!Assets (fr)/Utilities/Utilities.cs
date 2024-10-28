@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class Utilities {
+public class Utilities : MonoBehaviour {
         private static System.Random random = new System.Random();
         public static Sprite Texture2dToSprite(Texture2D texture){
                 Sprite image = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
                 
                 return image;
+        }
+        public static void ClearContent(RectTransform cPanel)
+        {
+                foreach (Transform child in cPanel)
+                {
+                        Destroy(child.gameObject);
+                }
         }
         public static float CalculateDamage(float damage, float armor)
         {

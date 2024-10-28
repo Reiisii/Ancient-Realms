@@ -382,6 +382,25 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+    public void UpdateMissionGoal(string mission)
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            if(quest.currentGoal < quest.goals.Capacity){
+                Goal goal = quest.goals[quest.currentGoal];
+                if (goal.goalType == GoalTypeEnum.Mission && goal.missionID.Equals(mission))
+                {
+                    goal.IncrementProgress(1);
+                    playerStats.SaveQuestToServer();
+                    if (goal.currentAmount >= goal.requiredAmount)
+                    {
+                        // COMPLETE TRIGGER CODE
+                        CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                    }
+                }
+            }
+        }
+    }
     public void UpdateJournalGoal()
     {
         foreach (var quest in playerStats.activeQuests)

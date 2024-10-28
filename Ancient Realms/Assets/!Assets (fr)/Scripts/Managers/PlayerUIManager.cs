@@ -73,6 +73,8 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI mapLocationText;
     [SerializeField] TextMeshProUGUI mapLocationDescription;
     [SerializeField] Image mapLocationImage;
+    [Header("Map Location")]
+    [SerializeField] GameObject missionPanelGO;
     [Header("Time")]
     [SerializeField] public TimeController time;
     [Header("Prefabs")]
@@ -213,6 +215,12 @@ public class PlayerUIManager : MonoBehaviour
     public void CloseMissionLocation(){
         missionGO.SetActive(false);
         mapLocationGO.SetActive(false);
+    }
+    public void OpenMissionPanel(){
+        missionPanelGO.SetActive(true);
+    }
+    public void CloseMissionPanel(){
+        missionPanelGO.SetActive(false);
     }
     public void OpenLocation(LocationSO location){
         mapLocationGO.SetActive(true);
@@ -358,6 +366,35 @@ public class PlayerUIManager : MonoBehaviour
                 AudioManager.GetInstance().SetAmbience(time.hours < 17 && time.hours > 7, loadedLocation.background, loadedLocation.hasWater);
                 if(!loadedLocation.instanceMission){
                     PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = "Rome";
+                    PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;
+                    PlayerStats.GetInstance().localPlayerData.gameData.lastX = loadedLocation.locations[0].location.x;
+                    PlayerStats.GetInstance().localPlayerData.gameData.lastY = loadedLocation.locations[0].location.y;
+                    PlayerStats.GetInstance().isDataDirty = true;
+                }else{
+                    PlayerStats.GetInstance().stopSaving = true;
+                }
+                await CloseLoadingUI();
+                await OpenPlayerUI();
+            };
+        };
+    }
+    public async void LastLocation(){
+        string prevLoc = LocationSettingsManager.GetInstance().locationSettings.SceneName;
+        AudioManager.GetInstance().StopAmbience();
+        OpenBackgroundUI();
+        await OpenLoadingUI();
+        PlayerStats.GetInstance().ReplenishStats();
+        SceneManager.UnloadSceneAsync(LocationSettingsManager.GetInstance().locationSettings.SceneName).completed += (operation) => {
+            backgroundGO.SetActive(false);
+            LocationSettingsManager.GetInstance().LoadSettings(LocationSettingsManager.GetInstance().lastLocationVisited);
+            SceneManager.LoadSceneAsync(LocationSettingsManager.GetInstance().locationSettings.SceneName, LoadSceneMode.Additive).completed += async (operation) => {
+                Time.timeScale = 1f;
+                LocationSO loadedLocation = LocationSettingsManager.GetInstance().locationSettings;
+                if(loadedLocation.canAccessCombatMode && !loadedLocation.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.6f, 1f); 
+                else AudioManager.GetInstance().PlayMusic(MusicType.Town, 1f, 1f);
+                AudioManager.GetInstance().SetAmbience(time.hours < 17 && time.hours > 7, loadedLocation.background, loadedLocation.hasWater);
+                if(!loadedLocation.instanceMission){
+                    PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = loadedLocation.SceneName;
                     PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;
                     PlayerStats.GetInstance().localPlayerData.gameData.lastX = loadedLocation.locations[0].location.x;
                     PlayerStats.GetInstance().localPlayerData.gameData.lastY = loadedLocation.locations[0].location.y;
