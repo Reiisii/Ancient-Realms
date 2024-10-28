@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TooltipManager : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class TooltipManager : MonoBehaviour
         }
         eqName.SetText(equipment.itemName);
         eqName.color = Utilities.GetColorForCulture(equipment.culture);
-        eqTierAndLevel.SetText($"Tier: {equipment.tier}                                        Level: {equipment.level}");
+        eqTierAndLevel.SetText($"Tier: {equipment.tier}                        Level: {equipment.level}");
         if(equipment.equipmentType == EquipmentEnum.Armor){
             StatPrefab stat = Instantiate(statPrefab, Vector3.zero, Quaternion.identity);
             stat.transform.SetParent(stats);
@@ -54,12 +55,14 @@ public class TooltipManager : MonoBehaviour
             stat.transform.SetParent(stats);
             stat.transform.localScale = Vector3.one;
             stat.SetDamage(Utilities.ConvertToOneDecimal(equipment.baseDamage));
-            StatPrefab stat2 = Instantiate(statPrefab, Vector3.zero, Quaternion.identity);
-            stat2.transform.SetParent(stats);
-            stat2.transform.localScale = Vector3.one;
-            stat2.SetRange(Utilities.ConvertToOneDecimal(equipment.baseDamage));
+            if(equipment.weaponType != WeaponType.SpearJavelin){
+                StatPrefab stat2 = Instantiate(statPrefab, Vector3.zero, Quaternion.identity);
+                stat2.transform.SetParent(stats);
+                stat2.transform.localScale = Vector3.one;
+                stat2.SetRange(Utilities.ConvertToOneDecimal(equipment.attackRange));
+            }
         }
-        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(stats);
     }
     public void HideEquipmentTooltip(){
         equipmentTooltip.SetActive(false);

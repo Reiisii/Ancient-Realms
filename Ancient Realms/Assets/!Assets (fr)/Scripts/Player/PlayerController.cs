@@ -129,8 +129,8 @@ public class PlayerController : MonoBehaviour
         if(PlayerStats.GetInstance().currentHP <= 0 && !PlayerStats.GetInstance().isDead){
             PlayerStats.GetInstance().isDead = true;
             PlayerStats.GetInstance().AddStatistics(StatisticsType.DeathTotal, "1");
-            animator.Play("Death");
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+            animator.Play("Death");
             playerActionMap.Disable();
             await PlayerUIManager.GetInstance().ClosePlayerUI();
             await PlayerUIManager.GetInstance().OpenDeathUI();
@@ -304,7 +304,7 @@ public class PlayerController : MonoBehaviour
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "You don't have a javelin");
                 return;
             }
-            if(isAttacking) return;
+            if(isAttacking || isThrowing) return;
             if(playerStats.isCombatMode && !isAttacking && !IsRunning){
                 isHolding = true;
                 isThrowing = true;
