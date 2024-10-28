@@ -44,6 +44,7 @@ public class QuestPointer : MonoBehaviour
         if(PlayerController.GetInstance() != null){
             if(PlayerController.GetInstance().cm == null) return;
         }
+        if(worldCamera != null){
         worldCamera = PlayerController.GetInstance().cm.GetComponent<Camera>();
         if(quest.currentGoal < quest.goals.Count) {
             GoalTypeEnum goal = quest.goals[quest.currentGoal].goalType;
@@ -86,6 +87,7 @@ public class QuestPointer : MonoBehaviour
             }else{
                 pointer.SetActive(false);
             }
+        }
         }
     }
     void FindNPC()

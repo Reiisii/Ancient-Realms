@@ -44,7 +44,6 @@ public class MissionManager : MonoBehaviour
     public void EndMission(){
         if(mission != null){
             inMission = false;
-            QuestManager.GetInstance().UpdateMissionGoal(mission.missionID);
             mission = null;
         }
     }
@@ -131,6 +130,7 @@ public class MissionManager : MonoBehaviour
                 break;
             }
         }
+        QuestManager.GetInstance().UpdateMissionGoal(mission.missionID);
         EndMission();
     }
 }
