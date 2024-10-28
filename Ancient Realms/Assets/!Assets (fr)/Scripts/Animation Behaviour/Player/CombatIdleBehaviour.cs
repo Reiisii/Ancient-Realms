@@ -27,8 +27,8 @@ public class CombatIdleBehaviour : StateMachineBehaviour
             PlayerController.GetInstance().canWalk = false;
         }
         if(!PlayerController.GetInstance().isAttacking && PlayerController.GetInstance().isHolding){
-            animator.Play("Pilum Aim");
             PlayerController.GetInstance().canWalk = false;
+            animator.Play("Pilum Aim");
             PlayerController.GetInstance().isHolding = true;
         }
     }

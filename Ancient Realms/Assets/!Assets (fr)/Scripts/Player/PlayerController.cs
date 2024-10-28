@@ -198,7 +198,7 @@ public class PlayerController : MonoBehaviour
                 if (moveInputActive)
                 {
                     SetFacingDirection(moveInput);
-                    if(isHolding) return;
+                    if(isHolding || isThrowing) return;
                     IsMoving = true;
                     rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
                     Vector2 currentPosition = transform.position;
