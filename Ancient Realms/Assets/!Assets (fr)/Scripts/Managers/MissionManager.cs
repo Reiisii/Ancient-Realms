@@ -34,10 +34,18 @@ public class MissionManager : MonoBehaviour
             Debug.Log(mission.goals[mission.currentGoal].currentAmount + "/" + mission.goals[mission.currentGoal].requiredAmount);
         }
     }
-    public void EndMission(){
+
+    public void AcceptAndContinue(){
         if(mission != null){
             mission = null;
             inMission = false;
+        }
+    }
+    public void EndMission(){
+        if(mission != null){
+            inMission = false;
+            QuestManager.GetInstance().UpdateMissionGoal(mission.missionID);
+            mission = null;
         }
     }
     public void UpdateGoal(MissionGoalType missionGoalType)
@@ -82,12 +90,11 @@ public class MissionManager : MonoBehaviour
         if (allGoalsCompleted)
         {
             mission.isCompleted = true;
-            RewardPlayer(mission);
-            EndMission();
+            PlayerUIManager.GetInstance().OpenMissionPanel();
             PlayerController.GetInstance().playerActionMap.Disable();
         }
     }
-    private void RewardPlayer(MissionSO mission)
+    public void RewardPlayer(MissionSO mission)
     {
         PlayerStats playerStats = PlayerStats.GetInstance();
 
@@ -115,8 +122,15 @@ public class MissionManager : MonoBehaviour
                 case RewardsEnum.Artifact:
                     playerStats.AddArtifact(reward.value);
                     ArtifactsSO achievement = AccountManager.Instance.achievements.Where(a => a.id == Convert.ToInt32(reward.value)).FirstOrDefault();
-                    break;
+                break;
+                case RewardsEnum.Quest:
+                    QuestManager.GetInstance().StartQuest(reward.value);
+                break;
+                case RewardsEnum.Event:
+                    playerStats.AddEncyc(EncycType.Event, Convert.ToInt32(reward.value));
+                break;
             }
         }
+        EndMission();
     }
 }
