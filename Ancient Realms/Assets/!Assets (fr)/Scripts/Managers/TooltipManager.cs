@@ -63,13 +63,6 @@ public class TooltipManager : MonoBehaviour
     }
     public void HideEquipmentTooltip(){
         equipmentTooltip.SetActive(false);
-        ClearContent(stats);
-    }
-    public void ClearContent(RectTransform cPanel)
-    {
-        foreach (Transform child in cPanel)
-        {
-            Destroy(child.gameObject);
-        }
+        Utilities.ClearContent(stats);
     }
 }
