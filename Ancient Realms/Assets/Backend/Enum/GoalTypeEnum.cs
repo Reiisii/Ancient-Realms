@@ -23,5 +23,5 @@ public enum GoalTypeEnum
     Unpin,
     OpenJournal,
     UnequipItem,
-    EquipItem,
+    EquipItem
 }

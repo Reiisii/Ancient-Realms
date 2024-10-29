@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class MissionManager : MonoBehaviour
 {
+    [SerializeField] GameObject task;
+    [SerializeField] TextMeshProUGUI taskText;
     private static MissionManager Instance;
     public MissionSO mission;
     public bool inMission = false;
@@ -25,13 +28,17 @@ public class MissionManager : MonoBehaviour
         if(missionSO != null){
             mission = missionSO.CreateCopy();
             inMission = true;
+            task.SetActive(true);
         }else{
             inMission = false;
         }
     }
     void Update(){
         if(mission != null){
-            Debug.Log(mission.goals[mission.currentGoal].currentAmount + "/" + mission.goals[mission.currentGoal].requiredAmount);
+            if(mission.currentGoal < mission.goals.Count){
+                MissionGoal goal = mission.goals[mission.currentGoal];
+                taskText.SetText(goal.missionType.Equals(MissionGoalType.Pickup) ? goal.taskDescription : goal.taskDescription + " [" + mission.goals[mission.currentGoal].currentAmount + "/" + mission.goals[mission.currentGoal].requiredAmount + "]");
+            }
         }
     }
 
@@ -45,6 +52,7 @@ public class MissionManager : MonoBehaviour
         if(mission != null){
             inMission = false;
             mission = null;
+            task.SetActive(false);
         }
     }
     public void UpdateGoal(MissionGoalType missionGoalType)

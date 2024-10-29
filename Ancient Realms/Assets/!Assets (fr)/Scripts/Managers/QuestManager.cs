@@ -344,6 +344,22 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+    public void UpdateFindGoal(QuestSO quest)
+    {
+        if(quest.currentGoal < quest.goals.Capacity){
+            Goal goal = quest.goals[quest.currentGoal];
+            if (goal.goalType == GoalTypeEnum.Find)
+            {
+                goal.IncrementProgress(1);
+                playerStats.SaveQuestToServer();
+                if (goal.currentAmount >= goal.requiredAmount)
+                {
+                    // COMPLETE TRIGGER CODE
+                    CompleteGoal(quest, goal.goalID); // Complete the goal if required amount is reached
+                }
+            }
+        }
+    }
     public void UpdateEquipGoal()
     {
         foreach (var quest in playerStats.activeQuests)
@@ -466,6 +482,36 @@ public class QuestManager : MonoBehaviour
                 {
                     Goal goal = quest.goals[quest.currentGoal];
                     if (goal.goalType == GoalTypeEnum.Talk)
+                    {
+                        goal.IncrementProgress(1);
+                        playerStats.SaveQuestToServer();
+                        if (goal.currentAmount >= goal.requiredAmount)
+                        {
+                            CompleteGoal(quest, goal.goalID);
+                            if (quest.isCompleted)
+                            {
+                                questsToRemove.Add(quest);
+                            }
+                        }
+                    }
+                }
+        }
+
+        foreach (QuestSO completedQuest in questsToRemove)
+        {
+            playerStats.activeQuests.Remove(completedQuest);
+            playerStats.completedQuests.Add(completedQuest); // Optionally add to completed quests here
+            playerStats.isDataDirty = true;
+        }
+    }
+    public void UpdateDeliverGoal(QuestSO quest)
+    {
+        List<QuestSO> questsToRemove = new List<QuestSO>();
+        if (quest.currentGoal < quest.goals.Count){
+                if (quest.isActive)
+                {
+                    Goal goal = quest.goals[quest.currentGoal];
+                    if (goal.goalType == GoalTypeEnum.Deliver)
                     {
                         goal.IncrementProgress(1);
                         playerStats.SaveQuestToServer();

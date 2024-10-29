@@ -48,6 +48,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 1
     goalDescription: Find Gaius and ask for insights
     goalType: 2
@@ -58,6 +61,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 2
     goalDescription: Find Lucius and ask for insights
     goalType: 2
@@ -68,6 +74,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 3
     goalDescription: Talk to Centurion to Prepare for march
     goalType: 2
@@ -78,6 +87,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 4
     goalDescription: Go to Bibracte and listen to Centurion's Briefing
     goalType: 2
@@ -88,6 +100,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 5
     goalDescription: Complete [Gallic Eyes] mission on the map
     goalType: 15
@@ -98,6 +113,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: mission-01-000
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 6
     goalDescription: Update Centurion about the mission
     goalType: 2
@@ -108,9 +126,12 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 7
     goalDescription: Notify Mark Antony about your Legion's Progress
-    goalType: 2
+    goalType: 9
     requiredAmount: 1
     currentAmount: 0
     inkyRedirect: goal_5
@@ -118,6 +139,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 22000000
+    inkyNoRequirement: exhaust_requirement
   - goalID: 8
     goalDescription: Deliver the message to Centurion
     goalType: 2
@@ -128,4 +152,7 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   rewards: []

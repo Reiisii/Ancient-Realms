@@ -31607,6 +31607,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 279401397001722186, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
   m_PrefabInstance: {fileID: 808014204}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &808014206 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918167476226821754, guid: 60de7aaa361d2b8469c41e1ecfa8a9fa, type: 3}
+  m_PrefabInstance: {fileID: 808014204}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &808123302
 GameObject:
   m_ObjectHideFlags: 0
@@ -44515,6 +44520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7710ebb012366194399d57be903af48e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  task: {fileID: 1276663744}
+  taskText: {fileID: 1480637558}
   mission: {fileID: 0}
   inMission: 0
 --- !u!1 &1096982013
@@ -51598,7 +51605,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 5.5, y: 286.8}
-  m_SizeDelta: {x: 60, y: 60}
+  m_SizeDelta: {x: 136.23999, y: 60}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1276663746
 MonoBehaviour:
@@ -59710,8 +59717,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15, y: -27.45195}
-  m_SizeDelta: {x: 0, y: 28.9039}
+  m_AnchoredPosition: {x: 68.119995, y: -27.45195}
+  m_SizeDelta: {x: 106.24, y: 28.9039}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1480637558
 MonoBehaviour:
@@ -59733,7 +59740,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Testing
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 40cd84297d17bf347a78cdb0fbe1b5f4, type: 2}
   m_sharedMaterial: {fileID: 4051834036553614707, guid: 40cd84297d17bf347a78cdb0fbe1b5f4, type: 2}
@@ -67787,6 +67794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1622424388}
+  - component: {fileID: 1622424389}
   m_Layer: 0
   m_Name: Africa
   m_TagString: Untagged
@@ -67809,6 +67817,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1530249629}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1622424389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622424387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8efe92539cbae469b2d7485650a981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gObject: {fileID: 808014206}
+  questIDRequirement: quest-50-006
+  showAtGoal: 
+  permanentRequirement: 1
+  questRequirementToPermanent:
+  - quest-50-006
 --- !u!1 &1629250450
 GameObject:
   m_ObjectHideFlags: 0

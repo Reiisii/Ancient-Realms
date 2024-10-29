@@ -5,6 +5,7 @@ using UnityEngine;
 using Ink.Runtime;
 using UnityEngine.UI;
 using System.Linq;
+using ESDatabase.Classes;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -88,8 +89,13 @@ public class DialogueManager : MonoBehaviour
             .ToList();
             foreach(QuestSO quest in PlayerStats.GetInstance().activeQuests.ToList()){
                 if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
+                    if(quest.goals[quest.currentGoal].goalType.Equals(GoalTypeEnum.Deliver) && CheckItemRequirements(quest.goals[quest.currentGoal])){
+                        currentStory = new Story(quest.dialogue.text);
+                        currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyNoRequirement);
+                    }else{
                     currentStory = new Story(quest.dialogue.text);
                     currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
+                    }
                     dialogueIsPlaying = true;
                     dialoguePanel.SetActive(true);
                     ContinueStory();
@@ -104,8 +110,13 @@ public class DialogueManager : MonoBehaviour
 
             foreach(QuestSO quest in activeQuest){
                 if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
-                    currentStory = new Story(quest.dialogue.text);
-                    currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
+                    if(quest.goals[quest.currentGoal].goalType.Equals(GoalTypeEnum.Deliver) && !CheckItemRequirements(quest.goals[quest.currentGoal])){
+                        currentStory = new Story(quest.dialogue.text);
+                        currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyNoRequirement);
+                    }else{
+                        currentStory = new Story(quest.dialogue.text);
+                        currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
+                    }
                     dialogueIsPlaying = true;
                     dialoguePanel.SetActive(true);
                     ContinueStory();
@@ -129,7 +140,7 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
         var relevantQuests = PlayerStats.GetInstance().activeQuests
-        .Where(q => q.goals.Any(g => g.goalType == GoalTypeEnum.Talk && 
+        .Where(q => q.goals.Any(g => g.goalType == GoalTypeEnum.Talk || g.goalType == GoalTypeEnum.Deliver && 
                                         q.characters[g.characterIndex] == npcData.id))
         .ToList();
 
@@ -152,9 +163,20 @@ public class DialogueManager : MonoBehaviour
             if (relevantQuests[0].isActive)
             {
                 Goal currentGoal = relevantQuests[0].goals[relevantQuests[0].currentGoal];
+
                 if (currentGoal.goalType == GoalTypeEnum.Talk && relevantQuests[0].characters[currentGoal.characterIndex] == npcData.id)
                 {
                     QuestManager.GetInstance().UpdateTalkGoal(relevantQuests[0]);
+                }else if(currentGoal.goalType == GoalTypeEnum.Deliver && CheckItemRequirements(currentGoal) && relevantQuests[0].characters[currentGoal.characterIndex] == npcData.id){
+                    QuestManager.GetInstance().UpdateDeliverGoal(relevantQuests[0]);
+                    foreach(int itm in currentGoal.requiredItems){
+                        for(int i = 0; i < PlayerStats.GetInstance().localPlayerData.gameData.inventory.items.Count; i++){
+                            if(PlayerStats.GetInstance().localPlayerData.gameData.inventory.items[i].equipmentId.Equals(itm)){
+                                PlayerStats.GetInstance().localPlayerData.gameData.inventory.items.RemoveAt(i);
+                            }
+                        }
+                    }
+                    
                 }
             }
         }
@@ -169,6 +191,26 @@ public class DialogueManager : MonoBehaviour
             ExitDialogueMode();
         }
     }
+    public bool CheckItemRequirements(Goal goal)
+    {
+        List<EquipmentSO> itemList = PlayerStats.GetInstance().inventory;
+
+        // Check if all items in goal.requiredItems are in the player's inventory
+        foreach (int val in goal.requiredItems)
+        {
+            EquipmentSO equipmentSO = itemList.FirstOrDefault(q => q.equipmentId.Equals(val));
+            
+            // If any required item is missing, return false immediately
+            if (equipmentSO == null)
+            {
+                return false;
+            }
+        }
+
+        // All items are present
+        return true;
+    }
+
     private void HandleTags(List<string> currentTags){
         foreach(string tag in currentTags){
             string[] splitTag = tag.Split(':');
@@ -219,7 +261,8 @@ public class DialogueManager : MonoBehaviour
         {
             StopCoroutine(typingCoroutine); // Stop typing effect
         }
-        dialogueText.text = currentStory.currentText; // Set text to the full current line
+        string fullText = ReplacePlayerName(currentStory.currentText);
+        dialogueText.text = fullText; // Set text to the full current line
         isTyping = false; // No longer typing
     }
 

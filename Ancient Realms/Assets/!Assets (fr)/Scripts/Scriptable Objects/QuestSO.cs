@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Create Quest", menuName = "SO/Quest")]
 public class QuestSO : ScriptableObject
@@ -59,7 +60,10 @@ public class QuestSO : ScriptableObject
                 characterIndex = goal.characterIndex,
                 targetCharacters = (string[])goal.targetCharacters.Clone(),
                 missionID = goal.missionID,
-                questID = goal.questID
+                questID = goal.questID,
+                questItem = new List<int>(goal.questItem),
+                requiredItems = new List<int>(goal.requiredItems),
+                inkyNoRequirement = goal.inkyNoRequirement
             };
             newQuest.goals.Add(newGoal);
         }

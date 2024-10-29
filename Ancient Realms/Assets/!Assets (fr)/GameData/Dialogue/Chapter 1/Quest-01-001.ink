@@ -108,3 +108,6 @@ Hm? What do you want? didn't I assign you to talk to the Veterans? #speaker:npc
 == exhaust_mission ==
 Legionnaire! I tasked you to disperse the Gallic scouts in the forest near this camp! What are you doing!?! #speaker:npc
 -> DONE
+== exhaust_requirement ==
+Do you have the intel about the camp? #speaker:npc
+-> DONE
