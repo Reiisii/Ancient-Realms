@@ -11,8 +11,15 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI npcNameText;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private Image npcImage;
+    [SerializeField] private Sprite playerSprite;
+    [SerializeField] private GameObject playerPortrait;
+    [SerializeField] private GameObject npcPortrait;
+    public float typingSpeed = 0.03f;
+    public bool isTyping = false;
+    private Coroutine typingCoroutine;
     private static DialogueManager instance;
     private Story currentStory;
     private QuestSO[] questArray;
@@ -37,9 +44,19 @@ public class DialogueManager : MonoBehaviour
         if(!dialogueIsPlaying){
             return;
         }
-        if(PlayerController.GetInstance().GetInteractPressed()){
-            ContinueStory();
+        if (PlayerController.GetInstance().GetInteractPressed())
+        {
+            if (isTyping) // If currently typing
+            {
+                // Complete the current line instantly
+                CompleteCurrentLine();
+            }
+            else
+            {
+                ContinueStory(); // Otherwise, continue to the next line
+            }
         }
+
     }
     public void EnterDialogueMode(NPCData npc){
         npcData = npc;
@@ -59,8 +76,6 @@ public class DialogueManager : MonoBehaviour
                 if(giveableQuests != null && Utilities.CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
                     currentStory = new Story(giveableQuests.dialogue.text);
                     currentStory.ChoosePathString("start");
-                    nameText.SetText(npc.name);
-                    npcImage.sprite = npc.portrait;
                     dialogueIsPlaying = true;
                     dialoguePanel.SetActive(true);
                     ContinueStory();
@@ -75,16 +90,12 @@ public class DialogueManager : MonoBehaviour
                 if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
                     currentStory = new Story(quest.dialogue.text);
                     currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
-                    nameText.SetText(npc.name);
-                    npcImage.sprite = npc.portrait;
                     dialogueIsPlaying = true;
                     dialoguePanel.SetActive(true);
                     ContinueStory();
                     return;
                 }
             }
-            nameText.SetText(npc.name);
-            npcImage.sprite = npc.portrait;
             dialogueIsPlaying = true;
             dialoguePanel.SetActive(true);
             ContinueStory();
@@ -95,8 +106,6 @@ public class DialogueManager : MonoBehaviour
                 if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
                     currentStory = new Story(quest.dialogue.text);
                     currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
-                    nameText.SetText(npc.name);
-                    npcImage.sprite = npc.portrait;
                     dialogueIsPlaying = true;
                     dialoguePanel.SetActive(true);
                     ContinueStory();
@@ -105,8 +114,6 @@ public class DialogueManager : MonoBehaviour
             }
             currentStory = new Story(npc.npcDialogue.text);
             currentStory.ChoosePathString(npc.dialogueKnot);
-            nameText.SetText(npc.name);
-            npcImage.sprite = npc.portrait;
             dialogueIsPlaying = true;
             dialoguePanel.SetActive(true);
             ContinueStory();
@@ -156,10 +163,64 @@ public class DialogueManager : MonoBehaviour
         if(currentStory.canContinue){
             string nextLine = currentStory.Continue();
             nextLine = ReplacePlayerName(nextLine);
-            dialogueText.text = nextLine;
+            StartTypingEffect(nextLine);
+            HandleTags(currentStory.currentTags);
         }else{
             ExitDialogueMode();
         }
+    }
+    private void HandleTags(List<string> currentTags){
+        foreach(string tag in currentTags){
+            string[] splitTag = tag.Split(':');
+
+            if(splitTag.Length != 2){
+                Debug.LogError("Tag could not be appropriately parsed: " + tag);
+            }
+            string tagValue = splitTag[1].Trim();
+            if(tagValue.Equals("player")){
+                playerPortrait.SetActive(true);
+                npcPortrait.SetActive(false);
+                string playerName = PlayerStats.GetInstance().localPlayerData.gameData.playerName;
+                nameText.SetText(playerName);
+            }else{
+                playerPortrait.SetActive(false);
+                npcPortrait.SetActive(true);
+                npcNameText.SetText(npcData.name);
+                npcImage.sprite = npcData.portrait;
+            }
+        }
+    }
+    private void StartTypingEffect(string text)
+    {
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine); // Stop any previous typing effect
+        }
+        typingCoroutine = StartCoroutine(TypeText(text)); // Start new typing effect
+    }
+
+    private IEnumerator TypeText(string text)
+    {
+        dialogueText.text = ""; // Clear previous text
+        isTyping = true; // Set typing state
+
+        foreach (char character in text)
+        {
+            dialogueText.text += character; // Add one character at a time
+            yield return new WaitForSeconds(typingSpeed); // Wait for the typing speed duration
+        }
+
+        isTyping = false; // Finished typing
+    }
+
+    private void CompleteCurrentLine()
+    {
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine); // Stop typing effect
+        }
+        dialogueText.text = currentStory.currentText; // Set text to the full current line
+        isTyping = false; // No longer typing
     }
 
     private string ReplacePlayerName(string text)
