@@ -37,6 +37,9 @@ public class Goal
     public string[] targetCharacters;
     public string missionID;
     public string questID;
+    public List<int> questItem;
+    public List<int> requiredItems;
+    public string inkyNoRequirement;
     public void IncrementProgress(int amount)
     {
         currentAmount += amount;

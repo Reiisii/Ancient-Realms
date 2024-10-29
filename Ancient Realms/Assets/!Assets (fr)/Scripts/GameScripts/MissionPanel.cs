@@ -52,8 +52,9 @@ public class MissionPanel : MonoBehaviour
             }
         }
     }
-    public void AcceptAndContinue(){
+    public async void AcceptAndContinue(){
         PlayerUIManager.GetInstance().CloseMissionPanel();
+        await PlayerUIManager.GetInstance().ClosePlayerUI();
         MissionManager.GetInstance().RewardPlayer(missionManager.mission);
         PlayerUIManager.GetInstance().LastLocation();
     }
