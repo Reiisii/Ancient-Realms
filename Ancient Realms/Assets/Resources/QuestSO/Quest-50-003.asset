@@ -33,7 +33,7 @@ MonoBehaviour:
   currentKnot: start
   goals:
   - goalID: 0
-    goalDescription: Find Tiberius the Miner
+    goalDescription: Find Tiberius the Miner near the Market
     goalType: 2
     requiredAmount: 1
     currentAmount: 0
@@ -42,9 +42,12 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 1
     goalDescription: Return to Jan Janius
-    goalType: 2
+    goalType: 9
     requiredAmount: 1
     currentAmount: 0
     inkyRedirect: goal_1
@@ -52,6 +55,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   rewards:
   - rewardType: 1
     value: 50
