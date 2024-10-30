@@ -44,16 +44,16 @@ public class QuestPointer : MonoBehaviour
         if(PlayerController.GetInstance() != null){
             if(PlayerController.GetInstance().cm == null) return;
         }
-        if(worldCamera != null){
         worldCamera = PlayerController.GetInstance().cm.GetComponent<Camera>();
+        if(worldCamera != null){
         if(quest.currentGoal < quest.goals.Count) {
             GoalTypeEnum goal = quest.goals[quest.currentGoal].goalType;
-            if(goal == GoalTypeEnum.Talk){
+            if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.Deliver){
                 icon.sprite = questMarker;
             }else if (goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
                 icon.sprite = targetMarker;
             }
-            if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
+            if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.Deliver || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
                 if(isNPCFound && quest.isPinned){
                     pointer.SetActive(true);
                     float bobbingOffset = Mathf.Sin(Time.time * bobbingSpeed) * bobbingAmplitude;
@@ -100,6 +100,22 @@ public class QuestPointer : MonoBehaviour
         Enemy[] enemyNPC = npcParent.GetComponentsInChildren<Enemy>();
         if(quest.currentGoal < quest.goals.Count) {
             if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.Talk){
+                string npcID = quest.characters[quest.goals[quest.currentGoal].characterIndex];
+                // Loop through each NPC and check if the npcID matches the target ID
+                foreach (DialogueTrigger npc in allNPCs)
+                {
+                    try{
+                    if (npc.npcData.id.Equals(npcID) && npc.gameObject.activeSelf)
+                    {
+                        npcPosition = npc.gameObject.transform.position;
+                        isNPCFound = true;
+                        break;
+                    }
+                    }catch(Exception err){
+                        return;
+                    }
+                }
+            }else if(quest.goals[quest.currentGoal].goalType == GoalTypeEnum.Deliver){
                 string npcID = quest.characters[quest.goals[quest.currentGoal].characterIndex];
                 // Loop through each NPC and check if the npcID matches the target ID
                 foreach (DialogueTrigger npc in allNPCs)

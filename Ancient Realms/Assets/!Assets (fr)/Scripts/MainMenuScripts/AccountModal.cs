@@ -58,18 +58,15 @@ public class AccountModal : MonoBehaviour
         ClearContent(contentPanel);
         if (accountNft == null) return;
         if (accountNft.Count < 1) return;
-        for(int i = 0; i < nftTotal; i++){
-            if(accountNft[i].metaplexData.data.offchainData.attributes.Count > 3){
-                if(accountNft[i].metaplexData.data.offchainData.attributes[4].value.Equals("Eagle's Shadow")){
+        foreach(Nft nftChainData in accountNft){
+            if(nftChainData.metaplexData.data.offchainData.name.Equals("Eagle's Shadow")){
                     NftItems nft = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                    NFTSO nftData = nftArray.FirstOrDefault(nft => nft.id == int.Parse(accountNft[i].metaplexData.data.offchainData.attributes[3].value));
+                    NFTSO nftData = nftArray.FirstOrDefault(nft => nft.id == int.Parse(nftChainData.metaplexData.data.offchainData.attributes[3].value));
                     nft.transform.SetParent(contentPanel);
                     nft.transform.localScale = new Vector3(1, 1, 1);
                     nft.setGameObject(accountPanel);
-                    nft.setNFT(accountNft[i], nftData);
+                    nft.setNFT(nftChainData, nftData);
                 }
-                
-            }
         }
     }
     private void OnBalanceChange(double solBalance)
