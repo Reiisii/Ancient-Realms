@@ -166,6 +166,11 @@ public class DialogueManager : MonoBehaviour
 
                 if (currentGoal.goalType == GoalTypeEnum.Talk && relevantQuests[0].characters[currentGoal.characterIndex] == npcData.id)
                 {
+                    if(currentGoal.questItem.Count > 0){
+                        foreach(int item in currentGoal.questItem){
+                            PlayerStats.GetInstance().AddItem(item, 0, 0, 1);
+                        }
+                    }
                     QuestManager.GetInstance().UpdateTalkGoal(relevantQuests[0]);
                 }else if(currentGoal.goalType == GoalTypeEnum.Deliver && CheckItemRequirements(currentGoal) && relevantQuests[0].characters[currentGoal.characterIndex] == npcData.id){
                     QuestManager.GetInstance().UpdateDeliverGoal(relevantQuests[0]);
