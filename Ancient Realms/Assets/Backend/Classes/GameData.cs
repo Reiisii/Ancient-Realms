@@ -44,7 +44,7 @@ namespace ESDatabase.Classes
                         this.statistics = new StatisticsData();
                         this.inventory = new Inventory();
                         this.equippedData = new EquippedData();
-                        this.equippedNFT = new List<NFTData>();
+                        this.equippedNFT = new List<NFTData>{ null, null, null};
                         this.quests = new List<QuestData>();
                         this.artifacts = new List<ArtifactsData>();
                         this.characters = new List<int>();

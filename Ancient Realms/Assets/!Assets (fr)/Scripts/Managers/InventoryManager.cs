@@ -11,7 +11,8 @@ public class InventoryManager : MonoBehaviour
     private static InventoryManager Instance;
     private static PlayerStats playerStats;
     [Header("Game Object")]
-    [SerializeField] GameObject inventoryPanel;
+    [SerializeField] public GameObject inventoryPanel;
+    [SerializeField] public InventoryPanel invPanel;
     private void Awake(){
         if(Instance != null){
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
