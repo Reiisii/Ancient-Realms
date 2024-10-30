@@ -45,13 +45,13 @@ public class MapTrigger : MonoBehaviour
     }
     public async void ChangeScene(){
         string prevLoc = LocationSettingsManager.GetInstance().locationSettings.SceneName;
+        PlayerController.GetInstance().mapActionMap.Disable();
         AudioManager.GetInstance().StopAmbience();
         PlayerStats.GetInstance().isCombatMode = false;
         PlayerUIManager.GetInstance().TransitionMapUI();
         PlayerStats.GetInstance().ReplenishStats();
         await PlayerUIManager.GetInstance().ClosePlayerUI();
         await PlayerUIManager.GetInstance().OpenLoadingUI();
-        PlayerController.GetInstance().mapActionMap.Disable();
         LocationSettingsManager.GetInstance().LoadSettings(location);
         SceneManager.UnloadSceneAsync(prevLoc).completed += (operation) => {
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
