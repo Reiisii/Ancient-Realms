@@ -258,7 +258,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 33554431
   m_fontColor: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -764,6 +764,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BODY V1 TEMPLATE
       objectReference: {fileID: 0}
+    - target: {fileID: 4369763902341509201, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8143464205618705029, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -784,11 +788,6 @@ PrefabInstance:
 --- !u!4 &1585271231 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 942858895063747022, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
-  m_PrefabInstance: {fileID: 1585271230}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1585271232 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 1069500992766602489, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
   m_PrefabInstance: {fileID: 1585271230}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1846680296
@@ -990,6 +989,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BODY V1 TEMPLATE (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4369763902341509201, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8143464205618705029, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
       propertyPath: m_FlipX
       value: 1
@@ -1011,11 +1014,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
---- !u!95 &2018538601 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 1069500992766602489, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
-  m_PrefabInstance: {fileID: 2018538600}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2018538602 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 942858895063747022, guid: a4ab0374dd4cc214dabc1cff02627be9, type: 3}
@@ -1053,18 +1051,12 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: -1200724246653911112, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
-    value: {fileID: 286575830}
-  - key: {fileID: -1000733722452533774, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
-    value: {fileID: 925966951}
-  - key: {fileID: 6529806960375692179, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
+  - key: {fileID: -513789426743599201, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
     value: {fileID: 734776696}
-  - key: {fileID: -5382228296958420589, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
-    value: {fileID: 1585271232}
-  - key: {fileID: -6000691310427274870, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
-    value: {fileID: 1585271232}
-  - key: {fileID: -2946605007898516563, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
-    value: {fileID: 2018538601}
+  - key: {fileID: 1546284645314098489, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
+    value: {fileID: 286575830}
+  - key: {fileID: 5478710806767204954, guid: 8d91ff6d82d8dc5478d58be411d2436f, type: 2}
+    value: {fileID: 925966951}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &2058192146
