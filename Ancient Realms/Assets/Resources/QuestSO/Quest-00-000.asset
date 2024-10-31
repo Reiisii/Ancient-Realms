@@ -40,6 +40,9 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 1
     goalDescription: Talk to Centurion
     goalType: 2
@@ -50,16 +53,22 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 2
     goalDescription: Walk to the right!
     goalType: 12
-    requiredAmount: 5
+    requiredAmount: 10
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 3
     goalDescription: Talk to Centurion
     goalType: 2
@@ -70,16 +79,22 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 4
     goalDescription: Walk to the left!
     goalType: 11
-    requiredAmount: 5
+    requiredAmount: 10
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 5
     goalDescription: Talk to Centurion
     goalType: 2
@@ -90,16 +105,22 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 6
     goalDescription: Run to the Right!
     goalType: 14
-    requiredAmount: 5
+    requiredAmount: 10
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 7
     goalDescription: Talk to Centurion
     goalType: 2
@@ -110,16 +131,22 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 8
     goalDescription: Run to the Left!
     goalType: 13
-    requiredAmount: 5
+    requiredAmount: 10
     currentAmount: 0
     inkyRedirect: exhaust
     characterIndex: 0
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   - goalID: 9
     goalDescription: Talk to Centurion
     goalType: 2
@@ -130,10 +157,22 @@ MonoBehaviour:
     targetCharacters: []
     missionID: 
     questID: 
+    questItem: 
+    requiredItems: 
+    inkyNoRequirement: 
   rewards:
   - rewardType: 0
     value: 10
+    tier: 0
+    level: 0
+    amount: 0
   - rewardType: 1
     value: 5
+    tier: 0
+    level: 0
+    amount: 0
   - rewardType: 4
     value: quest-00-001
+    tier: 0
+    level: 0
+    amount: 0
