@@ -29,9 +29,9 @@ public class InventoryNFT : MonoBehaviour
         }
     }
 
-    public void OnClickNFT(){
-        InventoryManager.GetInstance().invPanel.DeselectAllNFT();
+    public void OnClickNFT(){   
         if(!isSelected){
+            InventoryManager.GetInstance().invPanel.DeselectAllNFT();
             Select();
         }else{
             Deselect();
@@ -41,6 +41,9 @@ public class InventoryNFT : MonoBehaviour
         InventoryManager.GetInstance().invPanel.nftSelected = true;
         InventoryManager.GetInstance().invPanel.selectedNFT = nft;
         InventoryManager.GetInstance().invPanel.selectedNFTSO = nftSO;
+        InventoryManager.GetInstance().invPanel.slot1.isSelected = false;
+        InventoryManager.GetInstance().invPanel.slot2.isSelected = false;
+        InventoryManager.GetInstance().invPanel.slot3.isSelected = false;
         isSelected = true;
         background.color = Utilities.HexToColor("#FDFF00");
     }

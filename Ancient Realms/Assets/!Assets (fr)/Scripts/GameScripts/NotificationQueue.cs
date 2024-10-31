@@ -10,6 +10,9 @@ public class NotificationQueue : MonoBehaviour
     [SerializeField] GameObject questStartGO;
     [SerializeField] GameObject questCompleteGO;
     [SerializeField] GameObject achievementGO;
+    [SerializeField] GameObject newEquipmentGO;
+    [SerializeField] GameObject newCharacterGO;
+    [SerializeField] GameObject newEventGO;
     public Queue<Notification> queue;
     public void Awake(){
         queue = new Queue<Notification>();
@@ -57,6 +60,15 @@ public class NotificationQueue : MonoBehaviour
 
                 case NotifType.Achievement:
                     yield return StartCoroutine(achievementGO.GetComponent<NotificationPopup>().PopAnim(currentNotification));
+                    break;
+                case NotifType.Equipment:
+                    yield return StartCoroutine(newEquipmentGO.GetComponent<NotificationPopup>().PopAnim(currentNotification));
+                    break;
+                case NotifType.Character:
+                    yield return StartCoroutine(newCharacterGO.GetComponent<NotificationPopup>().PopAnim(currentNotification));
+                    break;
+                case NotifType.Event:
+                    yield return StartCoroutine(newEventGO.GetComponent<NotificationPopup>().PopAnim(currentNotification));
                     break;
             }
         }

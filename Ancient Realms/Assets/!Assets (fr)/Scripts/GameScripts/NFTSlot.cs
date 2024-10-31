@@ -19,7 +19,7 @@ public class NFTSlot : MonoBehaviour
         if(nftData != null){
             nftSO = AccountManager.Instance.nfts.FirstOrDefault(nft => nft.id.Equals(nftData.nftID));
             nft = Nft.TryLoadNftFromLocal(nftData.mint);
-
+            image.sprite = nftSO.image;
         }
     }
     public void SetNFT(NFTSO so, Nft nftData){
@@ -28,19 +28,38 @@ public class NFTSlot : MonoBehaviour
     }
 
     public void OnClickNFT(){
-        
-        if(InventoryManager.GetInstance().invPanel.nftSelected && InventoryManager.GetInstance().invPanel.selectedNFT != null && nftSO == null){
-            GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
+        GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
+        if (InventoryManager.GetInstance().invPanel.nftSelected && InventoryManager.GetInstance().invPanel.selectedNFT != null && (nftSO == null || nftSO != null)) {
+
             NFTData chainData = new NFTData();
             chainData.mint = InventoryManager.GetInstance().invPanel.selectedNFT.metaplexData.data.mint;
             chainData.nftID = InventoryManager.GetInstance().invPanel.selectedNFTSO.id;
+            nft = InventoryManager.GetInstance().invPanel.selectedNFT;
+            nftSO = InventoryManager.GetInstance().invPanel.selectedNFTSO;
             gameData.equippedNFT[slotNo] = chainData;
-            PlayerStats.GetInstance().isDataDirty = true; 
+            image.sprite = InventoryManager.GetInstance().invPanel.selectedNFTSO.image;
+            PlayerStats.GetInstance().isDataDirty = true;
+            isSelected = false;
+            InventoryManager.GetInstance().invPanel.DeselectAllNFT();
+            InventoryManager.GetInstance().invPanel.nftSelected = false;
+            InventoryManager.GetInstance().invPanel.selectedNFT = null;
+            InventoryManager.GetInstance().invPanel.selectedNFTSO = null;
+            PlayerStats.GetInstance().InitializeEquipments();
+            InventoryManager.GetInstance().invPanel.InitializeInventory();
+            AudioManager.GetInstance().PlayAudio(SoundType.NFTEquip, 1f);
             return;
         }
-        if(!isSelected) {
-            isSelected = true;
+        if(!isSelected && nftSO == null){
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "Select an NFT to Equip first!");
             return;
+        }
+        if (isSelected && nftSO != null) {
+            UnequipNFT();
+            gameData.equippedNFT[slotNo] = null;
+
+        } else if (!isSelected) {
+            // If not selected, select this NFT
+            isSelected = true;
         }
         
     }
@@ -49,5 +68,9 @@ public class NFTSlot : MonoBehaviour
         nft = null;
         isSelected = false;
         image.sprite = defaultSprite;
+        PlayerStats.GetInstance().isDataDirty = true;
+        PlayerStats.GetInstance().InitializeEquipments();
+        AudioManager.GetInstance().PlayAudio(SoundType.NFTEquip, 1f);
+        InventoryManager.GetInstance().invPanel.InitializeInventory();
     }
 }

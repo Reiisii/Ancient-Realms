@@ -92,7 +92,10 @@ public enum CultureEnum {
 public enum NotifType {
     QuestStart,
     QuestComplete,
-    Achievement
+    Achievement,
+    Character,
+    Equipment,
+    Event
 }
 public enum ChapterEnum {
     Prologue,
@@ -259,7 +262,12 @@ public enum SoundType{
     YELLOW,
     RED,
     DELIVERED,
-    Hammering
+    Hammering,
+    ShieldUnequip,
+    SwordEquip,
+    PilumEquip,
+    NFTEquip,
+    NFTUnequip
 }
 public enum MusicType{
     Combat,
