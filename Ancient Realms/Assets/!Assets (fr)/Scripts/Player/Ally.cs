@@ -533,9 +533,9 @@ public class Ally : MonoBehaviour
     private void CalculateStatsForCurrentLevel()
     {
         // Calculate the stats based on the current level without incrementing it
-        maxHP = 100f * Mathf.Pow(1.02f, level - 1); // Assuming initial maxHP is 100
+        maxHP = 100f * Mathf.Pow(1.01f, level - 1); // Assuming initial maxHP is 100
         currentHP = maxHP;
-        maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
+        maxStamina = 70f * Mathf.Pow(1.02f, level - 1); // Assuming initial maxStamina is 70
         staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
     }
 }

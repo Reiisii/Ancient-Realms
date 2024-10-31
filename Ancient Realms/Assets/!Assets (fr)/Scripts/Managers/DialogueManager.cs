@@ -140,8 +140,8 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
         var relevantQuests = PlayerStats.GetInstance().activeQuests
-        .Where(q => q.goals.Any(g => g.goalType == GoalTypeEnum.Talk || g.goalType == GoalTypeEnum.Deliver && 
-                                        q.characters[g.characterIndex] == npcData.id))
+        .Where(q => q.goals.Any(g => (g.goalType == GoalTypeEnum.Talk || g.goalType == GoalTypeEnum.Deliver) && 
+                                        q.characters[g.characterIndex].Equals(npcData.id)))
         .ToList();
 
         if (Utilities.npcHasQuest(npcData))
@@ -159,6 +159,7 @@ public class DialogueManager : MonoBehaviour
 
             }
         }
+     
         if(relevantQuests.Count > 0){
             if (relevantQuests[0].isActive)
             {

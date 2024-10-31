@@ -265,14 +265,29 @@ public class PlayerStats : MonoBehaviour
             case EncycType.Character:
                 if(localPlayerData.gameData.characters.Contains(value)) return;
                 localPlayerData.gameData.characters.Add(value);
+                Notification chNotif = new Notification(){
+                            title = "character",
+                            notifType = NotifType.Character
+                };
+                PlayerUIManager.GetInstance().notification.AddQueue(chNotif);
             break;
             case EncycType.Event:
                 if(localPlayerData.gameData.events.Contains(value)) return;
                 localPlayerData.gameData.events.Add(value);
+                Notification evNotif = new Notification(){
+                            title = "Event",
+                            notifType = NotifType.Character
+                };
+                PlayerUIManager.GetInstance().notification.AddQueue(evNotif);
             break;
             case EncycType.Equipment:
                 if(localPlayerData.gameData.equipments.Contains(value)) return;
                 localPlayerData.gameData.equipments.Add(value);
+                Notification eqNotif = new Notification(){
+                            title = "Equipment",
+                            notifType = NotifType.Character
+                };
+                PlayerUIManager.GetInstance().notification.AddQueue(eqNotif);
             break;
         }
         isDataDirty = true; // Mark data as dirty
@@ -280,20 +295,23 @@ public class PlayerStats : MonoBehaviour
     public void updateValues()
     {
         GameData playerGameData = localPlayerData.gameData;
+
+        // Set level-dependent and scaled stats
         levelText.SetText(Utilities.FormatNumber(level));
-        staminaSlider.value = stamina;
-        staminaSlider.maxValue = maxStamina;
-        xpSlider.value = currentXP;
-        xpSlider.maxValue = maxXP;
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
+        staminaSlider.maxValue = maxStamina;
+        staminaSlider.value = stamina;
+
         int currentHPInt = Mathf.RoundToInt(currentHP);
         int maxHPInt = Mathf.RoundToInt(maxHP);
         int staminaInt = Mathf.RoundToInt(stamina);
         int maxStaminaInt = Mathf.RoundToInt(maxStamina);
-        hpText.SetText("[" + currentHPInt + "/" + maxHPInt + "]");
-        staminaText.SetText("[" + staminaInt + "/" + maxStaminaInt + "]");
+
+        hpText.SetText($"[{currentHPInt}/{maxHPInt}]");
+        staminaText.SetText($"[{staminaInt}/{maxStaminaInt}]");
     }
+
     private void AnimateXPChange(int startValue, int endValue)
     {
         DOTween.To(() => startValue, x =>
@@ -423,7 +441,9 @@ public class PlayerStats : MonoBehaviour
             equippedItems.Add(copiedhelm);
         }else equippedItems.Add(null);
         int j = 0;
+        CalculateStatsForCurrentLevel();
         float sumArmor = 0;
+        float sumSpeed = 0;
         damage = 1;
         foreach(EquipmentSO equipment in equippedItems){
             if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
@@ -435,16 +455,48 @@ public class PlayerStats : MonoBehaviour
             }
             j++;
         }
+        foreach (NFTData nftData in localPlayerData.gameData.equippedNFT)
+        {
+            if(nftData != null){
+                NFTSO nftSO = AccountManager.Instance.nfts.FirstOrDefault(nft => nft.id.Equals(nftData.nftID));
+                if (nftSO != null)
+                {
+                    foreach (StatBuff buffType in nftSO.buffList)
+                    {
+                        switch (buffType.buffType)
+                        {
+                            case BuffType.Health:
+                                maxHP += buffType.value;
+                                
+                                break;
+                            case BuffType.Armor:
+                                sumArmor += buffType.value;
+                                break;
+                            case BuffType.Stamina:
+                                maxStamina += buffType.value;
+                                break;
+                            case BuffType.Speed:
+                                sumSpeed += buffType.value;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
         armor = sumArmor;
+        walkSpeed += sumSpeed;
+        runSpeed += sumSpeed;
+        currentHP = maxHP;
+        stamina = maxStamina;
     }
     private void CalculateStatsForCurrentLevel()
     {
         // Calculate the stats based on the current level without incrementing it
         maxXP = CalculateXPToNextLevel(level);
-        maxHP = 100f * Mathf.Pow(1.02f, level - 1);
+        maxHP = 100f * Mathf.Pow(1.01f, level - 1);
         currentHP = maxHP;
-        maxStamina = 70f * Mathf.Pow(1.03f, level - 1); // Assuming initial maxStamina is 70
-        // attack = 30f * Mathf.Pow(1.04f, level - 1); // Assuming initial attack is 30
+        maxStamina = 70f * Mathf.Pow(1.02f, level - 1); // Assuming initial maxStamina is 70
+        
         staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
     }
     private int CalculateXPToNextLevel(int level)
