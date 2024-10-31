@@ -440,13 +440,13 @@ public class Ally : MonoBehaviour
         isAttacking = true; // You need a shield bash animation in the Animator
     }
     public void TakeDamage(float damage){
-            float newDamage = Utilities.CalculateDamage(damage,  armor);
-            if(invulnerable){
-                return;
-            }else if(isBlocking){
-                currentHP -= Utilities.CalculateDamage(damage,  armor, true);
+            float damageDealt = isBlocking ? Utilities.CalculateDamage(damage, armor, true) : Utilities.CalculateDamage(damage, armor);
+            if(isBlocking){
+                currentHP -= damageDealt;
+                currentHP = Mathf.Max(currentHP, 0);
             }else{
-                currentHP -= newDamage;
+                currentHP -= damageDealt;
+                currentHP = Mathf.Max(currentHP, 0);
             }
     }
     public void MoveFront()

@@ -89,12 +89,12 @@ public class DialogueManager : MonoBehaviour
             .ToList();
             foreach(QuestSO quest in PlayerStats.GetInstance().activeQuests.ToList()){
                 if(quest.characters.Contains(npcData.id) && quest.characters[quest.goals[quest.currentGoal].characterIndex] == npcData.id){
-                    if(quest.goals[quest.currentGoal].goalType.Equals(GoalTypeEnum.Deliver) && CheckItemRequirements(quest.goals[quest.currentGoal])){
+                    if(quest.goals[quest.currentGoal].goalType.Equals(GoalTypeEnum.Deliver) && !CheckItemRequirements(quest.goals[quest.currentGoal])){
                         currentStory = new Story(quest.dialogue.text);
                         currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyNoRequirement);
                     }else{
-                    currentStory = new Story(quest.dialogue.text);
-                    currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
+                        currentStory = new Story(quest.dialogue.text);
+                        currentStory.ChoosePathString(quest.goals[quest.currentGoal].inkyRedirect);
                     }
                     dialogueIsPlaying = true;
                     dialoguePanel.SetActive(true);
@@ -164,7 +164,6 @@ public class DialogueManager : MonoBehaviour
             if (relevantQuests[0].isActive)
             {
                 Goal currentGoal = relevantQuests[0].goals[relevantQuests[0].currentGoal];
-
                 if (currentGoal.goalType == GoalTypeEnum.Talk && relevantQuests[0].characters[currentGoal.characterIndex] == npcData.id)
                 {
                     if(currentGoal.questItem.Count > 0){
@@ -173,8 +172,8 @@ public class DialogueManager : MonoBehaviour
                         }
                     }
                     QuestManager.GetInstance().UpdateTalkGoal(relevantQuests[0]);
+                    return;
                 }else if(currentGoal.goalType == GoalTypeEnum.Deliver && CheckItemRequirements(currentGoal) && relevantQuests[0].characters[currentGoal.characterIndex] == npcData.id){
-                    QuestManager.GetInstance().UpdateDeliverGoal(relevantQuests[0]);
                     foreach(int itm in currentGoal.requiredItems){
                         for(int i = 0; i < PlayerStats.GetInstance().localPlayerData.gameData.inventory.items.Count; i++){
                             if(PlayerStats.GetInstance().localPlayerData.gameData.inventory.items[i].equipmentId.Equals(itm)){
@@ -182,7 +181,8 @@ public class DialogueManager : MonoBehaviour
                             }
                         }
                     }
-                    
+                    QuestManager.GetInstance().UpdateDeliverGoal(relevantQuests[0]);
+                    return;
                 }
             }
         }
@@ -199,23 +199,22 @@ public class DialogueManager : MonoBehaviour
     }
     public bool CheckItemRequirements(Goal goal)
     {
-        List<EquipmentSO> itemList = PlayerStats.GetInstance().inventory;
+        List<ItemData> itemList = PlayerStats.GetInstance().localPlayerData.gameData.inventory.items;
 
-        // Check if all items in goal.requiredItems are in the player's inventory
-        foreach (int val in goal.requiredItems)
+        if(itemList.Count < 1) return false;
+
+        // Check if all required items are present in the player's inventory
+        foreach(int itemRequired in goal.requiredItems)
         {
-            EquipmentSO equipmentSO = itemList.FirstOrDefault(q => q.equipmentId.Equals(val));
-            
-            // If any required item is missing, return false immediately
-            if (equipmentSO == null)
+            // Check if itemRequired exists in itemList
+            if(!itemList.Any(item => item.equipmentId == itemRequired))
             {
-                return false;
+                return false; // Return false if any required item is missing
             }
         }
-
-        // All items are present
-        return true;
+        return true; // All required items are present
     }
+
 
     private void HandleTags(List<string> currentTags){
         foreach(string tag in currentTags){

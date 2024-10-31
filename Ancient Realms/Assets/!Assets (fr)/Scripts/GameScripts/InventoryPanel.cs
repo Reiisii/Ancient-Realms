@@ -477,7 +477,8 @@ public class InventoryPanel : MonoBehaviour
     }
     private void OnNFTsUpdate(List<Nft> nfts, int total)
     {
-        accountNft = nfts;
+        List<Nft> filteredList = nfts.Where(nft => nft.metaplexData.data.offchainData.name.Equals("Eagle's Shadow")).OrderByDescending(nft => Utilities.GetRarityEnum(nft.metaplexData.data.offchainData.attributes[0].value)).ThenBy(nft => nft.metaplexData.data.offchainData.attributes[3].value).ToList();
+        accountNft = filteredList;
         nftTotal = total;
         InitializeNFT();
     }

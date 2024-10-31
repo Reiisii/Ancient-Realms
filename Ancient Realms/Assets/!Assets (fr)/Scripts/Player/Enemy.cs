@@ -274,14 +274,17 @@ public class Enemy : MonoBehaviour
         }else{
             if(invulnerable) return;
             else{
-                float newDamage =Utilities.CalculateDamage(damage,  armor);
+                float damageDealt = isBlocking ? Utilities.CalculateDamage(damage, armor, true) : Utilities.CalculateDamage(damage, armor);
                 if(isBlocking){
-                    currentHP -= Utilities.CalculateDamage(damage,  armor, true);
+                    currentHP -= damageDealt;
+                    currentHP = Mathf.Max(currentHP, 0);
                 }else{
-                    currentHP -= newDamage;
+                    currentHP -= damageDealt;
+                    currentHP = Mathf.Max(currentHP, 0);
                 }
                 if(currentHP <= 0){
                     isDead = true;
+                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
                     animator.Play("Death");
                     if(MissionManager.GetInstance().inMission){
                         MissionSO mission = MissionManager.GetInstance().mission;
@@ -290,7 +293,7 @@ public class Enemy : MonoBehaviour
                             MissionManager.GetInstance().UpdateGoal(MissionGoalType.Clear);
                         }
                     }
-                    gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                    
                     foreach(QuestSO q in quest){
                     if(q.goals[q.currentGoal].goalType == GoalTypeEnum.Kill && q.goals[q.currentGoal].targetCharacters.Contains(id)){
                             QuestManager.GetInstance().UpdateKillGoal();

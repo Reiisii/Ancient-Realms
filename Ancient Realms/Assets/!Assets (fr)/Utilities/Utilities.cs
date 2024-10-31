@@ -196,6 +196,18 @@ public class Utilities : MonoBehaviour {
                         return Color.white; // Default color
                 }
         }
+        public static RarityEnum GetRarityEnum(string rarity)
+        {
+                return rarity switch
+                {
+                "Common" => RarityEnum.Common,
+                "Uncommon" => RarityEnum.Uncommon,
+                "Rare" => RarityEnum.Rare,
+                "Epic" => RarityEnum.Epic,
+                "Legendary" => RarityEnum.Legendary,
+                _ => RarityEnum.Common, // Default or error handling
+                };
+        }
         public static RarityEnum GetRarityFromString(string rarityString)
         {
                 if (Enum.TryParse(rarityString, true, out RarityEnum rarity))

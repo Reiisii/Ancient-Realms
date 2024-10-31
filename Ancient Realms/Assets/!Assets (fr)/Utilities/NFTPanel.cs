@@ -1,3 +1,4 @@
+using ESDatabase.Classes;
 using Solana.Unity.SDK.Nft;
 using TMPro;
 using UnityEngine;
@@ -61,6 +62,16 @@ public static NFTPanel Instance;
             BurnGO.GetComponent<FadeAnimation>().Close();
             itemDetailPanel.SetActive(true);
         }else{
+            if(AccountManager.Instance.playerData.gameData.equippedNFT[0] != null && AccountManager.Instance.playerData.gameData.equippedNFT[0].mint.Equals(selectedNFT.metaplexData.data.mint)){
+                AccountManager.Instance.playerData.gameData.equippedNFT[0] = null;
+                await AccountManager.SaveData(AccountManager.Instance.playerData);
+            }else if(AccountManager.Instance.playerData.gameData.equippedNFT[1] != null && AccountManager.Instance.playerData.gameData.equippedNFT[1].mint.Equals(selectedNFT.metaplexData.data.mint)){
+                AccountManager.Instance.playerData.gameData.equippedNFT[1] = null;
+                await AccountManager.SaveData(AccountManager.Instance.playerData);
+            }else if(AccountManager.Instance.playerData.gameData.equippedNFT[2] != null && AccountManager.Instance.playerData.gameData.equippedNFT[2].mint.Equals(selectedNFT.metaplexData.data.mint)){
+                AccountManager.Instance.playerData.gameData.equippedNFT[2] = null;
+                await AccountManager.SaveData(AccountManager.Instance.playerData);
+            }
             ClearSelected();
             AccountManager.Instance.playerData.gameData.denarii += 100;
             await AccountManager.SaveData(AccountManager.Instance.playerData);

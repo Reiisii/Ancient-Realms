@@ -59,6 +59,9 @@ public class PlayerStats : MonoBehaviour
     public float interval = 1f; // Time interval in seconds for each invocation
     private bool isInvoking;
     public bool stopSaving = false;
+    [Header("Base Stats")]
+    public float baseHP;
+    public float baseStamina;
     private void Awake()
     {
         equipmentLibrary = AccountManager.Instance.equipments;
@@ -81,15 +84,17 @@ public class PlayerStats : MonoBehaviour
     private void LoadPlayerData(PlayerData data)
     {
         GameData playerGameData = data.gameData;
-        InitializeQuests(playerGameData);
-        InitializeEquipments();
         level = playerGameData.level;
         currentXP = playerGameData.currentXP;
-        maxXP = playerGameData.maxXP;
+        // maxXP = CalculateXPToNextLevel(level);;
         denarii = playerGameData.denarii;
         
         // Calculate the stats for the current level
         CalculateStatsForCurrentLevel();
+        xpSlider.value = currentXP;
+        xpSlider.maxValue = maxXP;
+        InitializeQuests(playerGameData);
+        InitializeEquipments();
         if(currentXP > maxXP){
             LevelUp();
         }
@@ -97,8 +102,6 @@ public class PlayerStats : MonoBehaviour
         levelText.SetText(Utilities.FormatNumber(level));
         // hpSlider.maxValue = maxHP;
         // hpSlider.value = currentHP;
-        // xpSlider.value = currentXP;
-        // xpSlider.maxValue = maxXP;
         // staminaSlider.maxValue = maxStamina;
         // staminaSlider.value = staminaSlider.maxValue;
     }
@@ -200,12 +203,42 @@ public class PlayerStats : MonoBehaviour
 
     public void AddXp(int amount)
     {
+        // Store the previous XP before adding
+        int previousXP = currentXP;
+        
         currentXP += amount;
-        if (currentXP >= maxXP) LevelUp();
-        AnimateXPChange(currentXP - amount, currentXP);
-
+        
+        // Check for level up
+        if (currentXP >= maxXP) 
+        {
+            LevelUp();
+        }
+        
+        // Animate the XP change
+        AnimateXPChange(previousXP, currentXP);
+        
+        // Update the local player's data
         localPlayerData.gameData.currentXP += amount;
         isDataDirty = true;
+    }
+
+    private void AnimateXPChange(int startValue, int endValue)
+    {
+        // Use a separate variable for the animation
+        DOTween.To(() => startValue, x =>
+        {
+            // Update the value being animated
+            startValue = x;
+            xpSlider.value = startValue;
+        }, endValue, 1f)
+        .SetUpdate(true)
+        .SetEase(Ease.Linear)
+        .OnComplete(() =>
+        {
+            // Ensure xpSlider reflects the final value at the end of animation
+            xpSlider.value = endValue;
+
+        });
     }
 
     public void AddQuest(QuestData qData, QuestSO questSO)
@@ -276,7 +309,7 @@ public class PlayerStats : MonoBehaviour
                 localPlayerData.gameData.events.Add(value);
                 Notification evNotif = new Notification(){
                             title = "Event",
-                            notifType = NotifType.Character
+                            notifType = NotifType.Event
                 };
                 PlayerUIManager.GetInstance().notification.AddQueue(evNotif);
             break;
@@ -285,7 +318,7 @@ public class PlayerStats : MonoBehaviour
                 localPlayerData.gameData.equipments.Add(value);
                 Notification eqNotif = new Notification(){
                             title = "Equipment",
-                            notifType = NotifType.Character
+                            notifType = NotifType.Equipment
                 };
                 PlayerUIManager.GetInstance().notification.AddQueue(eqNotif);
             break;
@@ -295,50 +328,37 @@ public class PlayerStats : MonoBehaviour
     public void updateValues()
     {
         GameData playerGameData = localPlayerData.gameData;
-
-        // Set level-dependent and scaled stats
         levelText.SetText(Utilities.FormatNumber(level));
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
         staminaSlider.maxValue = maxStamina;
         staminaSlider.value = stamina;
+        // xpSlider.value = playerGameData.currentXP;
 
-        int currentHPInt = Mathf.RoundToInt(currentHP);
-        int maxHPInt = Mathf.RoundToInt(maxHP);
-        int staminaInt = Mathf.RoundToInt(stamina);
-        int maxStaminaInt = Mathf.RoundToInt(maxStamina);
-
-        hpText.SetText($"[{currentHPInt}/{maxHPInt}]");
-        staminaText.SetText($"[{staminaInt}/{maxStaminaInt}]");
-    }
-
-    private void AnimateXPChange(int startValue, int endValue)
-    {
-        DOTween.To(() => startValue, x =>
-        {
-            startValue = x;
-            xpSlider.value = startValue;
-        }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
+        hpText.SetText($"[{Utilities.ConvertToOneDecimal(currentHP)}/{Utilities.ConvertToOneDecimal(maxHP)}]");
+        staminaText.SetText($"[{Utilities.ConvertToOneDecimal(stamina)}/{Utilities.ConvertToOneDecimal(maxStamina)}]");
     }
 
     private async void LevelUp()
     {
         level++;
+        int excessXP = currentXP - maxXP;
         maxXP = CalculateXPToNextLevel(level);
-        maxHP *= 1.05f;
+        CalculateBaseStats();
         currentHP = maxHP;
-        maxStamina *= 1.03f;
         staminaRegenRate *= 1.03f;
-        currentXP = 0;
-
+        
+        currentXP = excessXP;
+        
         localPlayerData.gameData.currentXP = currentXP;
         localPlayerData.gameData.maxXP = maxXP;
         localPlayerData.gameData.level = level;
-
+        xpSlider.maxValue = maxXP;
         isDataDirty = true;
 
         await AccountManager.SaveData(localPlayerData);
         isDataDirty = false;
+        InitializeEquipments();
     }
 
     private void InitializeQuests(GameData playerGameData){
@@ -385,120 +405,91 @@ public class PlayerStats : MonoBehaviour
             i++;   
         }
         inventory = newList;
-        if(localPlayerData.gameData.equippedData.helmSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.helmSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
-        
-        if(localPlayerData.gameData.equippedData.chestSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.chestSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
-
-        if(localPlayerData.gameData.equippedData.waistSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.waistSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
-
-        if(localPlayerData.gameData.equippedData.footSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.footSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
-
-        if(localPlayerData.gameData.equippedData.mainSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.mainSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
-
-        if(localPlayerData.gameData.equippedData.shieldSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.shieldSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
-
-        if(localPlayerData.gameData.equippedData.javelinSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.javelinSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
-
-        if(localPlayerData.gameData.equippedData.bandageSlot != null) {
-            ItemData item = localPlayerData.gameData.equippedData.bandageSlot;
-            EquipmentSO helmSO = equipmentLibrary.Where(equipment => equipment.equipmentId == item.equipmentId).FirstOrDefault();
-            EquipmentSO copiedhelm = helmSO.CreateCopy(item);
-            equippedItems.Add(copiedhelm);
-        }else equippedItems.Add(null);
+        InitializeEquippedItems();
         int j = 0;
         CalculateStatsForCurrentLevel();
-        float sumArmor = 0;
-        float sumSpeed = 0;
+        float baseArmor = 0;
+        maxHP = baseHP;
+        maxStamina = baseStamina;
+        armor = baseArmor;
+        walkSpeed = 3.5f;
+        runSpeed = 5.5f;
         damage = 1;
-        foreach(EquipmentSO equipment in equippedItems){
-            if(equipment && equipment.equipmentType == EquipmentEnum.Armor){
-                sumArmor += equipment.baseArmor;
+        foreach (EquipmentSO equipment in equippedItems) {
+            if (equipment && equipment.equipmentType == EquipmentEnum.Armor) {
+                armor += equipment.baseArmor;
             }
-            if(equipment && equipment.equipmentType == EquipmentEnum.Weapon && (equipment.weaponType == WeaponType.Sword ||  equipment.weaponType == WeaponType.Spear) && j == 4){
+            if (equipment && equipment.equipmentType == EquipmentEnum.Weapon && 
+                (equipment.weaponType == WeaponType.Sword || equipment.weaponType == WeaponType.Spear) && j == 4) {
                 damage = equipment.baseDamage;
                 attackRange = equipment.attackRange;
             }
             j++;
         }
-        foreach (NFTData nftData in localPlayerData.gameData.equippedNFT)
-        {
-            if(nftData != null){
+        foreach (NFTData nftData in localPlayerData.gameData.equippedNFT) {
+            if (nftData != null) {
                 NFTSO nftSO = AccountManager.Instance.nfts.FirstOrDefault(nft => nft.id.Equals(nftData.nftID));
-                if (nftSO != null)
-                {
-                    foreach (StatBuff buffType in nftSO.buffList)
-                    {
-                        switch (buffType.buffType)
-                        {
+                if (nftSO != null) {
+                    foreach (StatBuff buffType in nftSO.buffList) {
+                        switch (buffType.buffType) {
                             case BuffType.Health:
                                 maxHP += buffType.value;
-                                
                                 break;
                             case BuffType.Armor:
-                                sumArmor += buffType.value;
+                                armor += buffType.value;
                                 break;
                             case BuffType.Stamina:
                                 maxStamina += buffType.value;
                                 break;
                             case BuffType.Speed:
-                                sumSpeed += buffType.value;
+                                walkSpeed += buffType.value;
+                                runSpeed += buffType.value;
                                 break;
                         }
                     }
                 }
             }
         }
-        armor = sumArmor;
-        walkSpeed += sumSpeed;
-        runSpeed += sumSpeed;
         currentHP = maxHP;
         stamina = maxStamina;
     }
+    private void InitializeEquippedItems()
+    {
+        // Populate equippedItems based on equipped slots, resetting null if slot is empty
+        equippedItems.Add(localPlayerData.gameData.equippedData.helmSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.helmSlot) : null);
+        equippedItems.Add(localPlayerData.gameData.equippedData.chestSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.chestSlot) : null);
+        equippedItems.Add(localPlayerData.gameData.equippedData.waistSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.waistSlot) : null);
+        equippedItems.Add(localPlayerData.gameData.equippedData.footSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.footSlot) : null);
+        equippedItems.Add(localPlayerData.gameData.equippedData.mainSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.mainSlot) : null);
+        equippedItems.Add(localPlayerData.gameData.equippedData.shieldSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.shieldSlot) : null);
+        equippedItems.Add(localPlayerData.gameData.equippedData.javelinSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.javelinSlot) : null);
+        equippedItems.Add(localPlayerData.gameData.equippedData.bandageSlot != null ? GetCopiedEquipment(localPlayerData.gameData.equippedData.bandageSlot) : null);
+    }
+    private EquipmentSO GetCopiedEquipment(ItemData itemData)
+    {
+        EquipmentSO equipmentSO = equipmentLibrary.Where(equipment => equipment.equipmentId == itemData.equipmentId).FirstOrDefault();
+        return equipmentSO?.CreateCopy(itemData);
+    }
+
     private void CalculateStatsForCurrentLevel()
     {
         // Calculate the stats based on the current level without incrementing it
+        CalculateBaseStats();  // Ensure base stats are calculated
         maxXP = CalculateXPToNextLevel(level);
-        maxHP = 100f * Mathf.Pow(1.01f, level - 1);
-        currentHP = maxHP;
-        maxStamina = 70f * Mathf.Pow(1.02f, level - 1); // Assuming initial maxStamina is 70
-        
-        staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
+        maxHP = baseHP * Mathf.Pow(1.05f, level - 1);  // Scale max HP based on the base value
+        currentHP = maxHP;  // Reset current HP to max after calculating
+        maxStamina = baseStamina * Mathf.Pow(1.02f, level - 1);  // Scale max Stamina based on the base value
+        staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1);  // Assuming initial staminaRegenRate is 10
     }
+
+    private void CalculateBaseStats()
+    {
+        // Base calculations for stats based on the current level
+        baseHP = 100f * Mathf.Pow(1.01f, level - 1); // Starting HP calculation
+        baseStamina = 70f * Mathf.Pow(1.02f, level - 1); // Starting Stamina calculation
+        staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Starting stamina regen rate calculation
+    }
+
     private int CalculateXPToNextLevel(int level)
     {
         return 30 + level * 15; // Example linear growth, starting at 30 XP

@@ -18,6 +18,7 @@ public class AccountModal : MonoBehaviour
     [SerializeField] NftItems prefab;
     [SerializeField] GameObject accountPanel;
     [SerializeField] GameObject LoadingPanel;
+    [SerializeField] public bool isAnimating = false;
     Account account;
     double accountBalance;
     List<Nft> accountNft;
@@ -76,11 +77,14 @@ public class AccountModal : MonoBehaviour
     }
     private void OnNFTsUpdate(List<Nft> nfts, int total)
     {
-        accountNft = nfts;
+        List<Nft> filteredList = nfts.Where(nft => nft.metaplexData.data.offchainData.name.Equals("Eagle's Shadow")).OrderByDescending(nft => Utilities.GetRarityEnum(nft.metaplexData.data.offchainData.attributes[0].value)).ThenBy(nft => nft.metaplexData.data.offchainData.attributes[3].value).ToList();
+        accountNft = filteredList;
         nftTotal = total;
         InitializeAccount();
         InitializeNFT();
     }
+
+
     public void ClearContent(){
         PubKeyDisplay.SetText("");
         BalanceDisplay.SetText("0.00");
