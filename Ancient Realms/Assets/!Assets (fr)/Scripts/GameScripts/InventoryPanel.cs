@@ -124,9 +124,18 @@ public class InventoryPanel : MonoBehaviour
     public bool nftSelected = false;
     public Nft selectedNFT;
     public NFTSO selectedNFTSO;
+    public NFTSlot slot1;
+    public NFTSlot slot2;
+    public NFTSlot slot3;
     private void OnEnable(){
         Web3.OnNFTsUpdate += OnNFTsUpdate;
         PlayerStats.GetInstance().InitializeEquipments();
+        nftSelected = false;
+        selectedNFT = null;
+        selectedNFTSO = null;
+        InventoryManager.GetInstance().invPanel.slot1.isSelected = false;
+        InventoryManager.GetInstance().invPanel.slot2.isSelected = false;
+        InventoryManager.GetInstance().invPanel.slot3.isSelected = false;
         LoadPlayerData(PlayerStats.GetInstance());
         InitializeNFT();
     }
@@ -429,6 +438,7 @@ public class InventoryPanel : MonoBehaviour
                     player.localPlayerData.gameData.inventory.items.Add(weapData);
                     equippedItems[4] = null;
                     ClearSlot(WeaponType.Sword);
+                    AudioManager.GetInstance().PlayAudio(SoundType.SwordEquip, 1f);
                 break;
                 
                 case "shield":
@@ -437,6 +447,7 @@ public class InventoryPanel : MonoBehaviour
                     player.localPlayerData.gameData.inventory.items.Add(shieldData);
                     equippedItems[5] = null;  // Clear from equippedItems list
                     ClearSlot(EquipmentEnum.Shield);
+                    AudioManager.GetInstance().PlayAudio(SoundType.ShieldUnequip, 1f);
                 break;
                 
                 case "javelin":
@@ -445,6 +456,7 @@ public class InventoryPanel : MonoBehaviour
                     player.localPlayerData.gameData.inventory.items.Add(itemDataWaist);
                     equippedItems[6] = null;  // Clear from equippedItems list
                     ClearSlot(WeaponType.Javelin);
+                    AudioManager.GetInstance().PlayAudio(SoundType.PilumEquip, 1f);
                 break;
                 case "consumable":
                     EquipmentSO consumableToInv = equippedItems[7];
@@ -452,6 +464,7 @@ public class InventoryPanel : MonoBehaviour
                     player.localPlayerData.gameData.inventory.items.Add(itemDataconsumable);
                     equippedItems[7] = null;  // Clear from equippedItems list
                     ClearSlot(EquipmentEnum.Consumable);
+                    AudioManager.GetInstance().PlayAudio(SoundType.HELMET, 0.5f);
                 break;
             }
             player.equippedItems = equippedItems;
@@ -491,6 +504,7 @@ public class InventoryPanel : MonoBehaviour
         if(nftSelected) {
             nftSelected = false;
             selectedNFT = null;
+            selectedNFTSO = null;
         }
         currentTab = type switch
         {
@@ -595,16 +609,17 @@ public class InventoryPanel : MonoBehaviour
         }
     }
     public void DeselectAllNFT(){
-        foreach (Transform child in inventoryRectTransform)
-        {
+        foreach (Transform child in nftRectTransform) {
             InventoryNFT inventoryNFT = child.GetComponent<InventoryNFT>();
-            if (inventoryNFT != null)
-            {
+            if (inventoryNFT != null) {
+                Debug.Log("Deselecting NFT: " + inventoryNFT.name);
                 inventoryNFT.Deselect();
             }
         }
+
         nftSelected = false;
         selectedNFT = null;
+        selectedNFTSO = null;
     }
     [ContextMenu("AddItem")]
     public void AddItem(){

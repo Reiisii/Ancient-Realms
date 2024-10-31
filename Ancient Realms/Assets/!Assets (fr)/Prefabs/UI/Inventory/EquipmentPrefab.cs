@@ -144,7 +144,7 @@ public class EquipmentPrefab : MonoBehaviour
             gameData.equippedData.shieldSlot = invToShield;
             inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
             inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
-
+            AudioManager.GetInstance().PlayAudio(SoundType.ShieldUnequip, 1f);
             // Refresh and reinitialize inventory to reflect the changes
             PlayerStats.GetInstance().InitializeEquipments();
             inventoryPanel.InitializeInventory();
@@ -169,6 +169,7 @@ public class EquipmentPrefab : MonoBehaviour
                     gameData.equippedData.mainSlot = invToSword;
                     inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                     inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                    AudioManager.GetInstance().PlayAudio(SoundType.SwordEquip, 1f);
                 break;
                 case WeaponType.Spear:
                     ItemData invToSpear = inventoryItems[equipment.dbIndex];
@@ -182,6 +183,7 @@ public class EquipmentPrefab : MonoBehaviour
                     gameData.equippedData.mainSlot = invToSpear;
                     inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                     inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                    AudioManager.GetInstance().PlayAudio(SoundType.SwordEquip, 1f);
                 break;
                 case WeaponType.Javelin:
                     ItemData invToJavelin = inventoryItems[equipment.dbIndex];
@@ -195,6 +197,7 @@ public class EquipmentPrefab : MonoBehaviour
                     gameData.equippedData.javelinSlot = invToJavelin;
                     inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                     inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                    AudioManager.GetInstance().PlayAudio(SoundType.PilumEquip, 1f);
                 break;
                 case WeaponType.SpearJavelin:
                     ItemData invToSpearJavelin = inventoryItems[equipment.dbIndex];
@@ -208,6 +211,7 @@ public class EquipmentPrefab : MonoBehaviour
                     gameData.equippedData.javelinSlot = invToSpearJavelin;
                     inventoryItems.RemoveAt(equipment.dbIndex);  // Remove from inventory
                     inventoryPanel.equipments.Remove(equipment); // Remove from equipments list
+                    AudioManager.GetInstance().PlayAudio(SoundType.PilumEquip, 1f);
                 break;
             }
 
