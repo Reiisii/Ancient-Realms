@@ -625,6 +625,34 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 77077ac1-7cc5-45b4-87fb-aca0039a73d9
     m_ActionName: Shop/Toggle[/Keyboard/tab,/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 729024b2-d687-49ac-9822-9a762a2744f1
+    m_ActionName: Player/Toggle_Follow[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 58d2ec00-351e-429d-a8cd-6eb0e3cc22b2
+    m_ActionName: Player/F_Attack[/Keyboard/5]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 16a74997-4d48-4186-945e-d24e78523cbc
+    m_ActionName: Player/F_Battle[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0852cde8-b5f8-48f7-9cee-e357b84ca424
+    m_ActionName: Player/F_March[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: aedb71fd-61b2-4b7a-829a-31160f791ede
+    m_ActionName: Player/F_CombatMode[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: eee372d6-1844-4694-99a9-e3b577d09c1a
+    m_ActionName: Player/Toggle Chapter Select[/Keyboard/l]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 531bac7c-d735-4289-841b-ca36da8f077c
+    m_ActionName: ChapterSelect/Toggle[/Keyboard/tab,/Keyboard/l]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -667,6 +695,7 @@ MonoBehaviour:
   isEquipping: 0
   holdTime: 0
   isHolding: 0
+  isThrowing: 0
   canAccessInventory: 1
   canAccessJournal: 1
   canAccessMap: 1
@@ -677,6 +706,12 @@ MonoBehaviour:
   playerActionMap:
     m_Name: Player
     m_Id: 14d9a4b7-91ea-478e-a338-eab60e27bca3
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  chapterSelectActionMap:
+    m_Name: Chapter Select
+    m_Id: 48463f86-efd2-43d2-ae85-062dd03d2b13
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []

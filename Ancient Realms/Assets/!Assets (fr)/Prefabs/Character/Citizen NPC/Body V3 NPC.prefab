@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -641,8 +641,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1414125273
-  m_SortingLayer: 4
+  m_SortingLayerID: 260688393
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 68403f8f27dc2674da680d6dd50f678b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -737,6 +737,8 @@ MonoBehaviour:
   bubbleMessage: {fileID: 21300000, guid: 983a4eee759dfcd498ccab6a0a2e04f7, type: 3}
   scroll: {fileID: 21300000, guid: a499658ea338c784fb1f0450b8bdb8ea, type: 3}
   questIcon: {fileID: 21300000, guid: 7d09bb2a187ed1a458e036e55916bbc8, type: 3}
+  talk: {fileID: 21300000, guid: effed9b2071b0f04a993027cf927ce29, type: 3}
+  deliver: {fileID: 21300000, guid: ecaf4430ff0b4b140aea1ce8c1687f4e, type: 3}
   subQuest: {fileID: 21300000, guid: 2f0b5c7c00b425544adf14df2bc634ab, type: 3}
   dialogue: {fileID: 4900000, guid: 8cc0356f07fd96d4080b457a55bb47f6, type: 3}
   npcSpriteRenderer: {fileID: 877686939592308247}
@@ -857,9 +859,29 @@ PrefabInstance:
     m_TransformParent: {fileID: 3225896650606018082}
     m_Modifications:
     - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3bcf441174f29324988b0ad1282fd48c, type: 3}
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_SortingLayer
       value: 4
@@ -868,6 +890,14 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -1414125273
       objectReference: {fileID: 0}
+    - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083592783507947971, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 5428049919962254787, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_Name
       value: VisualCue
@@ -878,27 +908,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5428049919962254787, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7657585111143241958, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.51
+      value: 6.1100006
       objectReference: {fileID: 0}
     - target: {fileID: 7657585111143241958, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5.51
+      value: 6.1100006
       objectReference: {fileID: 0}
     - target: {fileID: 7657585111143241958, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_LocalScale.z
-      value: 13.775002
+      value: 15.275002
       objectReference: {fileID: 0}
     - target: {fileID: 7657585111143241958, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.6
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 7657585111143241958, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 45.6
+      value: 45.4
       objectReference: {fileID: 0}
     - target: {fileID: 7657585111143241958, guid: acec48fc15ddcdd499baf5a4fa2e9967, type: 3}
       propertyPath: m_LocalPosition.z

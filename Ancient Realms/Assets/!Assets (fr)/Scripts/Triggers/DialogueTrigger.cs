@@ -23,6 +23,8 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private Sprite bubbleMessage;
     [SerializeField] private Sprite scroll;
     [SerializeField] private Sprite questIcon;
+    [SerializeField] private Sprite talk;
+    [SerializeField] private Sprite deliver;
     [SerializeField] private Sprite subQuest;
     [Header("Ink JSON")]
     [SerializeField] private TextAsset dialogue;
@@ -34,7 +36,7 @@ public class DialogueTrigger : MonoBehaviour
     private bool initialFlipX;
     private void Awake(){
         VisualCue.SetActive(true);
-        VisualCueKey.SetActive(true);
+        VisualCueKey.SetActive(false);
         playerInRange = false;
     }
     private void Start(){
@@ -51,8 +53,8 @@ public class DialogueTrigger : MonoBehaviour
         initialFlipX = npcSpriteRenderer.flipX;
     }
     private void Update(){
+        setVisualCue();
         if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying && PlayerController.GetInstance().playerActionMap.enabled){
-            VisualCue.SetActive(true);
             VisualCueKey.SetActive(true);
             setVisualCue();
             if(PlayerController.GetInstance().GetInteractPressed()){
@@ -63,17 +65,25 @@ public class DialogueTrigger : MonoBehaviour
                 FlipPlayerSprite();
             }
         }else{
-            VisualCue.SetActive(false);
             VisualCueKey.SetActive(false);
         }
         
     }
     public void setVisualCue(){
-
+            var relevantQuests = PlayerStats.GetInstance().activeQuests
+            .Where(q => q.goals.Any(g => (g.goalType == GoalTypeEnum.Talk || g.goalType == GoalTypeEnum.Deliver) && 
+                                            q.characters[g.characterIndex].Equals(npcData.id)))
+            .ToList();
             if(hasMainQuest()){
                     icon.sprite = questIcon;
             }else if(hasSubQuest()){
-                    icon.sprite= subQuest;
+                    icon.sprite = subQuest;
+            }else if(relevantQuests.Count > 0){
+                    if(relevantQuests[0].goals[relevantQuests[0].currentGoal].goalType == GoalTypeEnum.Talk){
+                        icon.sprite = talk;
+                    }else if(relevantQuests[0].goals[relevantQuests[0].currentGoal].goalType == GoalTypeEnum.Deliver){
+                        icon.sprite = deliver;
+                    }
             }else if(completion()){
                     icon.sprite = scroll;
             }else{
