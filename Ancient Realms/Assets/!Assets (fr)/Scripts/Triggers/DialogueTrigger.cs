@@ -79,10 +79,12 @@ public class DialogueTrigger : MonoBehaviour
             }else if(hasSubQuest()){
                     icon.sprite = subQuest;
             }else if(relevantQuests.Count > 0){
-                    if(relevantQuests[0].goals[relevantQuests[0].currentGoal].goalType == GoalTypeEnum.Talk){
+                    if(relevantQuests[0].goals[relevantQuests[0].currentGoal].goalType == GoalTypeEnum.Talk && relevantQuests[0].characters[relevantQuests[0].goals[relevantQuests[0].currentGoal].characterIndex].Equals(npcData.id)){
                         icon.sprite = talk;
-                    }else if(relevantQuests[0].goals[relevantQuests[0].currentGoal].goalType == GoalTypeEnum.Deliver){
+                    }else if(relevantQuests[0].goals[relevantQuests[0].currentGoal].goalType == GoalTypeEnum.Deliver && relevantQuests[0].characters[relevantQuests[0].goals[relevantQuests[0].currentGoal].characterIndex].Equals(npcData.id)){
                         icon.sprite = deliver;
+                    }else{
+                        icon.sprite = bubbleMessage;
                     }
             }else if(completion()){
                     icon.sprite = scroll;
