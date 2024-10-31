@@ -370,6 +370,8 @@ MonoBehaviour:
   firstLogin: 1
   interval: 1
   stopSaving: 0
+  baseHP: 0
+  baseStamina: 0
 --- !u!114 &6193478947497796674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,6 +409,7 @@ MonoBehaviour:
   isEquipping: 0
   holdTime: 0
   isHolding: 0
+  isThrowing: 0
   canAccessInventory: 1
   canAccessJournal: 1
   canAccessMap: 1
@@ -417,6 +420,12 @@ MonoBehaviour:
   playerActionMap:
     m_Name: Player
     m_Id: fa15f6d7-5039-4887-a3ee-784487ade264
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  chapterSelectActionMap:
+    m_Name: Chapter Select
+    m_Id: f7b9bd74-9b3d-439d-b3c8-cf0c9572b761
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
@@ -505,8 +514,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 0}
   nameText: {fileID: 0}
+  npcNameText: {fileID: 0}
   dialogueText: {fileID: 0}
   npcImage: {fileID: 0}
+  playerSprite: {fileID: 0}
+  playerPortrait: {fileID: 0}
+  npcPortrait: {fileID: 0}
+  typingSpeed: 0.03
+  isTyping: 0
 --- !u!95 &1069500992766602489
 Animator:
   serializedVersion: 5
@@ -797,6 +812,66 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ff3215ef-1293-434f-8e0b-f711fabfdb72
     m_ActionName: Minting/Toggle[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 729024b2-d687-49ac-9822-9a762a2744f1
+    m_ActionName: Player/Toggle_Follow[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 58d2ec00-351e-429d-a8cd-6eb0e3cc22b2
+    m_ActionName: Player/F_Attack[/Keyboard/5]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 16a74997-4d48-4186-945e-d24e78523cbc
+    m_ActionName: Player/F_Battle[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0852cde8-b5f8-48f7-9cee-e357b84ca424
+    m_ActionName: Player/F_March[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: aedb71fd-61b2-4b7a-829a-31160f791ede
+    m_ActionName: Player/F_CombatMode[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 497a20c7-936f-4b77-a43a-dbd03ce9472d
+    m_ActionName: Player/Toggle Premium Shop[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: eee372d6-1844-4694-99a9-e3b577d09c1a
+    m_ActionName: Player/Toggle Chapter Select[/Keyboard/l]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9aad61be-2c9b-4da6-8c91-bb62a969e910
+    m_ActionName: Quest/Right[/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a69d98e1-3379-47ba-ba2c-7903945d4cfe
+    m_ActionName: Quest/Left[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dfd6e951-a5dd-4395-8d46-e17096913a58
+    m_ActionName: Quest/Up[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e7c3339b-1604-4b9f-855f-1d989220d12c
+    m_ActionName: Quest/Down[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 07c22b98-883a-4401-b3ed-afaadddfb06d
+    m_ActionName: Dialogue/Navigation[/Keyboard/w,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5f45ed0d-a0f4-4805-8263-bf109b00479e
+    m_ActionName: Map/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 77077ac1-7cc5-45b4-87fb-aca0039a73d9
+    m_ActionName: Shop/Toggle[/Keyboard/tab,/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 531bac7c-d735-4289-841b-ca36da8f077c
+    m_ActionName: ChapterSelect/Toggle[/Keyboard/tab,/Keyboard/l]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
