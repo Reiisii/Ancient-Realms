@@ -15,7 +15,6 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private Sprite npcIcon;
     [SerializeField] private string currentKnot;
     [SerializeField] private List<string> quests;
-    [SerializeField] public List<QuestSO> activePlayerQuests;
 
     [Header("Visual Cue")]
     [SerializeField] private GameObject VisualCue;
@@ -49,8 +48,6 @@ public class DialogueTrigger : MonoBehaviour
                     gameObject = gameObject,
                 };
         initialFlipX = npcSpriteRenderer.flipX;
-        if(encycID.IsNullOrEmpty()) return;
-        else PlayerStats.GetInstance().AddEncyc(EncycType.Character, Convert.ToInt32(encycID));
     }
     private void Update(){
         if(playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying && PlayerController.GetInstance().playerActionMap.enabled){
@@ -58,17 +55,9 @@ public class DialogueTrigger : MonoBehaviour
             VisualCueKey.SetActive(true);
             setVisualCue();
             if(PlayerController.GetInstance().GetInteractPressed()){
+                if(!encycID.IsNullOrEmpty()) PlayerStats.GetInstance().AddEncyc(EncycType.Character, Convert.ToInt32(encycID));
                 gameObject.GetComponent<Animator>().SetBool("isDialogue", true);
                 PlayerController.GetInstance().animator.SetBool("isDialogue", true);
-                activePlayerQuests.Clear();
-                foreach(QuestSO quest in PlayerStats.GetInstance().activeQuests){
-                    foreach(string npcQuestList in quests){
-                        if(quest.questID.Equals(npcQuestList)){
-                            activePlayerQuests.Add(quest);
-                        }
-                    }
-                }
-                npcData.activePlayerQuest = activePlayerQuests;
                 DialogueManager.GetInstance().EnterDialogueMode(npcData);
                 FlipPlayerSprite();
             }

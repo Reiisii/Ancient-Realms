@@ -431,12 +431,14 @@ public class PlayerController : MonoBehaviour
         }
     }
     public void TakeDamage(float damage){
-            float newDamage = Utilities.CalculateDamage(damage,  playerStats.armor);
-            if(isBlocking){
-                playerStats.currentHP -= Utilities.CalculateDamage(damage,  playerStats.armor, true);
-            }else{
-                playerStats.currentHP -= newDamage;
-            }
+        float damageDealt = isBlocking ? Utilities.CalculateDamage(damage, playerStats.armor, true) : Utilities.CalculateDamage(damage, playerStats.armor);
+        if(isBlocking){
+            playerStats.currentHP -= damageDealt;
+            playerStats.currentHP = Mathf.Max(playerStats.currentHP, 0);
+        }else{
+            playerStats.currentHP -= damageDealt;
+            playerStats.currentHP = Mathf.Max(playerStats.currentHP, 0);
+        }
     }
     void MoveFront()
     {

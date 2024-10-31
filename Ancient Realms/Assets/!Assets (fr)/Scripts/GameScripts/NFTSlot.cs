@@ -15,6 +15,7 @@ public class NFTSlot : MonoBehaviour
     [SerializeField] Sprite defaultSprite;
     public bool isSelected = false;
     public void OnEnable(){
+
         NFTData nftData = PlayerStats.GetInstance().localPlayerData.gameData.equippedNFT[slotNo];
         if(nftData != null){
             nftSO = AccountManager.Instance.nfts.FirstOrDefault(nft => nft.id.Equals(nftData.nftID));
@@ -55,7 +56,6 @@ public class NFTSlot : MonoBehaviour
         }
         if (isSelected && nftSO != null) {
             UnequipNFT();
-            gameData.equippedNFT[slotNo] = null;
 
         } else if (!isSelected) {
             // If not selected, select this NFT
@@ -64,11 +64,14 @@ public class NFTSlot : MonoBehaviour
         
     }
     public void UnequipNFT(){
+        GameData gameData = PlayerStats.GetInstance().localPlayerData.gameData;
         nftSO = null;
         nft = null;
         isSelected = false;
         image.sprite = defaultSprite;
+        gameData.equippedNFT[slotNo] = null;
         PlayerStats.GetInstance().isDataDirty = true;
+        
         PlayerStats.GetInstance().InitializeEquipments();
         AudioManager.GetInstance().PlayAudio(SoundType.NFTEquip, 1f);
         InventoryManager.GetInstance().invPanel.InitializeInventory();
