@@ -12,6 +12,7 @@ public class NftItems : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI nftName;
     [SerializeField] GameObject accountPanel;
+    [SerializeField] Button button;
     public Nft nft;
     public NFTSO nftSO;
     public void InitializeNFTDisplay()
@@ -20,6 +21,7 @@ public class NftItems : MonoBehaviour
         {
             nftName.SetText(nftSO.nftName);
             image.sprite = nftSO.image;
+            button.interactable = !accountPanel.GetComponent<AccountModal>().isAnimating;
         }
         else
         {
