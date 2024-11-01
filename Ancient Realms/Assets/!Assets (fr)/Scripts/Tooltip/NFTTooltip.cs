@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EquipmentTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class NFTToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public EquipmentPrefab equipmentPrefab;
+    public InventoryNFT nftSO;
     [SerializeField] private bool isHovering = false;
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!isHovering && equipmentPrefab != null)
+        if (!isHovering)
         {
             isHovering = true;
-            TooltipManager.GetInstance().ShowEquipmentTooltip(equipmentPrefab.equipment);
+            TooltipManager.GetInstance().ShowNFTTooltip(nftSO.nftSO);
         }
 
     }
@@ -22,7 +22,7 @@ public class EquipmentTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (isHovering)
         {
             isHovering = false;
-            TooltipManager.GetInstance().HideEquipmentTooltip();
+            TooltipManager.GetInstance().HideNFTTooltip();
         }
 
     }
@@ -30,7 +30,7 @@ public class EquipmentTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (isHovering)
         {
             isHovering = false;
-            TooltipManager.GetInstance().HideEquipmentTooltip();
+            TooltipManager.GetInstance().HideNFTTooltip();
         }
     }
 }

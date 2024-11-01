@@ -37,7 +37,7 @@ public class StatPrefab : MonoBehaviour
         text.SetText($"Speed: +{speed}");
     }
     public void SetRange(string range){
-        icon.sprite = speedSprite;
+        icon.sprite = rangeSprite;
         text.SetText($"Range: +{range}");
     }
 }
