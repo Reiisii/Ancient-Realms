@@ -71,7 +71,7 @@ public class DialogueManager : MonoBehaviour
             // Check if NPC has giveable quest and is can be given
             foreach(string quest in npc.giveableQuest){
                 QuestSO giveableQuests = AccountManager.Instance.quests.Find(q => q.questID == quest);
-                QuestSO playerHasActiveQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
+                QuestSO playerHasActiveQuest = PlayerStats.GetInstance().activeQuests.FirstOrDefault(q => q.questID == quest);
                 QuestSO playerHasCompletedQuest = PlayerStats.GetInstance().completedQuests.FirstOrDefault(q => q.questID == giveableQuests.questID);
                 // if quest is not on completed and not on active quest list STOP loop and give quest
                 if(giveableQuests != null && Utilities.CheckRequirements(giveableQuests) && playerHasActiveQuest == null && playerHasCompletedQuest == null){
