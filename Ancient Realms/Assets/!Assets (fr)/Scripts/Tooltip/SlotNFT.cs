@@ -48,6 +48,13 @@ public class SlotNFT : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
         }
 
     }
+    private void OnDisable(){
+        if (isHovering)
+        {   
+            isHovering = false;
+            TooltipManager.GetInstance().HideNFTTooltip();
+        }
+    }
     private void OnDestroy(){
         if (isHovering)
         {

@@ -92,39 +92,42 @@ public class DialogueTrigger : MonoBehaviour
                     icon.sprite = bubbleMessage;
             }
     }
-    public bool hasMainQuest(){
-        if(npcData.giveableQuest.Count > 0){
-            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-            if(activeQuest == null && completedQuest == null){
-                QuestSO quest = AccountManager.Instance.quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-                return !quest.isActive && !quest.isCompleted && quest.isMain;
-            }else{
-                return false;
+    public bool hasMainQuest()
+    {
+        foreach (var questID in npcData.giveableQuest)
+        {
+            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == questID);
+            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == questID);
+
+            if (activeQuest == null && completedQuest == null)
+            {
+                QuestSO quest = AccountManager.Instance.quests.Find(quest => quest.questID == questID);
+                if (quest != null && !quest.isActive && !quest.isCompleted && quest.isMain)
+                {
+                    return true;
+                }
             }
-            
-            
-        }else{
-            return false;
         }
-        
+        return false;
     }
-    public bool hasSubQuest(){
-        if(npcData.giveableQuest.Count > 0){
-            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-            if(activeQuest == null && completedQuest == null){
-                QuestSO quest = AccountManager.Instance.quests.Find(quest => quest.questID == npcData.giveableQuest[0]);
-                return !quest.isActive && !quest.isCompleted && !quest.isMain;
-            }else{
-                return false;
+
+    public bool hasSubQuest()
+    {
+        foreach (var questID in npcData.giveableQuest)
+        {
+            QuestSO activeQuest = PlayerStats.GetInstance().activeQuests.Find(quest => quest.questID == questID);
+            QuestSO completedQuest = PlayerStats.GetInstance().completedQuests.Find(quest => quest.questID == questID);
+
+            if (activeQuest == null && completedQuest == null)
+            {
+                QuestSO quest = AccountManager.Instance.quests.Find(quest => quest.questID == questID);
+                if (quest != null && !quest.isActive && !quest.isCompleted && !quest.isMain)
+                {
+                    return true;
+                }
             }
-            
-            
-        }else{
-            return false;
         }
-        
+        return false;
     }
     public bool completion()
     {
