@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5453114736877239496}
   - component: {fileID: 8660569557702087530}
   - component: {fileID: 2791831109227236921}
+  - component: {fileID: 9025757181042099735}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -75,6 +76,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9025757181042099735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746790091559129212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0aa2ce36a7dd43ad04584cd617d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nftSO: {fileID: 5739843341320769403}
+  isHovering: 0
 --- !u!1 &4960115295669588514
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,6 +153,7 @@ MonoBehaviour:
   image: {fileID: 2791831109227236921}
   background: {fileID: 4226640127028531594}
   isSelected: 0
+  mintKey: 
   nft: {}
   nftSO: {fileID: 0}
 --- !u!114 &4226640127028531594
