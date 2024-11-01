@@ -18,13 +18,27 @@ public class KeyPressHandler : MonoBehaviour
     [SerializeField] public GameObject keyW;
     [SerializeField] public GameObject keyPressS;
     [SerializeField] public GameObject keyS;
+    [SerializeField] public GameObject key1;
+    [SerializeField] public GameObject key1Press;
+    [SerializeField] public GameObject key2;
+    [SerializeField] public GameObject key2Press;
+    [SerializeField] public GameObject key3;
+    [SerializeField] public GameObject key3Press;
+    [SerializeField] public GameObject key4;
+    [SerializeField] public GameObject key4Press;
+    [SerializeField] public GameObject key5;
+    [SerializeField] public GameObject key5Press;
     [SerializeField] public GameObject CombatGO;
+    [SerializeField] public GameObject CommanderGO;
     void Update()
     {
         if(PlayerStats.GetInstance().isCombatMode){
             CombatGO.SetActive(true);
         }else{
             CombatGO.SetActive(false);
+        }
+        if(MissionManager.GetInstance().inMission && PlayerStats.GetInstance().isCombatMode){
+            CommanderGO.SetActive(true);
         }
         // Handle "A" key press
         if (Input.GetKeyDown(KeyCode.A))
@@ -109,6 +123,56 @@ public class KeyPressHandler : MonoBehaviour
         {
             keyS.SetActive(true);
             keyPressS.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            key1.SetActive(false);
+            key1Press.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha1))
+        {
+            key1.SetActive(true);
+            key1Press.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            key2.SetActive(false);
+            key2Press.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha2))
+        {
+            key2.SetActive(true);
+            key2Press.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            key3.SetActive(false);
+            key3Press.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha3))
+        {
+            key3.SetActive(true);
+            key3Press.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            key4.SetActive(false);
+            key4Press.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha4))
+        {
+            key4.SetActive(true);
+            key4Press.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            key5.SetActive(false);
+            key5Press.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha5))
+        {
+            key5.SetActive(true);
+            key5Press.SetActive(false);
         }
     }
 }

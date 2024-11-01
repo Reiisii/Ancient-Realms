@@ -79,8 +79,8 @@ public class TooltipManager : MonoBehaviour
             nftTooltip.SetActive(true);
             nftTooltip.transform.position = Input.mousePosition;
         }
-        eqName.SetText(nft.nftName);
-        eqName.color = Utilities.GetColorForCulture(nft.culture);
+        nftName.SetText(nft.nftName);
+        nftName.color = Utilities.GetColorForCulture(nft.culture);
             foreach(StatBuff buff in nft.buffList){
                 switch(buff.buffType){
                     case BuffType.Health:
