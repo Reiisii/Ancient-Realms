@@ -26,6 +26,10 @@ public class EquipmentTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
 
     }
+    private void OnDisable(){
+        isHovering = false;
+        TooltipManager.GetInstance().HideEquipmentTooltip();
+    }
     private void OnDestroy(){
         if (isHovering)
         {
