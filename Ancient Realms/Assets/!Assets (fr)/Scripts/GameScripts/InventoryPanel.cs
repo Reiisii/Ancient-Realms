@@ -613,7 +613,6 @@ public class InventoryPanel : MonoBehaviour
         foreach (Transform child in nftRectTransform) {
             InventoryNFT inventoryNFT = child.GetComponent<InventoryNFT>();
             if (inventoryNFT != null) {
-                Debug.Log("Deselecting NFT: " + inventoryNFT.name);
                 inventoryNFT.Deselect();
             }
         }
