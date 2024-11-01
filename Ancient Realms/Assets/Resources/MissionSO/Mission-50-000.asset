@@ -12,11 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aadc9e9ed8c819a40ba0f5321ffbb27e, type: 3}
   m_Name: Mission-50-000
   m_EditorClassIdentifier: 
-  missionID: 
-  missionTitle: 
-  missionDescription: 
+  missionID: mission-50-000
+  missionTitle: Materials Mission
+  missionDescription: a
   chapter: 0
   isCompleted: 0
   currentGoal: 0
-  goals: []
+  goals:
+  - taskID: 0
+    taskDescription: Kill all bandits
+    missionType: 2
+    requiredAmount: 5
+    currentAmount: 0
+    itemID: 
+    targetIDs:
+    - enemy-50-000
   rewards: []
