@@ -77,7 +77,7 @@ public class EncycHandler : MonoBehaviour
     {
         if(visible){
             dataNameText.SetText(artifact.artifactName);
-            panelName.SetText("Equipment");
+            panelName.SetText("Artifact");
             descriptionText.SetText(artifact.description);
             cultureText.SetText(Utilities.FormatCultureName(artifact.culture));
             dataImage.sprite = artifact.image;
@@ -85,7 +85,7 @@ public class EncycHandler : MonoBehaviour
             dataPanel.SetActive(true);
         }else{
             dataNameText.SetText("???");
-            panelName.SetText("Equipment");
+            panelName.SetText("Artifact");
             descriptionText.SetText(artifact.description);
             cultureText.SetText(Utilities.FormatCultureName(artifact.culture));
             dataImage.sprite = artifact.image;

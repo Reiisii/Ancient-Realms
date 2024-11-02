@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,7 +17,11 @@ public class SmithingGameManager : MonoBehaviour
     [SerializeField] GameObject hammerGO;
     [SerializeField] GameObject grindstoneGO;
     [SerializeField] GameObject assemblyGO;
+    [SerializeField] public GameObject smithingUI;
     [SerializeField] public OrderType order;
+    [Header("Texts")]
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI totalSmithScore;
     [Header("Workstation Status")]
     public bool hasMaterials = false;
     public bool furnaceUsed = false;
@@ -28,6 +33,7 @@ public class SmithingGameManager : MonoBehaviour
     public int totalScore;
     public bool inMiniGame = false;
     public bool inWorkStation = false;
+    public bool canSmith = true;
     [Header("Task Score")]
     public int score = 0;
     public int weaponMade = 0;
@@ -48,7 +54,15 @@ public class SmithingGameManager : MonoBehaviour
     public static SmithingGameManager GetInstance(){
         return Instance;
     }
+    private void Update(){
+        scoreText.SetText(Utilities.FormatNumber(totalScore));
+        totalSmithScore.SetText(Utilities.FormatNumber(weaponMade));
+    }
     public void StartWorkStation(WorkStation workStation){
+        if(!canSmith) {
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "You've reached the max smithing per Instance. You can End Shift");
+            return;
+        }
         if(workStation == WorkStation.Metal) {
             if(hasMaterials) {
                 PlayerUIManager.GetInstance().SpawnMessage(MType.Error, "You already have the materials!");
@@ -79,6 +93,7 @@ public class SmithingGameManager : MonoBehaviour
                 furnaceUIGO.SetActive(true);
                 furnaceGO.SetActive(true);
                 scoreboardUIGO.SetActive(true);
+                smithingUI.SetActive(false);
             break;
             case WorkStation.Hammering:
                 if(!hasMaterials){
@@ -100,6 +115,7 @@ public class SmithingGameManager : MonoBehaviour
                 hammerUIGO.SetActive(true);
                 hammerGO.SetActive(true);
                 scoreboardUIGO.SetActive(true);
+                smithingUI.SetActive(false);
             break;
             case WorkStation.Grindstone:
                 if(!hasMaterials){
@@ -125,6 +141,7 @@ public class SmithingGameManager : MonoBehaviour
                 inWorkStation = true;
                 grindstoneUIGO.SetActive(true);
                 grindstoneGO.SetActive(true);
+                smithingUI.SetActive(false);
             break;
             case WorkStation.Assembly:
                 if(!hasMaterials){
@@ -155,6 +172,7 @@ public class SmithingGameManager : MonoBehaviour
                 inWorkStation = true;
                 assemblyUIGO.SetActive(true);
                 assemblyGO.SetActive(true);
+                smithingUI.SetActive(false);
             break;
         }
         PlayerController.GetInstance().virtualCamera.gameObject.SetActive(false);
@@ -169,6 +187,7 @@ public class SmithingGameManager : MonoBehaviour
         PlayerController.GetInstance().playerActionMap.Enable();
         smithingGame.SetActive(false);
         inWorkStation = false;
+        smithingUI.SetActive(true);
         switch(workStation){
             case WorkStation.Furnace:
                 inWorkStation = false;
@@ -193,6 +212,10 @@ public class SmithingGameManager : MonoBehaviour
         }
     }
     public void Submit(){
+        if(!canSmith) {
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "You've reached the max smithing per Instance. You can End Shift");
+            return;
+        }
         if(hasMaterials && furnaceUsed && hammerUsed && grindstoneUsed && assemblyUsed){
             int tempScore = score;
             hasMaterials = false;
@@ -211,6 +234,9 @@ public class SmithingGameManager : MonoBehaviour
             weaponMade++;
             order = Utilities.GetRandomWeapon();
             AudioManager.GetInstance().PlayAudio(SoundType.DELIVERED);
+            if(weaponMade > 4){
+                canSmith = false;
+            }
         }else{
             AudioManager.GetInstance().PlayAudio(SoundType.RED);
             if(!hasMaterials){
@@ -245,11 +271,14 @@ public class SmithingGameManager : MonoBehaviour
             totalScore = 0;
             score = 0;
             weaponMade = 0;
+            canSmith = true;
     }
     public async void StartGame(){
         inMiniGame = true;
+        canSmith = true;
         order = Utilities.GetRandomWeapon();
         await PlayerUIManager.GetInstance().ClosePlayerUI();
+        smithingUI.SetActive(true);
     }
     public async void EndGame(){
         
@@ -257,6 +286,7 @@ public class SmithingGameManager : MonoBehaviour
         ClearSmithingGame();
         PlayerStats.GetInstance().localPlayerData.gameData.denarii += totalScore;
         PlayerStats.GetInstance().isDataDirty = true;
+        smithingUI.SetActive(false);
         await PlayerUIManager.GetInstance().OpenPlayerUI();
     }
 }
