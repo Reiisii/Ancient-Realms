@@ -3514,8 +3514,8 @@ MonoBehaviour:
   timerCircleImage: {fileID: 129500440}
   item: {fileID: 1714996550}
   gSprite: {fileID: 21300000, guid: a4b50e2a671f5284ab950157666cd499, type: 3}
-  piSprite: {fileID: 21300000, guid: 2e67ddda45f9c4b408aa55b8302eba11, type: 3}
-  puSprite: {fileID: 21300000, guid: 5ce88e6829dcfe64e96eb521ac0d694e, type: 3}
+  piSprite: {fileID: 21300000, guid: ee93c81d04993af45a7c6b973aea25f1, type: 3}
+  puSprite: {fileID: 21300000, guid: a5fa69aed1f50e94bb7c75e6f5178742, type: 3}
   gladius: {fileID: 360563483}
   pilum: {fileID: 360563482}
   pugio: {fileID: 360563481}
@@ -7789,7 +7789,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 169808652}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 145669856}
+        m_TargetAssemblyTypeName: PuzzleManager, Assembly-CSharp
+        m_MethodName: ResetPos
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &169808652
 MonoBehaviour:
   m_ObjectHideFlags: 0
