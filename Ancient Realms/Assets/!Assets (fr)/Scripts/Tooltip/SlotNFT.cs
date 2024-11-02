@@ -9,7 +9,7 @@ public class SlotNFT : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
     [SerializeField] private int slotNo;
     [SerializeField] private NFTData nft;
     [SerializeField] private bool isHovering = false;
-    public void Start(){
+    public void Update(){
         UpdateEquipment();
     }
     public void UpdateEquipment()

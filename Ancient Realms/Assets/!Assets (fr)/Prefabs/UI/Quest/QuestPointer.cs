@@ -44,50 +44,52 @@ public class QuestPointer : MonoBehaviour
         if(PlayerController.GetInstance() != null){
             if(PlayerController.GetInstance().cm == null) return;
         }
-        worldCamera = PlayerController.GetInstance().cm.GetComponent<Camera>();
-        if(worldCamera != null){
-        if(quest.currentGoal < quest.goals.Count) {
-            GoalTypeEnum goal = quest.goals[quest.currentGoal].goalType;
-            if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.Deliver){
-                icon.sprite = questMarker;
-            }else if (goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
-                icon.sprite = targetMarker;
-            }
-            if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.Deliver || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
-                if(isNPCFound && quest.isPinned){
-                    pointer.SetActive(true);
-                    float bobbingOffset = Mathf.Sin(Time.time * bobbingSpeed) * bobbingAmplitude;
+        if(PlayerController.GetInstance() != null){
+            worldCamera = PlayerController.GetInstance().cm.GetComponent<Camera>();
+            if(worldCamera != null){
+            if(quest.currentGoal < quest.goals.Count) {
+                GoalTypeEnum goal = quest.goals[quest.currentGoal].goalType;
+                if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.Deliver){
+                    icon.sprite = questMarker;
+                }else if (goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
+                    icon.sprite = targetMarker;
+                }
+                if(goal == GoalTypeEnum.Talk || goal == GoalTypeEnum.Deliver || goal == GoalTypeEnum.HitAny || goal == GoalTypeEnum.HitJavelin || goal == GoalTypeEnum.HitMelee || goal == GoalTypeEnum.HitRange){
+                    if(isNPCFound && quest.isPinned){
+                        pointer.SetActive(true);
+                        float bobbingOffset = Mathf.Sin(Time.time * bobbingSpeed) * bobbingAmplitude;
 
-                    // Apply Y-offset to the quest target position and include the bobbing effect
-                    Vector3 targetPositionWithOffset = npcPosition + new Vector3(0, yOffset + bobbingOffset, 0);
+                        // Apply Y-offset to the quest target position and include the bobbing effect
+                        Vector3 targetPositionWithOffset = npcPosition + new Vector3(0, yOffset + bobbingOffset, 0);
 
-                    // Convert the world position to screen space
-                    Vector3 screenPosition = PlayerController.GetInstance().cm.GetComponent<Camera>().WorldToScreenPoint(targetPositionWithOffset);
+                        // Convert the world position to screen space
+                        Vector3 screenPosition = PlayerController.GetInstance().cm.GetComponent<Camera>().WorldToScreenPoint(targetPositionWithOffset);
 
-                    // Check if the target is behind the camera
-                    if (screenPosition.z < 0)
-                    {
-                        // Flip the position to the front if it's behind
-                        screenPosition *= -1;
+                        // Check if the target is behind the camera
+                        if (screenPosition.z < 0)
+                        {
+                            // Flip the position to the front if it's behind
+                            screenPosition *= -1;
+                        }
+
+                        // Convert the screen position to UI space (Canvas Space)
+                        Vector2 pointerPos;
+                        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas, screenPosition, null, out pointerPos);
+
+                        // Clamp the pointer to the screen edges
+                        pointerPos.x = Mathf.Clamp(pointerPos.x, -uiCanvas.rect.width / 2 + screenEdgeBuffer, uiCanvas.rect.width / 2 - screenEdgeBuffer);
+                        pointerPos.y = Mathf.Clamp(pointerPos.y, -uiCanvas.rect.height / 2 + screenEdgeBuffer, uiCanvas.rect.height / 2 - screenEdgeBuffer);
+
+                        // Set the pointer's position in UI space
+                        gameObject.GetComponent<RectTransform>().anchoredPosition = pointerPos;
+                    }else{
+                        pointer.SetActive(false);
                     }
-
-                    // Convert the screen position to UI space (Canvas Space)
-                    Vector2 pointerPos;
-                    RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas, screenPosition, null, out pointerPos);
-
-                    // Clamp the pointer to the screen edges
-                    pointerPos.x = Mathf.Clamp(pointerPos.x, -uiCanvas.rect.width / 2 + screenEdgeBuffer, uiCanvas.rect.width / 2 - screenEdgeBuffer);
-                    pointerPos.y = Mathf.Clamp(pointerPos.y, -uiCanvas.rect.height / 2 + screenEdgeBuffer, uiCanvas.rect.height / 2 - screenEdgeBuffer);
-
-                    // Set the pointer's position in UI space
-                    gameObject.GetComponent<RectTransform>().anchoredPosition = pointerPos;
                 }else{
                     pointer.SetActive(false);
                 }
-            }else{
-                pointer.SetActive(false);
             }
-        }
+            }
         }
     }
     void FindNPC()

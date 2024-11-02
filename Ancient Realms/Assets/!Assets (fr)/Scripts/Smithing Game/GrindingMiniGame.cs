@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class GrindingMiniGame : MonoBehaviour
 {
@@ -27,8 +28,13 @@ public class GrindingMiniGame : MonoBehaviour
     [Header("Timer Radial Settings")]
     public Image timerCircleImage; // Radial timer image
     [Header("Proceed")]
-    [SerializeField] GameObject assembly;
-    [SerializeField] GameObject grinding;
+    [SerializeField] SpriteRenderer item;
+    [SerializeField] Sprite gSprite;
+    [SerializeField] Sprite piSprite;
+    [SerializeField] Sprite puSprite;
+    [SerializeField] GameObject gladius;
+    [SerializeField] GameObject pilum;
+    [SerializeField] GameObject pugio;
     private bool gameOver = false;
     private float timeLeft;
     private bool timeRunning = false;
@@ -40,6 +46,18 @@ public class GrindingMiniGame : MonoBehaviour
         }else{
             tooltip.SetActive(true);
         }
+        item.gameObject.SetActive(true);
+        switch(SmithingGameManager.GetInstance().order){
+            case OrderType.Gladius:
+                item.sprite = gSprite;
+            break;
+            case OrderType.Pila:
+                item.sprite = piSprite;
+            break;
+            case OrderType.Pugio:
+                item.sprite = puSprite;
+            break;
+        }
         InitializeSlider();
         InitializeTimer();
         DisplayStartPrompt(true);
@@ -47,6 +65,9 @@ public class GrindingMiniGame : MonoBehaviour
         SetGrindstoneAnimation(staticAnimationName); // Set the grindstone to Static state at the start
     }
     void OnDisable(){
+        gladius.SetActive(false);
+        pilum.SetActive(false);
+        pugio.SetActive(false);
         SetGrindstoneAnimation(staticAnimationName);
         grindstonePrefab.SetActive(false);
         gameStarted = false;
@@ -71,7 +92,27 @@ public class GrindingMiniGame : MonoBehaviour
         gameStarted = true;
         DisplayStartPrompt(false);
         timeRunning = true;
-        SetGrindstoneAnimation(spinAnimationName); // Start the spinning animation
+        item.gameObject.SetActive(false);
+        switch(SmithingGameManager.GetInstance().order){
+            case OrderType.Gladius:
+                gladius.SetActive(true);
+                pilum.SetActive(false);
+                pugio.SetActive(false);
+                SetGrindstoneAnimation("Gladius Grind");
+            break;
+            case OrderType.Pila:
+                gladius.SetActive(false);
+                pilum.SetActive(true);
+                pugio.SetActive(false);
+                SetGrindstoneAnimation("Pila Grind");
+            break;
+            case OrderType.Pugio:
+                gladius.SetActive(false);
+                pilum.SetActive(false);
+                pugio.SetActive(true);
+                SetGrindstoneAnimation("Pugio Grind");
+            break;
+        }
     }
 
     void InitializeSlider()

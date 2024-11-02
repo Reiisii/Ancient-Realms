@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,8 @@ public class MissionPanel : MonoBehaviour
                     taskPrefab.SetText($"Denarii: {reward.value}");
                 break;
                 case RewardsEnum.Item:
-                    EquipmentSO equipmentSO = AccountManager.Instance.equipments.FirstOrDefault(eq => eq.equipmentId.Equals(reward.value));
-                    taskPrefab.SetText($"Item: {equipmentSO.itemName} T({reward.tier}) L({reward.level}) x{reward.amount}");
+                    EquipmentSO equipmentSO = AccountManager.Instance.equipments.FirstOrDefault(eq => eq.equipmentId == Convert.ToInt32(reward.value));
+                    taskPrefab.SetText(equipmentSO.itemName + " " + (reward.tier > 0 ? "T(" + reward.tier +")" +  "L(" + reward.level + ")" + "x" + reward.amount : "x" + reward.amount));
                 break;
                 case RewardsEnum.Artifact:
                     ArtifactsSO artifactsSO = AccountManager.Instance.achievements.FirstOrDefault(achievement => achievement.id.Equals(reward.value));
