@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class PausePanel : MonoBehaviour
 {
-    public async void BackToMenu(){
+    public void BackToMenu(){
         Time.timeScale = 1f;
+        PauseManager.GetInstance().missionPausePanel.SetActive(false);
+        PauseManager.GetInstance().pausePanel.SetActive(false);
+        PlayerUIManager.GetInstance().BackToMainMenu();
+    }
+    public async void ExitMission(){
+        MissionManager.GetInstance().EndMission();
+
+        PauseManager.GetInstance().missionPausePanel.SetActive(false);
         await PlayerUIManager.GetInstance().ClosePlayerUI();
-        await PlayerUIManager.GetInstance().OpenDarkenUI();
-        Play.GetInstance().PlayMainMenu();
+        PlayerUIManager.GetInstance().LastLocation();
     }
     public void BackToGame(){
         Time.timeScale = 1f;
-        PauseManager.GetInstance().pausePanel.GetComponent<LogoAnimation>().Close();
-        PauseManager.GetInstance().OpenPause();
+        if(MissionManager.GetInstance().inMission){
+            PauseManager.GetInstance().missionPausePanel.SetActive(false);
+        }else{
+            PauseManager.GetInstance().pausePanel.SetActive(false);
+        }
     }
 }

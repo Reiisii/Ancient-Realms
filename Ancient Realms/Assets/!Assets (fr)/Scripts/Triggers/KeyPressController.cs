@@ -37,7 +37,7 @@ public class KeyPressHandler : MonoBehaviour
         }else{
             CombatGO.SetActive(false);
         }
-        if(MissionManager.GetInstance().inMission && PlayerStats.GetInstance().isCombatMode){
+        if(MissionManager.GetInstance().inMission && Contubernium.Instance != null && PlayerStats.GetInstance().isCombatMode){
             CommanderGO.SetActive(true);
         }
         // Handle "A" key press

@@ -8,39 +8,44 @@ using UnityEngine.EventSystems;
 public class SlotEquipment : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
     [SerializeField] private int slotNo;
-    [SerializeField] private ItemData equipment;
+    [SerializeField] private EquipmentSO equipment;
+    [SerializeField] private ItemData itemData;
     [SerializeField] private bool isHovering = false;
-    public void Start(){
+    public void Update(){
         UpdateEquipment();
     }
     public void UpdateEquipment()
     {
-        
         switch(slotNo){
             case 0:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.helmSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.helmSlot;
             break;
             case 1:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.chestSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.chestSlot;
             break;
             case 2:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.waistSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.waistSlot;
             break;
             case 3:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.footSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.footSlot;
             break;
             case 4:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.mainSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.mainSlot;
             break;
             case 5:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.shieldSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.shieldSlot;
             break;
             case 6:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.javelinSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.javelinSlot;
             break;
             case 7:
-                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.bandageSlot;
+                itemData = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.bandageSlot;
             break;
+        }
+        if(itemData != null){
+            equipment = AccountManager.Instance.equipments.FirstOrDefault(eq => eq.equipmentId.Equals(itemData.equipmentId)).CreateCopy(itemData);
+        }else{
+            equipment = null;
         }
         if (equipment == null && isHovering) {
             isHovering = false;
@@ -51,16 +56,14 @@ public class SlotEquipment : MonoBehaviour, IPointerEnterHandler, IPointerClickH
     {
         if (!isHovering)
         {
-            if(equipment == null) return;
+            if(itemData == null) return;
             isHovering = true;
-            EquipmentSO equipmentSO = AccountManager.Instance.equipments.FirstOrDefault(eq => eq.equipmentId.Equals(equipment.equipmentId)).CreateCopy(equipment);
-            TooltipManager.GetInstance().ShowEquipmentTooltip(equipmentSO);
+            TooltipManager.GetInstance().ShowEquipmentTooltip(equipment);
         }
 
     }
     public void OnPointerClick(PointerEventData eventData){
-        EquipmentSO equipmentSO = AccountManager.Instance.equipments.FirstOrDefault(eq => eq.equipmentId.Equals(equipment.equipmentId)).CreateCopy(equipment);
-        if (equipmentSO == null && isHovering) {
+        if (itemData == null && isHovering) {
             isHovering = false;
             TooltipManager.GetInstance().HideEquipmentTooltip();
         }
