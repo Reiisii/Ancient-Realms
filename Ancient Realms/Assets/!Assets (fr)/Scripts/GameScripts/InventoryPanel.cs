@@ -301,35 +301,35 @@ public class InventoryPanel : MonoBehaviour
             case InventoryTab.Equipments:
                 equipmentBtn.interactable = false;
                 weaponsBtn.interactable = true;
-                //itemsBtn.interactable = true;
+                itemsBtn.interactable = true;
                 questItemBtn.interactable = true;
                 nftsBtn.interactable = true;
             break;
             case InventoryTab.Weapons:
                 equipmentBtn.interactable = true;
                 weaponsBtn.interactable = false;
-                //itemsBtn.interactable = true;
+                itemsBtn.interactable = true;
                 questItemBtn.interactable = true;
                 nftsBtn.interactable = true;
             break;
             case InventoryTab.Items:
                 equipmentBtn.interactable = true;
                 weaponsBtn.interactable = true;
-                //itemsBtn.interactable = false;
+                itemsBtn.interactable = false;
                 questItemBtn.interactable = true;
                 nftsBtn.interactable = true;
             break;
             case InventoryTab.QuestItem:
                 equipmentBtn.interactable = true;
                 weaponsBtn.interactable = true;
-                //itemsBtn.interactable = true;
+                itemsBtn.interactable = true;
                 questItemBtn.interactable = false;
                 nftsBtn.interactable = true;
             break;
             case InventoryTab.NFTs:
                 equipmentBtn.interactable = true;
                 weaponsBtn.interactable = true;
-                //itemsBtn.interactable = true;
+                itemsBtn.interactable = true;
                 questItemBtn.interactable = true;
                 nftsBtn.interactable = false;
             break;
