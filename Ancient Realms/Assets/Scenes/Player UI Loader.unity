@@ -3512,8 +3512,13 @@ MonoBehaviour:
   staticAnimationName: Static
   spinAnimationName: Spin
   timerCircleImage: {fileID: 129500440}
-  assembly: {fileID: 145669853}
-  grinding: {fileID: 0}
+  item: {fileID: 1714996550}
+  gSprite: {fileID: 21300000, guid: a4b50e2a671f5284ab950157666cd499, type: 3}
+  piSprite: {fileID: 21300000, guid: 2e67ddda45f9c4b408aa55b8302eba11, type: 3}
+  puSprite: {fileID: 21300000, guid: 5ce88e6829dcfe64e96eb521ac0d694e, type: 3}
+  gladius: {fileID: 360563483}
+  pilum: {fileID: 360563482}
+  pugio: {fileID: 360563481}
 --- !u!1 &91965720
 GameObject:
   m_ObjectHideFlags: 0
@@ -15731,6 +15736,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1870339612681039143, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 3483516274309030690, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3483516274309030690, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
       propertyPath: m_SortingLayer
       value: 1
@@ -15927,6 +15940,21 @@ Transform:
 --- !u!1 &360563480 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4644936873085406649, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+  m_PrefabInstance: {fileID: 360563478}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &360563481 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 253061830970845297, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+  m_PrefabInstance: {fileID: 360563478}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &360563482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2734804984875405721, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+  m_PrefabInstance: {fileID: 360563478}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &360563483 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4882029807312273766, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
   m_PrefabInstance: {fileID: 360563478}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &361917608
@@ -61289,7 +61317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2119305201641550895, guid: a3fc3fff1ff333547969a9d501b92874, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3423014228223634965, guid: a3fc3fff1ff333547969a9d501b92874, type: 3}
       propertyPath: m_IsActive
@@ -75454,6 +75482,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1714162968}
   m_CullTransparentMesh: 1
+--- !u!212 &1714996550 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3483516274309030690, guid: b301110bc5496f347b15bf535f1708ac, type: 3}
+  m_PrefabInstance: {fileID: 360563478}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1716295624
 GameObject:
   m_ObjectHideFlags: 0
