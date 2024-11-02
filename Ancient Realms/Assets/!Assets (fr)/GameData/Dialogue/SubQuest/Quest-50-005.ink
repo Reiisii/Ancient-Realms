@@ -1,15 +1,37 @@
 ﻿-> start
 
 == start ==
-Ah! You look like someone with a keen eye. I’ve misplaced my ledger, which holds all my records. Without it, my accounts will be in disarray.
-I believe I may have left it at Julia the Baker’s stall when we last spoke. Could you go ask her if she’s seen it?
+Ah, just in time! I have a commission for a weapon like no other. #speaker:npc
+But I need a rare metal, one that can only be found in the depths of an ancient dungeon. #speaker:npc
+Dangerous place, but I trust you’re up for it? #speaker:npc
+
+I can handle it. Where is it? #speaker:player
+
+"It’s in an old dungeon outside the city, hidden away for ages. #speaker:npc
+Guarded by warriors who see anyone who enters as an intruder. #speaker:npc
+You’ll need to deal with them to reach the metal. #speaker:npc
+
 -> DONE
 
 == goal_0 ==
-Vibius’s ledger, you say? Yes, he was here earlier, fretting over his prices, as usual. But I didn’t see any ledger.
-Though… come to think of it, I did see a scroll left by the well, just a short walk from here. Perhaps he dropped it there?
+The dungeon you’re heading to is no joke. #speaker:npc
+Gallic soldiers are stationed throughout, ready to fend off anyone they don’t recognize. #speaker:npc
+Be prepared for a fight and stay sharp they’re skilled fighters. #speaker:npc
+
+Thanks for the warning. I’ll keep my guard up. #speaker:player
+
 -> DONE
 
 == goal_1 ==
+You’ve returned! And with the metal! Perfect. #speaker:npc
+With this, I can forge something truly extraordinary. #speaker:npc
 
+Glad I could help. #speaker:player
+
+Here, take this as a token of gratitude a piece made from the finest materials. May it serve you well. #speaker:npc
+-> DONE
+
+
+== noreq ==
+Where is the item #speaker:npc
 -> DONE

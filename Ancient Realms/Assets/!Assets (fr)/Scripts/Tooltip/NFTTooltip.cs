@@ -26,11 +26,12 @@ public class NFTToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
     }
+    private void OnDisable(){
+        isHovering = false;
+        TooltipManager.GetInstance().HideNFTTooltip();
+    }
     private void OnDestroy(){
-        if (isHovering)
-        {
-            isHovering = false;
-            TooltipManager.GetInstance().HideNFTTooltip();
-        }
+        isHovering = false;
+        TooltipManager.GetInstance().HideNFTTooltip();
     }
 }

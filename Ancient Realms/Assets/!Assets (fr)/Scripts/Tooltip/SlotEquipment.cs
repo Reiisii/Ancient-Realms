@@ -1,38 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ESDatabase.Classes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SlotEquipment : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
     [SerializeField] private int slotNo;
-    [SerializeField] private EquipmentSO equipment;
+    [SerializeField] private ItemData equipment;
     [SerializeField] private bool isHovering = false;
     public void Start(){
         UpdateEquipment();
     }
     public void UpdateEquipment()
     {
-        equipment = PlayerStats.GetInstance().equippedItems[slotNo];
+        
+        switch(slotNo){
+            case 0:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.helmSlot;
+            break;
+            case 1:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.chestSlot;
+            break;
+            case 2:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.waistSlot;
+            break;
+            case 3:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.footSlot;
+            break;
+            case 4:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.mainSlot;
+            break;
+            case 5:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.shieldSlot;
+            break;
+            case 6:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.javelinSlot;
+            break;
+            case 7:
+                equipment = PlayerStats.GetInstance().localPlayerData.gameData.equippedData.bandageSlot;
+            break;
+        }
         if (equipment == null && isHovering) {
             isHovering = false;
             TooltipManager.GetInstance().HideEquipmentTooltip();
         }
     }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!isHovering)
         {
             if(equipment == null) return;
             isHovering = true;
-            TooltipManager.GetInstance().ShowEquipmentTooltip(equipment);
+            EquipmentSO equipmentSO = AccountManager.Instance.equipments.FirstOrDefault(eq => eq.equipmentId.Equals(equipment.equipmentId)).CreateCopy(equipment);
+            TooltipManager.GetInstance().ShowEquipmentTooltip(equipmentSO);
         }
 
     }
     public void OnPointerClick(PointerEventData eventData){
-        equipment = PlayerStats.GetInstance().equippedItems[slotNo];
-        if (equipment == null && isHovering) {
+        EquipmentSO equipmentSO = AccountManager.Instance.equipments.FirstOrDefault(eq => eq.equipmentId.Equals(equipment.equipmentId)).CreateCopy(equipment);
+        if (equipmentSO == null && isHovering) {
             isHovering = false;
             TooltipManager.GetInstance().HideEquipmentTooltip();
         }
@@ -45,6 +73,13 @@ public class SlotEquipment : MonoBehaviour, IPointerEnterHandler, IPointerClickH
             TooltipManager.GetInstance().HideEquipmentTooltip();
         }
 
+    }
+    private void OnDisable(){
+        if (isHovering)
+        {   
+            isHovering = false;
+            TooltipManager.GetInstance().HideEquipmentTooltip();
+        }
     }
     private void OnDestroy(){
         if (isHovering)
