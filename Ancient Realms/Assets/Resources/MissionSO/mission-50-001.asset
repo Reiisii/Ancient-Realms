@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadc9e9ed8c819a40ba0f5321ffbb27e, type: 3}
+  m_Name: mission-50-001
+  m_EditorClassIdentifier: 
+  missionID: mission-50-001
+  missionTitle: Abandoned Mine
+  missionDescription: Where wood, iron can be found
+  chapter: 7
+  isCompleted: 0
+  currentGoal: 0
+  goals:
+  - taskID: 0
+    taskDescription: Clear enemies
+    missionType: 2
+    requiredAmount: 5
+    currentAmount: 0
+    itemID: 
+    targetIDs:
+    - enemy-50-001
+  rewards:
+  - rewardType: 2
+    value: 28
+    tier: 0
+    level: 0
+    amount: 3
+  - rewardType: 2
+    value: 33
+    tier: 0
+    level: 0
+    amount: 5

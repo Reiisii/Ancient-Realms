@@ -31,6 +31,10 @@ Glad I could help. #speaker:player
 Here, take this as a token of gratitude a piece made from the finest materials. May it serve you well. #speaker:npc
 -> DONE
 
+== exhaust_mission ==
+I told you to go to the mine in Illycrium #speaker:npc
+-> DONE
+
 
 == noreq ==
 Where is the item #speaker:npc
