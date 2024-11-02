@@ -168,6 +168,30 @@ public class PuzzleManager : MonoBehaviour
             break;
         }
     }
+    public void ResetPos(){
+        switch(SmithingGameManager.GetInstance().order){
+            case OrderType.Gladius:
+                ResetPositionCheck(sword);
+            break;
+            case OrderType.Pila:
+                ResetPositionCheck(pila);
+            break;
+            case OrderType.Pugio:
+                ResetPositionCheck(pugio);
+            break;
+        }
+    }
+    public void ResetPositionCheck(GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            DragDrop dragDropComponent = child.GetComponent<DragDrop>();
+            if (dragDropComponent != null)
+            {
+                dragDropComponent.CheckReset();
+            }
+        }
+    }
     public void ResetPosition(GameObject parent)
     {
         foreach (Transform child in parent.transform)

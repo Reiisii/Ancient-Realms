@@ -38,6 +38,14 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
     }
+    public void CheckReset(){
+        if(placed) return;
+        placed = false;
+        gameObject.transform.position = oldPos;
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+    }
     public void OnPointerDown(PointerEventData eventData){
     }
 }
