@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Solana.Unity.SDK;
 using TMPro;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PremiumShopPanel : MonoBehaviour
@@ -31,4 +32,15 @@ public class PremiumShopPanel : MonoBehaviour
             solBalance.SetText(Utilities.FormatSolana(startValue));
         }, endValue, 1f).SetUpdate(true).SetEase(Ease.Linear);
     }
+
+    public async void Purchase(){ 
+        bool resp = await SolanaUtility.TransferSols();
+        if(resp){
+            PlayerStats.GetInstance().AddGold(1000);
+            await AccountManager.SaveData(PlayerStats.GetInstance().localPlayerData);
+            PlayerUIManager.GetInstance().SpawnMessage(MType.Success, "Check the Web Console (F12 Console) for your receipt");
+        }
+    }
+
+
 }
