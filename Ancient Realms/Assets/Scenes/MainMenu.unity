@@ -1276,12 +1276,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b75a4e92c14884ea6bf3e46d07a33eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rpcCluster: 1
-  customRpc: 
-  webSocketsRpc: 
+  rpcCluster: 0
+  customRpc: https://solana-api.instantnodes.io/token-vzjJ9OtWe73j6ay9kzbUaalg2g7HX9nC
+  webSocketsRpc: 'wss://solana-api.instantnodes.io/token-vzjJ9OtWe73j6ay9kzbUaalg2g7HX9nC '
   autoConnectOnStartup: 0
   web3AuthWalletOptions:
-    appName: Web3Auth Sample App
+    appName: Eagle's Shadwo NFT
     logoLight: 
     logoDark: 
     defaultLanguage: en
@@ -1290,7 +1290,7 @@ MonoBehaviour:
     themeColor: '#123456'
     redirectUrl: torusapp://com.torus.Web3AuthUnity/auth
     clientId: BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg
-    network: 1
+    network: 0
   solanaWalletAdapterOptions:
     solanaMobileWalletAdapterOptions:
       identityUri: https://solana.unity-sdk.gg/
