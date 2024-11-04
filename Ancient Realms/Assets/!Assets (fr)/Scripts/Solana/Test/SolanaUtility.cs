@@ -38,8 +38,8 @@ public class SolanaUtility : MonoBehaviour
         decimal lamportsPerSol = 1_000_000_000m;
         return (ulong)(sol * lamportsPerSol);
     }
-    public async void TransferSols(){
-        decimal sol = 1m; 
+    public static async Task<bool> TransferSols(){
+        decimal sol = 0.05m; 
         ulong lamports = ConvertSolToLamports(sol);
         var transaction = new Transaction
         {
@@ -58,9 +58,12 @@ public class SolanaUtility : MonoBehaviour
 
             var result = await Web3.Instance.WalletBase.SignAndSendTransaction(transaction);
             if(result.WasSuccessful){
-                Debug.Log("Transaction Success!");
-                Debug.Log("Signature: " + result.Result);
-        }
+                
+                Debug.Log("https://explorer.solana.com/tx/" + result.Result + "?cluster=" + Web3.Wallet.RpcCluster.ToString().ToLower());
+                return true;
+            }else{
+                return false;
+            }
     }
     public static async Task<string> BurnToken(Nft nft){
             try
