@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WebSocketSharp;
-
+using UnityEngine.Video;
 public class PlayerUIManager : MonoBehaviour
 {
     [Header("Canvas")]
@@ -75,6 +75,9 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] Image mapLocationImage;
     [Header("Map Location")]
     [SerializeField] GameObject missionPanelGO;
+    [Header("Video")]
+    [SerializeField] GameObject screen;
+    [SerializeField] VideoPlayer cutscene;
     [Header("Time")]
     [SerializeField] public TimeController time;
     [Header("Prefabs")]
@@ -270,7 +273,13 @@ public class PlayerUIManager : MonoBehaviour
     [ContextMenu("BackToMainMenu")]
     public async void BackToMainMenu()
     {   
-        PauseManager.GetInstance().pausePanel.GetComponent<LogoAnimation>().Close();
+        if(PauseManager.GetInstance().pausePanel){
+            PauseManager.GetInstance().pausePanel.SetActive(false);
+        }
+        if(PauseManager.GetInstance().missionPausePanel.activeSelf){
+            PauseManager.GetInstance().missionPausePanel.SetActive(false);
+        }
+        
         AudioManager.GetInstance().StopAmbience();
         await ClosePlayerUI();
         await OpenDarkenUI();
@@ -412,6 +421,30 @@ public class PlayerUIManager : MonoBehaviour
         LocationSO location = LocationSettingsManager.GetInstance().locationSettings;
         
         await CloseBackgroundUI();
+        if(!PlayerStats.GetInstance().localPlayerData.gameData.cutscenePlayed){
+            screen.SetActive(true);
+            cutscene.Play();
+            cutscene.loopPointReached += OnVideoFinished;
+
+        }else{
+            await CloseLoadingUI();
+            AudioManager.GetInstance().SetAmbience(time.hours < 17 && time.hours > 7, location.background, location.hasWater);
+            if(!location.canAccessCombatMode) AudioManager.GetInstance().PlayMusic(MusicType.Town, 0.6f, 1f);
+            else if(location.canAccessCombatMode && location.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Town, 0.6f, 1f);
+            else if(location.canAccessCombatMode && !location.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.6f, 1f);
+            else AudioManager.GetInstance().PlayMusic(MusicType.MainMenu, 1f, 1f);
+            await OpenPlayerUI();
+            DOTween.Clear(true);
+        }
+        
+    }
+
+    async void OnVideoFinished(VideoPlayer vp)
+    {
+        PlayerStats.GetInstance().localPlayerData.gameData.cutscenePlayed = true;
+        PlayerStats.GetInstance().isDataDirty = true;
+        screen.SetActive(false);
+        LocationSO location = LocationSettingsManager.GetInstance().locationSettings;
         await CloseLoadingUI();
         AudioManager.GetInstance().SetAmbience(time.hours < 17 && time.hours > 7, location.background, location.hasWater);
         if(!location.canAccessCombatMode) AudioManager.GetInstance().PlayMusic(MusicType.Town, 0.6f, 1f);
@@ -421,4 +454,5 @@ public class PlayerUIManager : MonoBehaviour
         await OpenPlayerUI();
         DOTween.Clear(true);
     }
+
 }

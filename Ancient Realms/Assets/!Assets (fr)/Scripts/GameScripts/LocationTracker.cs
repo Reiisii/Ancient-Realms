@@ -8,7 +8,10 @@ public class LocationTracker : MonoBehaviour
     [SerializeField] GameObject exteriorGrid;
     void Update()
     {
-        if(interiorGrid == null) return;
+        if(interiorGrid == null) {
+            exteriorGrid.SetActive(true);
+            return;
+        }
         if(PlayerController.GetInstance().isInterior){
             interiorGrid.SetActive(true);
             exteriorGrid.SetActive(false);

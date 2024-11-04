@@ -11,14 +11,15 @@ public class PausePanel : MonoBehaviour
         PlayerUIManager.GetInstance().BackToMainMenu();
     }
     public async void ExitMission(){
+        PlayerController.GetInstance().playerActionMap.Disable();
         MissionManager.GetInstance().EndMission();
-
         PauseManager.GetInstance().missionPausePanel.SetActive(false);
         await PlayerUIManager.GetInstance().ClosePlayerUI();
         PlayerUIManager.GetInstance().LastLocation();
     }
     public void BackToGame(){
         Time.timeScale = 1f;
+        PlayerController.GetInstance().playerActionMap.Enable();
         if(MissionManager.GetInstance().inMission){
             PauseManager.GetInstance().missionPausePanel.SetActive(false);
         }else{

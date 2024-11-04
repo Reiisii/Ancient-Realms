@@ -15,6 +15,7 @@ namespace ESDatabase.Classes
                 public float lastX {get;set;}
                 public float lastY {get;set;}
                 public bool isInterior {get;set;}
+                public bool cutscenePlayed {get;set;}
                 public int currentEnergy {get;set;}
                 public StatisticsData statistics {get;set;}
                 public Inventory inventory {get;set;}
@@ -40,6 +41,7 @@ namespace ESDatabase.Classes
                         this.lastX = 1.46f;
                         this.lastY = -2.96f;
                         this.isInterior = false;
+                        this.cutscenePlayed = false;
                         this.rank = "Tiro";
                         this.statistics = new StatisticsData();
                         this.inventory = new Inventory();

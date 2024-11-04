@@ -66,6 +66,16 @@ public class DatabaseService : Facet
              return false;
         }
     }
+    public bool NotExisting(string pubkey)
+    {
+        PlayerData player = DB.TakeAll<PlayerData>().Get().FirstOrDefault(data => data.publicKey == pubkey);
+        if (player != null)
+        {
+            return false;
+        }else{
+            return true;
+        }
+    }
     public ChannelSubscription JoinOnlineChannel()
     {
         PlayerData p = Auth.GetPlayer<PlayerData>();

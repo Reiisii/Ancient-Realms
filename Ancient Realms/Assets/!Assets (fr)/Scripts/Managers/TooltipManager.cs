@@ -18,6 +18,9 @@ public class TooltipManager : MonoBehaviour
     [SerializeField] public GameObject nftTooltip;
     [SerializeField] TextMeshProUGUI nftName;
     [SerializeField] RectTransform nftStats;
+    [Header("Text tooltip")]
+    [SerializeField] public GameObject textTooltipGO;
+    [SerializeField] public TextMeshProUGUI textTooltip;
     private void Awake(){
         if (Instance == null)
         {
@@ -39,6 +42,7 @@ public class TooltipManager : MonoBehaviour
     {
         equipmentTooltip.transform.position = Input.mousePosition;
         nftTooltip.transform.position = Input.mousePosition;
+        textTooltipGO.transform.position = Input.mousePosition;
     }
     public void ShowEquipmentTooltip(EquipmentSO equipment){
         if (!equipmentTooltip.activeSelf)
@@ -114,5 +118,17 @@ public class TooltipManager : MonoBehaviour
     public void HideNFTTooltip(){
         nftTooltip.SetActive(false);
         Utilities.ClearContent(nftStats);
+    }
+    public void ShowTextTooltip(string text){
+        if (!textTooltipGO.activeSelf)
+        {
+            textTooltipGO.SetActive(true);
+            textTooltipGO.transform.position = Input.mousePosition;
+        }
+        textTooltip.SetText(text);
+    }
+    public void HideTextTooltip(){
+        textTooltipGO.SetActive(false);
+        textTooltip.SetText("");
     }
 }

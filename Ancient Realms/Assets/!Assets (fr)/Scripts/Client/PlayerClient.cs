@@ -39,5 +39,16 @@ public class PlayerClient : UnisaveBroadcastingClient
         // "John joined the room"
         Debug.Log($"{msg.playerName} joined the room");
     }
+    protected override void OnConnectionLost()
+    {
+        // display a spinner, prevent user actions
+        Debug.Log("Connection lost, reconnecting...");
+    }
+
+    protected override void OnConnectionRegained()
+    {
+        // everything is back to normal
+        Debug.Log("Connection established again.");
+    }
 
 }

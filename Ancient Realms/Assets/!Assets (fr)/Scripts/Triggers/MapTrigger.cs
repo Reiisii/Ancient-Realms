@@ -17,6 +17,11 @@ public class MapTrigger : MonoBehaviour
 
     private void Awake(){
         playerInRange = false;
+        if(mission != null){
+            gameObject.GetComponent<TextTooltip>().text = mission.missionTitle;
+        }else if(location != null){
+            gameObject.GetComponent<TextTooltip>().text = location.locationName;
+        }
     }
     private void Update(){
         if(playerInRange){
@@ -55,6 +60,7 @@ public class MapTrigger : MonoBehaviour
         LocationSettingsManager.GetInstance().LoadSettings(location);
         SceneManager.UnloadSceneAsync(prevLoc).completed += (operation) => {
             PlayerUIManager.GetInstance().backgroundGO.SetActive(false);
+            PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;
             SceneManager.LoadSceneAsync(location.SceneName, LoadSceneMode.Additive).completed += async (operation) => {
                 LocationSO loadedLocation = LocationSettingsManager.GetInstance().locationSettings;
                 if(loadedLocation.canAccessCombatMode && !loadedLocation.canAccessInventory) AudioManager.GetInstance().PlayMusic(MusicType.Combat, 0.6f, 1f); 
@@ -62,7 +68,6 @@ public class MapTrigger : MonoBehaviour
                 AudioManager.GetInstance().SetAmbience(PlayerUIManager.GetInstance().time.hours < 17 && PlayerUIManager.GetInstance().time.hours > 7, loadedLocation.background, loadedLocation.hasWater);
                 if(!loadedLocation.instanceMission){
                     PlayerStats.GetInstance().localPlayerData.gameData.lastLocationVisited = location.SceneName;
-                    PlayerStats.GetInstance().localPlayerData.gameData.isInterior = false;
                     PlayerStats.GetInstance().localPlayerData.gameData.lastX = loadedLocation.locations[0].location.x;
                     PlayerStats.GetInstance().localPlayerData.gameData.lastY = loadedLocation.locations[0].location.y;
                     PlayerStats.GetInstance().isDataDirty = true;
