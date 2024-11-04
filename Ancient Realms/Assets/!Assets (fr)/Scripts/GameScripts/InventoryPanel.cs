@@ -653,6 +653,19 @@ public class InventoryPanel : MonoBehaviour
         playerStats.AddItem(28, 0, 0, 32);
         playerStats.AddItem(33, 0, 0, 8);
     }
+    [ContextMenu("AddAll")]
+    public void AddAll(){
+        PlayerStats playerStats = PlayerStats.GetInstance();
+        foreach(EquipmentSO equipmentSO in AccountManager.Instance.equipments){
+            playerStats.AddEncyc(EncycType.Equipment, equipmentSO.equipmentId);
+        }
+        foreach(ArtifactsSO artifactSO in AccountManager.Instance.achievements){
+            playerStats.AddArtifact(artifactSO.id.ToString());
+        }
+        for(int i = 0; i < 13; i++){
+            playerStats.AddEncyc(EncycType.Character, i);
+        }
+    }
     public Sprite TierEnum(int tier){
         switch(tier){
             case 1:
