@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
     [SerializeField] private PieceType acceptedPiece;
-
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag != null)
@@ -16,8 +15,6 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 
             if (dragDrop != null && eventData.pointerDrag.gameObject.GetComponent<DragDrop>().pieceType == acceptedPiece)
             {
-                Debug.Log("Accepted piece: " + acceptedPiece + " | Dropped piece: " + eventData.pointerDrag.name);
-
                 // Snap the piece to the slot
                 droppedPiece.anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
                 dragDrop.placed = true;

@@ -28,6 +28,11 @@ Salve! Legionnaire #spearker:npc
 ... #spearker:npc
 -> DONE
 
+
+== tanga ==
+What do you want? I'm the smartest roman citizen. Ice Cream yummy, Ice Cream good. Pepper yucky! Pepper ew! #spearker:npc
+Hm Crazy... #spearker:player
+-> DONE
 == exhaust ==
 Good day citizen! #spearker:npc
 -> DONE

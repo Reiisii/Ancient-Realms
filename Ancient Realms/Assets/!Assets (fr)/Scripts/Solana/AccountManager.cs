@@ -204,6 +204,20 @@ public class AccountManager : MonoBehaviour
                             Debug.LogError("Failed to fetch Price: " + error);
                         });
     }
+    public async Task<bool> NotExisting(string pk){
+        bool resp = false;
+        await FacetClient.CallFacet((DatabaseService facet) => facet.NotExisting(pk))
+        .Then(response => 
+        {
+            resp = response;
+        })
+        .Catch(error => 
+        {
+            Debug.LogError("Failed to fetch player data: " + error);
+            loadingPanel.GetComponent<FadeAnimation>().Close();
+        });
+        return resp;
+    }
     public async void CheckSession(string message){
         PlayerData newPlayer = await GetPlayer();
         PlayerData oldPlayer = playerData;

@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     public string id = "";
     public bool isDead = false;
     public bool isDummy = false;
+    public int renderLayer = 10;
     public int level = 1;
     public int tier = 1;
     public int equipmentLevel = 1;
@@ -56,6 +57,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] public SpriteRenderer shieldSlotBack;
     [SerializeField] public SpriteRenderer shieldSlotHandle;
     [SerializeField] public Transform attackPoint;
+    public SpriteRenderer spriteRenderer;
     public bool _isFacingRight = true;
     public bool IsFacingRight 
     { 
@@ -81,6 +83,7 @@ public class Enemy : MonoBehaviour
         if(isDummy) return;
         if(equipments.Count > 0) InitializeEquipments();
         aiPath.maxSpeed = walkSpeed;
+        SetSpriteOrder();
     }
     private void Update(){
         if(isDummy) return;
@@ -534,6 +537,18 @@ public class Enemy : MonoBehaviour
             j++;
         }
         armor = sumArmor;
+    }
+    public void SetSpriteOrder()
+    {
+        if(isDead) return;
+        spriteRenderer.sortingOrder = renderLayer;
+        mainHolster.sortingOrder = renderLayer + 3;
+        mainSlot.sortingOrder = renderLayer + 3;
+        shieldSlotBack.sortingOrder = renderLayer - 1;
+        shieldSlotFront.sortingOrder = renderLayer + 2;
+        shieldSlotHandle.sortingOrder = renderLayer + 1;
+        hand.sortingOrder = renderLayer + 4;
+        forearm.sortingOrder = renderLayer + 4;
     }
     private void CalculateStatsForCurrentLevel()
     {

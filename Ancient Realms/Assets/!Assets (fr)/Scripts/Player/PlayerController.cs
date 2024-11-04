@@ -236,6 +236,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     rb.velocity = Vector2.zero;
+                    IsMoving = false;
                 }
             }
             //<-- Equipping -->
