@@ -33,10 +33,10 @@ public class NPCEquip : StateMachineBehaviour
         Enemy enemy = animator.gameObject.GetComponent<Enemy>();
         if(ally != null){
             ally.isEquipping = false;
-            ally.canMove = false;
+            ally.canMove = true;
         }else if(enemy != null){
             enemy.isEquipping = false;
-            enemy.canMove = false;
+            enemy.canMove = true;
         }
     }
 

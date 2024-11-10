@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     private float maxHP = 100f;
     public float currentHP = 100f;
     public string id = "";
-    public bool isDead = false;
+    public bool isDead = false; 
     public bool isDummy = false;
     public int renderLayer = 10;
     public int level = 1;
@@ -285,7 +285,7 @@ public class Enemy : MonoBehaviour
                     currentHP -= damageDealt;
                     currentHP = Mathf.Max(currentHP, 0);
                 }
-                if(currentHP <= 0){
+                if(currentHP <= 0 && !isDead){
                     isDead = true;
                     gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
                     animator.Play("Death");

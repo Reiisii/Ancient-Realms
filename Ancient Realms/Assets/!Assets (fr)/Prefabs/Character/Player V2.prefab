@@ -1838,6 +1838,7 @@ MonoBehaviour:
   isEquipping: 0
   holdTime: 0
   isHolding: 0
+  isThrowing: 0
   canAccessInventory: 1
   canAccessJournal: 1
   canAccessMap: 1
@@ -1907,6 +1908,10 @@ MonoBehaviour:
     m_Bindings: []
   equipmentList: []
   isInterior: 0
+  skins:
+  - {fileID: 21300000, guid: 6fccf1bd11c09344ea48d977c8315d6d, type: 3}
+  - {fileID: 21300000, guid: 9738e1fdca11ce846afe3ea966e10a2f, type: 3}
+  - {fileID: 21300000, guid: 0dc59f6c7a76de14bad9ecd989c3c2d0, type: 3}
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -2680,7 +2685,7 @@ MonoBehaviour:
   - {x: -11.980261, y: 17.198854, z: 0}
   m_ShapePathHash: -1779318330
   m_Mesh: {fileID: 0}
-  m_InstanceId: 549496
+  m_InstanceId: 216610
   m_LocalBounds:
     m_Center: {x: 0.51626015, y: 5.4031525, z: 0}
     m_Extent: {x: 13.058325, y: 26.380466, z: 0}

@@ -35,7 +35,7 @@ public class PlayerStats : MonoBehaviour
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
     public float staminaDepletionRate = 40f;
-    public float staminaRegenRate = 10f;
+    public float staminaRegenRate = 20f;
     [Header("Combat Stats")]
     public bool isCombatMode = false;
     public bool toggleStamina = true;
@@ -219,6 +219,30 @@ public class PlayerStats : MonoBehaviour
         
         // Update the local player's data
         localPlayerData.gameData.currentXP += amount;
+        isDataDirty = true;
+    }
+    public void SetRank(string rank)
+    {
+        switch(rank){
+            case "Tiro":
+                localPlayerData.gameData.rank = "Tiro";
+                if(PlayerController.GetInstance() != null){
+                    PlayerController.GetInstance().gameObject.GetComponent<SpriteRenderer>().sprite = PlayerController.GetInstance().skins[0];
+                }
+            break;
+            case "Legionnaire":
+                localPlayerData.gameData.rank = "Legionnaire";
+                if(PlayerController.GetInstance() != null){
+                    PlayerController.GetInstance().gameObject.GetComponent<SpriteRenderer>().sprite = PlayerController.GetInstance().skins[1];
+                }
+            break;
+            case "Centurion":
+                localPlayerData.gameData.rank = "Centurion";
+                if(PlayerController.GetInstance() != null){
+                    PlayerController.GetInstance().gameObject.GetComponent<SpriteRenderer>().sprite = PlayerController.GetInstance().skins[2];
+                }
+            break;
+        }
         isDataDirty = true;
     }
 
@@ -479,7 +503,7 @@ public class PlayerStats : MonoBehaviour
         maxHP = baseHP * Mathf.Pow(1.05f, level - 1);  // Scale max HP based on the base value
         currentHP = maxHP;  // Reset current HP to max after calculating
         maxStamina = baseStamina * Mathf.Pow(1.02f, level - 1);  // Scale max Stamina based on the base value
-        staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1);  // Assuming initial staminaRegenRate is 10
+        staminaRegenRate = 20f * Mathf.Pow(1.03f, level - 1);  // Assuming initial staminaRegenRate is 10
     }
 
     private void CalculateBaseStats()
@@ -487,7 +511,7 @@ public class PlayerStats : MonoBehaviour
         // Base calculations for stats based on the current level
         baseHP = 100f * Mathf.Pow(1.01f, level - 1); // Starting HP calculation
         baseStamina = 70f * Mathf.Pow(1.02f, level - 1); // Starting Stamina calculation
-        staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Starting stamina regen rate calculation
+        staminaRegenRate = 20f * Mathf.Pow(1.03f, level - 1); // Starting stamina regen rate calculation
     }
 
     private int CalculateXPToNextLevel(int level)

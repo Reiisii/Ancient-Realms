@@ -159,7 +159,6 @@ public class Contubernium : MonoBehaviour
             PlayerUIManager.GetInstance().SpawnMessage(MType.Info, "Command Cooldown!");
             return;
         };
-        isCombatMode = !isCombatMode; // Toggle combat mode
         lastCommandTime = Time.time; // Update the last command time
         foreach (Transform child in gameObject.transform)
         {

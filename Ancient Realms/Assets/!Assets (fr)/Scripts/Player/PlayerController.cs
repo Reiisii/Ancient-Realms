@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 originalCameraOffset;
     public List<EquipSO> equipmentList;
     public bool isInterior = false;
+    public List<Sprite> skins;
     private void Awake()
     {
         if(Instance != null){
@@ -98,6 +99,18 @@ public class PlayerController : MonoBehaviour
         mintingActionMap = inputActions.FindActionMap("Minting");
         shopActionMap = inputActions.FindActionMap("Shop");
         playerActionMap.Disable();
+
+        switch(PlayerStats.GetInstance().localPlayerData.gameData.rank){
+            case "Tiro":
+                gameObject.GetComponent<SpriteRenderer>().sprite = skins[0];
+            break;
+            case "Legionnaire":
+                gameObject.GetComponent<SpriteRenderer>().sprite = skins[1];
+            break;
+            case "Centurion":
+                gameObject.GetComponent<SpriteRenderer>().sprite = skins[2];
+            break;
+        }
     }
     
     private void Start(){
