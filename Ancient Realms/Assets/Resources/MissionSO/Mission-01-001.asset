@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadc9e9ed8c819a40ba0f5321ffbb27e, type: 3}
+  m_Name: Mission-01-001
+  m_EditorClassIdentifier: 
+  missionID: mission-01-001
+  missionTitle: Battle of Bibracte
+  missionDescription: We have been spotted by the helvetii tribe, we are now going
+    to prepare for a major battle that will decide the rome's destiny
+  chapter: 0
+  isCompleted: 0
+  currentGoal: 0
+  goals:
+  - taskID: 0
+    taskDescription: Clear all the Helvetii
+    missionType: 2
+    requiredAmount: 35
+    currentAmount: 0
+    itemID: 
+    targetIDs:
+    - mission-01-001
+  rewards: []

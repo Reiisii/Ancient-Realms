@@ -40,6 +40,10 @@ public class PlaySound : MonoBehaviour
     {
         AudioManager.GetInstance().PlayAudio(SoundType.UNSHEATHE, 0.2f);
     }
+    public void PlayNPCAttack()
+    {
+        AudioManager.GetInstance().PlayAudio(SoundType.SLASH, 0.4f);
+    }
     public void PlayHammer()
     {
         AudioManager.GetInstance().PlayAudio(SoundType.Hammering, 0.7f);

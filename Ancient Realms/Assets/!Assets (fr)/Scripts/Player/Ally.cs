@@ -80,7 +80,8 @@ public class Ally : MonoBehaviour
     
     private void Awake()
     {
-        CalculateStatsForCurrentLevel();
+        level = PlayerStats.GetInstance().localPlayerData.gameData.level;
+        CalculateStatsForCurrentLevel(level);
         previousPosition = transform.position;
         aiPath = GetComponent<AIPath>();
         aiDestination = GetComponent<AIDestinationSetter>();
@@ -530,12 +531,12 @@ public class Ally : MonoBehaviour
             });
     }
 
-    private void CalculateStatsForCurrentLevel()
+    private void CalculateStatsForCurrentLevel(int lvl)
     {
         // Calculate the stats based on the current level without incrementing it
-        maxHP = 100f * Mathf.Pow(1.01f, level - 1); // Assuming initial maxHP is 100
+        maxHP = 100f * Mathf.Pow(1.01f, lvl - 1); // Assuming initial maxHP is 100
         currentHP = maxHP;
-        maxStamina = 70f * Mathf.Pow(1.02f, level - 1); // Assuming initial maxStamina is 70
-        staminaRegenRate = 10f * Mathf.Pow(1.03f, level - 1); // Assuming initial staminaRegenRate is 10
+        maxStamina = 70f * Mathf.Pow(1.02f, lvl - 1); // Assuming initial maxStamina is 70
+        staminaRegenRate = 10f * Mathf.Pow(1.03f, lvl - 1); // Assuming initial staminaRegenRate is 10
     }
 }

@@ -559,6 +559,23 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+    public void UpdateGoalQuest(string q)
+    {
+        foreach (var quest in playerStats.activeQuests)
+        {
+            foreach(Goal g in quest.goals){
+                    if(g.goalType == GoalTypeEnum.Quest && g.questID.Equals(q) && g.currentAmount < g.requiredAmount){
+                        g.IncrementProgress(1);
+                        playerStats.SaveQuestToServer();
+                        if (g.currentAmount >= g.requiredAmount)
+                        {
+                            // COMPLETE TRIGGER CODE
+                            CompleteGoal(quest, g.goalID); // Complete the goal if required amount is reached
+                        }
+                    }
+            }
+        }
+    }
     private void CheckQuestCompletion(QuestSO quest)
     {
         bool allGoalsCompleted = true;
@@ -573,6 +590,7 @@ public class QuestManager : MonoBehaviour
         }
         if (allGoalsCompleted)
         {
+            UpdateGoalQuest(quest.questID);
             quest.isCompleted = true;
             quest.isPinned = false;
             quest.isActive = false;
@@ -634,7 +652,10 @@ public class QuestManager : MonoBehaviour
                     break;
                 case RewardsEnum.Quest:
                     Instance.StartQuest(reward.value);
-                    break;
+                break;
+                case RewardsEnum.Rank:
+                    PlayerStats.GetInstance().SetRank(reward.value);
+                break;
             }
         }
         quest.isRewarded = true;
